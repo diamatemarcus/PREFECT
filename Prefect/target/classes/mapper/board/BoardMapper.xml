@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pcwk.ehr.board">
+  <update id="updateReadCnt" parameterType="BoardVO">
+    <![CDATA[
+    UPDATE board
+       SET read_cnt = NVL(read_cnt,0)+1
+     WHERE seq  = #{seq}
+       AND reg_id <> #{regId} ]]>  
+  </update>
+  <sql id="searchCondition">
+    <choose>
+        <when test=" ''!= searchDiv and '10' == searchDiv ">
+            <where>
+                AND title LIKE #{searchWord} || '%'
+            </where>
+        </when>
+        <when test=" ''!= searchDiv and '20' == searchDiv ">
+            <where>
+               AND contents LIKE #{searchWord} || '%'
+            </where>
+        </when>
+        <when test=" ''!= searchDiv and '30' == searchDiv ">
+            <where>
+               AND mod_id LIKE #{searchWord} || '%'
+            </where>
+        </when>        
+    </choose>
+  </sql>  
+
+  <select id="doRetrieve" parameterType="BoardVO" resultType="BoardVO">
+	SELECT A.*,B.totalCnt
+	FROM (
+	    SELECT tt1.seq,
+	           tt1.rnum as no, 
+	           tt1.div,
+	           tt1.title,
+	           tt1.read_cnt as readCnt,
+	           --당일 등록: 시:분, 그렇치 않으면 년-월-일
+	           DECODE(TO_CHAR(tt1.mod_dt,'YYYYMMDD'), TO_CHAR(SYSDATE,'YYYYMMDD')
+	                 ,TO_CHAR(tt1.mod_dt,'HH24:MI')
+	                 ,TO_CHAR(tt1.mod_dt,'YYYY-MM-DD')) as modDt,
+	           tt1.mod_id as modId
+	    FROM (
+	        SELECT ROWNUM rnum, T1.*
+	        FROM (
+	            SELECT *
+	            FROM board
+	            --WHERE 검색
+	            <include refid="searchCondition"/>
+	            ORDER BY mod_dt DESC
+	        )T1   --10,20,30,...
+	      <![CDATA[   WHERE ROWNUM <=#{pageSize} * (#{pageNo}-1) + #{pageSize} ]]>
+	    )TT1
+	    --1,11,21,31,..
+	    <![CDATA[ WHERE rnum >= #{pageSize} * (#{pageNo}-1) + 1 ]]>
+	)A
+	CROSS JOIN (
+	    SELECT COUNT(*) totalCnt
+	    FROM board
+	    --WHERE 검색
+	    <include refid="searchCondition"/>
+	)B  
+  </select>
+
+
+  <delete id="doDeleteAll" parameterType="BoardVO" >
+    DELETE FROM board
+    WHERE title LIKE #{title}||'%'
+  </delete>
+
+  <update id="doUpdate" parameterType="BoardVO">
+	UPDATE board
+	SET div       = #{div}
+	    ,title    = #{title}
+	    ,contents = #{contents}
+	    ,mod_dt   = SYSDATE
+	    ,mod_id   = #{modId}
+	WHERE   seq = #{seq}
+  </update>
+  
+  
+  <select id="getBoardSeq" resultType="int">
+    SELECT BOARD_SEQ.NEXTVAL FROM DUAL
+  </select>
+  
+  <select id="doSelectOne" parameterType="BoardVO" resultType="BoardVO">
+	SELECT
+	    seq,
+	    div,
+	    title,
+	    contents,
+	    read_cnt,
+	    TO_CHAR(reg_dt,'YYYY-MM-DD HH24:MI:SS') reg_dt,
+	    reg_id,
+	    TO_CHAR(mod_dt,'YYYY-MM-DD HH24:MI:SS') mod_dt,
+	    mod_id
+	FROM
+	    board
+	WHERE seq = #{seq}      
+  </select>
+
+  <delete id="doDelete" parameterType="BoardVO">
+	DELETE FROM board
+	WHERE   seq = #{seq}  
+  </delete>
+  
+  
+  
+  <insert id="doSave" parameterType="BoardVO">
+
+	INSERT INTO board (
+	    seq,
+	    div,
+	    title,
+	    contents,
+	    read_cnt,
+	    reg_dt,
+	    reg_id,
+	    mod_dt,
+	    mod_id
+	) VALUES (
+	    #{seq},
+	    #{div},
+	    #{title},
+	    #{contents},
+	    #{readCnt},
+	    SYSDATE,
+	    #{regId},
+	    SYSDATE,
+	    #{modId}
+	)  
+  </insert>
+  
+</mapper>
