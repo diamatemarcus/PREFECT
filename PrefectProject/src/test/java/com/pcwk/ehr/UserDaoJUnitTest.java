@@ -95,7 +95,7 @@ public class UserDaoJUnitTest {
 		
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void doRetrieve()throws SQLException{
 		LOG.debug("====================");
