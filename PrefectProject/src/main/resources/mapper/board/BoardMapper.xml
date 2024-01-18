@@ -34,7 +34,6 @@
 	FROM (
 	    SELECT tt1.seq,
 	           tt1.rnum as no,
-	           tt1.email,
 	           tt1.div,
 	           tt1.title,
 	           tt1.read_cnt as readCnt,
@@ -42,7 +41,8 @@
 	           DECODE(TO_CHAR(tt1.mod_dt,'YYYYMMDD'), TO_CHAR(SYSDATE,'YYYYMMDD')
 	                 ,TO_CHAR(tt1.mod_dt,'HH24:MI')
 	                 ,TO_CHAR(tt1.mod_dt,'YYYY-MM-DD')) as modDt,
-	           tt1.mod_id as modId
+	           tt1.mod_id as modId,
+	           tt1.uuid
 	    FROM (
 	        SELECT ROWNUM rnum, T1.*
 	        FROM (
@@ -74,10 +74,10 @@
   <update id="doUpdate" parameterType="BoardVO">
 	UPDATE board
 	SET  
-	    div = #{div}     ,
-	    title = #{title}   ,
+	    div = #{div},
+	    title = #{title},
 	    contents = #{contents},
-	    mod_dt = SYSDATE ,
+	    mod_dt = SYSDATE,
 	    mod_id = #{modId}
 	WHERE seq = #{seq}
   </update>
@@ -90,7 +90,6 @@
   <select id="doSelectOne" parameterType="BoardVO" resultType="BoardVO">
 	SELECT
 	    seq,
-	    email,
 	    div,
 	    title,
 	    contents,
@@ -98,7 +97,8 @@
 	    TO_CHAR(reg_dt,'YYYY-MM-DD HH24:MI:SS') reg_dt,
 	    reg_id,
 	    TO_CHAR(mod_dt,'YYYY-MM-DD HH24:MI:SS') mod_dt,
-	    mod_id
+	    mod_id,
+	    uuid
 	FROM    board
 	WHERE seq = #{seq}     
   </select>
@@ -106,14 +106,11 @@
   <delete id="doDelete" parameterType="BoardVO">
 		DELETE FROM board
 	    WHERE seq = #{seq}  
-	  </delete>
-  
-  
+  </delete>  
   
   <insert id="doSave" parameterType="BoardVO">
 	INSERT INTO board (
 	    seq,
-	    email,
 	    div,
 	    title,
 	    contents,
@@ -121,10 +118,10 @@
 	    reg_dt,
 	    reg_id,
 	    mod_dt,
-	    mod_id
+	    mod_id,
+	    uuid
 	) VALUES (
-	    BOARD_SEQ.NEXTVAL,
-	    #{email},
+	    #{seq},
 	    #{div},
 	    #{title},
 	    #{contents},
@@ -132,7 +129,8 @@
 	    SYSDATE,
 	    #{regId},
 	    SYSDATE,
-	    #{modId}
+	    #{modId},
+	    #{uuid}
 	)
   </insert>
   

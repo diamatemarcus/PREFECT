@@ -8,7 +8,6 @@ import com.pcwk.ehr.cmn.WorkDiv;
 
 public interface BoardDao extends WorkDiv<BoardVO>,PcwkLogger {
 									
-
 	/**
 	 * board_seq 
 	 * @return int
