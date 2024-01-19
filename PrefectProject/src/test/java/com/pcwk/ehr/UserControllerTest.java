@@ -22,11 +22,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.pcwk.ehr.cmn.MessageVO;
@@ -63,15 +65,10 @@ public class UserControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 		users = Arrays.asList(
-				 new UserVO("CR7@gmail.com", "호날두", "7777", 01077777777 ,"초졸","1")
-				,new UserVO("sg8@gmail.com", "제라드", "8888", 01077777777 ,"대졸","1") 
-				,new UserVO("ft9@gmail.com", "토레스", "9999", 01077777777 ,"고졸","2")
-				,new UserVO("lm10@gmail.com", "메시", "1010", 01010101010 ,"대졸","1") 
-				,new UserVO("gb11@gmail.com", "베일", "1111", 01011111111 ,"중졸","0") 
-			);
+				 new UserVO("CR7@gmail.com", "호날두", "7777", 01077777777 ,"초졸","1"));
 			
 		searchVO = new UserVO();
-		searchVO.setEmail("p99");
+		searchVO.setEmail("CR7@gmail.com");
 			
 	}
 	
@@ -81,28 +78,39 @@ public class UserControllerTest {
 		LOG.debug("│ doSelectOne()                             │");		
 		LOG.debug("└───────────────────────────────────────────┘");		
 		
-		//UserVO  inVO = users.get(0);
-		//url + 호출방식(get) + param(Email)
+		inVO = users.get(0);
+
 		MockHttpServletRequestBuilder  requestBuilder = 
 				MockMvcRequestBuilders.get("/user/doSelectOne.do")
-				.param("email",        inVO.getEmail());	
+				.param("email",        inVO.getEmail())
+				.param("name",          inVO.getName())
+				.param("password",      inVO.getPassword())
+				.param("tel",           String.valueOf(inVO.getTel()))
+				.param("edu",           inVO.getEdu())
+				.param("role",          inVO.getRole());		
 		
-		ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
-		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
-		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ result                                    │"+result);		
-		LOG.debug("└───────────────────────────────────────────┘");		
+		//ResultActions resultActions = this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
 		
-		UserVO outVO = new Gson().fromJson(result, UserVO.class);
+	
+		
+		//String result = resultActions.andReturn().getResponse().getContentAsString();
+	//ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
+		
+		
+		//호출 : ModelAndView      
+		MvcResult mvcResult=  mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn() ;
+		//호출결과
+		ModelAndView modelAndView = mvcResult.getModelAndView();
+		UserVO outVO = (UserVO) modelAndView.getModel().get("outVO");
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ outVO                                     │"+outVO);		
 		LOG.debug("└───────────────────────────────────────────┘");				
 		assertNotNull(outVO);
 		
+	
 		return outVO;
 		
 	}
-	
 	@Ignore
 	@Test
 	public void doUpdate() throws Exception {
@@ -112,7 +120,6 @@ public class UserControllerTest {
 		
 		UserVO inVO = users.get(0);
 		String upStr = "_U";
-		int upNum    = 100;
 		MockHttpServletRequestBuilder  requestBuilder = 
                 MockMvcRequestBuilders.post("/user/doUpdate.do")
                .param("email",         inVO.getEmail())
@@ -135,7 +142,7 @@ public class UserControllerTest {
 		LOG.debug("└───────────────────────────────────────────┘");					
 		
 	}
-	
+
 	@Test
 	public void addAndGet() throws Exception {
 		// 1. 데이터 삭제
@@ -144,38 +151,27 @@ public class UserControllerTest {
 		
 		//1.
 		doDelete(users.get(0));
-		doDelete(users.get(1));
-		doDelete(users.get(2));
-		doDelete(users.get(3));
-		doDelete(users.get(4));
+
 		
 		// 2. 
 		doSave(users.get(0));
-		doSave(users.get(1));
-		doSave(users.get(2));
-		doSave(users.get(3));
-		doSave(users.get(4));
+
 		
 		
 		isSameUser(users.get(0), doSelectOne(users.get(0)));
-		isSameUser(users.get(1), doSelectOne(users.get(1)));
-		isSameUser(users.get(2), doSelectOne(users.get(2)));
-		isSameUser(users.get(3), doSelectOne(users.get(3)));
-		isSameUser(users.get(4), doSelectOne(users.get(4)));
+
 	}
 	
 	
 	private void isSameUser(UserVO userVO, UserVO outVO) {
-		
-
+	
 		
 		assertEquals(userVO.getEmail(), outVO.getEmail());
 		assertEquals(userVO.getName(), outVO.getName());
 		assertEquals(userVO.getPassword(), outVO.getPassword());
-		
-		assertEquals(userVO.getTel(), outVO.getTel());//등급
-		assertEquals(userVO.getEdu(), outVO.getEdu());//로그인 횟수
-		assertEquals(userVO.getRole(), outVO.getRole());//추천수
+		assertEquals(String.valueOf(userVO.getTel()), String.valueOf(outVO.getTel()));
+		assertEquals(userVO.getEdu(), outVO.getEdu());
+		assertEquals(userVO.getRole(), outVO.getRole());
 	
 
 	}

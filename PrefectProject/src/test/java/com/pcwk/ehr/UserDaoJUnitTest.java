@@ -67,7 +67,7 @@ public class UserDaoJUnitTest {
 		LOG.debug("=tearDown==========================");
 	}
 	
-	@Ignore	
+	
 	@Test
 	public void idDuplicateCheck()throws SQLException{
 		//1.데이터 삭제
@@ -95,7 +95,7 @@ public class UserDaoJUnitTest {
 		
 	}
 	
-	@Ignore
+	
 	@Test
 	public void doRetrieve()throws SQLException{
 		LOG.debug("====================");
@@ -112,7 +112,7 @@ public class UserDaoJUnitTest {
 	}
 	
 	
-	@Ignore
+
 	@Test
 	public void getAll()throws SQLException{
 		//1.데이터 삭제
@@ -148,7 +148,7 @@ public class UserDaoJUnitTest {
 		
 		isSameUser(userVO01, list.get(0));
 	}
-	@Ignore
+	
 	@Test(timeout = 30000)
 	public void addAndGet() throws SQLException {
 		// 1. 데이터 삭제
