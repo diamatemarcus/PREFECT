@@ -95,7 +95,7 @@ public class UserControllerTest {
 		
 		//String result = resultActions.andReturn().getResponse().getContentAsString();
 	//ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
-		
+		// 수리완료
 		
 		//호출 : ModelAndView      
 		MvcResult mvcResult=  mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn() ;
