@@ -65,11 +65,11 @@ public class UserControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 		users = Arrays.asList(
-				 new UserVO("cr7@gmail.com", "호날두", "7777", 01077777777 ,"초졸","1")
-				,new UserVO("sg8@gmail.com", "제라드", "8888", 01077777777 ,"대졸","1") 
-				,new UserVO("ft9@gmail.com", "토레스", "9999", 01077777777 ,"고졸","2")
-				,new UserVO("lm10@gmail.com", "메시", "1010", 01010101010 ,"대졸","1") 
-				,new UserVO("gb11@gmail.com", "베일", "1111", 01011111111 ,"중졸","0") 
+				 new UserVO("cr7@gmail.com", "호날두", "7777", "01077777777" ,"초졸","1")
+				,new UserVO("sg8@gmail.com", "제라드", "8888", "01077777777" ,"대졸","1") 
+				,new UserVO("ft9@gmail.com", "토레스", "9999", "01077777777" ,"고졸","2")
+				,new UserVO("lm10@gmail.com", "메시", "1010", "01010101010" ,"대졸","1") 
+				,new UserVO("gb11@gmail.com", "베일", "1111", "01011111111" ,"중졸","0") 
 			);
 			
 		searchVO = new UserVO();
@@ -119,7 +119,7 @@ public class UserControllerTest {
                .param("email",         inVO.getEmail())
                .param("name",          inVO.getName()+upStr)
                .param("password",      inVO.getPassword()+upStr)
-               .param("tel",           inVO.getTel()+"")
+               .param("tel",           inVO.getTel())
                .param("edu",           inVO.getEdu()+upStr)
                .param("role",          inVO.getRole()+"");		
 		ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
@@ -223,7 +223,7 @@ public class UserControllerTest {
 				                .param("email",       	inVO.getEmail())
 				                .param("name",          inVO.getName())
 				                .param("password",      inVO.getPassword())
-				                .param("tel", 			inVO.getTel()+"")
+				                .param("tel", 			inVO.getTel())
 				                .param("edu",        	inVO.getEdu())
 				                .param("role",       	inVO.getRole());
 		ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
