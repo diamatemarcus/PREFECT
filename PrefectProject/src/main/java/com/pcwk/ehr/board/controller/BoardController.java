@@ -1,17 +1,14 @@
 package com.pcwk.ehr.board.controller;
 
 import java.sql.SQLException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,13 +36,11 @@ public class BoardController implements PcwkLogger{
 	
 	@Autowired
 	CodeService  codeService;
-	
-	@Autowired
-	MessageSource messageSource; // ResourceBundleMessageSource 주입
+
 	
 	public BoardController() {}
 	
-	@GetMapping(value="/moveToReg.do")
+	@GetMapping(value="/moveToReg.do")//저 url로 get매핑함
 	public String moveToReg() {
 		String viewName = "";
 		LOG.debug("┌───────────────────────────────────┐");
@@ -62,6 +57,7 @@ public class BoardController implements PcwkLogger{
 		LOG.debug("│ BoardVO                           │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");
 		//Default처리
+		
 		//페이지 사이즈:10
 		if(null != inVO && inVO.getPageSize() == 0) {
 			inVO.setPageSize(10L);
@@ -152,19 +148,10 @@ public class BoardController implements PcwkLogger{
 		
 		int flag = service.doUpdate(inVO);
 		
-		Locale locale = Locale.getDefault();
-		
 		String message = "";
 		if(1==flag) {
-//			message = "수정 되었습니다.";
-			message = messageSource.getMessage("common.message.update",  null, locale);
-			LOG.debug("│ message                           │"+message);
-			
-			// 파라메터 치환
-			String update = "수정";
-			message = MessageFormat.format(message, update);
-			LOG.debug("│ message                           │"+message);
-		} else {
+			message = "수정 되었습니다.";
+		}else {
 			message = "수정 실패.";
 		}
 		
