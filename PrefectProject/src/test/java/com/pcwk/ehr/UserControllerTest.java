@@ -22,11 +22,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.pcwk.ehr.cmn.MessageVO;
@@ -45,9 +47,9 @@ public class UserControllerTest {
 	@Autowired
 	WebApplicationContext webApplicationContext;
 	
-	@Autowired
-	ApplicationContext context;
-	
+//	@Autowired
+//	ApplicationContext context;
+//	
 	//브라우저 대역
 	MockMvc  mockMvc;
 	
@@ -63,7 +65,7 @@ public class UserControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 		users = Arrays.asList(
-				 new UserVO("CR7@gmail.com", "호날두", "7777", 01077777777 ,"초졸","1")
+				 new UserVO("cr7@gmail.com", "호날두", "7777", 01077777777 ,"초졸","1")
 				,new UserVO("sg8@gmail.com", "제라드", "8888", 01077777777 ,"대졸","1") 
 				,new UserVO("ft9@gmail.com", "토레스", "9999", 01077777777 ,"고졸","2")
 				,new UserVO("lm10@gmail.com", "메시", "1010", 01010101010 ,"대졸","1") 
@@ -71,12 +73,12 @@ public class UserControllerTest {
 			);
 			
 		searchVO = new UserVO();
-		searchVO.setEmail("p99");
+		searchVO.setEmail("1");
 			
 	}
 	
 	
-	public UserVO doSelectOne(UserVO  inVO) throws Exception{
+	public UserVO doSelectOne(UserVO inVO) throws Exception{
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doSelectOne()                             │");		
 		LOG.debug("└───────────────────────────────────────────┘");		
@@ -87,13 +89,12 @@ public class UserControllerTest {
 				MockMvcRequestBuilders.get("/user/doSelectOne.do")
 				.param("email",        inVO.getEmail());	
 		
-		ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
-		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
-		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ result                                    │"+result);		
-		LOG.debug("└───────────────────────────────────────────┘");		
+
 		
-		UserVO outVO = new Gson().fromJson(result, UserVO.class);
+		MvcResult mvcResult=  mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn() ;
+		ModelAndView modelAndView = mvcResult.getModelAndView();
+		UserVO outVO = (UserVO) modelAndView.getModel().get("outVO");
+		
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ outVO                                     │"+outVO);		
 		LOG.debug("└───────────────────────────────────────────┘");				
@@ -103,7 +104,7 @@ public class UserControllerTest {
 		
 	}
 	
-	@Ignore
+	
 	@Test
 	public void doUpdate() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -135,7 +136,6 @@ public class UserControllerTest {
 		LOG.debug("└───────────────────────────────────────────┘");					
 		
 	}
-	
 	@Test
 	public void addAndGet() throws Exception {
 		// 1. 데이터 삭제
