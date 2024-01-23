@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.pcwk.ehr.board.dao.BoardDao;
 import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
+import com.pcwk.ehr.cmn.StringUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class) //스프링 테스트 컨텍스트 프레임웤그의 JUnit의 확장기능 지정
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"
@@ -43,19 +44,20 @@ public class BoardDaoJunitTest implements PcwkLogger{
 		LOG.debug("│ setUp                             │");
 		LOG.debug("└───────────────────────────────────┘");
 		
-		String div ="10";
-		String title = "test";
-		String contents = "바보아니예여";
-		int readCnt = 100;
+		String div ="20";
+		String title = "testTitle";
+		String contents = "testContents";
+		int readCnt = 0;
 		String regDt = "사용하지않음";
-		String regId = "이한나";
+		String regId = "lm10@gmail.com";
 		String modDt = "사용하지않음";
-		String modId = "고송민";
-		String uuid = "20240118_3d6aedc0-00ef-4125-b9a9-6956b44d4cb5";
+		String modId = "lm10@gmail.com";
 		
-		board01 = new BoardVO(dao.getBoardSeq(), div, title+"1", contents+"1", readCnt,regDt,regId, modDt, modId, uuid);
-		board02 = new BoardVO(dao.getBoardSeq(), div, title+"2", contents+"2", readCnt,regDt,regId, modDt, modId, uuid);
-		board03 = new BoardVO(dao.getBoardSeq(), div, title+"3", contents+"3", readCnt,regDt,regId, modDt, modId, uuid);
+		StringUtil uuid = new StringUtil();
+		
+		board01 = new BoardVO(dao.getBoardSeq(), div, title+"1", contents+"1", readCnt,regDt,regId, modDt, modId, uuid.getUUID());
+		board02 = new BoardVO(dao.getBoardSeq(), div, title+"2", contents+"2", readCnt,regDt,regId, modDt, modId, uuid.getUUID());
+		board03 = new BoardVO(dao.getBoardSeq(), div, title+"3", contents+"3", readCnt,regDt,regId, modDt, modId, uuid.getUUID());
 		
 		searchVO = new BoardVO();
 		searchVO.setTitle(title);
@@ -158,7 +160,7 @@ public class BoardDaoJunitTest implements PcwkLogger{
 		isSameBoard(vs01, vo01);
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void addAndGet()throws SQLException{
 		//1. 삭제
