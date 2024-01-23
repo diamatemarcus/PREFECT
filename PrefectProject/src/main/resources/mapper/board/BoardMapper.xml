@@ -129,7 +129,7 @@
 	    SYSDATE,
 	    #{regId},
 	    SYSDATE,
-	    #{modId},
+	    #{regId},
 	    #{uuid}
 	)
   </insert>

@@ -210,7 +210,11 @@ public class BoardController implements PcwkLogger{
 		LOG.debug("└───────────────────────────────────┘");				
 		//seq조회
 		int seq = service.getBoardSeq();
+		String uuid = StringUtil.getPK();
+		
 		inVO.setSeq(seq);
+		inVO.setUuid(uuid);
+		
 		LOG.debug("│ BoardVO seq                       │"+inVO);
 		int flag = service.doSave(inVO);
 		

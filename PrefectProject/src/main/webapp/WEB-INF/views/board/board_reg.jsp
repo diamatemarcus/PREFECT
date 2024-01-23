@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded",function(){
     doSaveBTN.addEventListener("click", function(e){
         console.log("doSaveBTN click");
         
+       
         let div = document.querySelector("#div").value;
         let title = document.querySelector("#title").value;
         let regId = document.querySelector("#regId").value;
@@ -71,8 +72,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 "title": title,
                 "contents": contents,
                 "readCnt": 0,
-                "regId": regId,
-                "modId": regId
+                "regId": regId
             },
             success:function(data){//통신 성공
                 //data.msgId가 1이면 : 메시지 출력,목록으로 이동
@@ -131,8 +131,8 @@ document.addEventListener("DOMContentLoaded",function(){
      -->
     <!-- form -->
     <form action="#" name="regFrm" id="regFrm">
-        <input type="hidden" name="div" id="div" value="10">        
-        
+        <input type="hidden" name="div" id="div" value="10">
+     
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
             <label for="title" class="form-label">Title</label>
             <input type="text" class="form-control" id="title" name="title" maxlength="100" placeholder="제목을 입력 하세요.">

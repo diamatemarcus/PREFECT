@@ -55,9 +55,9 @@ public class BoardDaoJunitTest implements PcwkLogger{
 		
 		StringUtil uuid = new StringUtil();
 		
-		board01 = new BoardVO(dao.getBoardSeq(), div, title+"1", contents+"1", readCnt,regDt,regId, modDt, modId, uuid.getUUID());
-		board02 = new BoardVO(dao.getBoardSeq(), div, title+"2", contents+"2", readCnt,regDt,regId, modDt, modId, uuid.getUUID());
-		board03 = new BoardVO(dao.getBoardSeq(), div, title+"3", contents+"3", readCnt,regDt,regId, modDt, modId, uuid.getUUID());
+		board01 = new BoardVO(dao.getBoardSeq(), div, title+"1", contents+"1", readCnt,regDt,regId, modDt, modId, uuid.getPK());
+		board02 = new BoardVO(dao.getBoardSeq(), div, title+"2", contents+"2", readCnt,regDt,regId, modDt, modId, uuid.getPK());
+		board03 = new BoardVO(dao.getBoardSeq(), div, title+"3", contents+"3", readCnt,regDt,regId, modDt, modId, uuid.getPK());
 		
 		searchVO = new BoardVO();
 		searchVO.setTitle(title);
