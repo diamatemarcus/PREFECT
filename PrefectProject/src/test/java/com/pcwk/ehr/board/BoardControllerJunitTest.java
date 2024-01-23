@@ -66,13 +66,14 @@ public class BoardControllerJunitTest implements PcwkLogger {
 		String regId = "이한나";
 		String modDt = "사용하지않음";
 		String modId = "고송민";
-		String uuid = "20240118_3d6aedc0-00ef-4125-b9a9-6956b44d4cb5";
+		
+		StringUtil uuid = new StringUtil();
 		
 		mockMvc  = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		boardList = Arrays.asList(
-				 new BoardVO(dao.getBoardSeq(), div, title+"-01 제목", contents+"1", readCnt,regDt,regId, modDt, modId, uuid)
-				,new BoardVO(dao.getBoardSeq(), div, title+"-02 제목", contents+"2", readCnt+1,regDt,regId, modDt, modId, uuid)
-				,new BoardVO(dao.getBoardSeq(), div, title+"-03 제목", contents+"3", readCnt+2,regDt,regId, modDt, modId, uuid)
+				 new BoardVO(dao.getBoardSeq(), div, title+"-01 제목", contents+"1", readCnt,regDt,regId, modDt, modId, uuid.getUUID())
+				,new BoardVO(dao.getBoardSeq(), div, title+"-02 제목", contents+"2", readCnt+1,regDt,regId, modDt, modId, uuid.getUUID())
+				,new BoardVO(dao.getBoardSeq(), div, title+"-03 제목", contents+"3", readCnt+2,regDt,regId, modDt, modId, uuid.getUUID())
 		);
 		
 		searchVO = new BoardVO();
