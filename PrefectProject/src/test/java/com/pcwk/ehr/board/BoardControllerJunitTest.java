@@ -32,6 +32,7 @@ import com.pcwk.ehr.board.dao.BoardDao;
 import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
+import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.code.domain.CodeVO;
 
 @WebAppConfiguration
