@@ -113,7 +113,7 @@ public class LoginControllerJunitTest implements PcwkLogger {
 		MockHttpServletRequestBuilder  requestBuilder = 
 				MockMvcRequestBuilders.post("/login/doLogin.do")
 				.param("email",        users.get(0).getEmail())
-				.param("password",      users.get(0).getPassword()+"unknown");
+				.param("password",      users.get(0).getPassword());
 				
 		ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
 		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();

@@ -38,6 +38,9 @@ public class LoginDaoJunitTest implements PcwkLogger{
 	
 	// 등록
 	UserVO userVO01;
+	UserVO userVO02;
+	UserVO userVO03;
+	
 
 	// getCount에 사용
 	UserVO searchVO;
@@ -48,12 +51,13 @@ public class LoginDaoJunitTest implements PcwkLogger{
 		LOG.debug("=setUp=" );		
 		LOG.debug("====================");
 		// 등록
-		userVO01 = new UserVO("pohomen@naver.com", "김진수", "4321","01012341234","대졸","11");
-		
+		userVO01 = new UserVO("pohomen@naver.com-01", "김진수-01", "4321-01","01012341234","대졸","11");
+		userVO02 = new UserVO("pohomen@naver.com-02", "김진수-02", "4321-02","01012341235","대졸","12");
+		userVO03 = new UserVO("pohomen@naver.com-03", "김진수-03", "4321-03","01012341236","대졸","11");
  
 		// getCount에 사용
 		searchVO = new UserVO();
-		searchVO.setEmail("pohomen");
+		searchVO.setEmail("pohomen@naver.com");
 	}
 	
 	@Test
@@ -62,6 +66,8 @@ public class LoginDaoJunitTest implements PcwkLogger{
 		//2. 데이터 입력
 		//3. login
 		dao.doDelete(userVO01);
+		dao.doDelete(userVO02);
+		dao.doDelete(userVO03);
 		
 		
 		assertEquals(0,dao.getCount(searchVO));
@@ -70,7 +76,14 @@ public class LoginDaoJunitTest implements PcwkLogger{
 		//3
 		assertEquals(1, flag);
 		assertEquals(1,dao.getCount(searchVO));
-
+		
+		flag = dao.doSave(userVO02);
+		assertEquals(1, flag);
+		assertEquals(2,dao.getCount(searchVO));
+		
+		flag = dao.doSave(userVO03);
+		assertEquals(1, flag);
+		assertEquals(3,dao.getCount(searchVO));
 		//3.1 idCheck
 		int cnt = loginDao.idCheck(userVO01);
 		assertEquals(1, cnt);
