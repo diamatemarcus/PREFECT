@@ -48,7 +48,7 @@ public class LoginDaoJunitTest implements PcwkLogger{
 		LOG.debug("=setUp=" );		
 		LOG.debug("====================");
 		// 등록
-		userVO01 = new UserVO("pohomen@naver.com", "김진수", "4321",01012341234,"대졸","11");
+		userVO01 = new UserVO("pohomen@naver.com", "김진수", "4321","01012341234","대졸","11");
 		
  
 		// getCount에 사용
