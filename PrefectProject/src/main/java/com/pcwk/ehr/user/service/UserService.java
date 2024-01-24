@@ -15,7 +15,7 @@ public interface UserService {
 	 * @return
 	 * @throws SQLException
 	 */
-	public int idDuplicateCheck(UserVO inVO) throws SQLException;
+	public int emailDuplicateCheck(UserVO inVO) throws SQLException;
 	
 	/**
 	 * 회원목록 조회 

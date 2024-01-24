@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public int idDuplicateCheck(UserVO inVO) throws SQLException {
-		return userDao.idDuplicateCheck(inVO);
+	public int emailDuplicateCheck(UserVO inVO) throws SQLException {
+		return userDao.emailDuplicateCheck(inVO);
 	}
 
 

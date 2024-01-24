@@ -7,7 +7,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 -->  
 <mapper namespace="com.pcwk.ehr.user">
 
-   <select id="idDuplicateCheck" parameterType="UserVO" resultType="int">
+   <select id="emailDuplicateCheck" parameterType="UserVO" resultType="int">
          SELECT                   
             COUNT(*) cnt         
          FROM                     
@@ -19,7 +19,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	    <where>
 	        <choose>
 	            <when test="searchDiv !=null and searchDiv == '10'">
-	                user_id = #{searchWord}
+	                email = #{searchWord}
 	            </when>
                 <when test="searchDiv !=null and searchDiv == '20'">
                     name LIKE #{searchWord} ||'%'
