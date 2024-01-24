@@ -38,18 +38,18 @@ public class UserController {
 	@Autowired
 	CodeService codeService;
 	
-	//http://localhost:8080/ehr/user/idDuplicateCheck.do?userId='p8-03'
-	@RequestMapping(value="/idDuplicateCheck.do",method = RequestMethod.GET
+	//http://localhost:8080/ehr/user/emailDuplicateCheck.do?useremail='p8-03'
+	@RequestMapping(value="/emailDuplicateCheck.do",method = RequestMethod.GET
 			,produces = "application/json;charset=UTF-8"
 			)
 	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-	public String idDuplicateCheck(UserVO inVO) throws SQLException {
+	public String emailDuplicateCheck(UserVO inVO) throws SQLException {
 		String jsonString = "";  
 		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ idDuplicateCheck()                        │inVO:"+inVO);
+		LOG.debug("│ emailDuplicateCheck()                        │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");		
 					
-		int flag = userService.idDuplicateCheck(inVO);
+		int flag = userService.emailDuplicateCheck(inVO);
 		String message = "";
 		if(0==flag) {
 			message = inVO.getEmail()+"사용 가능한 아이디 입니다.";
@@ -203,8 +203,8 @@ public class UserController {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");	
-		String userId = req.getParameter("email");
-		LOG.debug("│ userId                                :"+userId);		
+		String email = req.getParameter("email");
+		LOG.debug("│ email                                :"+email);		
 		
 		UserVO outVO = this.userService.doSelectOne(inVO);
 		LOG.debug("│ outVO                                :"+outVO);		
@@ -225,8 +225,8 @@ public class UserController {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doDelete()                                │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");	
-		String userId = req.getParameter("Email");
-		LOG.debug("│ userId                                :"+userId);
+		String email = req.getParameter("Email");
+		LOG.debug("│ email                                :"+email);
 		
 		
 		int flag = userService.doDelete(inVO);

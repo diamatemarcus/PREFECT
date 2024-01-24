@@ -144,11 +144,11 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public int idDuplicateCheck(UserVO inVO) throws SQLException {
+	public int emailDuplicateCheck(UserVO inVO) throws SQLException {
 		int flag = 0;
 		LOG.debug("1.param :" + inVO.toString());
 		
-		flag = sqlSessionTemplate.selectOne(NAMESPACE+DOT+"idDuplicateCheck", inVO);
+		flag = sqlSessionTemplate.selectOne(NAMESPACE+DOT+"emailDuplicateCheck", inVO);
 		LOG.debug("2.flag :" + flag);
 		return flag;
 	}

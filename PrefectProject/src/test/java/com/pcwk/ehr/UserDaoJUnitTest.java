@@ -69,7 +69,7 @@ public class UserDaoJUnitTest {
 	
 	
 	@Test
-	public void idDuplicateCheck()throws SQLException{
+	public void emailDuplicateCheck()throws SQLException{
 		//1.데이터 삭제
 		//2.데이터 입력
 		//3.idCheck
@@ -84,13 +84,13 @@ public class UserDaoJUnitTest {
 		assertEquals(1,dao.getCount(searchVO));
 		
 		//idCheck : id가 있는 경우
-		int idCheckCnt = dao.idDuplicateCheck(userVO01);
+		int idCheckCnt = dao.emailDuplicateCheck(userVO01);
 		assertEquals(1, idCheckCnt);
 		
 		
 		//id가 없는 경우 : 
 		userVO01.setEmail("unknown_user");
-		idCheckCnt= dao.idDuplicateCheck(userVO01);
+		idCheckCnt= dao.emailDuplicateCheck(userVO01);
 		assertEquals(0, idCheckCnt);
 		
 	}
