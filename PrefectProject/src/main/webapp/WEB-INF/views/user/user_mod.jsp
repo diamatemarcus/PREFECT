@@ -107,10 +107,10 @@ function doUpdate(){
         return;
     }      
     
-    if(eUtil.isEmpty(document.querySelector("#edu").value) == true){
+    if(eUtil.isEmpty(document.querySelector("#education").value) == true){
         alert('학력을 입력 하세요.');
         //$("#email").focus();//사용자 email에 포커스
-        document.querySelector("#edu").focus();
+        document.querySelector("#education").focus();
         return;
     }
 
@@ -134,7 +134,7 @@ function doUpdate(){
             name: document.querySelector("#name").value,
             password: document.querySelector("#password").value,
             tel: document.querySelector("#tel").value,
-            edu: document.querySelector("#edu").value,
+            edu: document.querySelector("#education").value,
             role: document.querySelector("#role").value,
         },
         success:function(data){//통신 성공     
@@ -209,16 +209,27 @@ function doUpdate(){
                    size="20"  maxlength="11">
                </div>    
                <div class="mb-3">
+
                    <label for="edu" class="form-label">학력</label>
-                   <input type="text" class="form-control"  name="edu" id="edu" placeholder="학력 수정" 
-                   value="${outVO.edu }"
-                   size="20"  maxlength="8">
+                   <div class="col-auto">
+                    <select id="education" name="education">
+                        <!-- 검색 조건 옵션을 동적으로 생성 -->
+                         <c:forEach items="${education}" var="vo">
+                         	<option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == outVO.edu }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
+					    </c:forEach>
+                    </select>
+                	</div>
                </div>
                <div class="mb-3">
                 <label for="role" class="form-label">역할</label>
-                <input type="text" class="form-control"  name="role" id="role" placeholder="역할 수정" 
-                value="${outVO.role }"
-                size="20"  maxlength="8">
+                   <div class="col-auto">
+                    <select id="role" name="role">
+                        <!-- 검색 조건 옵션을 동적으로 생성 -->
+                         <c:forEach items="${role}" var="vo">
+					        <option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == outVO.role }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
+					    </c:forEach>
+                    </select>
+                	</div>
             </div>
                                                         
 	       </form>
