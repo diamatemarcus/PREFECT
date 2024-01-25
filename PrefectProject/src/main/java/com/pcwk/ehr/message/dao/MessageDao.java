@@ -51,7 +51,24 @@ public class MessageDao implements PcwkLogger {
 		LOG.debug("nick: "+vo.getNick());
 		
 		ArrayList<MessageVO> clist= sqlSessionTemplate.selectOne(NAMESPACE+DOT+"room_content_list", vo);
-		sqlSessionTemplate.update(NAMESPACE+DOT+"room_content_list", vo);
+		sqlSessionTemplate.update(NAMESPACE+DOT+"message_read_chk", vo);
 		return clist;
+	}
+	
+	public int messageSend(MessageVO vo) {
+		
+		if(vo.getRoom()==0) {
+			int exist_chat =sqlSessionTemplate.selectOne(NAMESPACE+DOT+"exist_chat", vo);
+			
+			if(exist_chat ==0) {
+				int max_room = sqlSessionTemplate.selectOne(NAMESPACE+DOT+"max_room", vo);
+				vo.setRoom(max_room+1);
+			}else {
+				int room = Integer.parseInt(sqlSessionTemplate.selectOne(NAMESPACE+DOT+"select_room", vo));
+				vo.setRoom(room);
+			}
+		}
+		int flag = sqlSessionTemplate.insert(NAMESPACE+DOT+"messageSend", vo);
+		return flag;
 	}
 }

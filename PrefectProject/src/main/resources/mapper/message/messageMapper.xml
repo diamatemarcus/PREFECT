@@ -65,6 +65,23 @@
     </choose>
     
 </select>
+
+<update id="message_read_chk" parameterType="MessageVO">
+    UPDATE message
+    SET read_chk = 1
+    WHERE read_chk = 0
+      AND (
+        <choose>
+            <when test="room != 0">
+                room = #{room} AND receiver = #{nick}
+            </when>
+            <otherwise>
+                sender = #{receiver} AND receiver = #{nick}
+            </otherwise>
+        </choose>
+      );
+</update>
+
 <insert id="messageSend" parameterType="MessageVO" >
     <choose>
         <when test="room !=0">
