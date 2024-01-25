@@ -14,16 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.code.domain.CodeVO;
 import com.pcwk.ehr.code.service.CodeService;
+import com.pcwk.ehr.mail.service.MailSendService;
 import com.pcwk.ehr.user.domain.UserVO;
 import com.pcwk.ehr.user.service.UserService;
 
@@ -38,7 +42,25 @@ public class UserController {
 	@Autowired
 	CodeService codeService;
 	
-	//http://localhost:8080/ehr/user/emailDuplicateCheck.do?useremail='p8-03'
+	@Autowired
+	private MailSendService mailService;
+	
+	//이메일 인증
+	@RequestMapping(value="/mailCheck.do",method = RequestMethod.GET
+			,produces = "application/json;charset=UTF-8"
+			)
+	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
+	public String mailCheck(HttpServletRequest request) {
+		String email = request.getParameter("email");
+		
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ mailCheck()                               │email:"+email);
+		LOG.debug("└───────────────────────────────────────────┘");	
+		return mailService.joinEmail(email);
+		
+	}
+	
+	//http://localhost:8080/ehr/user/idDuplicateCheck.do?userId='p8-03'
 	@RequestMapping(value="/emailDuplicateCheck.do",method = RequestMethod.GET
 			,produces = "application/json;charset=UTF-8"
 			)
@@ -46,7 +68,7 @@ public class UserController {
 	public String emailDuplicateCheck(UserVO inVO) throws SQLException {
 		String jsonString = "";  
 		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ emailDuplicateCheck()                        │inVO:"+inVO);
+		LOG.debug("│ emailDuplicateCheck()                     │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");		
 					
 		int flag = userService.emailDuplicateCheck(inVO);
@@ -63,11 +85,51 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/moveToReg.do", method = RequestMethod.GET)
-	public String moveToReg()throws SQLException {
+	public String moveToReg(Model model)throws SQLException {
 		String view = "user/user_reg";
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ moveToReg                                 │");
 		LOG.debug("└───────────────────────────────────────────┘");	
+		
+		//코드목록 조회 : 'EDUCATION','ROLE'
+		Map<String, Object> codes =new HashMap<String, Object>();
+		String[] codeStr = {"EDUCATION","ROLE"};
+		
+		codes.put("code", codeStr);
+		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
+		
+		List<CodeVO> educationList=new ArrayList<CodeVO>();
+		List<CodeVO> roleList=new ArrayList<CodeVO>();
+		
+		
+		for(CodeVO vo :codeList) {
+			//EDUCATION
+			if(vo.getMstCode().equals("EDUCATION")) {
+				educationList.add(vo);
+			}
+			
+			if(vo.getMstCode().equals("ROLE")) {
+				roleList.add(vo);
+			}	
+			LOG.debug(vo);
+		}
+		
+		LOG.debug("educationList");
+		for(CodeVO vo :educationList) {
+			LOG.debug(vo);
+		}
+		
+		LOG.debug("roleList");
+		for(CodeVO vo :roleList) {
+			LOG.debug(vo);
+		}
+		
+		
+		model.addAttribute("education", educationList);
+		
+		model.addAttribute("role",roleList);
+		
+		
 		
 		return view;
 	}
@@ -113,15 +175,19 @@ public class UserController {
 		
 		
 		LOG.debug("searchVO:"+searchVO);
-		//코드목록 조회 : 'PAGE_SIZE'
+	
+		//코드목록 조회 : 'PAGE_SIZE', 'USER_SEARCH', 'EDUCATION','ROLE'
 		Map<String, Object> codes =new HashMap<String, Object>();
-		String[] codeStr = {"PAGE_SIZE","USER_SEARCH"};
+		String[] codeStr = {"PAGE_SIZE","USER_SEARCH", "EDUCATION","ROLE"};
 		codes.put("code", codeStr);
 		
 		List<CodeVO> codeList = codeService.doRetrieve(codes);
 		
 		List<CodeVO> userSearchList = new ArrayList<CodeVO>();
 		List<CodeVO> pageSizeList = new ArrayList<CodeVO>();
+		List<CodeVO> educationList=new ArrayList<CodeVO>();
+		List<CodeVO> roleList=new ArrayList<CodeVO>();
+		
 		
 		for(CodeVO vo: codeList) {
 			if(vo.getMstCode().equals("USER_SEARCH")) {
@@ -131,6 +197,16 @@ public class UserController {
 			if(vo.getMstCode().equals("PAGE_SIZE")) {
 				pageSizeList.add(vo);
 			}		
+			
+			//EDUCATION
+			if(vo.getMstCode().equals("EDUCATION")) {
+				educationList.add(vo);
+			}
+			
+			if(vo.getMstCode().equals("ROLE")) {
+				roleList.add(vo);
+			}	
+			LOG.debug(vo);
 		}
 		
 		//검색조건 : USER_SEARCH
@@ -138,6 +214,10 @@ public class UserController {
 		
 		//페이지사이즈
 		model.addAttribute("pageSize", pageSizeList);
+		
+		model.addAttribute("education", educationList);
+		
+		model.addAttribute("role",roleList);
 		
 		List<UserVO>  list = this.userService.doRetrieve(searchVO);
 		
@@ -159,6 +239,8 @@ public class UserController {
 		
 		String html = StringUtil.renderingPager(totalCnt, searchVO.getPageNo(), searchVO.getPageSize(), bottomCount, "/ehr/user/doRetrieve.do", "pageDoRerive");
 		model.addAttribute("pageHtml", html);
+		
+		
 		
 		
 		return view;
@@ -184,7 +266,7 @@ public class UserController {
 		}
 		MessageVO messageVO = new MessageVO(flag+"", message);
 		jsonString = new Gson().toJson(messageVO);
-		LOG.debug("jsonString:"+jsonString);		
+		LOG.debug("jsonString:"+jsonString);	
 						
 		
 		return jsonString;
@@ -203,13 +285,52 @@ public class UserController {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");	
-		String email = req.getParameter("email");
-		LOG.debug("│ email                                :"+email);		
+		String userId = req.getParameter("email");
+		LOG.debug("│ userId                                :"+userId);		
 		
 		UserVO outVO = this.userService.doSelectOne(inVO);
 		LOG.debug("│ outVO                                :"+outVO);		
 
 		model.addAttribute("outVO", outVO);
+		
+		//코드목록 조회 : 'EDUCATION','ROLE'
+		Map<String, Object> codes =new HashMap<String, Object>();
+		String[] codeStr = {"EDUCATION","ROLE"};
+		
+		codes.put("code", codeStr);
+		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
+		
+		List<CodeVO> educationList=new ArrayList<CodeVO>();
+		List<CodeVO> roleList=new ArrayList<CodeVO>();
+		
+		
+		for(CodeVO vo :codeList) {
+			//EDUCATION
+			if(vo.getMstCode().equals("EDUCATION")) {
+				educationList.add(vo);
+			}
+			
+			if(vo.getMstCode().equals("ROLE")) {
+				roleList.add(vo);
+			}	
+			LOG.debug(vo);
+		}
+		
+		LOG.debug("educationList");
+		for(CodeVO vo :educationList) {
+			LOG.debug(vo);
+		}
+		
+		LOG.debug("roleList");
+		for(CodeVO vo :roleList) {
+			LOG.debug(vo);
+		}
+		
+		
+		model.addAttribute("education", educationList);
+		
+		model.addAttribute("role",roleList);
+		
 		return view;
 	}
 	
@@ -225,8 +346,8 @@ public class UserController {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doDelete()                                │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");	
-		String email = req.getParameter("Email");
-		LOG.debug("│ email                                :"+email);
+		String userId = req.getParameter("Email");
+		LOG.debug("│ userId                                :"+userId);
 		
 		
 		int flag = userService.doDelete(inVO);

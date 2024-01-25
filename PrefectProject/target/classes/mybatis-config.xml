@@ -14,5 +14,6 @@
         <typeAlias type="com.pcwk.ehr.file.domain.FileVO"   alias="FileVO"/>
         <typeAlias type="com.pcwk.ehr.user.domain.UserVO"   alias="UserVO"/>
         <typeAlias type="com.pcwk.ehr.board.domain.BoardVO" alias="BoardVO"/>
+        <typeAlias type="com.pcwk.ehr.message.domain.MessageVO" alias="MessageVO"/>
     </typeAliases>
 </configuration>

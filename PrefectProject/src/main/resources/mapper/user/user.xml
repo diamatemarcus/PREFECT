@@ -24,9 +24,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
                 <when test="searchDiv !=null and searchDiv == '20'">
                     name LIKE #{searchWord} ||'%'
                 </when>
-                    <when test="searchDiv !=null and searchDiv == '30'">
-                    name LIKE #{searchWord} ||'%'
-                </when>
+         
                	            
 	        </choose>
 	           
@@ -48,7 +46,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		        SELECT ROWNUM AS rnum, T1.*
 		        FROM (SELECT *
 		              FROM users
-		              <!--WHERE조건 email(10),name(20),role(30) 회원 검색조건 : 이메일 ,이름,등급 -->
+		              --WHERE조건 email(10),name(20),
                       <include refid="searchCondition"></include>
 		              ORDER BY name desc
 		        )T1      

@@ -16,6 +16,9 @@
 <title>회원목록</title>
 </head>
 <body>
+${education}
+${role}
+
   <div class="container">
     <!-- 제목 -->
     <div class="row">
@@ -79,8 +82,20 @@
 			            <td class="text-left">${vo.email}</td>
 			            <td class="text-left">${vo.name }</td>
 			            <td class="text-left">${vo.tel }</td>
-			            <td class="text-end">${vo.edu}</td>
-			            <td class="text-end">${vo.role}</td>   
+			            <c:forEach items="${education}" var="eduVO">
+						    <c:if test="${eduVO.detCode == vo.edu}">
+						        <td class="text-end">
+						            <c:out value="${eduVO.detName}"/>
+						        </td>
+						    </c:if>
+						</c:forEach>
+			            	<c:forEach items="${role}" var="roleVO">
+			            		<c:if test="${roleVO.detCode == vo.role}">
+			            			<td class="text-end">
+						            <c:out value="${roleVO.detName}"/>
+						            </td>  
+						        </c:if>
+			        	</c:forEach>
 			        </tr>
 		        </c:forEach>
 	        </c:when>

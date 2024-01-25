@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pcwk.ehr.message">
+
+<!-- 메세지 list -->
+<select id="message_list" parameterType="MessageVO" resultType="MessageVO">
+ <![CDATA[
+    SELECT seq,
+           room,
+           sender,
+           receiver,
+           contents,
+           TO_CHAR(send_dt, 'YYYY-MM-DD HH24:MI') AS sendDt,
+           TO_CHAR(read_dt, 'YYYY-MM-DD HH24:MI') AS readDt,
+           read_chk
+    FROM dm
+    WHERE (no, room) IN (SELECT MAX(no), room FROM dm GROUP BY room)
+      AND (sender = #{nick} OR reciever = #{nick})
+    ORDER BY no DESC
+    ]]>
+</select>
+<select id="doGetName" parameterType="MessageVO" resultType="int">
+    SELECT name from users
+    <choose>
+        <when test="sender == nick">
+            where nick = #{receiver}
+        </when>
+        <otherwise>
+            where nick =#{sender}
+        </otherwise>
+    </choose>
+</select>
+
+<select id="countUnread" parameterType="MessageVO" resultType="MessageVO">
+    <![CDATA[
+        SELECT COUNT(seq) 
+        FROM dm 
+        WHERE receiver = #{nick} 
+          AND read_chk = 0 
+          AND room = #{room};
+    ]]>
+</select>
+
+<select id="room_content_list" parameterType="MessageVO" resultType="MessageVO">
+    <![CDATA[
+        SELECT m.no,
+               m.room,
+               m.sender,
+               m.receiver,
+               m.content,
+               TO_CHAR(m.send_dt, 'YYYY-MM-DD HH24:MI') AS sendDT,
+               TO_CHAR(m.read_dt, 'YYYY-MM-DD HH24:MI') AS sendDT,
+               m.read_chk,
+               u.name
+        FROM dm m
+        LEFT OUTER JOIN users u ON m.sender = u.nick 
+        ]]>  
+    <choose>
+        <when test="room != 0">
+            where room=#{room}
+        </when>
+        <otherwise>
+            where send_nick=#{recv_nick} and read_chk=0 and recv_nick=#{nick}
+        </otherwise>
+    </choose>
+    
+</select>
+<insert id="messageSend" parameterType="MessageVO" >
+    <choose>
+        <when test="room !=0">
+            INSERT INTO DM (
+        seq,
+        room,
+        sender,
+        receiver,
+        contents,
+        send_dt,
+        read_Dt,
+        read_chk
+    ) VALUES (
+        DM_SEQ.NEXTVAL,
+        #{room},
+        #{sender},
+        #{receiver},
+        #{contents},
+        SYSDATE,
+        SYSDATE,
+        0
+    )
+        </when>
+        <otherwise>
+             INSERT INTO DM (
+        seq,
+        room,
+        sender,
+        receiver,
+        contents,
+        send_dt,
+        read_Dt,
+        read_chk
+    ) VALUES (
+        DM_SEQ.NEXTVAL,
+        #{room},
+        #{sender},
+        #{receiver},
+        #{contents},
+        SYSDATE,
+        SYSDATE,
+        0
+    )
+        </otherwise>
+    </choose>
+</insert>
+
+<select id="max_room" parameterType="MessageVO" resultType="int">
+   SELECT max(room) from dm 
+</select>
+
+<select id="exist_chat" parameterType="MessageVO" resultType="int">
+    <![CDATA[
+        SELECT COUNT(no)
+        FROM dm
+        WHERE (receiver = #{receiver} AND sender = #{sender})
+           OR (sender = #{receiver} AND receiver = #{sender});
+    ]]>
+</select>
+
+<select id="select_room" parameterType="MessageVO" resultType="String">
+<![CDATA[
+        SELECT room
+        FROM (
+            SELECT room
+            FROM message
+            WHERE (receiver = #{receiver} AND sender = #{sender})
+               OR (sender = #{recv_nick} AND receiver = #{sender})
+            AND ROWNUM <= 1
+        )
+        WHERE ROWNUM <= 1;
+    ]]>
+</select>
+</mapper>
