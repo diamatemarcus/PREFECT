@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded",function(){
     //event감지 및 처리
     moveToListBTN.addEventListener("click",function(e){
         console.log("moveToListBTN click");
-        //moveToListFun();
+        moveToListFun();
     }); //-- moveToListBTN
    
     //doSave event감지 및 처리
@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 
                 if('1'==data.msgId){
                     alert(data.msgContents);//메시지 출력
-                    //moveToListFun();
+                    moveToListFun();
                 }else{
                     alert(data.msgContents);
                 }

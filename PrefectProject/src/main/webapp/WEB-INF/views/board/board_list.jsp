@@ -28,8 +28,10 @@ document.addEventListener("DOMContentLoaded",function(){
             const seq = cells[5].innerText;  
             console.log('seq:' + seq);
 
-            if (confirm('상세 조회 하시겠습니까?') == false) return;
-            window.location.href = "${CP}/board/doSelectOne.do?seq=" + seq;
+            const div = document.querySelector("#div").value;
+            console.log('div:'+div);
+            
+            window.location.href = "${CP}/board/doSelectOne.do?seq="+seq+"&div="+div;   
         });
     });
 	
@@ -121,6 +123,7 @@ function pageDoRerive(url,pageNo){
     <!-- 검색 -->
     <form action="#" method="get" id="boardForm" name="boardForm">
       <input type="hidden" name="pageNo" id="pageNo" />
+      <input type="hidden" name="div"    id="div"  value="${paramVO.getDiv() }"/>
       <div class="row g-1 justify-content-end ">
           <label for="searchDiv" class="col-auto col-form-label">검색조건</label>
           <div class="col-auto">

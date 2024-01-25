@@ -36,7 +36,6 @@ public class BoardController implements PcwkLogger{
 	
 	@Autowired
 	CodeService  codeService;
-
 	
 	public BoardController() {}
 	
@@ -196,6 +195,15 @@ public class BoardController implements PcwkLogger{
 		
 		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
 		model.addAttribute("divCode", codeList);
+		
+		//공지사항:10, 자유게시판:20
+		String title = "";
+		if(inVO.getDiv().equals("10")) {
+			title = "공지사항-수정";
+		}else {
+			title = "자유게시판-수정";
+		}
+		model.addAttribute("title", title);	
 		
 		return view;
 	}

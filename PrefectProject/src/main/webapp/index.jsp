@@ -17,36 +17,21 @@
 </head>
 <body>
 
-<ul class="nav">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="<c:url value='/login/loginView.do'/>">로그인</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="<c:url value='/naver/naverApiView.do'/>">naver 검색</a>
-  </li> 
-  <li class="nav-item">
-    <a class="nav-link" href="<c:url value='/user/doRetrieve.do'/>">회원목록</a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="<c:url value='/board/doRetrieve.do'/>">게시목록</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="<c:url value='/board/moveToReg.do'/>">게시등록</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="<c:url value='/chart/viewPie.do'/>">파이차트</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="<c:url value='/chart/viewLineChart.do'/>">라인차트</a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="<c:url value='/template/viewBlank.do'/>">blank</a>
-  </li>  
-      
-  <li class="nav-item">
-    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-  </li>
-</ul>        
+<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">PCWK</span>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link active" href="<c:url value='/user/doRetrieve.do'/>">회원목록</a>
+        <a class="nav-link" href="<c:url value='/board/doRetrieve.do?div=10'/>">공지사항</a>
+        <a class="nav-link" href="<c:url value='/board/doRetrieve.do?div=20'/>">자유게시판</a>
+        <a class="nav-link active" aria-current="page" href="<c:url value='/login/loginView.do'/>">로그인</a>
+        
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </div>           
+    </div>    
+  </div>
+</nav>
 
 </body>
 </html>
