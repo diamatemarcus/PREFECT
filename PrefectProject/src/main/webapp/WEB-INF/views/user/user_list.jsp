@@ -16,9 +16,6 @@
 <title>회원목록</title>
 </head>
 <body>
-${education}
-${role}
-
   <div class="container">
     <!-- 제목 -->
     <div class="row">
