@@ -8,9 +8,18 @@
 <head>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 등록</title> <!-- http://localhost:8080/ehr/board/moveToReg.do -->
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+<style>
+  .ck-editor__editable { height: 400px; }
+</style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
     console.log("DOMContentLoaded");
+    
+    ClassicEditor.create( document.querySelector( '#editor' ), {
+        language: "ko"
+      } );
     
     const regForm       = document.querySelector("#regFrm");
     const moveToListBTN = document.querySelector("#moveToList");    
@@ -70,7 +79,7 @@ document.addEventListener("DOMContentLoaded",function(){
             data:{
                 "div": div,
                 "title": title,
-                "contents": contents,
+                "contents": ct,
                 "readCnt": 0,
                 "regId": regId
             },
@@ -147,6 +156,9 @@ document.addEventListener("DOMContentLoaded",function(){
             <textarea rows="7" class="form-control"  id="contents" name="contents"></textarea>
         </div>
     </form>
+    
+	    <textarea name="text" id="editor"></textarea>
+	    <p><input type="submit" value="전송"></p>
     <!--// form --------------------------------------------------------------->
     
     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
