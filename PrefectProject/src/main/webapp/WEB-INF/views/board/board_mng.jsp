@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head> 
+<jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 수정</title>
 <style>
    .readonly-input {
@@ -17,7 +18,7 @@ document.addEventListener("DOMContentLoaded",function(){
 	
 	const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
-    const modId = '${sessionScope.user.userId}';
+    const modId = '${sessionScope.user.email}';
     
     const doUpdateBTN   = document.querySelector("#doUpdate");
     const doDeleteBTN   = document.querySelector("#doDelete");
@@ -32,14 +33,14 @@ document.addEventListener("DOMContentLoaded",function(){
         }
     	
     	const title = document.querySelector("#title").value;
-        if(eUtil.isEmpty(title.value) == true){
+        if(eUtil.isEmpty(title) == true){
             alert('제목을 입력 하세요.');
             title.focus();
             return;  
         }
         
         const contents = document.querySelector("#contents").value;
-        if(eUtil.isEmpty(contents.value) == true){
+        if(eUtil.isEmpty(contents) == true){
             alert('내용을 입력 하세요.');
             contents.focus();
             return;
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded",function(){
             return;
         }
         
-        const modId = '${sessionScope.user.userId}';
+        const modId = '${sessionScope.user.email}';
         
         $.ajax({
             type: "POST",
@@ -230,7 +231,7 @@ document.addEventListener("DOMContentLoaded",function(){
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
             <label for="title" class="form-label">제목</label>
             <input type="text" class="form-control" id="title" name="title" maxlength="100" 
-             value=${vo.title }
+             value='${vo.title }'
             placeholder="제목을 입력 하세요">
         </div>      
         <div class="mb-3">
