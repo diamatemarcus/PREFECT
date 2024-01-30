@@ -52,7 +52,7 @@ public class LoginController implements PcwkLogger{
 		//id null check 
 		if(null == user.getEmail() || "".equals(user.getEmail())) {
 			message.setMsgId("1");
-			message.setMsgContents("아이디를 입력 하세요.");
+			message.setMsgContents("이메일을 입력 하세요.");
 			
 			jsonString = new Gson().toJson(message);
 			LOG.debug("jsonString:"+jsonString);
@@ -78,7 +78,7 @@ public class LoginController implements PcwkLogger{
 			
 	    }else if(20==check) {//비번확인
 	    	message.setMsgId("20");
-			message.setMsgContents("비번을 확인 하세요.");	    	
+			message.setMsgContents("비밀번호를 확인 하세요.");	    	
 		
 	    }else if(30==check) {//비번확인
 	    	UserVO outVO = loginService.doSelectOne(user);
