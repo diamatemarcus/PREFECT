@@ -17,12 +17,8 @@
 document.addEventListener("DOMContentLoaded",function(){
     console.log("DOMContentLoaded");
     
-    ClassicEditor.create( document.querySelector( '#editor' ), {
-        language: "ko"
-      } );
-    
     const regForm       = document.querySelector("#regFrm");
-    const moveToListBTN = document.querySelector("#moveToList");    
+    const moveToListBTN = document.querySelector("#moveToList");
     const doSaveBTN     = window.document.querySelector("#doSave");
     
     function moveToListFun(){
@@ -34,8 +30,103 @@ document.addEventListener("DOMContentLoaded",function(){
         console.log("moveToListBTN click");
         moveToListFun();
     }); //-- moveToListBTN
+    
+    
+    let editorInstance; // CKEditor 인스턴스를 저장할 변수
+
+    // CKEditor 로드 여부 확인
+    if (typeof ClassicEditor === 'undefined') {
+        console.error("CKEditor is not loaded.");
+        return;
+    }
+    
+    // CKEditor 인스턴스 초기화
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            language: 'ko'
+        })
+        .then(function (editor) {
+            editorInstance = editor;
+            console.log("CKEditor is initialized.");
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
+
+    function moveToListFun() {
+        window.location.href = "/ehr/board/doRetrieve.do";
+    }
+
+    // event 감지 및 처리
+    moveToListBTN.addEventListener("click", function (e) {
+        console.log("moveToListBTN click");
+        moveToListFun();
+    });
+
+    // doSave event 감지 및 처리
+    doSaveBTN.addEventListener("click", function (e) {
+        console.log("doSaveBTN click");
+
+        let div = document.querySelector("#div").value;
+        let title = document.querySelector("#title").value;
+        let regId = document.querySelector("#regId").value;
+
+        // CKEditor에서 작성한 내용을 가져옵니다.
+        let contents = editorInstance.getData();
+
+        console.log("title:" + title);
+        console.log("regId:" + regId);
+        console.log("contents:" + contents);
+
+        if (eUtil.isEmpty(title) === true) {
+            alert("제목을 입력하세요.");
+            regForm.title.focus();
+            return;
+        }
+
+        if (eUtil.isEmpty(contents) === true) {
+            alert("내용을 입력하세요.");
+            //regForm.contents.focus();
+            return;
+        }
+
+        if (window.confirm("등록하시겠습니까?") === false) {
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/ehr/board/doSave.do",
+            async: true,
+            dataType: "json",
+            data: {
+                "div": div,
+                "title": title,
+                "contents": contents,
+                "readCnt": 0,
+                "regId": regId
+            },
+            success: function (data) {// 통신 성공 시의 처리
+                console.log("data.msgId:" + data.msgId);
+                console.log("data.msgContents:" + data.msgContents);
+
+                if ('1' == data.msgId) {
+                    alert(data.msgContents);
+                    moveToListFun();
+                } else {
+                    alert(data.msgContents);
+                }
+            },
+            error: function (data) {// 통신 실패 시의 처리
+                console.log("error:" + data);
+            },
+            complete: function (data) {// 성공/실패와 관계없이 수행되는 처리
+                console.log("complete:" + data);
+            }
+        });
+    });
    
-    //doSave event감지 및 처리
+    /* //doSave event감지 및 처리
     doSaveBTN.addEventListener("click", function(e){
         console.log("doSaveBTN click");
         
@@ -55,11 +146,11 @@ document.addEventListener("DOMContentLoaded",function(){
             return;
         }
         
-        /* if(eUtil.isEmpty(regId) == true){
+        if(eUtil.isEmpty(regId) == true){
             alert("로그인 하세요.")
             regForm.regId.focus();
             return;
-        } */
+        } 
         
         if(eUtil.isEmpty(contents) == true){
             alert("내용을 하세요.")
@@ -105,7 +196,7 @@ document.addEventListener("DOMContentLoaded",function(){
             }
         }); //-- ajax
 
-    }); //-- doSaveBTN
+    }); //-- doSaveBTN */
     
 }); //--DOMContentLoaded
 </script>
@@ -126,7 +217,7 @@ document.addEventListener("DOMContentLoaded",function(){
     <div class="row justify-content-end">
         <div class="col-auto">
             <input type="button" value="목록" class="btn btn-primary" id="moveToList">
-            <input type="button" value="등록" class="btn btn-primary" id="doSave" >
+            <!-- <input type="button" value="등록" class="btn btn-primary" id="doSave" > -->
         </div>
     </div>
     <!--// 버튼 ----------------------------------------------------------------->
@@ -151,14 +242,16 @@ document.addEventListener("DOMContentLoaded",function(){
             <input type="text" class="form-control" id="regId" name="regId" value="dlgkssk1627@naver.com" 
             readonly="readonly" >        
         </div>
-        <div class="mb-3">
-            <label for="title" class="form-label">Contents</label>
+        <!-- <div class="mb-3">
+            <label for="contents" class="form-label">Contents</label>
             <textarea rows="7" class="form-control"  id="contents" name="contents"></textarea>
-        </div>
+        </div> -->
     </form>
     
-	    <textarea name="text" id="editor"></textarea>
-	    <p><input type="submit" value="전송"></p>
+	<form action="" method="POST">
+        <textarea name="text" id="editor"></textarea>
+    <p><input type="button" value="등록" class="btn btn-primary" id="doSave"></p>
+    </form>
     <!--// form --------------------------------------------------------------->
     
     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>

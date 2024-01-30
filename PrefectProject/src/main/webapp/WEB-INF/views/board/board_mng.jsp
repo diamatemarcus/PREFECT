@@ -7,6 +7,8 @@
 <head> 
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 수정</title>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
 <style>
    .readonly-input {
     background-color: #e9ecef ;
@@ -39,8 +41,9 @@ document.addEventListener("DOMContentLoaded",function(){
             return;  
         }
         
-        const contents = document.querySelector("#contents").value;
-        if(eUtil.isEmpty(contents) == true){
+        // CKEditor에서 작성한 내용을 가져옵니다.
+        const contents = CKEDITOR.instances.contents.getData();
+        if (eUtil.isEmpty(contents) == true) {
             alert('내용을 입력 하세요.');
             contents.focus();
             return;
@@ -176,6 +179,7 @@ document.addEventListener("DOMContentLoaded",function(){
     
     
     <form action="#" name="regFrm" id="regFrm">
+        
         <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
             <label for="seq" class="col-sm-2 col-form-label">구분</label>
             <div class="col-sm-10">
@@ -234,10 +238,14 @@ document.addEventListener("DOMContentLoaded",function(){
              value='${vo.title }'
             placeholder="제목을 입력 하세요">
         </div>      
-        <div class="mb-3">
-            <label for="contents" class="form-label">내용</label>
-            <textarea rows="7" class="form-control"  id="contents" name="contents">${vo.contents }</textarea>
-        </div>
+        
+        <!-- CKEditor로 대체된 부분 -->
+		<div class="mb-3">
+		    <label for="contents" class="form-label">내용</label>
+		    <textarea rows="7" class="form-control" id="contents" name="contents">${vo.contents}</textarea>
+		</div>
+
+    
     </form> 
     <!--// form --------------------------------------------------------------->
     
