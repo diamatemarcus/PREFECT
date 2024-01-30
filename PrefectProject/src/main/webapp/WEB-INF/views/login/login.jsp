@@ -9,53 +9,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-      <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap Login Form</title>
+    <title>로그인</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-        .login-form {
-            width: 340px;
-            margin: 50px auto;
-        }
-        .login-form form {
-            margin-bottom: 15px;
-            background: #f7f7f7;
-            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-            padding: 30px;
-        }
-        .login-form h2 {
-            margin: 0 0 15px;
-        }
-        .form-control, .btn {
-            min-height: 38px;
-            border-radius: 2px;
-        }
-        .btn {        
-            font-size: 15px;
-            font-weight: bold;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/53a8c415f1.js" crossorigin="anonymous"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+    <link rel="stylesheet" href="${CP}/resources/css/login.css">
+    <script>
+    	$(function(){
+            $("#find_id_btn").click(function(){
+                location.href='../login/findId.do';
+            })
+        })
+        
+    </script>
 </head>
 <body>
-    <div class="login-form">
-        <form action="/ehr/login/doLogin.do" method="post">
-            <h2 class="text-center">로그인</h2>
-            <div class="form-group">
-                <input type="text" class="form-control" id="email" name="email" placeholder="아이디" required="required" value="sg8@gmail.com">
+     <div class="wrap">
+        <div class="login">
+            <h2>로그인</h2>
+            <div class="login_id">
+                <h4>E-mail</h4>
+                <input type="text" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" required="required">
             </div>
-            <div class="form-group">
-                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호" required="required" value="8888">
+            <div class="login_pw">
+                <h4>비밀번호</h4>
+                <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요" required="required">
             </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-primary btn-block" id="doLogin">로그인</button>
+          <div class="forgot">
+	          <div class="forgot_email" id="find_id_btn">
+	                <a href="">이메일을 잊어버리셨나요?</a>
+	            </div>
+	          <div class="forgot_password" id="find_password_btn">
+	                <a href="">비밀번호를 잊어버리셨나요?</a>
+	            </div>
             </div>
-        </form>
-        <p class="text-center"><a href="#">계정 만들기</a></p>
+            <div class="submit">	
+                <input type="submit" id="doLogin" value="로그인">
+            </div>
+            <br>
+           <div class="register" >
+           		<a href="${pageContext.request.contextPath}/user/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
+           </div>
+	       </p>
+            <div class="login_sns">
+                <li> <a id="custom-login-btn" href="javascript:kakaoLogin()">
+                    <img
+                      src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
+                      width="280"
+                    />
+                  </a>
+               </div>
+        </div>
     </div>
     <script type="text/javascript">
         $(document).ready(function(){
@@ -66,7 +78,7 @@
                 
                 let email = $("#email").val();
                 if(email.trim() === ""){
-                    alert('아이디를 입력하세요.');
+                    alert('이메일을 입력하세요.');
                     $("#email").focus();
                     return;
                 }
@@ -97,7 +109,7 @@
                         
                         if("10" == data.msgId){
                             alert(data.msgContents);
-                            $("#userId").focus();
+                            $("#email").focus();
                         } else if("20" == data.msgId){
                             alert(data.msgContents);
                             $("#password").focus();                 
