@@ -42,16 +42,21 @@ document.addEventListener("DOMContentLoaded",function(){
     
     // CKEditor 인스턴스 초기화
     ClassicEditor
-        .create(document.querySelector('#editor'), {
-            language: 'ko'
-        })
-        .then(function (editor) {
-            editorInstance = editor;
-            console.log("CKEditor is initialized.");
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
+	    .create(document.querySelector('#editor'), {
+	        //removePlugins: [ 'Italic' ],
+	        language: 'ko',
+	        ckfinder: {
+	            uploadUrl: '/ehr/board/fileUpload.do'
+	        }
+	    })
+	    .then(function (editor) {
+	        editorInstance = editor;
+	        console.log("CKEditor is initialized.");
+	    })
+	    .catch(function (error) {
+	        console.error(error);
+	    });
+
 
     function moveToListFun() {
         window.location.href = "/ehr/board/doRetrieve.do";
@@ -125,78 +130,6 @@ document.addEventListener("DOMContentLoaded",function(){
             }
         });
     });
-   
-    /* //doSave event감지 및 처리
-    doSaveBTN.addEventListener("click", function(e){
-        console.log("doSaveBTN click");
-        
-       
-        let div = document.querySelector("#div").value;
-        let title = document.querySelector("#title").value;
-        let regId = document.querySelector("#regId").value;
-        let contents = document.querySelector("#contents").value;
-        
-        console.log("title:"+title);
-        console.log("regId:"+regId);
-        console.log("contents:"+contents);
-        
-        if(eUtil.isEmpty(title) == true){
-            alert("제목을 입력 하세요.")
-            regForm.title.focus();
-            return;
-        }
-        
-        if(eUtil.isEmpty(regId) == true){
-            alert("로그인 하세요.")
-            regForm.regId.focus();
-            return;
-        } 
-        
-        if(eUtil.isEmpty(contents) == true){
-            alert("내용을 하세요.")
-            regForm.contents.focus();
-            return;
-        }
-        
-        if(window.confirm("등록 하시겠습니까?")==false){
-            return;
-        }
-        
-        $.ajax({
-            type: "POST",
-            url:"/ehr/board/doSave.do",
-            asyn:"true",
-            dataType:"json",
-            data:{
-                "div": div,
-                "title": title,
-                "contents": ct,
-                "readCnt": 0,
-                "regId": regId
-            },
-            success:function(data){//통신 성공
-                //data.msgId가 1이면 : 메시지 출력,목록으로 이동
-                //data.msgId가 1이 아니면 : 메시지 출력
-                console.log("data.msgId:"+data.msgId);
-                console.log("data.msgContents:"+data.msgContents);
-                
-                if('1'==data.msgId){
-                    alert(data.msgContents);//메시지 출력
-                    moveToListFun();
-                }else{
-                    alert(data.msgContents);
-                }
-                
-            },
-            error:function(data){//실패시 처리
-                console.log("error:"+data);
-            },
-            complete:function(data){//성공/실패와 관계없이 수행!
-                console.log("complete:"+data);
-            }
-        }); //-- ajax
-
-    }); //-- doSaveBTN */
     
 }); //--DOMContentLoaded
 </script>
@@ -217,7 +150,6 @@ document.addEventListener("DOMContentLoaded",function(){
     <div class="row justify-content-end">
         <div class="col-auto">
             <input type="button" value="목록" class="btn btn-primary" id="moveToList">
-            <!-- <input type="button" value="등록" class="btn btn-primary" id="doSave" > -->
         </div>
     </div>
     <!--// 버튼 ----------------------------------------------------------------->
@@ -242,10 +174,6 @@ document.addEventListener("DOMContentLoaded",function(){
             <input type="text" class="form-control" id="regId" name="regId" value="dlgkssk1627@naver.com" 
             readonly="readonly" >        
         </div>
-        <!-- <div class="mb-3">
-            <label for="contents" class="form-label">Contents</label>
-            <textarea rows="7" class="form-control"  id="contents" name="contents"></textarea>
-        </div> -->
     </form>
     
 	<form action="" method="POST">

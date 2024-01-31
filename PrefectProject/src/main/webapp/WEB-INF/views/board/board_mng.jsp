@@ -13,10 +13,33 @@
    .readonly-input {
     background-color: #e9ecef ;
    }
+   
+   .ck-editor__editable { height: 400px; }
 
 </style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
+	
+	let editorInstance; // CKEditor 인스턴스를 저장할 변수
+
+    // CKEditor 로드 여부 확인
+    if (typeof ClassicEditor === 'undefined') {
+        console.error("CKEditor is not loaded.");
+        return;
+    }
+    
+    // CKEditor 인스턴스 초기화
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            language: 'ko'
+        })
+        .then(function (editor) {
+            editorInstance = editor;
+            console.log("CKEditor is initialized.");
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
 	
 	const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
@@ -42,7 +65,7 @@ document.addEventListener("DOMContentLoaded",function(){
         }
         
         // CKEditor에서 작성한 내용을 가져옵니다.
-        const contents = CKEDITOR.instances.contents.getData();
+        let contents = editorInstance.getData();
         if (eUtil.isEmpty(contents) == true) {
             alert('내용을 입력 하세요.');
             contents.focus();
@@ -238,17 +261,13 @@ document.addEventListener("DOMContentLoaded",function(){
              value='${vo.title }'
             placeholder="제목을 입력 하세요">
         </div>      
-        
-        <!-- CKEditor로 대체된 부분 -->
-		<div class="mb-3">
-		    <label for="contents" class="form-label">내용</label>
-		    <textarea rows="7" class="form-control" id="contents" name="contents">${vo.contents}</textarea>
-		</div>
-
-    
     </form> 
-    <!--// form --------------------------------------------------------------->
     
+    <form action="" method="POST">
+        <textarea rows="7" class="form-control"  id="editor" name="contents">${vo.contents }</textarea>
+    </form>
+    <!--// form --------------------------------------------------------------->
+    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </div>
 
 </body>
