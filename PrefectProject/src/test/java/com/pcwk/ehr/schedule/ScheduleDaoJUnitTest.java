@@ -1,4 +1,4 @@
-package com.pcwk.ehr;
+package com.pcwk.ehr.schedule;
 
 import static org.junit.Assert.*;
 
@@ -23,7 +23,7 @@ import com.pcwk.ehr.schedule.domain.ScheduleVO;
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"
 		,"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class ScheduleDaoJunitTest implements PcwkLogger{
+public class ScheduleDaoJUnitTest implements PcwkLogger{
 
 	@Autowired  //테스트 오브젝트가 만들어지고 나면 스프링 테스트 컨텍스트에 자동으로 객체값으로 주입
 	ApplicationContext context;

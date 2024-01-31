@@ -71,19 +71,15 @@ public class ScheduleController implements PcwkLogger{
 		return jsonString;
 	}
 	
-	//단건조회
-		//value="/doSelectOne.do" => http://localhost:8080/ehr/user/doSelectOne.do
-		//method = RequestMethod.GET => http://localhost:8080/ehr/user/doSelectOne.do?userId=p99-01
-		//produces = "application/json;charset=UTF-8" => 데이터를 위 형식으로 생성
-		//@ResponseBody : 반환값을 http의 응답의 본문으로 사용
+		//단건조회
 		@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
 		public String doSelectOne(ScheduleVO inVO,HttpServletRequest req, Model model) throws SQLException, EmptyResultDataAccessException {
-			String view = "user/user_mod";
+			String view = "schedule/schedule_mod";
 			LOG.debug("┌───────────────────────────────────────────┐");
 			LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
 			LOG.debug("└───────────────────────────────────────────┘");	
-			String userId = req.getParameter("userId");
-			LOG.debug("│ userId                                :"+userId);		
+			String scheduleID = req.getParameter("scheduleID");
+			LOG.debug("│ scheduleID                                :"+scheduleID);		
 			
 			ScheduleVO outVO = this.scheduleService.doSelectOne(inVO);
 			LOG.debug("│ outVO                                :"+outVO);		
@@ -93,7 +89,6 @@ public class ScheduleController implements PcwkLogger{
 		}
 		
 		//삭제
-		//GET방식 요청: http://localhost:8080/ehr/user/doDelete.do?userId=pcwk
 		@RequestMapping(value = "/doDelete.do", method = RequestMethod.GET
 				,produces = "application/json;charset=UTF-8"
 				)
@@ -103,8 +98,8 @@ public class ScheduleController implements PcwkLogger{
 			LOG.debug("┌───────────────────────────────────────────┐");
 			LOG.debug("│ doDelete()                                │inVO:"+inVO);
 			LOG.debug("└───────────────────────────────────────────┘");	
-			String userId = req.getParameter("userId");
-			LOG.debug("│ userId                                :"+userId);
+			String scheduleID = req.getParameter("scheduleID");
+			LOG.debug("│ scheduleID                                :"+scheduleID);
 			
 			
 			int flag = scheduleService.doDelete(inVO);

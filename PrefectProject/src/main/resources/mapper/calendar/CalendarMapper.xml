@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pcwk.ehr.calendar">
+  
+  <select id="doSelectMonth" parameterType="CalendarVO" resultType="CalendarVO">
+	SELECT 
+       MAX(DECODE(DAY_OF_WEEK,'일',day)) "일"
+      ,MAX(DECODE(DAY_OF_WEEK,'월',day)) "월"
+      ,MAX(DECODE(DAY_OF_WEEK,'화',day)) "화"
+      ,MAX(DECODE(DAY_OF_WEEK,'수',day)) "수"
+      ,MAX(DECODE(DAY_OF_WEEK,'목',day)) "목"
+      ,MAX(DECODE(DAY_OF_WEEK,'금',day)) "금"
+      ,MAX(DECODE(DAY_OF_WEEK,'토',day)) "토"
+	FROM calendar
+	WHERE MONTH = #{month}
+	GROUP BY WEEK_NO
+	ORDER BY WEEK_NO
+  </select>
+  
+  
+</mapper>

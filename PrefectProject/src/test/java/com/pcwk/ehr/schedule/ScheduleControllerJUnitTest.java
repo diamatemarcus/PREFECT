@@ -1,4 +1,4 @@
-package com.pcwk.ehr;
+package com.pcwk.ehr.schedule;
 
 import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -38,7 +38,7 @@ import com.pcwk.ehr.schedule.domain.ScheduleVO;
 		,"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 
-public class ScheduleControllerTest implements PcwkLogger{
+public class ScheduleControllerJUnitTest implements PcwkLogger{
 
 	@Autowired
 	WebApplicationContext webApplicationContext;
@@ -93,6 +93,7 @@ public class ScheduleControllerTest implements PcwkLogger{
 		
 	}
 	
+	@Ignore
 	@Test
 	public void doUpdate() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -123,7 +124,6 @@ public class ScheduleControllerTest implements PcwkLogger{
 		
 	}
 	
-	@Ignore
 	@Test
 	public void addAndGet() throws Exception {
 		// 1. 데이터 삭제
