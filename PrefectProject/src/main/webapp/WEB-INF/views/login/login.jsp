@@ -17,11 +17,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://kit.fontawesome.com/53a8c415f1.js" crossorigin="anonymous"></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	<script src="http://code.jquery.com/jquery-latest.js"></script>
-    <link rel="stylesheet" href="${CP}/resources/css/login.css">
     <script>
     	$(function(){
             $("#find_id_btn").click(function(){
