@@ -7,6 +7,52 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 -->  
 <mapper namespace="com.pcwk.ehr.subject">
 
+
+
+    <select id="doRetrieve" parameterType="SubjectVO" resultType="SubjectVO">
+        
+		SELECT
+		    s.subject_code,
+		    s.course_code,
+		    s.professor,
+		    s.trainee,
+		    s.score,
+		    c.DET_NAME
+		FROM
+		    subject s
+		JOIN
+		    users u ON
+		    (
+		        (u.email = s.professor AND u.role = 20)
+		        OR
+		        (u.email = s.trainee AND u.role = 30)
+		    )
+		JOIN
+		    CMN_CODE c ON c.MST_CODE = 'SUBJECT' AND c.DET_CODE = s.subject_code
+		WHERE
+		    (
+		        u.role = 20 
+		        AND 
+		        s.course_code IN (
+		            SELECT course_code 
+		            FROM subject 
+		            WHERE professor = #{email}
+		        )
+		    )
+		    OR
+		    (
+		        u.role = 30 
+		        AND 
+		        u.email = #{email}
+		    );
+
+    
+        
+    </select>
+
+	
+	
+
 	<select id="doSelectOne" parameterType="SubjectVO" resultType="SubjectVO">
 		SELECT
 		    subject_code,
