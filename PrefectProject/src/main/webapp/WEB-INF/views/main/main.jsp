@@ -31,6 +31,9 @@
     <a class="nav-link" href="<c:url value='/board/moveToReg.do'/>">게시등록</a>
   </li>
   <li class="nav-item">
+    <a class="nav-link" href="<c:url value='/book/bookApiView.do'/>">도서구매</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
   </li>
 </ul>        

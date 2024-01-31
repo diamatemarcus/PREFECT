@@ -26,7 +26,7 @@
         <a class="nav-link" href="<c:url value='/board/doRetrieve.do?div=10'/>">공지사항</a>
         <a class="nav-link" href="<c:url value='/board/doRetrieve.do?div=20'/>">자유게시판</a>
         <a class="nav-link active" aria-current="page" href="<c:url value='/login/loginView.do'/>">로그인</a>
-        <a class="nav-link active" aria-current="page" href="<c:url value='/book/bookApiView.do'/>">도서조회</a>
+        <a class="nav-link active" aria-current="page" href="<c:url value='/book/bookApiView.do'/>">도서구매</a>
         
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </div>           
