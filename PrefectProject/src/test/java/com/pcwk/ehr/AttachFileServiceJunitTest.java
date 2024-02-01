@@ -44,41 +44,41 @@ public class AttachFileServiceJunitTest {
 	public void setUp() throws Exception {
 		LOG.debug("**********************************************************");
 		LOG.debug("=setUp()=");		
-		String UUID = "20231228_2eba5103-06e7-43e5-babd-3acb296e0b25";
+		StringUtil UUID = new StringUtil();
 		
 		fileList = Arrays.asList(
-				 new FileVO(UUID, 1, "good_job01.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 201, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
-				,new FileVO(UUID, 2, "good_job02.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 202, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
-				,new FileVO(UUID, 3, "good_job03.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 203, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
-				,new FileVO(UUID, 4, "good_job04.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 204, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
-				,new FileVO(UUID, 5, "good_job05.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 205, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
+				 new FileVO(UUID.getPK(), 1, "good_job01.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 201, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
+				,new FileVO(UUID.getPK(), 2, "good_job02.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 202, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
+				,new FileVO(UUID.getPK(), 3, "good_job03.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 203, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
+				,new FileVO(UUID.getPK(), 4, "good_job04.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 204, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
+				,new FileVO(UUID.getPK(), 5, "good_job05.xlsx", StringUtil.getPK()+".xlsx", "xlsx", 205, "C:\\upload\\2023\\12", "사용하지 않음", "PCWK")
 				);
 		searchVO = new FileVO();
-		searchVO.setUuid(UUID);
 	}
 	
 	
 	@Test(expected = SQLIntegrityConstraintViolationException.class)
-	public void upFileSave() throws SQLException{
-		attachFileDao.doDelete(fileList.get(0));
-		attachFileDao.doDelete(fileList.get(1));
-		attachFileDao.doDelete(fileList.get(2));
-		attachFileDao.doDelete(fileList.get(3));
-		attachFileDao.doDelete(fileList.get(4));
-		
+	public void upFileSave() throws SQLException {
+	    attachFileDao.doDelete(fileList.get(0));
+	    attachFileDao.doDelete(fileList.get(1));
+	    attachFileDao.doDelete(fileList.get(2));
+	    attachFileDao.doDelete(fileList.get(3));
+	    attachFileDao.doDelete(fileList.get(4));
 
-		int saveFlag = 0;
-		try {
-			 fileList.get(2).setSeq(2);
-			 saveFlag = attachFileService.upFileSave(fileList);
-		} catch (SQLException e) {
-			LOG.debug("====================");
-			LOG.debug("=SQLException="+e.getMessage());
-			LOG.debug("====================");			
-		}
-		
-		
+	    int saveFlag = 0;
+	    try {
+	        fileList.get(2).setSeq(2);
+	        saveFlag = attachFileService.upFileSave(fileList);
+	    } catch (SQLException e) {
+	        LOG.debug("====================");
+	        LOG.debug("=SQLException=" + e.getMessage());
+	        LOG.debug("====================");
+
+	        // SQLException을 다시 던집니다.
+	        throw e;
+	    }
 	}
+
 	
 	@Test
 	public void upFileDelete() throws SQLException{

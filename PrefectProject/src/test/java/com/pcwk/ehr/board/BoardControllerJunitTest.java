@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -193,6 +192,7 @@ public class BoardControllerJunitTest implements PcwkLogger {
 				MockMvcRequestBuilders.get("/board/doSelectOne.do")
 				.param("seq",     vo.getSeq()+"")
 				.param("regId",   vo.getRegId())
+				.param("div",   vo.getDiv())
 				;		
 		
 		//호출 : ModelAndView      
