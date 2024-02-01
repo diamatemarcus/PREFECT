@@ -63,7 +63,7 @@ public class BoardDaoJunitTest implements PcwkLogger{
 		searchVO.setTitle(title);
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void updateReadCnt() throws SQLException {
 		//1.
@@ -89,7 +89,7 @@ public class BoardDaoJunitTest implements PcwkLogger{
 		assertEquals(vs01.getReadCnt(), board01.getReadCnt()+1);
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void doRetrieve() throws SQLException {
 		//searchVO.setSearchDiv("10");//제목으로 검색
@@ -116,7 +116,7 @@ public class BoardDaoJunitTest implements PcwkLogger{
 		}
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void update() throws SQLException {
 		LOG.debug("┌───────────────────────────────────┐");
@@ -160,7 +160,7 @@ public class BoardDaoJunitTest implements PcwkLogger{
 		isSameBoard(vs01, vo01);
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void addAndGet()throws SQLException{
 		//1. 삭제

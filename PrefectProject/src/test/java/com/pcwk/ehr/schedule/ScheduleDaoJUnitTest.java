@@ -95,7 +95,7 @@ public class ScheduleDaoJUnitTest implements PcwkLogger{
 		
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test // long 1/1000초
 	public void addAndGet() throws SQLException {
 		// 1. 데이터 삭제

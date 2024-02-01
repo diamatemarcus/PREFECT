@@ -1,5 +1,6 @@
 package com.pcwk.ehr.board.controller;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pcwk.ehr.board.domain.BoardVO;
@@ -25,6 +30,8 @@ import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.code.domain.CodeVO;
 import com.pcwk.ehr.code.service.CodeService;
+import com.pcwk.ehr.file.domain.FileVO;
+import com.pcwk.ehr.file.service.AttachFileService;
 import com.pcwk.ehr.user.domain.UserVO;
 
 @Controller
@@ -37,7 +44,43 @@ public class BoardController implements PcwkLogger{
 	@Autowired
 	CodeService  codeService;
 	
+	@Autowired
+	AttachFileService fileService;
+	
 	public BoardController() {}
+	
+	private String saveUrl;
+    private String loadUrl;
+    private String mode;
+
+//    @RequestMapping(value="/ajax/image.do")
+//    @ResponseBody
+//    public ModelAndView image(@RequestParam Map<String, Object> map, MultipartHttpServletRequest request) throws Exception {
+//        ModelAndView mv = new ModelAndView("jsonView");
+//
+//        List<MultipartFile> fileLiswt = request.getFiles("upload");
+//
+//        String imgPath = null;
+//
+//        for (MultipartFile mf : fileList) {
+//            if (mf.getSize() > 0) {
+//                String originFileName = mf.getOriginalFilename();
+//                LOG.debug("originFileName==" + originFileName);
+//                String ext = FilenameUtils.getExtension(originFileName);
+//                String newInfImgFileName = "img_" + StringUtil.getPK() + "." + ext;
+//
+//                // FileService를 통해 파일 저장 및 URL 반환
+//                String imageUrl = fileService.saveFile(mf, newInfImgFileName, saveUrl, loadUrl, mode);
+//
+//                mv.addObject("uploaded", true);
+//                mv.addObject("url", imageUrl);
+//            }
+//        }
+//
+//        return mv;
+//    }
+
+
 	
 	@GetMapping(value="/moveToReg.do")//저 url로 get매핑함
 	public String moveToReg() {

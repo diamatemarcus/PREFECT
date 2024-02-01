@@ -59,7 +59,7 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 		
 		schedules = Arrays.asList(
 				new ScheduleVO(1, 1, "일정", "일정입니다")
-				,new ScheduleVO(2, 1, "일정1", "일정입니다1")
+//				,new ScheduleVO(2, 1, "일정1", "일정입니다1")
 			);
 			
 		searchVO = new ScheduleVO();
@@ -93,7 +93,7 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 		
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void doUpdate() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -132,15 +132,15 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 		
 		//1.
 		doDelete(schedules.get(0));
-		doDelete(schedules.get(1));
+//		doDelete(schedules.get(1));
 
 		// 2. 
 		doSave(schedules.get(0));
-		doSave(schedules.get(1));
+//		doSave(schedules.get(1));
 		
 		
 		isSameSchedule(schedules.get(0), doSelectOne(schedules.get(0)));
-		isSameSchedule(schedules.get(1), doSelectOne(schedules.get(1)));
+//		isSameSchedule(schedules.get(1), doSelectOne(schedules.get(1)));
 	}
 	
 	

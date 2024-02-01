@@ -10,6 +10,7 @@
 <title>게시판 등록</title> <!-- http://localhost:8080/ehr/board/moveToReg.do -->
 <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
 <script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
+<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
 <style>
   .ck-editor__editable { height: 400px; }
 </style>
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded",function(){
 	        //removePlugins: [ 'Italic' ],
 	        language: 'ko',
 	        ckfinder: {
-	            uploadUrl: '/ehr/board/fileUpload.do'
+	            uploadUrl: '/ajax/image.do'
 	        }
 	    })
 	    .then(function (editor) {

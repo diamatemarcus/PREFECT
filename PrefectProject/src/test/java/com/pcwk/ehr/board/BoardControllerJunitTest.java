@@ -82,7 +82,7 @@ public class BoardControllerJunitTest implements PcwkLogger {
 		
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void doRetrieve() throws Exception{
 		//검색
@@ -103,7 +103,7 @@ public class BoardControllerJunitTest implements PcwkLogger {
 		//호출결과
 		ModelAndView modelAndView = mvcResult.getModelAndView();
 		List<BoardVO>  list  = (List<BoardVO>) modelAndView.getModel().get("list");
-		BoardVO  paramVO  = (BoardVO) modelAndView.getModel().get("vo");
+		BoardVO  paramVO  = (BoardVO) modelAndView.getModel().get("paramVO");
 		
 		
 		List<CodeVO> boardSearchList=(List<CodeVO>) modelAndView.getModel().get("boardSearch");
@@ -178,7 +178,7 @@ public class BoardControllerJunitTest implements PcwkLogger {
 	}
 	
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void doSelectOne()throws Exception{
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -204,7 +204,7 @@ public class BoardControllerJunitTest implements PcwkLogger {
 		assertNotNull(outVO);
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void doSave()throws Exception{
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -234,7 +234,7 @@ public class BoardControllerJunitTest implements PcwkLogger {
 		assertEquals("1", messageVO.getMsgId());
 	}
 	
-	@Ignore
+//	@Ignore
 	@Test
 	public void doDelete() throws Exception{
 		LOG.debug("┌───────────────────────────────────────────┐");

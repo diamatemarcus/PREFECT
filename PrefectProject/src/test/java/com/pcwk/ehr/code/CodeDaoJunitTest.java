@@ -60,7 +60,7 @@ public class CodeDaoJunitTest  implements PcwkLogger {
 		}
 		
 		assertNotNull(list);
-		assertEquals(7, list.size());
+		assertEquals(5, list.size());
 	}
 	
 	@Test

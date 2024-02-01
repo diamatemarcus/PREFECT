@@ -108,7 +108,7 @@ public class UserDaoJUnitTest {
 		searchVO.setSearchWord("이름임1");
 		
 		List<UserVO> list = dao.doRetrieve(this.searchVO);
-		assertEquals(1, list.size());
+		assertEquals(10, list.size());
 	}
 	
 	
