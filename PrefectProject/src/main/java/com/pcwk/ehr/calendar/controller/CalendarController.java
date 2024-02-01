@@ -38,7 +38,7 @@ public class CalendarController implements PcwkLogger{
 	public ModelAndView doRetrieveCalendar(CalendarVO inVO, ModelAndView modelAndView) throws SQLException{
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doRetrieveCalendar                │");
-		LOG.debug("│ CalendarVO                           │"+inVO);
+		LOG.debug("│ CalendarVO                        │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");
 
 		//목록조회
