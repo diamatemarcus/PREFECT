@@ -7,39 +7,13 @@
 <head> 
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 수정</title>
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
 <style>
    .readonly-input {
     background-color: #e9ecef ;
    }
-   
-   .ck-editor__editable { height: 400px; }
-
 </style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
-	
-	let editorInstance; // CKEditor 인스턴스를 저장할 변수
-
-    // CKEditor 로드 여부 확인
-    if (typeof ClassicEditor === 'undefined') {
-        console.error("CKEditor is not loaded.");
-        return;
-    }
-    
-    // CKEditor 인스턴스 초기화
-    ClassicEditor
-        .create(document.querySelector('#editor'), {
-            language: 'ko'
-        })
-        .then(function (editor) {
-            editorInstance = editor;
-            console.log("CKEditor is initialized.");
-        })
-        .catch(function (error) {
-            console.error(error);
-        });
 	
 	const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
@@ -64,8 +38,7 @@ document.addEventListener("DOMContentLoaded",function(){
             return;  
         }
         
-        // CKEditor에서 작성한 내용을 가져옵니다.
-        let contents = editorInstance.getData();
+        const contents = document.querySelector("#contents").value;
         if (eUtil.isEmpty(contents) == true) {
             alert('내용을 입력 하세요.');
             contents.focus();
@@ -75,8 +48,6 @@ document.addEventListener("DOMContentLoaded",function(){
         if(confirm('수정 하시겠습니까?')==false){
             return;
         }
-        
-        const modId = '${sessionScope.user.email}';
         
         $.ajax({
             type: "POST",
@@ -261,11 +232,11 @@ document.addEventListener("DOMContentLoaded",function(){
              value='${vo.title }'
             placeholder="제목을 입력 하세요">
         </div>      
+        <div class="mb-3">
+            <label for="contents" class="form-label">내용</label>
+            <textarea rows="7" class="form-control"  id="contents" name="contents">${vo.contents }</textarea>
+        </div>
     </form> 
-    
-    <form action="" method="POST">
-        <textarea rows="7" class="form-control"  id="editor" name="contents">${vo.contents }</textarea>
-    </form>
     <!--// form --------------------------------------------------------------->
     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </div>

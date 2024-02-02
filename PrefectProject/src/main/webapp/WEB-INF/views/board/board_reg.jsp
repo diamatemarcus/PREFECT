@@ -8,14 +8,6 @@
 <head>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 등록</title> <!-- http://localhost:8080/ehr/board/moveToReg.do -->
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/ckeditor.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/34.0.0/classic/translations/ko.js"></script>
-<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>
-<!-- <script src="/ckeditor/ckeditor.js"></script>
-<script src="/ckeditor/ko.js"></script> -->
-<style>
-  .ck-editor__editable { height: 400px; }
-</style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
     console.log("DOMContentLoaded");
@@ -34,33 +26,6 @@ document.addEventListener("DOMContentLoaded",function(){
         moveToListFun();
     }); //-- moveToListBTN
     
-    
-    let editorInstance; // CKEditor 인스턴스를 저장할 변수
-
-    // CKEditor 로드 여부 확인
-    if (typeof ClassicEditor === 'undefined') {
-        console.error("CKEditor is not loaded.");
-        return;
-    }
-    
-    // CKEditor 인스턴스 초기화
-    ClassicEditor
-	    .create(document.querySelector('#editor'), {
-	        //removePlugins: [ 'Italic' ],
-	        language: 'ko',
-	        ckfinder: {
-	            uploadUrl: '/ajax/image.do'
-	        }
-	    })
-	    .then(function (editor) {
-	        editorInstance = editor;
-	        console.log("CKEditor is initialized.");
-	    })
-	    .catch(function (error) {
-	        console.error(error);
-	    });
-
-
     function moveToListFun() {
         window.location.href = "/ehr/board/doRetrieve.do";
     }
@@ -78,13 +43,17 @@ document.addEventListener("DOMContentLoaded",function(){
         let div = document.querySelector("#div").value;
         let title = document.querySelector("#title").value;
         let regId = document.querySelector("#regId").value;
-
-        // CKEditor에서 작성한 내용을 가져옵니다.
-        let contents = editorInstance.getData();
+        let contents = document.querySelector("#contents").value;
 
         console.log("title:" + title);
         console.log("regId:" + regId);
         console.log("contents:" + contents);
+        
+        if(eUtil.isEmpty(regId) == true){
+            alert("로그인 하세요.")
+            regId.focus();
+            return;
+        }
 
         if (eUtil.isEmpty(title) === true) {
             alert("제목을 입력하세요.");
@@ -94,7 +63,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
         if (eUtil.isEmpty(contents) === true) {
             alert("내용을 입력하세요.");
-            //regForm.contents.focus();
+            regForm.contents.focus();
             return;
         }
 
@@ -153,6 +122,7 @@ document.addEventListener("DOMContentLoaded",function(){
     <div class="row justify-content-end">
         <div class="col-auto">
             <input type="button" value="목록" class="btn btn-primary" id="moveToList">
+            <input type="button" value="등록" class="btn btn-primary" id="doSave">
         </div>
     </div>
     <!--// 버튼 ----------------------------------------------------------------->
@@ -166,6 +136,18 @@ document.addEventListener("DOMContentLoaded",function(){
      -->
     <!-- form -->
     <form action="#" name="regFrm" id="regFrm">
+<!--         <div class="mb-3">
+            <label for="title" class="form-label">구분</label>
+            <select class="form-select" aria-label="Default select example" id="div" name="div">
+              <c:forEach var="codeVO" items="${divCode}">
+                 <option   value="<c:out value='${codeVO.detCode}'/>"  
+                    <c:if test="${codeVO.detCode == paramVO.getDiv() }">selected</c:if>  
+                 ><c:out value="${codeVO.detName}"/></option>
+              </c:forEach>
+              
+            </select>            
+        </div> -->
+    
         <input type="hidden" name="div" id="div" value="10">
      
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
@@ -177,11 +159,10 @@ document.addEventListener("DOMContentLoaded",function(){
             <input type="text" class="form-control" id="regId" name="regId" value="dlgkssk1627@naver.com" 
             readonly="readonly" >        
         </div>
-    </form>
-    
-	<form action="" method="POST">
-        <textarea name="text" id="editor"></textarea>
-    <p><input type="button" value="등록" class="btn btn-primary" id="doSave"></p>
+        <div class="mb-3">
+            <label for="title" class="form-label">내용</label>
+            <textarea rows="7" class="form-control"  id="contents" name="contents"></textarea>
+        </div>
     </form>
     <!--// form --------------------------------------------------------------->
     
