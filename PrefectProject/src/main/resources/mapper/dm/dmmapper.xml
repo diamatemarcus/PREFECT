@@ -61,7 +61,7 @@
         </choose>
       )
   </update>
-  <select id="recentMessage" parameterType="MessageVO" resultType="MessageVO">
+  <select id="recentMessage" parameterType="DmVO" resultType="DmVO">
  <![CDATA[
     SELECT seq,
            room,
@@ -77,7 +77,7 @@
     ORDER BY seq DESC
     ]]>
 </select>
-<select id="contentsList" parameterType="MessageVO" resultType="MessageVO">
+<select id="contentsList" parameterType="DmVO" resultType="DmVO">
     <![CDATA[
         SELECT m.seq,
                m.room,
@@ -86,7 +86,7 @@
                m.contents,
                TO_CHAR(m.send_dt, 'YYYY-MM-DD HH24:MI') AS sendDT,
                TO_CHAR(m.read_dt, 'YYYY-MM-DD HH24:MI') AS sendDT,
-               m.read_chk,
+               m.read_chk AS readChk,
                u.name
         FROM dm m
         LEFT OUTER JOIN users u ON m.sender = u.name 
