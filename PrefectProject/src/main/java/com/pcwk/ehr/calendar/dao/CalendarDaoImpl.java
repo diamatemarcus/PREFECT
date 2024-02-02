@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
-import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.calendar.domain.CalendarVO;
+import com.pcwk.ehr.calendar.domain.WeekVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 
 @Repository
@@ -25,17 +25,17 @@ public class CalendarDaoImpl implements CalendarDao, PcwkLogger{
 	
 
 	@Override
-	public List<CalendarVO> doSelectMonth(CalendarVO inVO) throws SQLException, EmptyResultDataAccessException {
-		List<CalendarVO> outVO = null;
+	public List<WeekVO> doRetrieveMonth(CalendarVO inVO) throws SQLException, EmptyResultDataAccessException {
+		List<WeekVO> outVO = null;
 		
 		LOG.debug("1.param \n" + inVO.toString());
 		String statement = NAMESPACE+DOT+"doSelectMonth";
 		LOG.debug("2.statement \n" + statement);
 		
 		outVO= this.sqlSessionTemplate.selectList(statement, inVO);
-		if(null != outVO) {
-			LOG.debug("3.outVO \n" + outVO.toString());
-		}
+		for(WeekVO vo :outVO) {
+			LOG.debug(vo);
+		}		
 		return outVO;
 	}
 

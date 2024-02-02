@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.pcwk.ehr.calendar.dao.CalendarDao;
 import com.pcwk.ehr.calendar.domain.CalendarVO;
+import com.pcwk.ehr.calendar.domain.WeekVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 
 @Service
@@ -17,8 +18,8 @@ public class CalendarServiceImpl implements PcwkLogger, CalendarService {
 	CalendarDao dao;
 	
 	@Override
-	public List<CalendarVO> doRetrieve(CalendarVO inVO) throws SQLException {
-		return dao.doSelectMonth(inVO);
+	public List<WeekVO> doRetrieveMonth(CalendarVO inVO) throws SQLException {
+		return dao.doRetrieveMonth(inVO);
 	}
 
 }

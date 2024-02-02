@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pcwk.ehr.calendar.dao.CalendarDao;
 import com.pcwk.ehr.calendar.domain.CalendarVO;
+import com.pcwk.ehr.calendar.domain.WeekVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.schedule.domain.ScheduleVO;
 
@@ -43,7 +44,7 @@ public class CalendarDaoJUnitTest implements PcwkLogger{
 	
 	@Test
 	public void getCalendar() throws SQLException {
-		List<CalendarVO> outVO01 = dao.doSelectMonth(calendarVO01);
+		List<WeekVO> outVO01 = dao.doRetrieveMonth(calendarVO01);
 		assertNotNull(outVO01);// Not Null이면 true
 		
 		// 데이터 동일 테스트

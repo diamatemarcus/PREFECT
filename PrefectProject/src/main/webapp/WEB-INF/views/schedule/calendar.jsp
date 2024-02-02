@@ -13,7 +13,69 @@
 <title>달력</title>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
+	console.log("DOMContentLoaded");
 
+	const nextMonthBTN  = document.querySelector("#nextMonth");
+	const lastMonthBTN  = document.querySelector("#lastMonth");
+	let month  = document.querySelector("#month").value;
+	
+	console.log("월 : ", month);
+	
+	// "01" 형식을 정수 1로 바꾸는 과정
+	let monthInt = parseInt(month, 10);
+	console.log(monthInt);
+	
+	
+	/* let now = new Date();	// 현재 날짜 및 시간
+	let month = now.getMonth();	// 월
+	console.log("월 : ", month + 1); */
+	
+	 if (monthInt <= 1) {
+	        lastMonthBTN.style.display = "none";
+	    }
+	
+	if (monthInt >= 12) {
+		nextMonthBTN.style.display = "none";
+    }
+	
+
+	nextMonthBTN.addEventListener("click",function(e){
+		
+		console.log("nextMonthBTN click");
+		
+		//다음 달
+		monthInt ++;
+		
+		//정수를 "01" 형식 String으로 바꾸는 과정
+		let stringValue = monthInt < 10 ? '0' + monthInt : String(monthInt);
+		console.log(stringValue);
+		
+		//(#month) value 값 변경
+		month = stringValue;
+		console.log(month);
+	     
+	    window.location.href = "${CP}/calendar/doRetrieveCalendar.do?month="+month; 
+      
+  	});
+	
+	lastMonthBTN.addEventListener("click",function(e){
+			
+			console.log("lastMonthBTN click");
+			
+			//다음 달
+			monthInt --;
+			
+			//정수를 "01" 형식 String으로 바꾸는 과정
+			let stringValue = monthInt < 10 ? '0' + monthInt : String(monthInt);
+			console.log(stringValue);
+			
+			//(#month) value 값 변경
+			month = stringValue;
+			console.log(month);
+		     
+		    window.location.href = "${CP}/calendar/doRetrieveCalendar.do?month="+month; 
+	      
+	  });
     
 });//--DOMContentLoaded
 
@@ -28,8 +90,15 @@ ${calendarList }
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">달력</h1>
+            <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
+            <input type="button" value="이전" class="btn btn-primary"  id="lastMonth">
+            <input type="button" value="다음" class="btn btn-primary"  id="nextMonth">
+          </div>
         </div>
     </div>    
+    
+    <input type="text" name="month"    id="month"  value="${month}"/>
+    
     <!--// 제목 ----------------------------------------------------------------->
 
     <!-- 검색 -->
@@ -66,30 +135,31 @@ ${calendarList }
     
     
     <!-- table -->
-    <%-- <table class="table table-bordered border-primary table-hover table-striped" id="boardTable">
+    <table class="table table-bordered border-primary table-hover table-striped" id="calendarTable">
       <thead>
         <tr >
           <th scope="col" class="text-center col-lg-1  col-sm-1">일</th>
-          <th scope="col" class="text-center col-lg-7  col-sm-8">월</th>
-          <th scope="col" class="text-center col-lg-2  col-sm-1">화</th>
-          <th scope="col" class="text-center col-lg-2  col-sm-1">수</th>
-          <th scope="col" class="text-center col-lg-2  col-sm-1">목</th>
-          <th scope="col" class="text-center col-lg-2  col-sm-1">금</th>
-          <th scope="col" class="text-center col-lg-2  col-sm-1">토</th>
+          <th scope="col" class="text-center col-lg-1  col-sm-1">월</th>
+          <th scope="col" class="text-center col-lg-1  col-sm-1">화</th>
+          <th scope="col" class="text-center col-lg-1  col-sm-1">수</th>
+          <th scope="col" class="text-center col-lg-1  col-sm-1">목</th>
+          <th scope="col" class="text-center col-lg-1  col-sm-1">금</th>
+          <th scope="col" class="text-center col-lg-1  col-sm-1">토</th>
         </tr>
       </thead>         
       <tbody>
         <c:choose>
-            <c:when test="${ not empty list }">
+            <c:when test="${ not empty calendarList }">
               <!-- 반복문 -->
               <c:forEach var="vo" items="${calendarList}" varStatus="status">
                 <tr>
-                  <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.no}" escapeXml="true"/> </th>
-                  <td class="text-left   col-lg-7  col-sm-8" ><c:out value="${vo.title}" escapeXml="true"/></td>
-                  <td class="text-center col-lg-2  col-sm-1"><c:out value="${vo.modDt}" escapeXml="true"/></td>
-                  <td class="            col-lg-1 "><c:out value="${vo.modId}" /></td>
-                  <td class="text-end    col-lg-1 "><c:out value="${vo.readCnt}" /></td>
-                  <td  style="display: none;"><c:out value="${vo.seq}" /></td>
+                  <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.sun}"/> </td>
+                  <td class="text-center col-lg-1  col-sm-1" ><c:out value="${vo.mon}"/> </td>
+                  <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.tue}"/> </td>
+                  <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.wed}" /> </td>
+                  <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.thu}" /> </td>
+                  <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.fri}" /> </td>
+                  <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.sat}" /> </td>
                 </tr>              
               </c:forEach>
               <!--// 반복문 -->      
@@ -101,7 +171,7 @@ ${calendarList }
             </c:otherwise>
         </c:choose>
       </tbody>
-    </table> --%>
+    </table>
     <!--// table --------------------------------------------------------------> 
     
     <!-- 페이징 : 함수로 페이징 처리 

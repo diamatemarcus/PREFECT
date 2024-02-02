@@ -19,5 +19,6 @@
         <typeAlias type="com.pcwk.ehr.subject.domain.SubjectVO" alias="SubjectVO"/>
         <typeAlias type="com.pcwk.ehr.schedule.domain.ScheduleVO" alias="ScheduleVO"/>
         <typeAlias type="com.pcwk.ehr.calendar.domain.CalendarVO" alias="CalendarVO"/>
+        <typeAlias type="com.pcwk.ehr.calendar.domain.WeekVO" alias="WeekVO"/>
     </typeAliases>
 </configuration>

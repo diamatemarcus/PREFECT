@@ -23,6 +23,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pcwk.ehr.calendar.domain.CalendarVO;
+import com.pcwk.ehr.calendar.domain.WeekVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 
 @WebAppConfiguration
@@ -71,11 +72,14 @@ public class CalendarControllerJUnitTest implements PcwkLogger{
 		MvcResult mvcResult=  mockMvc.perform(requestBuilder).andExpect(status().isOk()).andReturn() ;
 		//호출결과
 		ModelAndView modelAndView = mvcResult.getModelAndView();
-		List<CalendarVO>  list  = (List<CalendarVO>) modelAndView.getModel().get("calendarList");
+		List<WeekVO>  list  = (List<WeekVO>) modelAndView.getModel().get("calendarList");
+		String month = (String) modelAndView.getModel().get("month");
 
-		for(CalendarVO vo  :list) {
+		for(WeekVO vo  :list) {
 			LOG.debug(vo);
 		}
+		
+		LOG.debug(month);
 		
 		assertNotNull(list);
 		
