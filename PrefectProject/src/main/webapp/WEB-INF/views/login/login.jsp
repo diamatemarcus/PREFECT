@@ -19,15 +19,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/53a8c415f1.js" crossorigin="anonymous"></script>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-	<script src="http://code.jquery.com/jquery-latest.js"></script>
-    <script>
-    	$(function(){
-            $("#find_id_btn").click(function(){
-                location.href='../login/findId.do';
-            })
-        })
-        
-    </script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
      <div class="wrap">
@@ -41,22 +33,22 @@
                 <h4>비밀번호</h4>
                 <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요" required="required">
             </div>
-          <div class="forgot">
-	          <div class="forgot_email" id="find_id_btn">
-	                <a href="">이메일을 잊어버리셨나요?</a>
-	            </div>
-	          <div class="forgot_password" id="find_password_btn">
-	                <a href="">비밀번호를 잊어버리셨나요?</a>
-	            </div>
+          <div class="search">
+               <div class="search_email">
+                    <a href="${pageContext.request.contextPath}/search/searchEmail.do">이메일을 잊어버리셨나요?</a>
+                </div>
+              <div class="search_password" id="searchPassword">
+                    <a href="/login/search_password">비밀번호를 잊어버리셨나요?</a>
+                </div>
             </div>
-            <div class="submit">	
+            <div class="submit">    
                 <input type="submit" id="doLogin" value="로그인">
             </div>
             <br>
            <div class="register" >
-           		<a href="${pageContext.request.contextPath}/user/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
+                <a href="${pageContext.request.contextPath}/user/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
            </div>
-	       </p>
+           </p>
             <div class="login_sns">
                 <li> <a id="custom-login-btn" href="javascript:kakaoLogin()">
                     <img
