@@ -49,7 +49,7 @@ public class LoginController implements PcwkLogger{
 		MessageVO  message =new MessageVO();
 		
 		//입력 validation
-		//id null check 
+		//Email null check 
 		if(null == user.getEmail() || "".equals(user.getEmail())) {
 			message.setMsgId("1");
 			message.setMsgContents("이메일을 입력 하세요.");
@@ -72,9 +72,9 @@ public class LoginController implements PcwkLogger{
 		
 		  
 	    int check=loginService.loginCheck(user);
-	    if(10==check) {//id확인
+	    if(10==check) {//이메일 확인
 	    	message.setMsgId("10");
-			message.setMsgContents("아이디를 확인 하세요.");
+			message.setMsgContents("이메일을 확인 하세요.");
 			
 	    }else if(20==check) {//비번확인
 	    	message.setMsgId("20");

@@ -63,7 +63,7 @@ public class SearchEmailDaoImpl implements SearchEmailDao,PcwkLogger {
 	}
 
 	@Override
-	public int telCheck(UserVO inVO) throws SQLException {
+	public int nameTelCheck(UserVO inVO) throws SQLException {
 		int count = 0;
 		LOG.debug("1.param :" + inVO.toString());
 		String statement = NAMESPACE+DOT+"telCheck";

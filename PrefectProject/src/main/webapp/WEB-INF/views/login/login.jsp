@@ -25,7 +25,7 @@
      <div class="wrap">
         <div class="login">
             <h2>로그인</h2>
-            <div class="login_id">
+            <div class="login_email">
                 <h4>E-mail</h4>
                 <input type="text" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" required="required">
             </div>
@@ -35,7 +35,7 @@
             </div>
           <div class="search">
                <div class="search_email">
-                    <a href="${pageContext.request.contextPath}/search/searchEmail.do">이메일을 잊어버리셨나요?</a>
+                    <a href="${CP}/search/searchEmailView.do">이메일을 잊어버리셨나요?</a>
                 </div>
               <div class="search_password" id="searchPassword">
                     <a href="/login/search_password">비밀번호를 잊어버리셨나요?</a>
@@ -46,7 +46,7 @@
             </div>
             <br>
            <div class="register" >
-                <a href="${pageContext.request.contextPath}/user/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
+                <a href="${CP}/user/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
            </div>
            </p>
             <div class="login_sns">

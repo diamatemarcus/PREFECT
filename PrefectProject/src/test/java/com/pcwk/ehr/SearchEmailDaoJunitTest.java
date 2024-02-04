@@ -82,12 +82,12 @@ public class SearchEmailDaoJunitTest implements PcwkLogger {
 		flag = dao.doSave(userVO03);
 		assertEquals(1, flag);
 		assertEquals(3,dao.getCount(searchVO));
-		//3.1 nameCheck
+		//3.1 이름 Check
 		int cnt = searchEmailDao.nameCheck(userVO01);
 		assertEquals(1, cnt);
 		
-		//3.2 telCheck
-		cnt = searchEmailDao.telCheck(userVO01);
+		//3.2 이름,전화번호 Check
+		cnt = searchEmailDao.nameTelCheck(userVO01);
 		assertEquals(1, cnt);
 		
 	
