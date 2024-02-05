@@ -11,11 +11,20 @@ import lombok.Setter;
 @AllArgsConstructor//모든인자 생성자
 public class LicensesVO {
 	private int seq;
+	private int licensesSeq;
+	private String email;
 	private String name;
+	private String RegDt;
+	
 	@Override
 	public String toString() {
-		return "LicenseVO [seq=" + seq + ", name=" + name + ", toString()=" + super.toString() + "]";
+		return "LicensesVO [seq=" + seq + ", licensesSeq=" + licensesSeq + ", email=" + email + ", name=" + name
+				+ ", RegDt=" + RegDt + ", toString()=" + super.toString() + "]";
 	}
+	
+	
+
+	
 	
 	
 }

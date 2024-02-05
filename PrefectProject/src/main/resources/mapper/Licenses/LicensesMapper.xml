@@ -10,4 +10,18 @@
 	FROM
 	    licenses
     </select>
+    
+    <insert id="doSave" parameterType="LicensesVO">
+		INSERT INTO user_licenses (
+		    email,
+		    licenses_seq,
+		    reg_dt
+		) VALUES (
+		    #{email},
+		    (SELECT seq FROM licenses WHERE seq = #{seq}),
+		   '#{reg_dt}'
+		);
+    </insert>
+    
+    
 </mapper>

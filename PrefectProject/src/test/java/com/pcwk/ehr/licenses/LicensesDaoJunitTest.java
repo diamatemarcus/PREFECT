@@ -18,7 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
-import com.pcwk.ehr.licenses.dao.LicensesDao;
+import com.pcwk.ehr.licenses.dao.LicensesDaoImpl;
 import com.pcwk.ehr.licenses.domain.LicensesVO;
 
 @RunWith(SpringJUnit4ClassRunner.class) // 스프링 테스트 컨텍스트 프레임웤그의 JUnit의 확장기능 지정
@@ -27,9 +27,13 @@ import com.pcwk.ehr.licenses.domain.LicensesVO;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class LicensesDaoJunitTest implements PcwkLogger{
 	@Autowired
-	LicensesDao dao;
+	LicensesDaoImpl dao;
 	
-	LicensesVO vo;
+	LicensesVO searchVO;
+	
+	LicensesVO license01;
+	LicensesVO license02;
+	LicensesVO license03;
 	
 	
 	@Autowired
@@ -37,20 +41,35 @@ public class LicensesDaoJunitTest implements PcwkLogger{
 
 	@Before
 	public void setUp() throws Exception {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ setUp                             │");
+		LOG.debug("└───────────────────────────────────┘");
+		
+		int seq = 1;
+		int licensesSeq = 1;
+		String title = "dlgkssk1627@naver.com";
+		String name = "정보처리산업기사";
+		String RegDt = "2024-02-05";
+		
+		
+		
+	
+		
 	}
 	
 	@Test
 	public void doSelectAll() throws SQLException {
-	    // given
-	    LicensesVO vo = new LicensesVO();
 	    
-	    // when
-	    List<LicensesVO> licensesList = dao.doSelectAll(vo);
+	    List<LicensesVO> licensesList = dao.doSelectAll(searchVO);
 	    
 	    // then
 	    assertNotNull(licensesList);
 	    assertFalse(licensesList.isEmpty());
 	    assertEquals(9, licensesList.size());
+	}
+	@Test
+	public void doSave() throws SQLException{
+		
 	}
 
 	@Test
