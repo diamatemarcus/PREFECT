@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded",function(){
         <input type="hidden" name="div" id="div" value="10">
      
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
-            <label for="title" class="form-label">Title</label>
+            <label for="title" class="form-label">제목</label>
             <input type="text" class="form-control" id="title" name="title" maxlength="100" placeholder="제목을 입력 하세요.">
         </div>
         <div class="mb-3">
