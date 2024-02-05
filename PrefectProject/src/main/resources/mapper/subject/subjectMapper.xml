@@ -44,7 +44,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		        u.role = 30 
 		        AND 
 		        u.email = #{email}
-		    );
+		    )
 
     
         
@@ -63,31 +63,27 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		FROM
 		    subject
 		WHERE
-	        trainee = #{trainee}
+	        trainee = #{email}
 	
 	</select>
 	
-	
-
 	<update id="doUpdate" parameterType="SubjectVO">
-		UPDATE subject
-		SET
-		 	subject_code = #{subjectCode} 
-		    ,course_code = #{courseCode}
-		    ,professor	 = #{professor}
-		    ,trainee	 = #{trainee}
-		    ,score		 = #{score}
-		WHERE
-	        trainee = #{trainee}
-	
+	    UPDATE subject
+	    SET
+	        subject_code = #{subjectCode},
+	        course_code = #{courseCode},
+	        professor = #{professor},
+	        trainee = #{trainee},
+	        score = #{score}
+	    WHERE
+	        subject_code = #{subjectCode} AND
+	        course_code = #{courseCode} AND
+	        trainee = #{trainee};
 	</update>
+	
 
 
-    <delete id="doDelete" parameterType="SubjectVO">
-		DELETE FROM subject
-		WHERE
-		        trainee = #{trainee}
-    </delete>
+
     
     <insert id="doSave" parameterType="SubjectVO">
 	    INSERT INTO subject (

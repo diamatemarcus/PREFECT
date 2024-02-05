@@ -25,10 +25,6 @@ public class SubjectServiceImpl implements SubjectService, PcwkLogger {
         return dao.doUpdate(inVO);
     }
 
-    @Override
-    public int doDelete(SubjectVO inVO) throws SQLException {
-        return dao.doDelete(inVO);
-    }
 
     @Override
     public SubjectVO doSelectOne(SubjectVO inVO) throws SQLException, EmptyResultDataAccessException {
