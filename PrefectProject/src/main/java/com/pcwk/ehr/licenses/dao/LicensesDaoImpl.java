@@ -8,61 +8,68 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
-import com.pcwk.ehr.board.domain.BoardVO;
-import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.licenses.domain.LicensesVO;
 
 @Repository
-public class LicensesDaoImpl implements LicensesDao, PcwkLogger{
+public class LicensesDaoImpl implements LicensesDao {
 	final String NAMESPACE = "com.pcwk.ehr.licenses";
-	final String DOT       = ".";
-	
+	final String DOT = ".";
+
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
-	
-	public List<LicensesVO> doSelectAll(LicensesVO inVO) throws SQLException, EmptyResultDataAccessException {
+
+	@Override
+	public int doUpdate(LicensesVO inVO) throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ doUpdate                          │");
+		LOG.debug("│ BoardVO                           │"+inVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doUpdate");
+		LOG.debug("└───────────────────────────────────┘");		
+		return sqlSessionTemplate.update(NAMESPACE+DOT+"doUpdate", inVO);
+	}
+
+	@Override
+	public int doDelete(LicensesVO inVO) throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ doDelete                          │");
+		LOG.debug("│ BoardVO                           │"+inVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doDelete");
+		LOG.debug("└───────────────────────────────────┘");		
 		
+		return sqlSessionTemplate.delete(NAMESPACE+DOT+"doDelete", inVO);
+	}
+
+	@Override
+	public LicensesVO doSelectOne(LicensesVO inVO) throws SQLException, EmptyResultDataAccessException {
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSelectOne                       │");
-		LOG.debug("│ LicensesVO                        │"+inVO);
-		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doSelectAll");
+		LOG.debug("│ BoardVO                           │"+inVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doSelectOne");
 		LOG.debug("└───────────────────────────────────┘");	
 		
-		return sqlSessionTemplate.selectList(NAMESPACE + DOT + "doSelectAll",inVO);
+		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"doSelectOne", inVO);
 	}
 
 	@Override
-	public int doUpdate(BoardVO inVO) throws SQLException {
-		
-		return 0;
-	}
-
-	@Override
-	public int doDelete(BoardVO inVO) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public BoardVO doSelectOne(BoardVO inVO) throws SQLException, EmptyResultDataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int doSave(BoardVO inVO) throws SQLException {
+	public int doSave(LicensesVO inVO) throws SQLException {
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSave                            │");
-		LOG.debug("│ LicensesVO                        │"+inVO);
+		LOG.debug("│ BoardVO                           │"+inVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doSave");
+		//com.pcwk.ehr.board.doSave
 		LOG.debug("└───────────────────────────────────┘");	
-		return sqlSessionTemplate.insert(NAMESPACE+DOT+"doSave",inVO);
+		return sqlSessionTemplate.insert(NAMESPACE+DOT+"doSave", inVO);
 	}
 
 	@Override
-	public List<BoardVO> doRetrieve(BoardVO inVO) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<LicensesVO> doRetrieve(LicensesVO inVO) throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ doRetrieve                        │");
+		LOG.debug("│ LicensesVO                        │" + inVO);
+		LOG.debug("│ statement                         │" + NAMESPACE + DOT + "doSelectAll");
+		LOG.debug("└───────────────────────────────────┘");
+
+		return sqlSessionTemplate.selectList(NAMESPACE + DOT + "doRetrieve", inVO);
 	}
 
 }
