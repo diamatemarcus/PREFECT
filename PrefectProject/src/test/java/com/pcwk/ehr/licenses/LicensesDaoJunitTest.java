@@ -99,18 +99,14 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		int flag = dao.doSave(license01);
 		assertEquals(1, flag);
 		
-		//vo01에 licensesSeq 9 할당
 		LicensesVO vo01 = dao.doSelectOne(license01);
-		int licensesSeq = 9;
+		String upDate = "2023-02-02";
 		
-		vo01.setLicensesSeq(licensesSeq);
+		vo01.setRegDt(upDate);
 		
 		//업데이트 결과 확인
 		flag = dao.doUpdate(vo01);
 		assertEquals(1, flag);
-		
-		
-		
 	}
 
 	@Test
