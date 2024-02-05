@@ -96,7 +96,7 @@
             where room=#{room}
         </when>
         <otherwise>
-            where sender=#{receiver}  and receiver=#{receiver}
+            where sender=#{sender}  and receiver=#{sender}
         </otherwise>   
     </choose>
     ORDER BY seq

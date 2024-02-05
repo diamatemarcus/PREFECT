@@ -34,6 +34,9 @@
     <a class="nav-link" href="<c:url value='/book/bookApiView.do'/>">도서구매</a>
   </li>
   <li class="nav-item">
+  <a class="nav-link active" href="<c:url value='/dm/doContentsList.do'/>">쪽지</a>
+  </li>
+  <li class="nav-item">
     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
   </li>
 </ul>        

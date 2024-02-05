@@ -40,7 +40,7 @@ public class DmController implements PcwkLogger{
 	
 	public DmController () {}
 	
-	@GetMapping(value="/moveTolist.do")//저 url로 get매핑함
+	@PostMapping(value="/moveTolist.do")//저 url로 get매핑함
 	public String moveToReg() {
 		String viewName = "";
 		LOG.debug("┌───────────────────────────────────┐");
