@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="${CP}/resources/css/user20231225.css">
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 등록</title> <!-- http://localhost:8080/ehr/board/moveToReg.do -->
 <script>
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded",function(){
         let title = document.querySelector("#title").value;
         let regId = document.querySelector("#regId").value;
         let contents = document.querySelector("#contents").value;
+        let uuid = document.querySelector("#uuid").value;
 
         console.log("title:" + title);
         console.log("regId:" + regId);
@@ -103,11 +105,68 @@ document.addEventListener("DOMContentLoaded",function(){
         });
     });
     
+    
+    /* 파일 등록 */
+    //fileUpload
+    $("#fileUpload").on("click",function(e){
+        console.log('fileUpload click');
+        
+        let formData = new FormData();
+        formData.append("uuid", uuid); // 게시글 작성 시 생성한 UUID
+        // 파일 데이터 추가
+        $("input[type='file']").each(function() {
+            let files = $(this)[0].files;
+            for (let i = 0; i < files.length; i++) {
+                formData.append("uploadFile", files[i]);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url:"${CP}/file/fileUploadAjax.do",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success:function(data){//통신 성공
+               console.log("success data:"+data);
+               let target = $('#tableTbody');
+               
+               let listData = "";
+               
+               $.each(data,function( index, value ){
+                   //console.log("vo.orgFileName:"+value.orgFileName);
+                   console.log("index:"+index);
+                   listData += "<tr>"; 
+                   listData +="<td>"+(index+1)+"</td>";
+                   listData +="<td>"+(value.orgFileName)+"</td>";
+                   listData +="<td>"+(value.saveFileName)+"</td>";
+                   listData +="<td>"+(value.fileSize)+"</td>";
+                   listData +="<td>"+(value.extension)+"</td>";
+                   listData +="<td>"+(value.savePath)+"</td>";
+                   listData += "</tr>";
+               });
+               
+               //tbody 내용 삭제
+               $("#tableTbody").empty();
+               console.log("listData:"+listData);
+               //tbody에 내용 추가
+               target.append(listData);
+            },
+            error:function(data){//실패시 처리
+               console.log("error:"+data);
+            },
+            complete:function(data){//성공/실패와 관계없이 수행!
+               console.log("complete:"+data);
+            }           
+        });//-- $.ajax
+        
+    });
+    
 }); //--DOMContentLoaded
 </script>
 </head>
 <body>
-	
+
 <div class="container">
     
     <!-- 제목 -->
@@ -149,6 +208,7 @@ document.addEventListener("DOMContentLoaded",function(){
         </div> -->
     
         <input type="hidden" name="div" id="div" value="10">
+        <input type="hidden" name="uuid" id="uuid">
      
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
             <label for="title" class="form-label">제목</label>
@@ -165,6 +225,64 @@ document.addEventListener("DOMContentLoaded",function(){
         </div>
     </form>
     <!--// form --------------------------------------------------------------->
+    
+    <!-- 파일 업로드 -->
+    <div class="container">
+		<form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm">
+		    <div class="form-group">
+		        <label for="file1">파일1</label>
+		        <input type="file" name="file1" id="file1" placeholder="파일을 선택 하세요."  multiple/>
+		        <input type="button" value="파일 등록" class="button" id="fileUpload">
+		    </div>  
+		</form>
+	</div>
+	
+	<div class="container">
+       <table id="fileList">
+           <thead>
+               <tr>
+                   <th>번호</th>
+                   <th>원본파일명</th>
+                   <th>저장파일명</th>
+                   <th>파일크기</th>              
+                   <th>확장자</th>       
+                   <th>저장경로</th>                               
+               </tr>
+           </thead>
+           <tbody id="tableTbody">
+               <c:choose>
+                   <c:when test="${list.size()>0 }">
+                      <c:forEach var="vo" items="${list}"  varStatus="status">
+                      <!-- 순번출력: status 
+                      items: collection
+                      var: collection데이터 추출
+                      varStatus:status
+                       index: 현재 반복순서(0번부터 시작)
+                       first: 첫 번째 반복인 경여 true
+                       last: 마지막 반복인 경우 true
+                       being: 반복의 시작인덱스
+                       end: 반복의 끝 인덱스
+                      -->
+                       <tr>
+                           <td>${ status.index+1 }</td>
+                           <td>${ vo.orgFileName}</td>
+                           <td>${ vo.saveFileName}</td>
+                           <td>${ vo.fileSize}</td>
+                           <td>${ vo.extension}</td>
+                           <td>${ vo.savePath}</td>
+                       </tr>
+                      </c:forEach>
+                   </c:when>
+                   <c:otherwise>
+                       <tr>
+                           <td colspan="99">no data found</td>
+                       </tr>
+                   </c:otherwise>
+               </c:choose>
+           </tbody>
+       </table>
+    </div>
+    <!-- 파일 업로드 ------------------------------------------------------------->
     
     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
     

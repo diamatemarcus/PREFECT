@@ -3,12 +3,11 @@ package com.pcwk.ehr.file.service;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.file.dao.AttachFileDao;
 import com.pcwk.ehr.file.domain.FileVO;
 
@@ -21,17 +20,14 @@ import com.pcwk.ehr.file.domain.FileVO;
  */
 
 @Service
-public class AttachFileServiceImpl implements AttachFileService {
-	//클래스 정의: AttachFileServiceImpl은 AttachFileService 인터페이스의 구현체입니다.
-	final Logger LOG = LogManager.getLogger(getClass());
-	//Logger 설정: LogManager.getLogger(getClass())를 사용하여 LOG 객체를 초기화합니다. 이 객체는 클래스 내에서 로깅을 위해 사용됩니다.
+public class AttachFileServiceImpl implements AttachFileService, PcwkLogger {
 	
-	@Autowired
-	AttachFileDao attachFileDao;
 /*
  * AttachFileDao 의존성 주입: AttachFileDao 인터페이스에 대한 의존성을 스프링 프레임워크로부터 자동 주입받습니다 (@Autowired).
  *  이 DAO는 파일 데이터 관련 데이터베이스 작업을 수행합니다.
  */
+	@Autowired
+	AttachFileDao attachFileDao;
 	
 	public AttachFileServiceImpl() {
 	}
@@ -101,6 +97,11 @@ public class AttachFileServiceImpl implements AttachFileService {
 	@Override
 	public List<FileVO> doRetrieve(FileVO inVO) throws SQLException {
 		return attachFileDao.doRetrieve(inVO);
+	}
+
+	@Override
+	public int getFileSeq() throws SQLException {
+		return attachFileDao.getFileSeq();
 	}
 	
 	/*

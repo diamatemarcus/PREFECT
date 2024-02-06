@@ -3,13 +3,12 @@ package com.pcwk.ehr.file.dao;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.file.domain.FileVO;
 
 /*
@@ -21,9 +20,8 @@ My Batis를 사용하여 데이터베이스와의 상호 작용을 처리합니�
 @Repository
 
 //클래스 정의: Attach File Dao Impl 클래스는 Attach File Dao 인터페이스를 구현합니다.
-public class AttachFileDaoImpl implements AttachFileDao {
-	//Logger 설정: Log Manager를 사용하여 LOG를 설정합니다. 이를 통해 메서드 호출과 중요한 단계에서 로깅을 수행합니다.
-	final Logger LOG = LogManager.getLogger(getClass());
+public class AttachFileDaoImpl implements AttachFileDao, PcwkLogger {
+	
 	//NAMESPACE: My Batis의 SQL 매핑 문서를 찾기 위한 네임스페이스를 정의합니다. 쿼리의 ID를 찾을 때 사용됩니다.
 	final String NAMESPACE = "com.pcwk.ehr.file";
 	//DOT: 문자열 .을 상수로 정의하여, 네임스페이스와 쿼리 ID를 결합할 때 사용합니다.
@@ -114,6 +112,11 @@ public class AttachFileDaoImpl implements AttachFileDao {
 		LOG.debug("1.param \n" + inVO.toString());
 		
 		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"doRetrieve", inVO);
+	}
+
+	@Override
+	public int getFileSeq() throws SQLException {
+		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getFileSeq");
 	}
 
 }

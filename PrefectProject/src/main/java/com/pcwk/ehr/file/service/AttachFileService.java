@@ -42,6 +42,6 @@ public interface AttachFileService {
 	 */
 	public List<FileVO> doRetrieve(FileVO inVO) throws SQLException;
 	
-	
+	public int getFileSeq()throws SQLException;
 	
 }

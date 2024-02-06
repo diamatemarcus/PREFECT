@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -26,15 +24,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pcwk.ehr.board.domain.BoardVO;
+import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.file.domain.FileVO;
 import com.pcwk.ehr.file.service.AttachFileService;
 
 @Controller
 @RequestMapping("file")
-public class AttachFileController {
-
-	final Logger LOG = LogManager.getLogger(getClass());
+public class AttachFileController implements PcwkLogger {
 	
 	@Autowired
 	AttachFileService attachFileService;
@@ -43,9 +41,6 @@ public class AttachFileController {
 	final String IMG_PATH  = "C:\\JSPM_0907\\03_WEB\\0305_SPRING\\WORKSPACE\\sw18\\src\\main\\webapp\\resources\\upload";
 	String yyyyMMPath = "";//년월을 포함하는 경로
 	String saveFilePath = "";
-	
-	
-	
 	
 	public AttachFileController() {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -120,7 +115,7 @@ public class AttachFileController {
 	@PostMapping(value="/fileUploadAjax.do",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<FileVO> fileUploadAjax(ModelAndView modelAndView, MultipartFile[] uploadFile)throws IllegalStateException,IOException {
+	public List<FileVO> fileUploadAjax(ModelAndView modelAndView, MultipartFile[] uploadFile)throws IllegalStateException,IOException, SQLException {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ fileUploadAjax()                          │");
 		LOG.debug("└───────────────────────────────────────────┘");
@@ -130,8 +125,9 @@ public class AttachFileController {
 		
 		//UUID
 		String UUID = StringUtil.getPK();
+		
 		//SEQ
-		int    seq  = 1;
+		int seq = 1;
 		
 		for(MultipartFile multipartFile   :uploadFile) {
 			FileVO fileVO=new FileVO();
