@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@page import="com.pcwk.ehr.dm.domain.DmVO"%>
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />     
 
 <!DOCTYPE html>
@@ -100,96 +101,15 @@
             cursor: pointer;
         }
     </style>
-
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            const seq = document.querySelector("#room").value;
-            const sender = '${sessionScope.users.email}';
-            console.log(sender);
-            
-            // 추가: 로그인 세션 정보 가져오기
-            const userId = '${sessionScope.users.id}';
-            const userName = '${sessionScope.users.name}';
-            
-            const moveToListBTN = document.querySelector("#moveToList");
-
-            // AJAX 요청
-            $.ajax({
-                type: "POST",
-                url: "/dm/doContentsList.do",
-                async: "true",
-                dataType: "json",
-                data: {
-                    "seq": seq,
-                    "room": room,
-                    "sender": sender,
-                    "contents": contents,
-                    "userId": userId,  // 추가: 로그인 세션 정보
-                    "userName": userName  // 추가: 로그인 세션 정보
-                },
-                success: function(data) {
-                    // 성공적으로 통신 완료시 처리
-                    console.log("success: " + data);
-                },
-                error: function(data) {
-                    // 통신 실패시 처리
-                    console.log("error: " + data);
-                },
-                complete: function(data) {
-                    // 통신 성공/실패 여부와 관계없이 처리
-                    console.log("complete: " + data);
-                }
-            });
-
-            // 삭제 이벤트 처리
-            $("#doDeleteBTN").click(function(e){
-                console.log('doDeleteBTN click');
-                console.log('seq :' + seq);
-                
-                if(eUtil.isEmpty(seq) == true){
-                    alert('순번을 확인하세요.');
-                    return;
-                }
-
-                if(window.confirm('삭제 하시겠습니까?') == false){
-                    return;
-                }
-
-                $.ajax({
-                    type: "GET",
-                    url: "${CP}/board/doDelete.do",
-                    async: "true",
-                    dataType: "json",
-                    data: {
-                        "seq": seq
-                    },
-                    success: function(data) {
-                        console.log("success data.msgId:" + data.msgId);
-                        console.log("success data.msgContents:" + data.msgContents);
-                        if("1" == data.msgId){
-                            alert(data.msgContents);
-                            moveToList();
-                        }else{
-                            alert(data.msgContents);
-                        }
-                    },
-                    error: function(data) {
-                        console.log("error: " + data);
-                    }
-                });
-            });
-
-            // 목록 이동 이벤트 처리
-            moveToListBTN.addEventListener("click", function(e){
-                console.log('moveToListBTN click');
-                if(confirm('목록 화면으로 이동 하시겠습니까?') == false){
-                    return;
-                }
-                </script>
-                </head>
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+	const sender = '${sessionScope.user.email}';
+};
+</script>
+</head>
+${paramVO}
 <body>
-    <c:choose>
+  <c:choose>
         <c:when test="${not empty list}">
             <c:forEach var="vo" items="${list}">
                 <div class="chat-container">
@@ -201,7 +121,7 @@
                                 <div class="time">${vo.sendDt}</div>
                             </li>
                             <li class="message bot-message">
-                                <div class="name">${vo.receiver}</div>
+                                <div class="name">${vo.sender}</div>
                                 ${vo.contents}
                                 <div class="time">${vo.sendDt}</div>
                             </li>
@@ -212,6 +132,7 @@
             </c:forEach>
         </c:when>
     </c:choose>
+  
 
     <div class="input-container">
         <input type="text">

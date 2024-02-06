@@ -48,12 +48,6 @@ public class DmServiceImpl implements DmService, PcwkLogger {
 	public List<DmVO> contentsList(DmVO inVO) throws SQLException {
 		List list =  dao.contentsList(inVO);
 		
-		if(null != list) {
-			int updateReadChk = dao.updateReadChk(inVO);
-			LOG.debug("┌───────────────────────────────────┐");
-			LOG.debug("│ updateReadCnt                     │"+updateReadChk);
-			LOG.debug("└───────────────────────────────────┘");				
-		}
 		
 		
 		return list;

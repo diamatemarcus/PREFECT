@@ -126,11 +126,14 @@ public class DmController implements PcwkLogger{
 		LOG.debug("│ messageVO                           │"+messageVO);
 		return messageVO;
 	}
-	@PostMapping(value = "/doContentsList.do", produces = "application/json;charset=UTF-8")
+	@GetMapping(value = "/doContentsList.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public ModelAndView contentsList(DmVO inVO, ModelAndView modelAndView) throws SQLException{
+	public ModelAndView contentsList(DmVO inVO, ModelAndView modelAndView,HttpSession httpSession) throws SQLException{
 		
-		
+				if(null != httpSession.getAttribute("user")) {
+				UserVO user = (UserVO) httpSession.getAttribute("user");
+				inVO.setSender(user.getEmail());
+			    }
 				//페이지 사이즈:10
 				if(null != inVO && inVO.getPageSize() == 0) {
 					inVO.setPageSize(10L);

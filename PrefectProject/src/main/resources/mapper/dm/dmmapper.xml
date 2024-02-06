@@ -15,7 +15,7 @@
         read_chk
     ) VALUES (
         DM_SEQ.NEXTVAL,
-        #{room},
+        1,
         #{sender},
         #{receiver},
         #{contents},
@@ -90,16 +90,9 @@
                u.name
         FROM dm m
         LEFT OUTER JOIN users u ON m.sender = u.name 
+        order by seq
         ]]>  
-    <choose>
-        <when test="room != 0">
-            where room=#{room}
-        </when>
-        <otherwise>
-            where sender=#{sender}  and receiver=#{sender}
-        </otherwise>   
-    </choose>
-    ORDER BY seq
+    
 </select>
 <delete id="doDelete" parameterType="DmVO">
         DELETE FROM dm
