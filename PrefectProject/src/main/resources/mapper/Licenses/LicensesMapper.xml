@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.pcwk.ehr.licenses">
+<mapper namespace="com.pcwk.ehr.license">
 
 <select id="doSelectOne" parameterType="LicensesVO" resultType="LicensesVO">
 	SELECT 
 	    ul.email, 
-	    ul.licenses_seq,
+	    ul.licenses_seq, 
 	    l.name,
-	    TO_CHAR(ul.reg_dt, 'YYYY-MM-DD') AS reg_dt
+	    TO_CHAR(ul.reg_dt, 'YYYY-MM-DD') AS reg_dt 
 	FROM 
 	    User_Licenses ul
 	JOIN 
@@ -18,11 +18,15 @@
 </select>
 
    <select id="doRetrieve" parameterType="LicensesVO" resultType="LicensesVO">
-   SELECT
-	    seq,
-	    name
-    FROM
-        licenses
+	SELECT 
+        ul.email, 
+        ul.licenses_seq, 
+        l.name,
+        TO_CHAR(ul.reg_dt, 'YYYY-MM-DD') AS reg_dt 
+	FROM 
+	    User_Licenses ul
+	JOIN 
+	    licenses l ON ul.licenses_seq = l.seq
    </select>
     
 <insert id="doSave" parameterType="LicensesVO">

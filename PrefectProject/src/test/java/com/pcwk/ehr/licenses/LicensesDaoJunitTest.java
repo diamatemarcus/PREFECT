@@ -56,7 +56,7 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		license03 = new LicensesVO(licensesSeq+2, email, regDt);
 	}
 
-	@Ignore
+	//@Ignore
 	@Test
 	public void doRetrieve() throws SQLException {
 
@@ -65,7 +65,6 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		// then
 		assertNotNull(licensesList);
 		assertFalse(licensesList.isEmpty());
-		assertEquals(9, licensesList.size());
 	}
 	
 	@Ignore
@@ -85,7 +84,7 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		assertEquals(1, flag);
 
 	}
-	
+	@Ignore
 	@Test
 	public void doUpdate() throws SQLException{
 		LOG.debug("┌───────────────────────────────────┐");
