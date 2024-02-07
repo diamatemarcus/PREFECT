@@ -6,7 +6,7 @@
 <html>
 <head> 
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
-<title>게시판 상세 조회</title>
+<title>게시판 수정</title>
 <style>
    .readonly-input {
     background-color: #e9ecef ;
@@ -18,21 +18,69 @@ document.addEventListener("DOMContentLoaded",function(){
 	const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
     const modId = '${sessionScope.user.email}';
-    const regId = document.querySelector("#regId").value;
     
-    const moveToModBTN   = document.querySelector("#moveToMod");
+    const doUpdateBTN   = document.querySelector("#doUpdate");
     const doDeleteBTN   = document.querySelector("#doDelete");
     const moveToListBTN = document.querySelector("#moveToList");
     
     // 수정 이벤트 감지 및 처리
-    moveToModBTN.addEventListener("click", function(e){
-    	if(modId == regId){
-            // 수정 페이지로 이동
-            window.location.href = "/ehr/board/moveToMod.do?seq="+seq+"&div="+div;
-        } else {
-            // 일치하지 않는 경우, 경고 메시지 출력
-            alert('수정 권한이 없습니다.');
+    doUpdateBTN.addEventListener("click", function(e){
+    	
+    	if(eUtil.isEmpty(seq) == true){
+            alert('순번을 확인 하세요.');
+            return;
         }
+    	
+    	const title = document.querySelector("#title").value;
+        if(eUtil.isEmpty(title) == true){
+            alert('제목을 입력 하세요.');
+            title.focus();
+            return;  
+        }
+        
+        const contents = document.querySelector("#contents").value;
+        if (eUtil.isEmpty(contents) == true) {
+            alert('내용을 입력 하세요.');
+            contents.focus();
+            return;
+        }
+        
+        if(confirm('수정 하시겠습니까?')==false){
+            return;
+        }
+        
+        $.ajax({
+            type: "POST",
+            url:"/ehr/board/doUpdate.do",
+            asyn:"true", 
+            dataType:"json",
+            data:{
+                "div"  : div,
+                "seq"  : seq,
+                "title": title,
+                "modId": modId,
+                "contents": contents
+            },
+            success:function(data){//통신 성공
+                console.log("success data.msgId:"+data.msgId);
+                console.log("success data.msgContents:"+data.msgContents);
+                
+                if(1==data.msgId){
+                    alert(data.msgContents);
+                    moveToList();
+                }else{
+                    alert(data.msgContents);
+                }
+                
+            },
+            error:function(data){//실패시 처리
+                console.log("error:"+data);
+            },
+            complete:function(data){//성공/실패와 관계없이 수행!
+                console.log("complete:"+data);
+            }
+        });
+        
     });
     
     //삭제 이벤트 감지 및 처리
@@ -108,7 +156,7 @@ document.addEventListener("DOMContentLoaded",function(){
     <div class="row justify-content-end">
         <div class="col-auto">
             <input type="button" value="목록" class="btn btn-primary" id="moveToList">
-            <input type="button" value="수정" class="btn btn-primary" id="moveToMod" >
+            <input type="button" value="수정" class="btn btn-primary" id="doUpdate" >
             <input type="button" value="삭제" class="btn btn-primary" id="doDelete" >
         </div>
     </div>
@@ -181,11 +229,12 @@ document.addEventListener("DOMContentLoaded",function(){
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
             <label for="title" class="form-label">제목</label>
             <input type="text" class="form-control" id="title" name="title" maxlength="100" 
-             value='${vo.title }' readonly="readonly">
+             value='${vo.title }'
+            placeholder="제목을 입력 하세요">
         </div>      
         <div class="mb-3">
             <label for="contents" class="form-label">내용</label>
-            <textarea rows="7" class="form-control"  id="contents" name="contents" readonly="readonly">${vo.contents }</textarea>
+            <textarea rows="7" class="form-control"  id="contents" name="contents">${vo.contents }</textarea>
         </div>
         
         <div class="container">

@@ -44,4 +44,6 @@ public interface AttachFileService {
 	
 	public int getFileSeq()throws SQLException;
 	
+	public List<FileVO> getFileUuid(String uuid);
+	
 }

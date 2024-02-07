@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.annotation.SessionScope;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.pcwk.ehr.board.domain.BoardVO;
@@ -44,6 +45,49 @@ public class BoardController implements PcwkLogger{
 	AttachFileService fileService;
 	
 	public BoardController() {}
+	
+	@GetMapping(value="/moveToMod.do")//저 url로 get매핑함
+	public String moveToMod(BoardVO inVO, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException{
+		String view = "";
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ moveToMod                         │");
+		LOG.debug("│ BoardVO                           │"+inVO);
+		LOG.debug("└───────────────────────────────────┘");		
+		
+		if(0 == inVO.getSeq() ) {
+	        throw new NullPointerException("순번을 입력 하세요");
+	    }
+		
+		BoardVO  outVO = service.doSelectOne(inVO);
+			
+		model.addAttribute("vo", outVO);
+		
+		// 파일 정보 조회
+		List<FileVO> fileList = fileService.getFileUuid(outVO.getUuid());
+		model.addAttribute("fileList", fileList);
+		
+		//DIV코드 조회
+		Map<String, Object> codes=new HashMap<String, Object>();
+		String[] codeStr = {"BOARD_DIV"};
+		codes.put("code", codeStr);
+		
+		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
+		model.addAttribute("divCode", codeList);
+		
+		//공지사항:10, 자유게시판:20
+		String title = "";
+		if(inVO.getDiv().equals("10")) {
+			title = "공지사항-수정";
+		}else {
+			title = "자유게시판-수정";
+		}
+		model.addAttribute("title", title);	
+		
+		view = "board/board_mod";
+		
+		return view;
+		
+	}
 	
 	@GetMapping(value="/moveToReg.do")//저 url로 get매핑함
 	public String moveToReg() {
@@ -195,6 +239,10 @@ public class BoardController implements PcwkLogger{
 		BoardVO  outVO = service.doSelectOne(inVO);
 		model.addAttribute("vo", outVO);
 		
+		// 파일 정보 조회
+		List<FileVO> fileList = fileService.getFileUuid(outVO.getUuid());
+		model.addAttribute("fileList", fileList);
+		
 		//DIV코드 조회
 		Map<String, Object> codes=new HashMap<String, Object>();
 		String[] codeStr = {"BOARD_DIV"};
@@ -206,9 +254,9 @@ public class BoardController implements PcwkLogger{
 		//공지사항:10, 자유게시판:20
 		String title = "";
 		if(inVO.getDiv().equals("10")) {
-			title = "공지사항-수정";
+			title = "공지사항-상세 조회";
 		}else {
-			title = "자유게시판-수정";
+			title = "자유게시판-상세 조회";
 		}
 		model.addAttribute("title", title);	
 		

@@ -119,4 +119,9 @@ public class AttachFileDaoImpl implements AttachFileDao, PcwkLogger {
 		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getFileSeq");
 	}
 
+	@Override
+	public List<FileVO> getFileUuid(String uuid) {		
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"getFileUuid", uuid);
+	}
+
 }

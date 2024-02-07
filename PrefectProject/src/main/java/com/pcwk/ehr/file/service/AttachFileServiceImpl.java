@@ -100,8 +100,13 @@ public class AttachFileServiceImpl implements AttachFileService, PcwkLogger {
 	}
 
 	@Override
-	public int getFileSeq() throws SQLException {
+	public int getFileSeq()throws SQLException {
 		return attachFileDao.getFileSeq();
+	}
+
+	@Override
+	public List<FileVO> getFileUuid(String uuid) {
+		return attachFileDao.getFileUuid(uuid);
 	}
 	
 	/*
