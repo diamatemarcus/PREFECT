@@ -16,8 +16,8 @@
     ) VALUES (
         DM_SEQ.NEXTVAL,
         1,
-        #{sender},
-        #{receiver},
+        ${sender},
+        dlgkssk1627@naver.com,
         #{contents},
         SYSDATE,
         SYSDATE,
@@ -36,9 +36,9 @@
         read_chk
     ) VALUES (
         DM_SEQ.NEXTVAL,
-        #{room},
-        #{sender},
-        #{receiver},
+        1,
+        ${sender},
+        dlgkssk1627@naver.com,
         #{contents},
         SYSDATE,
         SYSDATE,

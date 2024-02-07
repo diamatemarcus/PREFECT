@@ -102,41 +102,69 @@
         }
     </style>
 <script>
-document.addEventListener("DOMContentLoaded",function(){
-	const sender = '${sessionScope.user.email}';
-};
+document.addEventListener("DOMContentLoaded", function () {
+    const sender = '${sessionScope.user.email}';
+    const doSendBTN = document.querySelector("#doSend");
+
+    doSendBTN.addEventListener("click", function (e) {
+        const contents = // 여기에 메시지 내용을 가져오는 코드를 넣으세요;
+        $.ajax({
+            type: "POST",
+            url: "/ehr/dm/doSend.do",
+            async: true,
+            dataType: "json",
+            data: {
+                "sender": sender,
+                "contents": contents
+            },
+            success: function (data) { // 통신 성공
+                console.log("success data.msgId:" + data.msgId);
+                console.log("success data.msgContents:" + data.msgContents);
+
+                if (1 == data.msgId) {
+                    alert(data.msgContents);
+                    moveToList();
+                } else {
+                    alert(data.msgContents);
+                }
+            },
+            error: function (data) { // 실패시 처리
+                console.log("error:" + data);
+            },
+            complete: function (data) { // 성공/실패와 관계없이 수행!
+                console.log("complete:" + data);
+            }
+        });
+    });
+
+    function moveToList() {
+        window.location.href = "${CP}/dm/doContentsList.do";
+    }
+});
+
 </script>
 </head>
-${paramVO}
 <body>
-  <c:choose>
-        <c:when test="${not empty list}">
-            <c:forEach var="vo" items="${list}">
-                <div class="chat-container">
-                    <div class="chat-history">
-                        <ul class="chat-messages">
-                            <li class="message user-message">
-                                <div class="name">${vo.sender}</div>
-                                ${vo.contents}
-                                <div class="time">${vo.sendDt}</div>
-                            </li>
-                            <li class="message bot-message">
-                                <div class="name">${vo.sender}</div>
-                                ${vo.contents}
-                                <div class="time">${vo.sendDt}</div>
-                            </li>
-                            <!-- 추가적인 메시지들을 여기에 추가할 수 있습니다. -->
-                        </ul>
-                    </div>
-                </div>
-            </c:forEach>
-        </c:when>
-    </c:choose>
-  
-
-    <div class="input-container">
-        <input type="text">
+<div class="chat-container">
+<div class="chat-history">
+ <ul class="chat-messages">
+    <c:forEach var="vo" items="${list}">
+        <c:set var="isCurrentUser" value="${vo.sender eq sessionScope.user.email}" />
+        <li class="message ${isCurrentUser ? 'user-message' : 'bot-message'}">
+            <div class="name">${isCurrentUser ? sessionScope.user.email : vo.sender}</div>
+            ${vo.contents}
+            <div class="time">${vo.sendDt}</div>
+        </li>
+    </c:forEach>
+</ul>
+ </div>
+ <div class="input-container">
+        <input type="text" value='${contents}' id = "doSend">
         <button>전송</button>
     </div>
+  </div>
+
+   
+    
 </body>
 </html>
