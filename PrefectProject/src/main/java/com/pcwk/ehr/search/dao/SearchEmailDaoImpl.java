@@ -20,36 +20,7 @@ public class SearchEmailDaoImpl implements SearchEmailDao,PcwkLogger {
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
 
-	@Override
-	public int doUpdate(UserVO inVO) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int doDelete(UserVO inVO) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public UserVO doSelectOne(UserVO inVO) throws SQLException, EmptyResultDataAccessException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int doSave(UserVO inVO) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public List<UserVO> doRetrieve(UserVO inVO) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public int nameCheck(UserVO inVO) throws SQLException {
 		int count = 0;

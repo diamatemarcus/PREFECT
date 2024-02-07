@@ -5,7 +5,7 @@ import java.sql.SQLException;
 import com.pcwk.ehr.cmn.WorkDiv;
 import com.pcwk.ehr.user.domain.UserVO;
 
-public interface SearchEmailDao extends WorkDiv<UserVO>{
+public interface SearchEmailDao {
 
 	/**
 	 * 이름 확인

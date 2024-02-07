@@ -24,6 +24,6 @@ public interface SearchEmailService {
 	 * @throws SQLException
 	 * @throws EmptyResultDataAccessException
 	 */
-	UserVO doSelectOne(UserVO inVO) throws SQLException, EmptyResultDataAccessException;
+	UserVO findEmail(UserVO inVO) throws SQLException, EmptyResultDataAccessException;
 	
 }

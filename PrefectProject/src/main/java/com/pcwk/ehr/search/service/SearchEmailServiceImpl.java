@@ -2,6 +2,7 @@ package com.pcwk.ehr.search.service;
 
 import java.sql.SQLException;
 
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,12 @@ import com.pcwk.ehr.user.domain.UserVO;
 
 @Service
 public class SearchEmailServiceImpl implements PcwkLogger, SearchEmailService {
+	
+	final String NAMESPACE = "com.pcwk.ehr.search";
+	final String DOT       = ".";
+	
+	@Autowired
+	SqlSessionTemplate sql;
 	
 	@Autowired
 	SearchEmailDao searchEmailDao;
@@ -46,9 +53,18 @@ public class SearchEmailServiceImpl implements PcwkLogger, SearchEmailService {
 	}
 
 	@Override
-	public UserVO doSelectOne(UserVO inVO) throws SQLException, EmptyResultDataAccessException {
-		return searchEmailDao.doSelectOne(inVO);
-	
+	public UserVO findEmail(UserVO inVO) throws SQLException, EmptyResultDataAccessException {
+		
+		UserVO  outVO = null;
+		
+		LOG.debug("입력값 :" + inVO.toString());
+		String statement = NAMESPACE+DOT+"searchEmail";//실행쿼리문
+		LOG.debug("쿼리문 :" + statement);
+		outVO = sql.selectOne(statement, inVO);//입력값으로 쿼리문 실행 후 값 outVO에 저장
+		if(null != outVO) { //outVO가 null 이 아니라면
+			LOG.debug("결과 \n" + outVO.toString());
+		}
+		return outVO; //outVO값 반환
 	}
-
+	
 }
