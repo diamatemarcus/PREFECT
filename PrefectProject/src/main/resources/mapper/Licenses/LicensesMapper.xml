@@ -58,7 +58,6 @@ WHERE
 	UPDATE 
 	    user_licenses
 	SET
-	    licenses_seq = #{licensesSeq},
 	    reg_dt = #{regDt}
 	WHERE
 	    email = #{email}

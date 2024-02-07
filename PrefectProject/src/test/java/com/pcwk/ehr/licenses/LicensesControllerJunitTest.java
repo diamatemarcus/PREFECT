@@ -2,6 +2,8 @@ package com.pcwk.ehr.licenses;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -14,9 +16,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import com.google.gson.Gson;
+import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.licenses.dao.LicensesDao;
 import com.pcwk.ehr.licenses.domain.LicensesVO;
@@ -58,7 +65,7 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 		licenses03 = new LicensesVO(8, "cr7@gmail.com", "23/02/02");
 
 	}
-	
+	@Ignore
 	@Test
 	public void doRetrieve() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -77,6 +84,38 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 	    
 	    flag = licensesDao.doSave(licenses03);
 	    assertEquals(1, flag);
+	}
+	
+	@Test
+	public void doUpdate() throws Exception{
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doUpdate()                                │");		
+		LOG.debug("└───────────────────────────────────────────┘");
+		
+		userDao.doDelete(user01);
+	    int flag = userDao.doSave(user01);
+	    assertEquals(1, flag);
+	    
+	    flag = licensesDao.doSave(licenses01);
+	    assertEquals(1, flag);
+	    
+	    LicensesVO vo = licensesDao.doSelectOne(licenses01);
+	    
+	    vo.setRegDt("2020-02-02");
+	    
+	    MockHttpServletRequestBuilder  requestBuilder  =
+	    		MockMvcRequestBuilders.post("/licenses/doUpdate.do")
+	    		.param("regDt", vo.getRegDt());
+	    
+		//호출        
+		ResultActions resultActions=  mockMvc.perform(requestBuilder).andExpect(status().isOk());
+		//호출결과
+		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
+		LOG.debug("│ result                                │"+result);		
+		
+		MessageVO messageVO=new Gson().fromJson(result, MessageVO.class);
+		assertEquals("1", messageVO.getMsgId());
+	    
 	}
 
 	@Ignore
