@@ -18,8 +18,9 @@ public class UserVO extends DTO {
 	private String tel;
 	private String edu;
 	private String role;
-	@Override
 	
+	
+	@Override
 	public String toString() {
 		return "UserVO [email=" + email + ", name=" + name + ", password=" + password + ", tel=" + tel + ", edu=" + edu
 				+ ", role=" + role + ", toString()=" + super.toString() + "]";

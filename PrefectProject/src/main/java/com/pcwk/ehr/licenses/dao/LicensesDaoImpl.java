@@ -56,7 +56,6 @@ public class LicensesDaoImpl implements LicensesDao {
 		LOG.debug("│ doSave                            │");
 		LOG.debug("│ BoardVO                           │"+inVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doSave");
-		//com.pcwk.ehr.board.doSave
 		LOG.debug("└───────────────────────────────────┘");	
 		return sqlSessionTemplate.insert(NAMESPACE+DOT+"doSave", inVO);
 	}

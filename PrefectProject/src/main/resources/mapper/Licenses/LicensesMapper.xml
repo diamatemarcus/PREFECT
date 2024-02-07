@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.pcwk.ehr.license">
+<mapper namespace="com.pcwk.ehr.licenses">
 
 <select id="doSelectOne" parameterType="LicensesVO" resultType="LicensesVO">
-	SELECT 
-	    ul.email, 
-	    ul.licenses_seq, 
-	    l.name,
-	    TO_CHAR(ul.reg_dt, 'YYYY-MM-DD') AS reg_dt 
-	FROM 
-	    User_Licenses ul
-	JOIN 
-	    licenses l ON ul.licenses_seq = l.seq
-	WHERE
-	    licenses_seq = #{licensesSeq} AND email = #{email}
+    SELECT 
+        ul.email,u.name, ul.licenses_seq, l.name ,ul.reg_dt
+    FROM 
+        User_Licenses ul
+    JOIN 
+        licenses l 
+    ON 
+        ul.licenses_seq = l.seq
+    JOIN 
+        users u 
+    ON 
+        u.email = ul.email
+	WHERE 
+	    ul.licenses_seq = #{licensesSeq} AND u.email = #{email}
 </select>
 
    <select id="doRetrieve" parameterType="LicensesVO" resultType="LicensesVO">
 	SELECT 
-        ul.email, 
-        ul.licenses_seq, 
-        l.name,
-        TO_CHAR(ul.reg_dt, 'YYYY-MM-DD') AS reg_dt 
+	    ul.email,u.name, ul.licenses_seq, l.name ,ul.reg_dt
 	FROM 
 	    User_Licenses ul
 	JOIN 
-	    licenses l ON ul.licenses_seq = l.seq
+	    licenses l 
+	ON 
+	    ul.licenses_seq = l.seq
+	JOIN 
+	    users u 
+	ON 
+	    u.email = ul.email
    </select>
     
 <insert id="doSave" parameterType="LicensesVO">
