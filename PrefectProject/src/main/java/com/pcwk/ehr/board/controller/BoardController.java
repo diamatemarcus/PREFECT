@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +26,7 @@ import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.code.domain.CodeVO;
 import com.pcwk.ehr.code.service.CodeService;
+import com.pcwk.ehr.file.domain.FileVO;
 import com.pcwk.ehr.file.service.AttachFileService;
 import com.pcwk.ehr.user.domain.UserVO;
 
@@ -216,17 +218,24 @@ public class BoardController implements PcwkLogger{
 	//@RequestMapping(value = "/doSave.do",method = RequestMethod.POST)
 	@PostMapping(value = "/doSave.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public MessageVO doSave(BoardVO inVO) throws SQLException{
+	public MessageVO doSave(BoardVO inVO, @RequestParam(value = "uuid", required = false) String uuid) throws SQLException{
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSave                            │");
 		LOG.debug("│ BoardVO                           │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");				
 		//seq조회
 		int seq = service.getBoardSeq();
-		String uuid = StringUtil.getPK();
-		
 		inVO.setSeq(seq);
+		
 		inVO.setUuid(uuid);
+		
+		/*
+		 * FileVO fileVO = new FileVO(); String uuid = fileVO.getUuid(); if (null !=
+		 * uuid) { inVO.setUuid(uuid); } else { inVO.setUuid(null); }
+		 * 
+		 * 
+		 * inVO.setUuid(uuid);
+		 */
 		
 		LOG.debug("│ BoardVO seq                       │"+inVO);
 		int flag = service.doSave(inVO);

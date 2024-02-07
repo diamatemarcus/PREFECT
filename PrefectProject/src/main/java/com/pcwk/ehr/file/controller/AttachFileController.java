@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -115,31 +116,33 @@ public class AttachFileController implements PcwkLogger {
 	@PostMapping(value="/fileUploadAjax.do",
 			produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public List<FileVO> fileUploadAjax(ModelAndView modelAndView, MultipartFile[] uploadFile)throws IllegalStateException,IOException, SQLException {
+	public ResponseEntity<List<FileVO>> fileUploadAjax(
+			@RequestParam("uuid") String uuid, // 클라이언트로부터 받은 UUID
+	        @RequestParam("uploadFile") MultipartFile[] uploadFiles) {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ fileUploadAjax()                          │");
 		LOG.debug("└───────────────────────────────────────────┘");
 		
-		LOG.debug("│ uploadFile                          │"+uploadFile);
 		List<FileVO>  list=new ArrayList<FileVO>();
 		
-		//UUID
-		String UUID = StringUtil.getPK();
+		/*
+		 * //UUID String UUID = StringUtil.getPK();
+		 */
 		
 		//SEQ
 		int seq = 1;
 		
-		for(MultipartFile multipartFile   :uploadFile) {
-			FileVO fileVO=new FileVO();
+		for(MultipartFile multipartFile   :uploadFiles) {
 			
 			LOG.debug("│ multipartFile                          │"+multipartFile);
 			
+			FileVO fileVO=new FileVO();
 			//UUID설정
-			fileVO.setUuid(UUID);
+			fileVO.setUuid(uuid);
 			
 			//SEQ
 			fileVO.setSeq(seq++);
-			
+					
 			//원본파일명
 			fileVO.setOrgFileName(multipartFile.getOriginalFilename());
 			
@@ -149,7 +152,7 @@ public class AttachFileController implements PcwkLogger {
 			
 			//저장파일명 :getPK()+확장자
 			//getPK(): yyyyMMdd+UUID
-			fileVO.setSaveFileName(StringUtil.getPK()+"."+ext);
+			fileVO.setSaveFileName(uuid+ fileVO.getSeq() +"."+ext);
 			
 			//파일크기:byte
 			fileVO.setFileSize(multipartFile.getSize());
@@ -192,7 +195,7 @@ public class AttachFileController implements PcwkLogger {
 		
 		
 		
-		return list;
+		return ResponseEntity.ok(list);
 	}
 	
 

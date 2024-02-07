@@ -37,6 +37,102 @@ document.addEventListener("DOMContentLoaded",function(){
         moveToListFun();
     });
 
+    function generateUUID() {
+        var d = new Date().getTime();//Timestamp
+        var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random() * 16;//random number between 0 and 16
+            if(d > 0){//Use timestamp until depleted
+                r = (d + r)%16 | 0;
+                d = Math.floor(d/16);
+            } else {//Use microseconds since page-load if supported
+                r = (d2 + r)%16 | 0;
+                d2 = Math.floor(d2/16);
+            }
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    }
+
+    // 사용 예:
+    var uuid = generateUUID();
+    
+    /* 파일 등록 */
+    //fileUpload
+    $("#fileUpload").on("click",function(e){
+        console.log('fileUpload click');
+        
+        let formData = new FormData();
+        formData.append("uuid", uuid);
+        
+        // 파일 데이터 추가
+        $("input[type='file']").each(function() {
+            let files = $(this)[0].files;
+            for (let i = 0; i < files.length; i++) {
+                formData.append("uploadFile", files[i]);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url:"${CP}/file/fileUploadAjax.do",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success:function(data){//통신 성공
+				console.log("data:"+data); // 응답 구조 확인
+				
+				data.forEach(function(item, index) {
+					 console.log('Item ' + index + ':', item); // 각 항목 로그 출력
+				     console.log('UUID of item ' + index + ':', item.uuid);
+				});
+				
+				if (data.length > 0) {
+				    var uuid = data[0].uuid; // 배열의 첫 번째 객체에서 UUID 값을 가져옴
+				    console.log(uuid); // 콘솔에 UUID 출력
+				}
+				
+				document.getElementById('uuid').value = uuid;
+				
+				/* var uuid = data.uuid;
+				console.log(uuid);
+				
+				let uuidV = document.querySelector("#uuid").value;
+				console.log(uuidV); */
+            
+				let target = $('#tableTbody');
+				
+				let listData = "";
+				
+				$.each(data,function( index, value ){
+				    //console.log("vo.orgFileName:"+value.orgFileName);
+				    console.log("index:"+index);
+				    listData += "<tr>"; 
+				    listData +="<td>"+(index+1)+"</td>";
+				    listData +="<td>"+(value.orgFileName)+"</td>";
+				    listData +="<td>"+(value.saveFileName)+"</td>";
+				    listData +="<td>"+(value.fileSize)+"</td>";
+				    listData +="<td>"+(value.extension)+"</td>";
+				    listData +="<td>"+(value.savePath)+"</td>";
+				    listData += "</tr>";
+				});
+				
+				//tbody 내용 삭제
+				$("#tableTbody").empty();
+				console.log("listData:"+listData);
+				//tbody에 내용 추가
+				target.append(listData);
+			},
+			error:function(data){//실패시 처리
+			   console.log("error:"+data);
+			},
+			complete:function(data){//성공/실패와 관계없이 수행!
+			   console.log("complete:"+data);
+			}           
+        });//-- $.ajax
+        
+    });
+    
+    
     // doSave event 감지 및 처리
     doSaveBTN.addEventListener("click", function (e) {
         console.log("doSaveBTN click");
@@ -83,7 +179,8 @@ document.addEventListener("DOMContentLoaded",function(){
                 "title": title,
                 "contents": contents,
                 "readCnt": 0,
-                "regId": regId
+                "regId": regId,
+                "uuid": document.getElementById('uuid').value
             },
             success: function (data) {// 통신 성공 시의 처리
                 console.log("data.msgId:" + data.msgId);
@@ -103,63 +200,6 @@ document.addEventListener("DOMContentLoaded",function(){
                 console.log("complete:" + data);
             }
         });
-    });
-    
-    
-    /* 파일 등록 */
-    //fileUpload
-    $("#fileUpload").on("click",function(e){
-        console.log('fileUpload click');
-        
-        let formData = new FormData();
-        formData.append("uuid", uuid); // 게시글 작성 시 생성한 UUID
-        // 파일 데이터 추가
-        $("input[type='file']").each(function() {
-            let files = $(this)[0].files;
-            for (let i = 0; i < files.length; i++) {
-                formData.append("uploadFile", files[i]);
-            }
-        });
-
-        $.ajax({
-            type: "POST",
-            url:"${CP}/file/fileUploadAjax.do",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success:function(data){//통신 성공
-               console.log("success data:"+data);
-               let target = $('#tableTbody');
-               
-               let listData = "";
-               
-               $.each(data,function( index, value ){
-                   //console.log("vo.orgFileName:"+value.orgFileName);
-                   console.log("index:"+index);
-                   listData += "<tr>"; 
-                   listData +="<td>"+(index+1)+"</td>";
-                   listData +="<td>"+(value.orgFileName)+"</td>";
-                   listData +="<td>"+(value.saveFileName)+"</td>";
-                   listData +="<td>"+(value.fileSize)+"</td>";
-                   listData +="<td>"+(value.extension)+"</td>";
-                   listData +="<td>"+(value.savePath)+"</td>";
-                   listData += "</tr>";
-               });
-               
-               //tbody 내용 삭제
-               $("#tableTbody").empty();
-               console.log("listData:"+listData);
-               //tbody에 내용 추가
-               target.append(listData);
-            },
-            error:function(data){//실패시 처리
-               console.log("error:"+data);
-            },
-            complete:function(data){//성공/실패와 관계없이 수행!
-               console.log("complete:"+data);
-            }           
-        });//-- $.ajax
-        
     });
     
 }); //--DOMContentLoaded
@@ -208,7 +248,7 @@ document.addEventListener("DOMContentLoaded",function(){
         </div> -->
     
         <input type="hidden" name="div" id="div" value="10">
-        <input type="hidden" name="uuid" id="uuid">
+        <input type="text" name="uuid" id="uuid">
      
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
             <label for="title" class="form-label">제목</label>
