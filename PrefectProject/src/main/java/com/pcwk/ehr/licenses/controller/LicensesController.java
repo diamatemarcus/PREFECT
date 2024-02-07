@@ -31,8 +31,10 @@ public class LicensesController implements PcwkLogger {
 		List<LicensesVO> list = new ArrayList<LicensesVO>();
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doRetrieve                        │");
-		LOG.debug("│ LicensesVO                           │" + inVO);
+		LOG.debug("│ LicensesVO                        │" + inVO);
 		LOG.debug("└───────────────────────────────────┘");
+		
+		list = service.doRetrieve(inVO);
 
 		return list;
 	}
@@ -55,6 +57,7 @@ public class LicensesController implements PcwkLogger {
 		messageVO = new MessageVO(flag + "", message);
 
 		LOG.debug("│ messageVO                           │" + messageVO);
+		
 		return messageVO;
 	}
 

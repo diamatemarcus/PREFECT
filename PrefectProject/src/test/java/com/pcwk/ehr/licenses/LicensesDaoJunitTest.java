@@ -47,16 +47,16 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		LOG.debug("│ setUp                             │");
 		LOG.debug("└───────────────────────────────────┘");
 
-		String email = "kjew03@gmail.com";
-		int licensesSeq = 3;
-		String regDt = "2024-02-02";
+		String email = "cr7@gmail.com";
+		int licensesSeq = 6;
+		String regDt = "2023-02-02";
 
 		license01 = new LicensesVO(licensesSeq, email, regDt);
 		license02 = new LicensesVO(licensesSeq+1, email, regDt);
 		license03 = new LicensesVO(licensesSeq+2, email, regDt);
 	}
 
-	//@Ignore
+	@Ignore
 	@Test
 	public void doRetrieve() throws SQLException {
 
@@ -67,7 +67,7 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		assertFalse(licensesList.isEmpty());
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void doSave() throws SQLException {
 		dao.doDelete(license01);

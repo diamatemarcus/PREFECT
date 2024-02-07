@@ -48,10 +48,11 @@
 </insert>
 
 <delete id="doDelete" parameterType="LicensesVO">
-DELETE FROM 
-    user_licenses
+DELETE FROM user_licenses
 WHERE
-    licenses_seq = #{licensesSeq}
+    email = #{email}
+    AND licenses_seq = #{licensesSeq}
+    AND reg_dt = #{regDt}
 </delete>
 
 <update id="doUpdate" parameterType="LicensesVO">
