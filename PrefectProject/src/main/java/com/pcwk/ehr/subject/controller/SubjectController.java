@@ -20,7 +20,7 @@ import com.pcwk.ehr.subject.service.SubjectService;
 import com.google.gson.Gson;
 
 @Controller
-@RequestMapping("/subject")
+@RequestMapping("subject")
 public class SubjectController implements PcwkLogger {
 
 	@Autowired
