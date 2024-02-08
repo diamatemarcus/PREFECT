@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.pcwk.ehr.calendar.domain.CalendarVO;
 import com.pcwk.ehr.schedule.domain.ScheduleVO;
 
 @Repository
@@ -103,10 +104,10 @@ public class ScheduleDaoImpl implements ScheduleDao {
 	}
 
 	@Override
-	public List<ScheduleVO> doRetrieve(ScheduleVO inVO) throws SQLException {
+	public List<ScheduleVO> doRetrieve(CalendarVO inVO) throws SQLException {
 		List<ScheduleVO> outList=new ArrayList<ScheduleVO>();
 		LOG.debug("1.param \n" + inVO.toString());
-		String statement = NAMESPACE+DOT +"doRetrieve";
+		String statement = NAMESPACE+DOT +"doSelectAllSchedule";
 		LOG.debug("2.statement \n" + statement);
 		
 		outList=this.sqlSessionTemplate.selectList(statement, inVO);
@@ -116,6 +117,14 @@ public class ScheduleDaoImpl implements ScheduleDao {
 		}		
 		return outList;
 	}
+
+	@Override
+	public List<ScheduleVO> doRetrieve(ScheduleVO inVO) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 
 
 

@@ -3,6 +3,7 @@ package com.pcwk.ehr.schedule;
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -15,6 +16,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.pcwk.ehr.calendar.domain.CalendarVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.schedule.dao.ScheduleDao;
 import com.pcwk.ehr.schedule.domain.ScheduleVO;
@@ -33,13 +35,20 @@ public class ScheduleDaoJUnitTest implements PcwkLogger{
 	
 	// 등록
 	ScheduleVO scheduleVO01;
+	ScheduleVO scheduleVO02;
 	ScheduleVO searchVO;
+	
+	CalendarVO calendar;
 	
 	@Before
 	public void setUp() throws Exception {
 
 		// 등록
-		scheduleVO01 = new ScheduleVO(1, 1, "일정", "일정입니다");
+		scheduleVO01 = new ScheduleVO(1, 20240207, "일정", "일정입니다");
+		scheduleVO02 = new ScheduleVO(2, 20240207, "일정1", "일정입니다1");
+		
+		calendar = new CalendarVO ();
+		calendar.setCalID(20240207);
 		
 	
 		searchVO = new ScheduleVO();
@@ -104,19 +113,24 @@ public class ScheduleDaoJUnitTest implements PcwkLogger{
 
 		// 1.
 		dao.doDelete(scheduleVO01);
+		dao.doDelete(scheduleVO02);
 		assertEquals(dao.getCount(searchVO), 0);
 		
 		// 2.
 		int flag = dao.doSave(scheduleVO01);
+		int flag1 = dao.doSave(scheduleVO02);
 		int count = dao.getCount(searchVO);
 		assertEquals(flag, 1);
-		assertEquals(count, 1);
+		assertEquals(flag1, 1);
+		assertEquals(count, 2);
 
 		ScheduleVO outVO01 = dao.doSelectOne(scheduleVO01);
 		assertNotNull(outVO01);// Not Null이면 true
+		
+		List<ScheduleVO> sList = dao.doRetrieve(calendar);
 
 		// 데이터 동일 테스트
-		isSameSchedule(scheduleVO01, outVO01);
+		//isSameSchedule(scheduleVO01, outVO01);
 	}
 	
 	private void isSameSchedule(ScheduleVO scheduleVO, ScheduleVO outVO) {

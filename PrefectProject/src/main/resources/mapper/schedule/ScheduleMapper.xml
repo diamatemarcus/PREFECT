@@ -39,6 +39,16 @@
 	WHERE schedule_id = #{scheduleID}     
   </select>
   
+  <select id="doSelectAllSchedule" parameterType="CalendarVO" resultType="ScheduleVO">
+	SELECT
+	    schedule_id,
+	    cal_id,
+	    title,
+	    explanation
+	FROM    schedule  
+	WHERE cal_id = #{calID}     
+  </select>
+  
   <insert id="doSave" parameterType="ScheduleVO">
 	INSERT INTO schedule (
 	    schedule_id,

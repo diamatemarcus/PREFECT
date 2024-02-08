@@ -1,6 +1,7 @@
 package com.pcwk.ehr.schedule.controller;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -8,15 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.pcwk.ehr.calendar.domain.CalendarVO;
 import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
+import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.schedule.domain.ScheduleVO;
 import com.pcwk.ehr.schedule.service.ScheduleService;
+import com.pcwk.ehr.user.domain.UserVO;
 
 @Controller
 @RequestMapping("schedule")
@@ -140,6 +145,29 @@ public class ScheduleController implements PcwkLogger{
 			LOG.debug("jsonString:"+jsonString);		
 					
 			return jsonString;
+		}
+		
+		
+		@GetMapping(value = "/doSelectAllSchedule.do"
+				,produces = "application/json;charset=UTF-8")
+		@ResponseBody
+		public List<ScheduleVO> doRetrievePopup(CalendarVO inVO, HttpServletRequest req, Model model) throws SQLException {
+			LOG.debug("┌───────────────────────────────────────────┐");
+			LOG.debug("│ doRetrievePopup                           │inVO:"+inVO);
+			LOG.debug("└───────────────────────────────────────────┘");				
+
+			String calID = req.getParameter("calID");
+			LOG.debug("│ calID                                :"+calID);	
+			
+			List<ScheduleVO>  list = this.scheduleService.doRetrieve(inVO);
+			
+			for(ScheduleVO vo  :list) {
+				LOG.debug("vo:"+vo);
+			}
+			
+			//model.addAttribute("scheduleList", list);
+			
+			return list;
 		}
 		
 }

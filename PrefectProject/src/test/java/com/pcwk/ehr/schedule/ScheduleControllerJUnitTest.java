@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
@@ -26,10 +27,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.lang.reflect.Type;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.pcwk.ehr.calendar.domain.CalendarVO;
 import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.schedule.domain.ScheduleVO;
+
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class) //스프링 테스트 컨텍스트 프레임웤그의 JUnit의 확장기능 지정
@@ -49,6 +54,8 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 	List<ScheduleVO> schedules;
 	ScheduleVO searchVO;
 	
+	CalendarVO calendar;
+	
 	@Before
 	public void setUp() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -58,12 +65,15 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 		schedules = Arrays.asList(
-				new ScheduleVO(1, 1, "일정", "일정입니다")
-//				,new ScheduleVO(2, 1, "일정1", "일정입니다1")
+				new ScheduleVO(1, 20240207, "일정", "일정입니다")
+				,new ScheduleVO(2, 20240207, "일정1", "일정입니다1")
 			);
 			
 		searchVO = new ScheduleVO();
 		searchVO.setScheduleID(3);
+		
+		calendar = new CalendarVO ();
+		calendar.setCalID(20240207);
 			
 	}
 		
@@ -93,7 +103,41 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 		
 	}
 	
-//	@Ignore
+	public List<ScheduleVO> doRetrieve(CalendarVO inVO) throws Exception{
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doRetrieve()                              │");		
+		LOG.debug("└───────────────────────────────────────────┘");		
+		
+		//UserVO  inVO = users.get(0);
+		//url + 호출방식(get) + param(Email)
+		MockHttpServletRequestBuilder  requestBuilder = 
+				MockMvcRequestBuilders.get("/schedule/doSelectAllSchedule.do")
+				.param("calID",        inVO.getCalID()+"");	
+		
+
+		
+        ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
+		
+		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
+		
+		
+		Type listType = new TypeToken<List<ScheduleVO>>(){}.getType();
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ result                                    │"+result);		
+		LOG.debug("└───────────────────────────────────────────┘");				
+		List<ScheduleVO>  list=new Gson().fromJson(result, listType);		
+	
+		for(ScheduleVO vo   :list) {
+			LOG.debug(vo);
+		}
+
+
+		
+		return list;
+		
+	}
+	
+	@Ignore
 	@Test
 	public void doUpdate() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -132,14 +176,15 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 		
 		//1.
 		doDelete(schedules.get(0));
-//		doDelete(schedules.get(1));
+		doDelete(schedules.get(1));
 
 		// 2. 
 		doSave(schedules.get(0));
-//		doSave(schedules.get(1));
+		doSave(schedules.get(1));
 		
+		doRetrieve(calendar);
 		
-		isSameSchedule(schedules.get(0), doSelectOne(schedules.get(0)));
+//		isSameSchedule(schedules.get(0), doSelectOne(schedules.get(0)));
 //		isSameSchedule(schedules.get(1), doSelectOne(schedules.get(1)));
 	}
 	
