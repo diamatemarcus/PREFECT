@@ -19,6 +19,7 @@ import com.pcwk.ehr.licenses.service.LicensesService;
 @Controller
 @RequestMapping("licenses")
 public class LicensesController implements PcwkLogger {
+	
 	@Autowired
 	LicensesService service;
 
@@ -92,10 +93,12 @@ public class LicensesController implements PcwkLogger {
 	@ResponseBody
 	public MessageVO doSave(LicensesVO inVO) throws SQLException{
 		MessageVO messageVO = null;
+		
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSave                            │");
 		LOG.debug("│ ReplyVO                           │" + inVO);
 		LOG.debug("└───────────────────────────────────┘");
+		
 		
 		int flag = service.doSave(inVO);
 		

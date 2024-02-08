@@ -54,7 +54,7 @@ public class LicensesDaoImpl implements LicensesDao {
 	public int doSave(LicensesVO inVO) throws SQLException {
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSave                            │");
-		LOG.debug("│ BoardVO                           │"+inVO);
+		LOG.debug("│ LicensesVO                        │"+inVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doSave");
 		LOG.debug("└───────────────────────────────────┘");	
 		return sqlSessionTemplate.insert(NAMESPACE+DOT+"doSave", inVO);
@@ -69,6 +69,15 @@ public class LicensesDaoImpl implements LicensesDao {
 		LOG.debug("└───────────────────────────────────┘");
 
 		return sqlSessionTemplate.selectList(NAMESPACE + DOT + "doRetrieve", inVO);
+	}
+
+	@Override
+	public int getLicensesSeq() throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ getReplySeq                       │");
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"getLicensesSeq");
+		LOG.debug("└───────────────────────────────────┘");	
+		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getLicensesSeq");
 	}
 
 }
