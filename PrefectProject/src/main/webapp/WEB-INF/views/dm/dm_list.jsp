@@ -103,19 +103,29 @@
     </style>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const sender = '${sessionScope.user.email}';
+    
     const doSendBTN = document.querySelector("#doSend");
+    
+    
 
     doSendBTN.addEventListener("click", function (e) {
-        const contents = // 여기에 메시지 내용을 가져오는 코드를 넣으세요;
+    	const sender = '${sessionScope.user.email}';
+    	const contents = document.querySelector("#contents").value;
+    	
+        const receiver = document.querySelector("#receiver").value;
+        const room = document.querySelector("#room").value; // 여기에 메시지 내용을 가져오는 코드를 넣으세요;
         $.ajax({
             type: "POST",
             url: "/ehr/dm/doSend.do",
             async: true,
             dataType: "json",
             data: {
+            	
+            	"room":room,
                 "sender": sender,
-                "contents": contents
+                "receiver":receiver,
+                "contents": contents,
+                "readChk":0
             },
             success: function (data) { // 통신 성공
                 console.log("success data.msgId:" + data.msgId);
@@ -159,8 +169,11 @@ document.addEventListener("DOMContentLoaded", function () {
 </ul>
  </div>
  <div class="input-container">
-        <input type="text" value='${contents}' id = "doSend">
-        <button>전송</button>
+        
+        <input type="hidden" id="receiver" name="receiver" value="dlgkssk1627@naver.com"> 
+        <input type="hidden" name="room" id="room" value="1">
+        <input type="text"  id = "contents" name="contents">
+        <button id = "doSend" name="doSend">전송</button>
     </div>
   </div>
 

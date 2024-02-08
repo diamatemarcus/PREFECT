@@ -8,6 +8,9 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import com.pcwk.ehr.dm.domain.DmVO;
 
 public interface DmService {
+	
+	public int getDmSeq()throws SQLException;
+	
 	public int doSend(DmVO inVO) throws SQLException;
 	 
 	public int updateReadChk(DmVO inVO)throws SQLException;

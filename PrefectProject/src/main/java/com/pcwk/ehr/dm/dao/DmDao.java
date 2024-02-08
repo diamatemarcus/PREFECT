@@ -9,6 +9,8 @@ import com.pcwk.ehr.dm.domain.DmVO;
 
 public interface DmDao {
 	
+	int getDmSeq()throws SQLException;
+	
 	int doSend(DmVO inVO) throws SQLException;
 	
 	int updateReadChk(DmVO inVO)throws SQLException;

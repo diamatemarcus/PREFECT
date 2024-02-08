@@ -39,7 +39,7 @@ public class DmDaoJunitTest implements PcwkLogger{
 		LOG.debug("│ setUp                             │");
 		LOG.debug("└───────────────────────────────────┘");
 		
-		String seq ="사용하지 않음";
+		int seq =0;
 		int room =1;
 		String sender ="gyu";
 		String receiver ="seo";

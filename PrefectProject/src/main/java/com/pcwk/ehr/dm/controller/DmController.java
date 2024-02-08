@@ -56,8 +56,8 @@ public class DmController implements PcwkLogger{
 		LOG.debug("│ doSave                            │");
 		LOG.debug("│ BoardVO                           │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");				
-		
-		inVO.getSeq();
+		int seq = service.getDmSeq();
+		inVO.setSeq(seq);
 		
 		LOG.debug("│ DmVO seq                       │"+inVO);
 		int flag = service.doSend(inVO);
@@ -80,7 +80,7 @@ public class DmController implements PcwkLogger{
 		LOG.debug("│ recentMessage                     │");
 		LOG.debug("│ DmVO                              │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");			
-		if("0" == inVO.getSeq() ) {
+		if(0 == inVO.getSeq() ) {
 			LOG.debug("============================");
 			LOG.debug("==nullPointerException===");
 			LOG.debug("============================");
@@ -103,7 +103,7 @@ public class DmController implements PcwkLogger{
 		LOG.debug("│ doDelete                          │");
 		LOG.debug("│ DmVO inVO                           │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");		
-		if("0" == inVO.getSeq() ) {
+		if(0 == inVO.getSeq() ) {
 			LOG.debug("============================");
 			LOG.debug("==nullPointerException===");
 			LOG.debug("============================");

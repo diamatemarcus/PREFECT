@@ -49,7 +49,7 @@ public class DmControllerJunitTest implements PcwkLogger{
 	DmVO searchVO;
 	@Before
 	public void setUp() throws Exception {
-		String seq ="사용하지 않음";
+		int seq =0;
 		int room =1;
 		String sender ="gyu";
 		String receiver ="seo";
@@ -76,7 +76,7 @@ public class DmControllerJunitTest implements PcwkLogger{
 		//url, 호출방식(get), seq
 		MockHttpServletRequestBuilder  requestBuilder  =
 				MockMvcRequestBuilders.post("/dm/doSend.do")
-				.param("seq",     vo.getSeq())
+				.param("seq",     vo.getSeq()+"")
 				.param("room",     vo.getRoom()+"")
 				.param("sender",   vo.getSender())
 				.param("receiver",vo.getReceiver())
@@ -103,7 +103,7 @@ public class DmControllerJunitTest implements PcwkLogger{
 		DmVO vo = dmList.get(0);
 		MockHttpServletRequestBuilder  requestBuilder  =
 				MockMvcRequestBuilders.post("/dm/doContentsList.do")
-				.param("seq",     vo.getSeq())
+				.param("seq",     vo.getSeq()+"")
 				.param("room",     vo.getRoom()+"")
 				.param("sender",   vo.getSender())
 				.param("receiver",vo.getReceiver())
@@ -142,7 +142,7 @@ public class DmControllerJunitTest implements PcwkLogger{
 		
 		MockHttpServletRequestBuilder  requestBuilder  =
 				MockMvcRequestBuilders.get("/dm/recentMessage.do")
-				.param("seq",     "10")
+				.param("seq","10")
 				.param("room",     vo.getRoom()+"")
 				.param("sender",   vo.getSender())
 				.param("receiver",vo.getReceiver())

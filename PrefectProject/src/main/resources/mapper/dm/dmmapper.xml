@@ -14,14 +14,14 @@
         read_Dt,
         read_chk
     ) VALUES (
-        DM_SEQ.NEXTVAL,
+        #{seq},
         1,
-        ${sender},
-        dlgkssk1627@naver.com,
+        #{sender},
+        #{receiver},
         #{contents},
         SYSDATE,
         SYSDATE,
-        0
+        #{readChk}
     )
         </when>
         <otherwise>
@@ -35,14 +35,14 @@
         read_Dt,
         read_chk
     ) VALUES (
-        DM_SEQ.NEXTVAL,
+        #{seq},
         1,
-        ${sender},
-        dlgkssk1627@naver.com,
+        #{sender},
+        #{receiver},
         #{contents},
         SYSDATE,
         SYSDATE,
-        0
+        #{readChk}
     )
         </otherwise>
     </choose>
@@ -97,5 +97,8 @@
 <delete id="doDelete" parameterType="DmVO">
         DELETE FROM dm
         WHERE seq = #{seq}  
-  </delete>        
+  </delete>
+ <select id="getDmSeq" resultType="int">
+     SELECT DM_SEQ.NEXTVAL FROM DUAL
+  </select>         
 </mapper>

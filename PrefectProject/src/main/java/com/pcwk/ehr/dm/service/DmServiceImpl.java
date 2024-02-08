@@ -53,4 +53,10 @@ public class DmServiceImpl implements DmService, PcwkLogger {
 		return list;
 	}
 
+	@Override
+	public int getDmSeq() throws SQLException {
+		// TODO Auto-generated method stub
+		return dao.getDmSeq();
+	}
+
 }

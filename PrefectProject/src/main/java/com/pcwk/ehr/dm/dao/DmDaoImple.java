@@ -71,4 +71,13 @@ public class DmDaoImple implements DmDao,PcwkLogger {
 		
 	}
 
+	@Override
+	public int getDmSeq() throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ getBoardSeq                       │");
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"getDmSeq");
+		LOG.debug("└───────────────────────────────────┘");	
+		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getDmSeq");
+	}
+
 }
