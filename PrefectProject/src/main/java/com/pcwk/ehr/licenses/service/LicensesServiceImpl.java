@@ -44,4 +44,10 @@ public class LicensesServiceImpl implements LicensesService, PcwkLogger {
 		return dao.doRetrieve(inVO);
 	}
 
+	@Override
+	public int getLicensesSeq() throws SQLException {
+		
+		return dao.getLicensesSeq();
+	}
+
 }

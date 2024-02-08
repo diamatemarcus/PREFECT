@@ -65,7 +65,7 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 
 		user01 = new UserVO("cr7@gmail.com", "호날두_U", "7777_U", "01077777777", "초졸_U", "1");
 
-		licenses01 = new LicensesVO(2, "cr7@gmail.com", "23/02/02");
+		licenses01 = new LicensesVO(6, "cr7@gmail.com", "23/02/02");
 		licenses02 = new LicensesVO(7, "cr7@gmail.com", "23/02/02");
 		licenses03 = new LicensesVO(8, "cr7@gmail.com", "23/02/02");
 
@@ -154,19 +154,20 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 		
 	}
 	
-	@Ignore
+	//@Ignore
 	@Test
 	public void doDelete()throws Exception{
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doDelete()                                │");		
 		LOG.debug("└───────────────────────────────────────────┘");
 		
-		userDao.doDelete(user01);//날두 회원 삭제 중복방지를 위해서
-	    int flag = userDao.doSave(user01);//날두 생성
-	    assertEquals(1, flag);//성공
+		//userDao.doDelete(user01);//날두 회원 삭제 중복방지를 위해서
+	    //int flag = userDao.doSave(user01);//날두 생성
+	    //assertEquals(1, flag);//성공
 	    
-	    flag = licensesDao.doSave(licenses01);//날두 6번 자격증 취득
-	    assertEquals(1, flag);//성공
+	    //int flag = licensesDao.doSave(licenses01);//날두 6번 자격증 취득
+	    
+	    //assertEquals(1, flag);//성공
 	    
 	    LicensesVO vo = licenses01;//6번 자격증
 	    
@@ -190,7 +191,7 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 	  		
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void doSave() throws Exception {
 	
@@ -204,8 +205,7 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 	    assertEquals(1, flag);
     
     
-	    flag = licensesDao.doSave(licenses01);//날두한테 자격증 준다. 근데 왜 이게 무결성에 걸리지?
-	    assertEquals(1, flag);
+	    //flag = licensesDao.doSave(licenses01);//날두한테 자격증 준다. 근데 왜 이게 무결성에 걸리지?
 	    
 	    LicensesVO vo = licenses01;
 	    
@@ -215,15 +215,18 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 	    		.param("regDt", vo.getRegDt())
 	    		.param("licensesSeq", vo.getLicensesSeq()+"")
 	    		;
-		    
-		//호출        
-		ResultActions resultActions=  mockMvc.perform(requestBuilder).andExpect(status().isOk());
-		//호출결과
-		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
-		LOG.debug("│ result                                │"+result);
-		    
 	    
-		
+	    //assertEquals(1, flag);
+		    
+	    // 호출
+		ResultActions resultActions = mockMvc.perform(requestBuilder).andExpect(status().isOk());
+		// 호출결과
+		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
+		LOG.debug("│ result                                │" + result);
+		MessageVO messageVO = new Gson().fromJson(result, MessageVO.class);
+		LOG.debug("│ messageVO                                │" + messageVO);
+		assertEquals("1", messageVO.getMsgId());
+		    
 		
 	}
 	

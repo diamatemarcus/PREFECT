@@ -3,6 +3,10 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcwk.ehr.licenses">
 
+<select id="getLicensesSeq" resultType="int">
+    SELECT licenses_seq FROM user_licenses
+</select>
+
 <select id="doSelectOne" parameterType="LicensesVO" resultType="LicensesVO">
     SELECT 
         ul.email,u.name, ul.licenses_seq, l.name ,ul.reg_dt
