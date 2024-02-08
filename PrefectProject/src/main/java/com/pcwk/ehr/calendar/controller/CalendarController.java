@@ -45,18 +45,23 @@ public class CalendarController implements PcwkLogger{
 		LOG.debug("└───────────────────────────────────┘");
 		
 		//월
-		if(null != inVO && null == inVO.getMonth()) {
-			LocalDate currentDate = LocalDate.now();
-	        String currentMonth = currentDate.format(DateTimeFormatter.ofPattern("MM"));
-			inVO.setMonth(currentMonth);
+		if (inVO != null && inVO.getMonth() == null && inVO.getYear() == null) {
+		    LocalDate currentDate = LocalDate.now();
+		    String currentYear = currentDate.format(DateTimeFormatter.ofPattern("yyyy"));
+		    String currentMonth = currentDate.format(DateTimeFormatter.ofPattern("MM"));
+		    inVO.setYear(currentYear);
+		    inVO.setMonth(currentMonth);
 		}
 		
 		//목록조회
 		List<WeekVO>  list = calendarService.doRetrieveMonth(inVO);
+		String year = inVO.getYear();
 		String month = inVO.getMonth();
 		
 		model.addAttribute("calendarList", list);
+		model.addAttribute("year", year);
 		model.addAttribute("month", month);	
+		
 		//뷰
 //		modelAndView.setViewName("schedule/calendar");//  /WEB-INF/views/board/board_list.jsp
 

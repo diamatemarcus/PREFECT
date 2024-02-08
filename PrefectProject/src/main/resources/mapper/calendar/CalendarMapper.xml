@@ -5,15 +5,16 @@
   
   <select id="doSelectMonth" parameterType="CalendarVO" resultType="WeekVO">
 	SELECT 
-       MAX(DECODE(DAY_OF_WEEK,'일',day)) "sun"
-      ,MAX(DECODE(DAY_OF_WEEK,'월',day)) "mon"
-      ,MAX(DECODE(DAY_OF_WEEK,'화',day)) "tue"
-      ,MAX(DECODE(DAY_OF_WEEK,'수',day)) "wed"
-      ,MAX(DECODE(DAY_OF_WEEK,'목',day)) "thu"
-      ,MAX(DECODE(DAY_OF_WEEK,'금',day)) "fri"
-      ,MAX(DECODE(DAY_OF_WEEK,'토',day)) "sat"
+       MAX(DECODE(DAY_OF_WEEK, '일', YEAR || MONTH || DAY)) "sun"
+      ,MAX(DECODE(DAY_OF_WEEK,'월', YEAR || MONTH || DAY)) "mon"
+      ,MAX(DECODE(DAY_OF_WEEK,'화', YEAR || MONTH || DAY)) "tue"
+      ,MAX(DECODE(DAY_OF_WEEK,'수', YEAR || MONTH || DAY)) "wed"
+      ,MAX(DECODE(DAY_OF_WEEK,'목', YEAR || MONTH || DAY)) "thu"
+      ,MAX(DECODE(DAY_OF_WEEK,'금', YEAR || MONTH || DAY)) "fri"
+      ,MAX(DECODE(DAY_OF_WEEK,'토', YEAR || MONTH || DAY)) "sat"
+
 	FROM calendar
-	WHERE MONTH = #{month}
+	WHERE YEAR = #{year} AND MONTH = #{month}
 	GROUP BY WEEK_NO
 	ORDER BY WEEK_NO
   </select>
