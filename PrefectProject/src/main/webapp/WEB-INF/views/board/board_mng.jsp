@@ -14,6 +14,7 @@
 </style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
+	console.log('ready');
 	
 	const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
@@ -23,6 +24,22 @@ document.addEventListener("DOMContentLoaded",function(){
     const moveToModBTN   = document.querySelector("#moveToMod");
     const doDeleteBTN   = document.querySelector("#doDelete");
     const moveToListBTN = document.querySelector("#moveToList");
+    
+    // file download
+	$('#fileList tbody').on("dblclick", 'tr', function() {
+		console.log('fileList dbclick');
+	    const orgFileName = $(this).data('org-file-name');
+	    const saveFileName = $(this).data('save-file-name');
+	    const savePath = $(this).data('save-path');
+	    
+	    // 파일 다운로드 로직
+	    const form = document.fileDownloadForm;
+	    form.orgFileName.value = orgFileName;
+	    form.saveFileName.value = saveFileName;
+	    form.savePath.value = savePath;
+	    form.submit();
+	});
+   
     
     // 수정 이벤트 감지 및 처리
     moveToModBTN.addEventListener("click", function(e){
@@ -188,6 +205,8 @@ document.addEventListener("DOMContentLoaded",function(){
             <textarea rows="7" class="form-control"  id="contents" name="contents" readonly="readonly">${vo.contents }</textarea>
         </div>
         
+        
+        <!-- 파일 목록 -->        
         <div class="container">
 		    <table id="fileList" class="table">
 		        <thead>
@@ -203,7 +222,7 @@ document.addEventListener("DOMContentLoaded",function(){
 		        <tbody>
 		            <c:if test="${not empty fileList}">
 		                <c:forEach var="file" items="${fileList}" varStatus="status">
-		                    <tr>
+		                    <tr data-org-file-name="${file.orgFileName}" data-save-file-name="${file.saveFileName}" data-save-path="${file.savePath}">
 		                        <td>${status.index + 1}</td>
 		                        <td>${file.orgFileName}</td>
 		                        <td>${file.saveFileName}</td>
@@ -221,10 +240,18 @@ document.addEventListener("DOMContentLoaded",function(){
 		        </tbody>
 		    </table>
 		</div>
-	    
-        
+		        
     </form> 
     <!--// form --------------------------------------------------------------->
+    
+    
+	<!-- 파일 다운로드 -->
+	<form action="${CP}/file/download.do" method="POST" name="fileDownloadForm">
+       <input type="hidden" name="orgFileName" id="orgFileName">
+       <input type="hidden" name="saveFileName" id="saveFileName">
+       <input type="hidden" name="savePath" id="savePath">
+    </form>
+	    
     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </div>
 
