@@ -28,6 +28,7 @@
         <a class="nav-link active" href="<c:url value='/dm/doContentsList.do'/>">쪽지</a>
         <a class="nav-link active" aria-current="page" href="<c:url value='/login/loginView.do'/>">로그인</a>
         <a class="nav-link active" aria-current="page" href="<c:url value='/book/bookApiView.do'/>">도서구매</a>
+        <a class="nav-link active" aria-current="page" href="<c:url value='/user/doSelectOne.do'/>">마이페이지</a>
         
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </div>           

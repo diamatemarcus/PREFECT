@@ -6,7 +6,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
-<title>회원수정</title>
+<title>마이페이지</title>
 <script>
 function doDelete(){
     console.log("----------------------");
@@ -17,7 +17,7 @@ function doDelete(){
     console.log("-email:"+email);
     
     if(eUtil.isEmpty(email) == true){
-        alert('아이드를 입력 하세요.');
+        alert('아이디를 입력 하세요.');
         document.querySelector("#email").focus();
         return;
     }
@@ -167,35 +167,35 @@ function doUpdate(){
          <!-- 제목 -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">회원수정</h1>
+                <h1 class="page-header">마이페이지</h1>
             </div>
         </div>    
         <!--// 제목 ----------------------------------------------------------------->
         <!-- 버튼 -->
         <div class="row justify-content-end">
             <div class="col-auto">
-	       <input type="button" class="btn btn-primary" value="수정" id="doUpdate"      onclick="window.doUpdate();">
-	       <input type="button" class="btn btn-primary" value="삭제" id="doDelete"      onclick="window.doDelete();">
-	       <input type="button" class="btn btn-primary" value="목록" id="moveToList"    onclick="window.moveToList();">
+           <input type="button" class="btn btn-primary" value="수정" id="doUpdate"      onclick="window.doUpdate();">
+           <input type="button" class="btn btn-primary" value="삭제" id="doDelete"      onclick="window.doDelete();">
+           <input type="button" class="btn btn-primary" value="목록" id="moveToList"    onclick="window.moveToList();">
             </div>
         </div>
         <!--// 버튼 ----------------------------------------------------------------->
-	     
-	     <!-- 회원 등록영역 -->  
-	     <div>
-	       <form action="#" name="userRegFrm">
-	           <div class="mb-3">
-	               <label for="email" class="form-label">이메일</label>
-	               <input type="text"  class="form-control ppl_input" readonly="readonly" name="email" id="email"
-	                value="${outVO.email }"
-	                size="20"  maxlength="30">
-	           </div>
+         
+         <!-- 회원 등록영역 -->  
+         <div>
+           <form action="#" name="userRegFrm">
+               <div class="mb-3">
+                   <label for="email" class="form-label">이메일</label>
+                   <input type="text"  class="form-control ppl_input" readonly="readonly" name="email" id="email"
+                    value="${outVO.email }"
+                    size="20"  maxlength="30">
+               </div>
                <div class="mb-3"> <!--  아래쪽으로  여백 -->
                    <label for="name" class="form-label">이름</label>
                    <input type="text"  class="form-control"  name="name" id="name" placeholder="이름을 입력 하세요." size="20"  
                    value="${outVO.name }"
                    maxlength="21">
-               </div>	
+               </div>   
                 <div class="mb-3">
                    <label for="password" class="form-label">비밀번호</label>
                    <input type="password"  class="form-control"  name="password" id="password" placeholder="비밀번호를 입력 하세요." 
@@ -215,10 +215,10 @@ function doUpdate(){
                     <select id="education" name="education">
                         <!-- 검색 조건 옵션을 동적으로 생성 -->
                          <c:forEach items="${education}" var="vo">
-                         	<option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == outVO.edu }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
-					    </c:forEach>
+                            <option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == outVO.edu }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
+                        </c:forEach>
                     </select>
-                	</div>
+                    </div>
                </div>
                <div class="mb-3">
                 <label for="role" class="form-label">역할</label>
@@ -226,16 +226,16 @@ function doUpdate(){
                     <select id="role" name="role">
                         <!-- 검색 조건 옵션을 동적으로 생성 -->
                          <c:forEach items="${role}" var="vo">
-					        <option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == outVO.role }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
-					    </c:forEach>
+                            <option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == outVO.role }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
+                        </c:forEach>
                     </select>
-                	</div>
+                    </div>
             </div>
                                                         
-	       </form>
-	     </div>
-	     <!--// 회원 등록영역 ------------------------------------------------------>
-	     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+           </form>
+         </div>
+         <!--// 회원 등록영역 ------------------------------------------------------>
+         <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
      </div>
      
 </body>
