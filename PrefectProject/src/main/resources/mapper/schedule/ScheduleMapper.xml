@@ -56,7 +56,7 @@
 	    title,
 	    explanation
 	) VALUES (
-	    #{scheduleID},
+	    schedule_seq.NEXTVAL,
 	    #{calID},
 	    #{title},
 	    #{explanation}
