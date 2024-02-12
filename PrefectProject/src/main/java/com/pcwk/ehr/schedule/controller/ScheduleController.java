@@ -135,9 +135,9 @@ public class ScheduleController implements PcwkLogger{
 			String message = "";
 			
 			if(1==flag) {
-				message = inVO.getScheduleID()+"가 등록 되었습니다.";
+				message = inVO.getTitle()+"가 등록 되었습니다.";
 			}else {
-				message = inVO.getScheduleID()+"등록 실패.";
+				message = inVO.getTitle()+"등록 실패.";
 			}
 			
 			MessageVO messageVO=new MessageVO(flag+"", message);
