@@ -167,7 +167,7 @@
         console.log('----------------------------');  
         
         let frm = document.userFrm;
-        frm.action = "/ehr/user/moveToReg.do";
+        frm.action = "/ehr/login/moveToReg.do";
         frm.submit();
         
        //window.location.href= '/ehr/user/moveToReg.do';

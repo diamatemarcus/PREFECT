@@ -23,7 +23,7 @@ $(document).ready(function () {
 		
 		$.ajax({
 			type : 'get',
-			url : '/ehr/user/mailCheck.do?email='+email, // GET방식이라 Url 뒤에 email을 뭍힐수있다.
+			url : '/ehr/login/mailCheck.do?email='+email, // GET방식이라 Url 뒤에 email을 뭍힐수있다.
 			success : function (data) {
 				console.log("data : " +  data);
 				checkInput.attr('disabled',false);
@@ -55,46 +55,47 @@ $(document).ready(function () {
 
 	});
 	
-function emailDuplicateCheck(){
+function idCheck(){
 	   console.log("-emailDuplicateCheck()-");	
 	   let email1 = document.querySelector("#userEmail1").value;
 	   let email2 = document.querySelector("#userEmail2").value;
-	   let email = email1 + email2;
-    if(eUtil.isEmpty(email) == true){
-        alert('이메일을 입력 하세요.');
-        //$("#email").focus();//사용자 email에 포커스
-        document.querySelector("#userEmail1").focus();
-        document.querySelector("#userEmail2").focus();
-        return;
-    }
-    
+	   let email0 = email1 + email2;
+	      
     $.ajax({
         type: "GET",
-        url:"/ehr/user/emailDuplicateCheck.do",
-        asyn:"true",
-        dataType:"json", /*return dataType: json으로 return */
-        data:{
-            email: email
+        url: "/ehr/login/emailDuplicateCheck.do",
+        asyn: "true",
+        dataType: "json", /*return dataType: json으로 return */
+        data: {
+            email : email0
         },
-        success:function(data){//통신 성공
-            console.log("success data:"+data);
-            //let parsedJSON = JSON.parse(data);
-            if("1" === data.msgId){
-                alert(data.msgContents);
-                document.querySelector("#emailCheck").value = 0;
-            }else{
-                alert(data.msgContents);
-                document.querySelector("#emailCheck").value = 1;
+        success: function (data) {//통신 성공
+            console.log("success data:" + data);
+            if ("1" != data.msgId && email1.length > 0) {
+                $('.id_ok').css("display", "inline-block");
+                $('.id_already').css("display", "none");
+                document.querySelector("#idCheckYet").value = 1;
+
+            } else if ("1" == data.msgId && email0.length > 0) {
+                $('.id_already').css("display", "inline-block");
+                $('.id_ok').css("display", "none");
+                document.querySelector("#idCheckYet").value = 0;
+
+            } else if (email1.length == 0){
+                $('.id_ok').css("display", "none");
+                $('.id_already').css("display", "none");
+                document.querySelector("#idCheckYet").value = 0;
+
             }
-                    
         },
-        error:function(data){//실패시 처리
-            console.log("error:"+data);
+        error: function (data) {//실패시 처리
+            console.log("error:" + data);
         },
-        complete:function(data){//성공/실패와 관계없이 수행!
-            console.log("complete:"+data);
+        complete: function (data) {//성공/실패와 관계없이 수행!
+            console.log("complete:" + data);
         }
     });
+
     
     
 }
@@ -157,10 +158,10 @@ function doSave(){
     }      
 
     
-    if(document.querySelector("#emailCheck").value == '0'){
+    if(document.querySelector("#idCheckYet").value == '0'){
         alert('이메일 중복체크를 수행 하세요.');
         //$("#email").focus();//사용자 email에 포커스
-        document.querySelector("#emailCheck").focus();
+        document.querySelector("#idCheckYet").focus();
         return;
     }
     
@@ -170,7 +171,7 @@ function doSave(){
     
     $.ajax({
         type: "POST",
-        url:"/ehr/user/doSave.do",
+        url:"/ehr/login/doSave.do",
         asyn:"true",
         dataType:"html",
         data:{
@@ -210,6 +211,9 @@ function moveToList(){
 	   window.location.href = "/ehr/user/doRetrieve.do";
 }
 
+
+
+
 </script>
 </head>
 <body>
@@ -238,11 +242,13 @@ function moveToList(){
 	       
 	       
 	       <!-- 이메일 본인 인증 -->
+	         <%-- email중복체크 수행 여부 확인:0(미수행),1(수행) --%>
+	      <input type="hidden" name="idCheckYet" id="idCheckYet" value="0">
 	       <div class="form-group email-form">
 			<label for="email">이메일</label>
 				 <div class="input-group">
-					<input type="text" class="form-control" name="userEmail1" id="userEmail1" placeholder="이메일" >
-					<select class="form-control" name="userEmail2" id="userEmail2" >
+					<input type="text" class="form-control" name="userEmail1" id="userEmail1" placeholder="이메일" required oninput="idCheck()" >
+					<select class="form-control" name="userEmail2" id="userEmail2">
 					<option>@naver.com</option>
 					<option>@daum.net</option>
 					<option>@gmail.com</option>
@@ -251,7 +257,8 @@ function moveToList(){
 					</select>
 				</div>   
 			<div class="input-group-addon">
-			 <input type="button" class="btn btn-primar" value="등록" id="emailDuplicateCheck"      onclick="window.emailDuplicateCheck();">
+			    <span class="id_ok" style="color:green; display:none;">사용 가능한 아이디입니다.</span>
+                <span class="id_already" style="color:red; display:none;">중복된 아이디입니다!</span>
 				<button type="button" class="btn btn-primary" id="mail-Check-Btn">본인인증</button>
 			</div>
 				<div class="mail-check-box">
@@ -260,8 +267,7 @@ function moveToList(){
 				<span id="mail-check-warn"></span>
 			</div>
 			
-	           <%-- email중복체크 수행 여부 확인:0(미수행),1(수행) --%>
-	           <input type="hidden" name="emailCheck" id="emailCheck" value="0">
+	         
                <div class="mb-3"> <!--  아래쪽으로  여백 -->
                    <label for="name" class="form-label">이름</label>
                    <input type="text"  class="form-control"  name="name" id="name" placeholder="이름을 입력 하세요." size="20"  maxlength="21">
@@ -302,5 +308,8 @@ function moveToList(){
 	     <!--// 회원 등록영역 ------------------------------------------------------>
 	     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>    
      </div>
+     <script>
+     
+     </script>
 </body>
 </html>
