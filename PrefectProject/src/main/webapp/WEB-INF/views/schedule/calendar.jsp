@@ -11,6 +11,12 @@
 <head>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>달력</title>
+<style>
+        /* 초기에는 form 숨기기 */
+        #myForm {
+            display: none;
+        }
+</style>
 <script>
 	document
 			.addEventListener(
@@ -18,21 +24,24 @@
 					function() {
 						console.log("DOMContentLoaded");
 
+						const saveScheduleBTN = document
+								.querySelector("#doSaveSchedule");
+
 						const nextMonthBTN = document
 								.querySelector("#nextMonth");
 						const lastMonthBTN = document
 								.querySelector("#lastMonth");
-						
+
 						let year = document.querySelector("#year").value;
 						let month = document.querySelector("#month").value;
-						
+
 						console.log("년도 : ", year);
 						console.log("월 : ", month);
 
 						// "01" 형식을 정수 1로 바꾸는 과정
 						let monthInt = parseInt(month, 10);
 						console.log(monthInt);
-						
+
 						/* let now = new Date();   // 현재 날짜 및 시간
 						let month = now.getMonth();   // 월
 						console.log("월 : ", month + 1); */
@@ -65,125 +74,288 @@
 											month = stringValue;
 											console.log(month);
 
-											window.location.href = "${CP}/calendar/doRetrieveCalendar.do?year="+ year + "&month="
-													+ month;
+											window.location.href = "${CP}/calendar/doRetrieveCalendar.do?year="
+													+ year + "&month=" + month;
 
 										});
 
-						lastMonthBTN.addEventListener(
-							"click",
-							function(e) {
+						lastMonthBTN
+								.addEventListener(
+										"click",
+										function(e) {
 
-								console.log("lastMonthBTN click");
+											console.log("lastMonthBTN click");
 
-								//다음 달
-								monthInt--;
+											//다음 달
+											monthInt--;
 
-								//정수를 "01" 형식 String으로 바꾸는 과정
-								let stringValue = monthInt < 10 ? '0'
-										+ monthInt
-										: String(monthInt);
-								console.log(stringValue);
+											//정수를 "01" 형식 String으로 바꾸는 과정
+											let stringValue = monthInt < 10 ? '0'
+													+ monthInt
+													: String(monthInt);
+											console.log(stringValue);
 
-								//(#month) value 값 변경
-								month = stringValue;
-								console.log(month);
+											//(#month) value 값 변경
+											month = stringValue;
+											console.log(month);
 
-								window.location.href = "${CP}/calendar/doRetrieveCalendar.do?year="+ year + "&month=" + month;
+											window.location.href = "${CP}/calendar/doRetrieveCalendar.do?year="
+													+ year + "&month=" + month;
 
-							});
+										});
 
+						let isFormVisible = false;
+						
+						 function scheduleRetrieve(calID) {
+							 let form = document.getElementById("myForm");
+								form.style.display = "none";
+								isFormVisible = false;
+								
+								console
+										.log('----------------------------');
+								console.log('scheduleRetrieve');
+								console.log(calID);
+								console
+										.log('----------------------------');
+
+								
+								document.querySelector("#calID").value = calID;
+
+								if (calID == "") {
+									return;
+								}
+
+								let calIDNum = parseInt(calID);
+								console.log(calIDNum);
+
+								//window.location.href ="/ehr/user/doSelectOne.do?email="+email;
+								$
+										.ajax({
+											type : "GET",
+											url : "/ehr/schedule/doSelectAllSchedule.do",
+											asyn : "true",
+											dataType : "json",
+											data : {
+												"calID" : calID
+											},
+											success : function(data) {//통신 성공
+												console
+														.log("success data:"
+																+ data.length);
+												//동적인 테이블 헤더 생성
+												let tableHeader = '<thead>\
+										                    <tr>\
+											                    <th scope="col" class="text-center col-lg-1  col-sm-1">calID</th>\
+											                    <th scope="col" class="text-center col-lg-2  col-sm-2" >scheduleID</th>\
+											                    <th scope="col" class="text-center col-lg-2  col-sm-2" >일정 제목</th>\
+											                    <th scope="col" class="text-center col-lg-2  col-sm-2" >일정 설명</th>\
+										                    </tr>\
+										                </thead>';
+												//동적 테이블 body		                
+												let tableBody = ' <tbody>';
+
+												for (let i = 0; i < data.length; i++) {
+													tableBody += '<tr>\
+								                		<td class="text-center">'
+															+ data[i].calID
+															+ '</td>\
+								                        <td class="text-left">'
+															+ data[i].scheduleID
+															+ '</td>\
+								                        <td class="text-left">'
+															+ data[i].title
+															+ '</td>\
+								                        <td class="text-left">'
+															+ data[i].explanation
+															+ '</td>\
+							         	             </tr>\
+								                     ';
+												}
+												tableBody += ' </tbody>';
+
+												console
+														.log(tableHeader);
+												console
+														.log(tableBody);
+
+												let dynamicTable = '<table id="scheduleTable"  class="table table-bordered border-primary table-hover table-striped">'
+														+ tableHeader
+														+ tableBody
+														+ '</table>';
+												//
+												$("#modalTable")
+														.html(
+																dynamicTable);
+												$('#staticBackdrop')
+														.modal(
+																'show');
+
+												//회원정보 double click
+												$(
+														"#userTable>tbody")
+														.on(
+																"dblclick",
+																"tr",
+																function(
+																		e) {
+																	console
+																			.log("userTable click!");
+
+																	let tdArray = $(
+																			this)
+																			.children();
+																	let userId = tdArray
+																			.eq(
+																					1)
+																			.text();
+																	let password = tdArray
+																			.eq(
+																					3)
+																			.text();
+
+																	console
+																			.log('userId:'
+																					+ userId);
+																	console
+																			.log('password:'
+																					+ password);
+
+																	$(
+																			"#userId")
+																			.val(
+																					userId);
+																	$(
+																			"#password")
+																			.val(
+																					password);
+
+																	//modal popup닫기
+																	$(
+																			'#staticBackdrop')
+																			.modal(
+																					'hide');
+
+																});
+											},
+											error : function(data) {//실패시 처리
+												console
+														.log("error:"
+																+ data);
+											},
+											complete : function(
+													data) {//성공/실패와 관계없이 수행!
+												console
+														.log("complete:"
+																+ data);
+											}
+										});
+
+								
+							 
+						 }
+						
 						//jquery:table 데이터 선택     
 						$("#calendarTable>tbody")
 								.on(
 										"dblclick",
 										"td",
 										function(e) {
-											console.log('----------------------------');
+											let form = document.getElementById("myForm");
+											form.style.display = "none";
+											isFormVisible = false;
+											
+											console
+													.log('----------------------------');
 											console.log('calendarTable>tbody');
-											console.log('----------------------------');
+											console
+													.log('----------------------------');
 
 											let calID = $(this).text();
 											console.log('calID:' + calID);
 											console.log(typeof calID);
 											
+											document.querySelector("#calID").value = calID;
+
 											if (calID == "") {
-										        return;
-										    }
+												return;
+											}
 
 											let calIDNum = parseInt(calID);
 											console.log(calIDNum);
 
-											//window.location.href ="/ehr/user/doSelectOne.do?email="+email;
-											 $.ajax({
-										     type: "GET",
-										     url:"/ehr/schedule/doSelectAllSchedule.do",
-										     asyn:"true",
-										     dataType:"json",
-										     data:{
-										         "calID": calID 
-										     },
-										     success:function(data){//통신 성공
-										         console.log("success data:"+data.length);
-										         //동적인 테이블 헤더 생성
-										         let tableHeader = '<thead>\
-													                    <tr>\
-														                    <th scope="col" class="text-center col-lg-1  col-sm-1">calID</th>\
-														                    <th scope="col" class="text-center col-lg-2  col-sm-2" >scheduleID</th>\
-														                    <th scope="col" class="text-center col-lg-2  col-sm-2" >일정 제목</th>\
-														                    <th scope="col" class="text-center col-lg-2  col-sm-2" >일정 설명</th>\
-													                    </tr>\
-													                </thead>';
-											    //동적 테이블 body		                
-										         let tableBody = ' <tbody>';
-										         
-										         for(let i =0;i< data.length;i++){
-										         	tableBody +='<tr>\
-											                		<td class="text-center">'+data[i].calID+'</td>\
-											                        <td class="text-left">'+data[i].scheduleID+'</td>\
-											                        <td class="text-left">'+data[i].title+'</td>\
-											                        <td class="text-left">'+data[i].explanation+'</td>\
-										         	             </tr>\
-											                     ';	
-										         }
-										         tableBody += ' </tbody>';   	            
-										     
-										         console.log(tableHeader);
-										         console.log(tableBody);
-										         
-										         let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover table-striped">'+tableHeader+tableBody+'</table>';
-										         //
-										         $(".modal-body").html(dynamicTable);
-										         $('#staticBackdrop').modal('show');
-										         
-										         //회원정보 double click
-										         $("#userTable>tbody").on("dblclick","tr" , function(e){
-										             console.log( "userTable click!" );
-										             
-										             let tdArray = $(this).children();
-										             let userId = tdArray.eq(1).text();
-										             let password = tdArray.eq(3).text();
-										             
-										             console.log('userId:'+userId);
-										             console.log('password:'+password);
-										             
-										             $("#userId").val(userId);
-										             $("#password").val(password);
-										             
-										             //modal popup닫기
-										             $('#staticBackdrop').modal('hide');
-										             
-										         });	                      
-										     },
-										     error:function(data){//실패시 처리
-										         console.log("error:"+data);
-										     },
-										     complete:function(data){//성공/실패와 관계없이 수행!
-										         console.log("complete:"+data);
-										     }
-										 });
+											scheduleRetrieve(calID);
+										});
+						
+						saveScheduleBTN.addEventListener("click", function(e) {
+							let form = document.getElementById("myForm");
+							
+							console.log('saveScheduleBTN click');
+							
+							// form을 숨겼으면 보이도록, 보이면 숨기도록 설정
+				            if (!isFormVisible) {
+				                form.style.display = "block";
+				            } else {
+				            	
+				            	let calID = document.querySelector("#calID").value;
+				                let title = document.querySelector("#title").value;
+				                let explanation = document.querySelector("#explanation").value;
 
-									});
+				                console.log("title:" + title);
+				                console.log("calID:" + calID);
+				                console.log("explanation:" + explanation);
+
+				                if (eUtil.isEmpty(title) === true) {
+				                    alert("제목을 입력하세요.");
+				                    form.title.focus();
+				                    return;
+				                }
+
+				                if (eUtil.isEmpty(explanation) === true) {
+				                    alert("내용을 입력하세요.");
+				                    from.explanation.focus();
+				                    return;
+				                }
+
+				                if (window.confirm("등록하시겠습니까?") === false) {
+				                    return;
+				                }
+
+				                $.ajax({
+				                    type: "POST",
+				                    url: "/ehr/schedule/doSave.do",
+				                    async: true,
+				                    dataType: "json",
+				                    data: {
+				                        "calID": calID,
+				                        "title": title,
+				                        "explanation": explanation
+				                    },
+				                    success: function (data) {// 통신 성공 시의 처리
+				                        console.log("data.msgId:" + data.msgId);
+				                        console.log("data.msgContents:" + data.msgContents);
+
+				                        if ('1' == data.msgId) {
+				                            alert(data.msgContents);
+				                            scheduleRetrieve(calID);
+				                        } else {
+				                            alert(data.msgContents);
+				                        }
+				                    },
+				                    error: function (data) {// 통신 실패 시의 처리
+				                        console.log("error:" + data);
+				                    },
+				                    complete: function (data) {// 성공/실패와 관계없이 수행되는 처리
+				                        console.log("complete:" + data);
+				                    }
+				                });
+				                
+				                form.style.display = "none";
+				                
+				            }
+			                
+				            // isFormVisible 변수 업데이트
+				            isFormVisible = !isFormVisible;
+						});
 
 					});//--DOMContentLoaded
 </script>
@@ -203,8 +375,8 @@
 			</div>
 		</div>
 
-		<input type="text" name="year" id="year" value="${year}" />
-		<input type="text" name="month" id="month" value="${month}" />
+		<input type="text" name="year" id="year" value="${year}" /> <input
+			type="text" name="month" id="month" value="${month}" />
 
 		<!--// 제목 ----------------------------------------------------------------->
 
@@ -296,13 +468,33 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="staticBackdropLabel">회원</h1>
+						<h1 class="modal-title fs-5" id="staticBackdropLabel">일정</h1>
+						<input type="text" name="calID" id="calID" />
+						<input type="button" value="일정 추가" class="btn btn-primary"
+							id="doSaveSchedule">
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
-					<div class="modal-body">
+					<div class="modal-body" id="modalTable">
 						<!-- 일정 table -->
 					</div>
+					
+					<!-- form -->
+				    <div id="myForm" class="modal-body">
+				        <form id="scheduleForm">
+				            <!-- 여기에 form 요소들을 넣으세요 -->
+				            <input type="hidden" name="calID">
+				            <input type="hidden" name="scheduleID">
+					        <div class="mb-3"> <!--  아래쪽으로  여백 -->
+					            <label for="title" class="form-label">제목</label>
+					            <input type="text" class="form-control" id="title" name="title" placeholder="일정제목을 입력 하세요.">
+					        </div>
+				            <div class="mb-3"> <!--  아래쪽으로  여백 -->
+					            <label for="explantaion" class="form-label">설명</label>
+					            <input type="text" class="form-control" id="explanation" name="explanation" placeholder="일정설명을 입력 하세요.">
+					        </div>
+				        </form>
+				    </div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">Close</button>
