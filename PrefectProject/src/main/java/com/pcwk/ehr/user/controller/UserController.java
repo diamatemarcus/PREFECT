@@ -27,6 +27,8 @@ import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.code.domain.CodeVO;
 import com.pcwk.ehr.code.service.CodeService;
+import com.pcwk.ehr.licenses.domain.LicensesVO;
+import com.pcwk.ehr.licenses.service.LicensesService;
 import com.pcwk.ehr.mail.service.MailSendService;
 import com.pcwk.ehr.user.domain.UserVO;
 import com.pcwk.ehr.user.service.UserService;
@@ -44,6 +46,9 @@ public class UserController {
 	
 	@Autowired
 	private MailSendService mailService;
+	
+	@Autowired
+	LicensesService service;
 	
 	//이메일 인증
 	@RequestMapping(value="/mailCheck.do",method = RequestMethod.GET
@@ -330,6 +335,12 @@ public class UserController {
 		model.addAttribute("education", educationList);
 		
 		model.addAttribute("role",roleList);
+		
+		
+		List<LicensesVO> licenses = new ArrayList<LicensesVO>();
+		licenses = service.getLicensesName();
+		
+		model.addAttribute("licenses", licenses);
 		
 		return view;
 	}

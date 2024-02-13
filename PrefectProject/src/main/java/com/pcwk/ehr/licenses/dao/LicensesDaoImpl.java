@@ -80,4 +80,14 @@ public class LicensesDaoImpl implements LicensesDao {
 		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getLicensesSeq");
 	}
 
+	@Override
+	public List<LicensesVO> getLicensesName() throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ getLicensesName                   │");
+		LOG.debug("│ BoardVO                           │");
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"getLicensesName");
+		LOG.debug("└───────────────────────────────────┘");		
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"getLicensesName");
+	}
+
 }

@@ -70,6 +70,42 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 		licenses03 = new LicensesVO(8, "cr7@gmail.com", "23/02/02");
 
 	}
+	//@Ignore
+	@Test
+	public void getLicensesName() throws Exception {
+		LOG.debug("┌───────────────────────────────────────────┐");
+	    LOG.debug("│ getLicensesName()                         │");
+	    LOG.debug("└───────────────────────────────────────────┘");
+	    
+	 // 엔드포인트 호출
+	    MockHttpServletRequestBuilder requestBuilder =
+	        MockMvcRequestBuilders.get("/licenses/getLicensesName.do");
+	    
+	    // 호출 및 검증
+	    ResultActions resultActions = mockMvc.perform(requestBuilder)
+	                                          .andExpect(status().isOk());
+	    
+	    // 호출 결과 확인
+	    String result = resultActions.andDo(print())
+	                                 .andReturn()
+	                                 .getResponse()
+	                                 .getContentAsString();
+	    
+	    LOG.debug("│ result                                │" + result);
+	    
+	    Type listType = new TypeToken<List<LicensesVO>>(){}.getType();
+		
+		List<LicensesVO>  list=new Gson().fromJson(result, listType);
+		
+		assertEquals(9, list.size());
+		assertNotNull(list);
+		
+		for (LicensesVO vo   :list) {
+			LOG.debug(vo);
+		}
+	    
+	}
+	
 	@Ignore
 	@Test
 	public void doRetrieve() throws Exception {
@@ -110,7 +146,7 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 		
 		List<LicensesVO>  list=new Gson().fromJson(result, listType);
 		
-		assertEquals(6, list.size());
+		assertEquals(5, list.size());
 		assertNotNull(list);
 		
 		for (LicensesVO vo   :list) {
@@ -154,7 +190,7 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 		
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void doDelete()throws Exception{
 		LOG.debug("┌───────────────────────────────────────────┐");

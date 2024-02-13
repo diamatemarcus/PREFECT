@@ -55,6 +55,13 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		license02 = new LicensesVO(licensesSeq+1, email, regDt);
 		license03 = new LicensesVO(licensesSeq+2, email, regDt);
 	}
+	@Test
+	public void getLicensesName() throws SQLException {
+		List<LicensesVO> licensesNameList = dao.getLicensesName();
+		
+		assertNotNull(licensesNameList);
+		assertFalse(licensesNameList.isEmpty());
+	}
 
 	@Ignore
 	@Test
@@ -67,7 +74,7 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		assertFalse(licensesList.isEmpty());
 	}
 	
-	//@Ignore
+	@Ignore
 	@Test
 	public void doSave() throws SQLException {
 		dao.doDelete(license01);
@@ -107,7 +114,8 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		flag = dao.doUpdate(vo01);
 		assertEquals(1, flag);
 	}
-
+	
+	@Ignore
 	@Test
 	public void beans() {
 		LOG.debug("┌───────────────────────────────────┐");

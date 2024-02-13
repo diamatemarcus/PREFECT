@@ -50,4 +50,10 @@ public class LicensesServiceImpl implements LicensesService, PcwkLogger {
 		return dao.getLicensesSeq();
 	}
 
+	@Override
+	public List<LicensesVO> getLicensesName() throws SQLException {
+		
+		return dao.getLicensesName();
+	}
+
 }

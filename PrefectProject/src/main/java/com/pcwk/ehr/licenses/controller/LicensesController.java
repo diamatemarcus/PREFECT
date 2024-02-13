@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +26,25 @@ public class LicensesController implements PcwkLogger {
 
 	public LicensesController() {
 	}
-
+	
+	/*
+	 * @GetMapping(value = "/getLicensesName.do", produces =
+	 * "application/json;charset=UTF-8")
+	 * 
+	 * @ResponseBody public List<LicensesVO> getLicensesName(Model model) throws
+	 * SQLException{
+	 * 
+	 * List<LicensesVO> list = new ArrayList<LicensesVO>();
+	 * LOG.debug("┌───────────────────────────────────┐");
+	 * LOG.debug("│ getLicensesName                   │");
+	 * LOG.debug("│ LicensesVO                        │");
+	 * LOG.debug("└───────────────────────────────────┘");
+	 * 
+	 * list = service.getLicensesName();
+	 * 
+	 * return list; }
+	 */
+	
 	@GetMapping(value = "/doRetrieve.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public List<LicensesVO> doRetreive(LicensesVO inVO) throws SQLException {
