@@ -8,22 +8,17 @@
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>로그인</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script
-	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://kit.fontawesome.com/53a8c415f1.js"
-	crossorigin="anonymous"></script>
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>로그인</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/53a8c415f1.js" crossorigin="anonymous"></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
 </head>
 <body>
 	<div class="wrap">
@@ -41,7 +36,7 @@
 			</div>
 			<div class="search">
 				<div class="search_email">
-					<a href="${CP}/search/searchEmailView.do">이메일을 잊어버리셨나요?</a>
+				    <a href="${CP}/search/searchEmailView.do">이메일을 잊어버리셨나요?</a>
 				</div>
 				<div class="search_password" id="searchPassword">
 					<a href="/login/search_password">비밀번호를 잊어버리셨나요?</a>

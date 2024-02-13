@@ -12,5 +12,10 @@
            FROM users                
            WHERE tel = #{tel}
         </select>
+        <select id="searchEmail" parameterType="UserVO" resultType="UserVO">
+        	SELECT email
+        	FROM users
+        	WHERE name = #{name} AND tel = #{tel}
+        </select>
         
 </mapper>

@@ -83,7 +83,7 @@
              
              let tel = $("#tel").val();
              if(tel.trim() === ""){
-                 alert('전화번호 입력하세요.');
+                 alert('전화번호를 입력하세요.');
                  $("#tel").focus();
                  return;
              }
@@ -110,7 +110,7 @@
                          alert(data.msgContents);
                          $("#tel").focus();                 
                      } else if("30" == data.msgId){
-                         window.location.href = "/ehr/search/searchEmailResultView.do";
+                    	 window.location.href = "/ehr/search/searchEmailResultView.do";
                      }
                  },
                  error: function(data){

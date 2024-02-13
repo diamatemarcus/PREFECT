@@ -78,10 +78,10 @@ public class SearchEmailController implements PcwkLogger{
 			message.setMsgId("20");
 			message.setMsgContents("전화번호를 확인 하세요.");	    	
 			
-			}else if(30==check) {//비번확인
+			}else if(30==check) {
 			UserVO outVO = searchEmailService.findEmail(user);
 			message.setMsgId("30");
-			message.setMsgContents("이메일을 확인하시겠습니까?");	   
+			message.setMsgContents("찾으시는 이메일은:"+outVO.getEmail()+"입니다.");	   
 			
 		
 		

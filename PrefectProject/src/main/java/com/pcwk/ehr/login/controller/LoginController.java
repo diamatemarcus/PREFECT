@@ -66,7 +66,7 @@ public class LoginController implements PcwkLogger{
 		MessageVO  message =new MessageVO();
 		
 		//입력 validation
-		//Email null check 
+		//Email null check `
 		if(null == user.getEmail() || "".equals(user.getEmail())) {
 			message.setMsgId("1");
 			message.setMsgContents("이메일을 입력 하세요.");
@@ -97,7 +97,7 @@ public class LoginController implements PcwkLogger{
 	    	message.setMsgId("20");
 			message.setMsgContents("비밀번호를 확인 하세요.");	    	
 		
-	    }else if(30==check) {//비번확인
+	    }else if(30==check) {//정상
 	    	UserVO outVO = loginService.doSelectOne(user);
 	    	message.setMsgId("30");
 			message.setMsgContents(outVO.getName()+"님 반갑습니다.");	   
@@ -118,123 +118,6 @@ public class LoginController implements PcwkLogger{
 	}
 	
 
-	
-	//이메일 인증
-	@RequestMapping(value="/mailCheck.do",method = RequestMethod.GET
-			,produces = "application/json;charset=UTF-8"
-			)
-	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-	public String mailCheck(HttpServletRequest request) {
-		String email = request.getParameter("email");
-		
-		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ mailCheck()                               │email:"+email);
-		LOG.debug("└───────────────────────────────────────────┘");	
-		return mailService.joinEmail(email);
-		
-	}
-	
-	//http://localhost:8080/ehr/user/idDuplicateCheck.do?userId='p8-03'
-		@RequestMapping(value="/emailDuplicateCheck.do",method = RequestMethod.GET
-				,produces = "application/json;charset=UTF-8"
-				)
-		@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-		public String emailDuplicateCheck(UserVO inVO) throws SQLException {
-			String jsonString = "";  
-			LOG.debug("┌───────────────────────────────────────────┐");
-			LOG.debug("│ emailDuplicateCheck()                     │inVO:"+inVO);
-			LOG.debug("└───────────────────────────────────────────┘");		
-						
-			int flag = userService.emailDuplicateCheck(inVO);
-			String message = "";
-			if(0==flag) {
-				message = inVO.getEmail()+"사용 가능한 아이디 입니다.";
-			}else {
-				message = inVO.getEmail()+"사용 불가한 아이디 입니다.";
-			}
-			MessageVO messageVO=new MessageVO(flag+"", message);
-			jsonString = new Gson().toJson(messageVO);		
-			LOG.debug("jsonString:"+jsonString);		
-			return jsonString;
-		}
-		
-		@RequestMapping(value="/moveToReg.do", method = RequestMethod.GET)
-		public String moveToReg(Model model)throws SQLException {
-			String view = "user/user_reg";
-			LOG.debug("┌───────────────────────────────────────────┐");
-			LOG.debug("│ moveToReg                                 │");
-			LOG.debug("└───────────────────────────────────────────┘");	
-			
-			//코드목록 조회 : 'EDUCATION','ROLE'
-			Map<String, Object> codes =new HashMap<String, Object>();
-			String[] codeStr = {"EDUCATION","ROLE"};
-			
-			codes.put("code", codeStr);
-			List<CodeVO> codeList = this.codeService.doRetrieve(codes);
-			
-			List<CodeVO> educationList=new ArrayList<CodeVO>();
-			List<CodeVO> roleList=new ArrayList<CodeVO>();
-			
-			
-			for(CodeVO vo :codeList) {
-				//EDUCATION
-				if(vo.getMstCode().equals("EDUCATION")) {
-					educationList.add(vo);
-				}
-				
-				if(vo.getMstCode().equals("ROLE")) {
-					roleList.add(vo);
-				}	
-				LOG.debug(vo);
-			}
-			
-			LOG.debug("educationList");
-			for(CodeVO vo :educationList) {
-				LOG.debug(vo);
-			}
-			
-			LOG.debug("roleList");
-			for(CodeVO vo :roleList) {
-				LOG.debug(vo);
-			}
-			
-			
-			model.addAttribute("education", educationList);
-			
-			model.addAttribute("role",roleList);
-			
-			
-			
-			return view;
-		}
-		
-		//등록
-		@RequestMapping(value="/doSave.do",method = RequestMethod.POST
-				,produces = "application/json;charset=UTF-8"
-				)
-		@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-		public String doSave(UserVO inVO) throws SQLException{
-			String jsonString = "";
-			LOG.debug("┌───────────────────────────────────────────┐");
-			LOG.debug("│ doSave()                                  │inVO:"+inVO);
-			LOG.debug("└───────────────────────────────────────────┘");		
-			
-			
-			int flag = userService.doSave(inVO);
-			String message = "";
-			
-			if(1==flag) {
-				message = inVO.getEmail()+"가 등록 되었습니다.";
-			}else {
-				message = inVO.getEmail()+"등록 실패.";
-			}
-			
-			MessageVO messageVO=new MessageVO(flag+"", message);
-			jsonString = new Gson().toJson(messageVO);
-			LOG.debug("jsonString:"+jsonString);		
-					
-			return jsonString;
-		}
 		
 	
 }

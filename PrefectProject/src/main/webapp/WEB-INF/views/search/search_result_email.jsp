@@ -1,5 +1,4 @@
-<%@page import="com.pcwk.ehr.cmn.StringUtil"%>
-<%@page import="com.pcwk.ehr.board.domain.BoardVO"%>
+<%@ page import="com.pcwk.ehr.user.domain.UserVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
 <%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
@@ -21,14 +20,42 @@
 <head>
 <meta charset="UTF-8">
 <title>이메일 검색 결과</title>
+<style>
+       .resultWrap {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .emailResult {
+            width: 40%;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            text-align: center;
+        }
+    </style>
+
 </head>
+
 <body>
- 	 <h2>아이디 찾기 결과</h2>
-    <c:if test="${not empty username}">
-        <p>찾은 아이디: ${username}</p>
-    </c:if>
-    <c:if test="${empty username}">
-        <p>해당하는 아이디를 찾을 수 없습니다.</p>
-    </c:if>
+   <div class="resultWrap">
+    <div class="emailResult">
+        <h3>이메일 검색 결과</h3>
+        <% 
+            UserVO user = (UserVO) session.getAttribute("user");
+            if(user != null && user.getEmail() != null && !user.getEmail().isEmpty()) {
+        %>
+       
+                <p>이메일: <strong><%= user.getEmail() %></strong></p>
+        <%  } else { %>
+                <p>검색된 이메일 정보가 없습니다.</p>
+        <%  } %>
+       <a href="/ehr/login/loginView.do" class="w3-button w3-black">로그인 화면으로 돌아가기</a>
+    </div>
+</div>
+
 </body>
 </html>
