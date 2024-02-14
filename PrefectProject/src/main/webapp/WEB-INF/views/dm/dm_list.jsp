@@ -6,22 +6,50 @@
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />     
 
 <!DOCTYPE html>
+${list}
 <html>
+<jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
+        body, html {
+            height: 100%; /* body와 html 요소의 높이를 100%로 설정 */
             margin: 0;
             padding: 0;
         }
+        .contact-list {
+        display: flex;
+        flex-direction: column;
+        flex: 3; /* 최신 메시지 창이 전체 너비의 3/10을 차지하도록 설정 */
+        background-color: #f2f2f2;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-right: 20px; /* 최신 메시지 창과 연락처 목록 사이의 간격 설정 */
+        }
+
+        .contact {
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+        }
+
+    /* 최신 메시지 창의 스크롤 바 설정 */
+    .contact-list::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .contact-list::-webkit-scrollbar-thumb {
+        background-color: #aaa;
+        border-radius: 10px;
+    }
 
         .chat-container {
-            display: flex;
-            flex-direction: column;
-            max-width: 800px;
-            margin: 20px auto;
+           display: flex;
+        flex-direction: column;
+        flex: 7; /* 채팅 창이 전체 너비의 7/10을 차지하도록 설정 */
+        max-width: 800px;
+        margin: auto;
         }
 
         .chat-history {
@@ -37,7 +65,7 @@
             margin: 0;
             padding: 10px;
             overflow-y: auto;
-            max-height: 300px;
+            height: 100%;
         }
 
         .message {
@@ -106,22 +134,22 @@ document.addEventListener("DOMContentLoaded", function () {
     
     const doSendBTN = document.querySelector("#doSend");
     
-    
 
     doSendBTN.addEventListener("click", function (e) {
-    	const sender = '${sessionScope.user.email}';
-    	const contents = document.querySelector("#contents").value;
     	
-        const receiver = document.querySelector("#receiver").value;
-        const room = document.querySelector("#room").value; // 여기에 메시지 내용을 가져오는 코드를 넣으세요;
+    	
+    	let sender = document.querySelector("#sender").value;
+    	let contents = document.querySelector("#contents").value;
+    	
+        let receiver = document.querySelector("#receiver").value;
+        
         $.ajax({
             type: "POST",
             url: "/ehr/dm/doSend.do",
-            async: true,
+            async: "true",
             dataType: "json",
             data: {
             	
-            	"room":room,
                 "sender": sender,
                 "receiver":receiver,
                 "contents": contents,
@@ -148,36 +176,140 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function moveToList() {
-        window.location.href = "${CP}/dm/doContentsList.do";
+    	window.location.href = "/ehr/dm/doContentsList.do";
     }
+    
+    $("#doMemberPopup").on("click",function(e){
+        console.log( "doMemberPopup click!" );
+        
+           $.ajax({
+               type: "GET",
+               url:"/ehr/user/doMemberPopup.do",
+               asyn:"true",
+               dataType:"json",
+               data:{
+                   "pageNo": "1",
+                   "pageSize": "10"  
+               },
+               success:function(data){//통신 성공
+                   console.log("success data:"+data);
+                   //동적인 테이블 헤더 생성
+                   let tableHeader = '<thead>\
+                                           <tr>\
+                                               <th scope="col" class="text-center col-lg-1  col-sm-1">번호</th>\
+                                               <th scope="col" class="text-center col-lg-2  col-sm-2" >사용자ID</th>\
+                                               <th scope="col" class="text-center col-lg-2  col-sm-2" >이름</th>\
+                                           </tr>\
+                                       </thead>';
+                   //동적 테이블 body                       
+                   let tableBody = ' <tbody>';
+                   
+                   for(let i =0;i< data.length;i++){
+                       tableBody +='<tr>\
+                                       <td class="text-center">'+data[i].no+'</td>\
+                                       <td class="text-left">'+data[i].email+'</td>\
+                                       <td class="text-left">'+data[i].name+'</td>\
+                                    </tr>\
+                                    '; 
+                   }
+                   tableBody += ' </tbody>';                   
+               
+                   console.log(tableHeader);
+                   console.log(tableBody);
+                   
+                   let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover table-striped">'+tableHeader+tableBody+'</table>';
+                   //
+                   $(".modal-body").html(dynamicTable);
+                   $('#staticBackdrop').modal('show');
+                   
+                   //회원정보 double click
+                   $("#userTable>tbody").on("dblclick","tr" , function(e){
+                       console.log( "userTable click!" );
+                       
+                       let tdArray = $(this).children();
+                       let email = tdArray.eq(1).text();
+                       
+                       
+                       console.log('email:'+email);
+                       
+                       
+                       $("#receiver").val(email);
+                      
+                       
+                       //modal popup닫기
+                       $('#staticBackdrop').modal('hide');
+                       
+                   });                       
+               },
+               error:function(data){//실패시 처리
+                   console.log("error:"+data);
+               },
+               complete:function(data){//성공/실패와 관계없이 수행!
+                   console.log("complete:"+data);
+               }
+           });
+        
+           
+
+    });
 });
 
 </script>
 </head>
 <body>
-<div class="chat-container">
-<div class="chat-history">
- <ul class="chat-messages">
-    <c:forEach var="vo" items="${list}">
-        <c:set var="isCurrentUser" value="${vo.sender eq sessionScope.user.email}" />
-        <li class="message ${isCurrentUser ? 'user-message' : 'bot-message'}">
-            <div class="name">${isCurrentUser ? sessionScope.user.email : vo.sender}</div>
-            ${vo.contents}
-            <div class="time">${vo.sendDt}</div>
-        </li>
-    </c:forEach>
-</ul>
- </div>
- <div class="input-container">
-        
-        <input type="hidden" id="receiver" name="receiver" value="dlgkssk1627@naver.com"> 
-        <input type="hidden" name="room" id="room" value="1">
-        <input type="text"  id = "contents" name="contents">
-        <button id = "doSend" name="doSend">전송</button>
+<div class="container">
+    <div class="contact-list">
+    <div class="contact">
+        <c:set var="previousReceiver" value="" />
+        <c:forEach var="vo" items="${list}">
+            <!-- 이전에 표시한 수신자와 다른 경우에만 수신자 이름 표시 -->
+            <c:if test="${vo.receiver ne previousReceiver}">
+                ${vo.receiver}
+                <c:set var="previousReceiver" value="${vo.receiver}" />
+            </c:if>
+        </c:forEach>
+        <button type="button" class="btn btn-primary btn-block" id="doMemberPopup">회원</button>  
     </div>
-  </div>
+</div>
 
-   
+<div class="chat-container">
+    <div class="chat-history">
+        <ul class="chat-messages">
+            <c:forEach var="vo" items="${list}">
+                <c:set var="isCurrentUser" value="${vo.sender eq sessionScope.user.email}" />
+                <li class="message ${isCurrentUser ? 'user-message' : 'bot-message'}">
+                    <div class="name">${isCurrentUser ? '나' : vo.sender}</div>
+                    ${vo.contents}
+                    <div class="time">${vo.sendDt}</div>
+                </li>
+            </c:forEach>
+        </ul>
+    </div>
+</div>
+        <div class="input-container">
+            <input type="hidden" id="sender" name="sender" value="${sessionScope.user.email}"> 
+            <input type="text" id="receiver" name="receiver" value="${receiver}"> 
+            <input type="hidden" name="room" id="room" value="1">
+            <input type="text"  id="contents" name="contents">
+            <button id="doSend" name="doSend">전송</button>
+        </div>
     
+</div>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">회원</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <!-- 회원정보 table -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>    
 </body>
 </html>

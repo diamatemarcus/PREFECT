@@ -89,11 +89,12 @@
                m.read_chk AS readChk,
                u.name
         FROM dm m
-        LEFT OUTER JOIN users u ON m.sender = u.name 
+        LEFT OUTER JOIN users u ON m.sender = u.email
         order by seq
         ]]>  
     
 </select>
+
 <delete id="doDelete" parameterType="DmVO">
         DELETE FROM dm
         WHERE seq = #{seq}  
