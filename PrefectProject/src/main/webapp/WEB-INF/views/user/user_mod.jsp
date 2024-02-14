@@ -14,7 +14,7 @@
 		console.log("----------------------");
 
 		let email = document.querySelector("#email").value;
-		console.log("-email:" + email);
+		console.log("email:" + email);
 
 		if (eUtil.isEmpty(email) == true) {
 			alert('아이디를 입력 하세요.');
@@ -159,6 +159,44 @@
 		});
 
 	}
+	$(document).ready(function() {
+	    var selectedLicenses = []; // 이미 선택된 자격증을 저장할 배열
+
+	    // 선택 버튼 클릭 시
+	    $('#reg_licenses').click(function() {
+	        // 선택한 자격증 값 가져오기
+	        var selectedLicenseSeq = $('#licenses').val();
+	        var selectedLicenseName = $('#licenses option:selected').text();
+
+	        // 이미 선택된 자격증인지 확인
+	        if (selectedLicenses.includes(selectedLicenseSeq)) {
+	            alert('이미 선택된 자격증입니다.');
+	            return; // 이미 선택된 자격증이면 함수 종료
+	        }
+
+	        // 표에 추가
+	        $('#tableTbody').append('<tr><td>' + selectedLicenseName + '</td><td><button class="deleteButton">삭제</button></td></tr>');
+
+	        // 선택된 자격증을 배열에 추가
+	        selectedLicenses.push(selectedLicenseSeq);
+	    });
+
+	    // 삭제 버튼 클릭 시
+	    $(document).on('click', '.deleteButton', function() {
+	        // 삭제할 자격증의 이름 가져오기
+	        var deletedLicenseName = $(this).closest('tr').find('td:first').text();
+	        var deletedLicenseSeq = $(this).closest('tr').find('td:first').attr('data-license-seq');
+
+	        // 배열에서 해당 자격증 제거
+	        var index = selectedLicenses.indexOf(deletedLicenseSeq);
+	        if (index !== -1) {
+	            selectedLicenses.splice(index, 1);
+	        }
+
+	        // 테이블에서 행 제거
+	        $(this).closest('tr').remove();
+	    });
+	});
 </script>
 </head>
 <body>
@@ -239,19 +277,41 @@
 					</div>
 				</div>
 
-				<!-- 라이센스 부분 -->
-				<div class="mb-3">
-					<label for="licenses" class="form-label">자격증</label>
-					<div class="col-auto">
-						<select id="licenses" name="licenses">
-							<!-- 검색 조건 옵션을 동적으로 생성 -->
-							<c:forEach items="${licenses}" var="vo">
-								<option value="${vo.licensesSeq}">${vo.licensesName}</option>
-							</c:forEach>
-						</select>
-					</div>
-				</div>
-				<!-- //라이센스 부분 끝 -->
+                <!-- 라이센스 부분 -->
+
+                <!-- 셀렉트 박스 -->
+                <div class="mb-3">
+                    <label for="licenses" class="form-label">자격증</label>
+                    <div class="col-auto">
+                        <select id="licenses" name="licenses">
+                            <!-- 검색 조건 옵션을 동적으로 생성 -->
+                            <c:forEach items="${licenses}" var="vo">
+                                <option value="${vo.licensesSeq}">${vo.licensesName}</option>
+                            </c:forEach>
+                        </select>
+                        <input type="button" value="선택" class="button" id="reg_licenses">
+                    </div>
+                </div>
+
+                <!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
+                <table id="licensesList">
+                    <thead>
+                        <tr>
+                            <th>자격증명</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableTbody">
+                        <c:choose>
+                            <c:when test="${list.size()>0 }">
+                                <c:forEach var="vo" items="${licenses}" varStatus="status">
+                                    <tr>
+                                        <td>${vo.licensesName}</td>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                        </c:choose>
+                    </tbody>
+                </table>
 			</form>
 		</div>
 		<!--// 회원 등록영역 ------------------------------------------------------>
