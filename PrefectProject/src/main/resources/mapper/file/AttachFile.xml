@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcwk.ehr.file">
 
+    <select id="getLastSeqByUuid" parameterType="FileVO" resultType="FileVO">
+	    SELECT MAX(seq) FROM attach_file WHERE uuid = #{uuid}
+	</select>
+
+    <delete id="upFileDelete" parameterType="FileVO">
+        DELETE FROM attach_file
+        WHERE uuid = #{uuid}
+        AND seq  = #{seq}
+    </delete>
+
     <select id="getFileUuid" resultType="FileVO">
         SELECT * FROM ATTACH_FILE WHERE uuid = #{uuid}
     </select>
@@ -15,7 +25,7 @@
 		WHERE uuid = #{uuid}
 		<if test="seq !=null and  seq != 0">
 		  AND seq  = #{seq}
-		</if> 
+		</if>
     </delete>
     
     <insert id="doSave" parameterType="FileVO">
@@ -72,18 +82,5 @@
         <include refid="doSelectList"></include>
     </select>
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+        
 </mapper>

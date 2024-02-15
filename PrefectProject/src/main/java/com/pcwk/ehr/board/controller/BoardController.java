@@ -45,7 +45,7 @@ public class BoardController implements PcwkLogger{
 	
 	public BoardController() {}
 	
-	@GetMapping(value="/moveToMod.do")//저 url로 get매핑함
+	@GetMapping(value="/moveToMod.do")
 	public String moveToMod(BoardVO inVO, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException{
 		String view = "";
 		LOG.debug("┌───────────────────────────────────┐");
@@ -60,6 +60,9 @@ public class BoardController implements PcwkLogger{
 		BoardVO  outVO = service.doSelectOne(inVO);
 			
 		model.addAttribute("vo", outVO);
+		
+		// uuid 값을 모델에 추가
+	    model.addAttribute("uuid", outVO.getUuid());
 		
 		// 파일 정보 조회
 		List<FileVO> fileList = fileService.getFileUuid(outVO.getUuid());
@@ -183,6 +186,15 @@ public class BoardController implements PcwkLogger{
 				"/ehr/board/doRetrieve.do", "pageDoRerive");
 		modelAndView.addObject("pageHtml", html);
 		
+//		//공지사항:10, 자유게시판:20
+//		String title = "";
+//		if(inVO.getDiv().equals("10")) {
+//			title = "공지사항-목록";
+//		}else {
+//			title = "자유게시판-목록";
+//		}
+//		modelAndView.addObject("title", title);	
+		
 		
 		return modelAndView;   
 	}
@@ -275,14 +287,6 @@ public class BoardController implements PcwkLogger{
 		inVO.setSeq(seq);
 		
 		inVO.setUuid(uuid);
-		
-		/*
-		 * FileVO fileVO = new FileVO(); String uuid = fileVO.getUuid(); if (null !=
-		 * uuid) { inVO.setUuid(uuid); } else { inVO.setUuid(null); }
-		 * 
-		 * 
-		 * inVO.setUuid(uuid);
-		 */
 		
 		LOG.debug("│ BoardVO seq                       │"+inVO);
 		int flag = service.doSave(inVO);

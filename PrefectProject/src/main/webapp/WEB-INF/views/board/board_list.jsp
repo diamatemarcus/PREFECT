@@ -123,7 +123,7 @@ function pageDoRerive(url,pageNo){
     <!-- 검색 -->
     <form action="#" method="get" id="boardForm" name="boardForm">
       <input type="hidden" name="pageNo" id="pageNo" />
-      <input type="hidden" name="div"    id="div"  value="${paramVO.getDiv() }"/>
+      <input type="text" name="div"    id="div"  value="${paramVO.getDiv() }"/>
       <div class="row g-1 justify-content-end ">
           <label for="searchDiv" class="col-auto col-form-label">검색조건</label>
           <div class="col-auto">
@@ -159,7 +159,7 @@ function pageDoRerive(url,pageNo){
       <thead>
         <tr >
           <th scope="col" class="text-center col-lg-1  col-sm-1">NO</th>
-          <th scope="col" class="text-center col-lg-7  col-sm-8">제목</th>
+          <th scope="col" class="text-center col-lg-6  col-sm-8">제목</th>
           <th scope="col" class="text-center col-lg-2  col-sm-1">등록일</th>
           <th scope="col" class="text-center col-lg-1  ">등록자</th>
           <th scope="col" class="text-center col-lg-1  ">조회수</th>
@@ -173,7 +173,7 @@ function pageDoRerive(url,pageNo){
               <c:forEach var="vo" items="${list}" varStatus="status">
                 <tr>
                   <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.no}" escapeXml="true"/> </th>
-                  <td class="text-left   col-lg-7  col-sm-8" ><c:out value="${vo.title}" escapeXml="true"/></td>
+                  <td class="text-left   col-lg-6  col-sm-8" ><c:out value="${vo.title}" escapeXml="true"/></td>
                   <td class="text-center col-lg-2  col-sm-1"><c:out value="${vo.modDt}" escapeXml="true"/></td>
                   <td class="            col-lg-1 "><c:out value="${vo.modId}" /></td>
                   <td class="text-end    col-lg-1 "><c:out value="${vo.readCnt}" /></td>

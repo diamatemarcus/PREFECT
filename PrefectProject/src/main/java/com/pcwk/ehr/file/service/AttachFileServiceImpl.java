@@ -44,7 +44,7 @@ public class AttachFileServiceImpl implements AttachFileService, PcwkLogger {
 		int flag = 0;
 		try {
 			for (FileVO vo : list) {
-				flag += attachFileDao.doDelete(vo);
+				flag += attachFileDao.upFileDelete(vo);
 			}
 		} catch (SQLException e) {
 			LOG.debug("====================");
@@ -107,6 +107,16 @@ public class AttachFileServiceImpl implements AttachFileService, PcwkLogger {
 	@Override
 	public List<FileVO> getFileUuid(String uuid) {
 		return attachFileDao.getFileUuid(uuid);
+	}
+
+	@Override
+	public int doDelete(FileVO inVO) throws SQLException {
+		return attachFileDao.upFileDelete(inVO);
+	}
+
+	@Override
+	public int getLastSeqByUuid(String uuid) throws SQLException {
+		return attachFileDao.getLastSeqByUuid(uuid);
 	}
 	
 	/*

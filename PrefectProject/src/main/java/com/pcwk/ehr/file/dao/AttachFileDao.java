@@ -11,5 +11,9 @@ public interface AttachFileDao extends WorkDiv<FileVO> {
 	public int getFileSeq() throws SQLException;
 	
 	public List<FileVO> getFileUuid(String uuid);
+	
+	public int upFileDelete(FileVO inVO) throws SQLException;
+
+	public int getLastSeqByUuid(String uuid);
 
 }

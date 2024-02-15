@@ -17,11 +17,87 @@ document.addEventListener("DOMContentLoaded",function(){
 	
 	const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
+    const uuid = document.querySelector("#uuid").value;
     const modId = '${sessionScope.user.email}';
     
+	console.log('uuid:' + uuid);
+	
     const doUpdateBTN   = document.querySelector("#doUpdate");
     const doDeleteBTN   = document.querySelector("#doDelete");
     const moveToListBTN = document.querySelector("#moveToList");
+    const upFileDeleteBTN = document.querySelector("#upFileDelete");
+    const fileUploadBTN = document.querySelector("#fileUpload");
+    
+    // 파일 업로드
+    fileUploadBTN.addEventListener("click",function(e){
+    	console.log("fileUploadBTN click");
+    	
+    	console.log('uuid:' + uuid);
+
+    	let formData = new FormData();
+        formData.append('uuid', uuid);
+        
+        // 선택된 파일을 formData에 추가
+        $('input[type="file"]').each(function() {
+            let fileInput = $(this)[0];
+            if(fileInput.files.length > 0) {
+                for(let i = 0; i < fileInput.files.length; i++) {
+                    formData.append('uploadFile', fileInput.files[i]);
+                }
+            }
+        });
+        
+        // AJAX 요청으로 서버에 파일 업로드
+        $.ajax({
+            url: '${CP}/file/reUpload.do',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false, 
+            success: function(data) {
+                console.log('Upload success: ', data);
+                alert('파일이 성공적으로 업로드되었습니다.');
+                // 추가적으로 페이지를 새로고침하거나 업로드된 파일 목록을 갱신하는 로직을 추가할 수 있음
+            },
+            error: function(xhr, status, error) {
+                console.error('Upload failed: ', error);
+                alert('파일 업로드 중 오류가 발생했습니다.');
+            }
+        });
+        
+    });
+        
+    // 파일 삭제 버튼 클릭 이벤트를 모든 삭제 버튼에 대해 추가
+	document.querySelectorAll('.delete-file').forEach(function(button) {
+	    button.addEventListener('click', function(e) {
+	        const uuid = this.getAttribute('data-uuid');
+	        const seq = this.getAttribute('data-seq');
+	        
+	        console.log('upFileDeleteBTN click');
+	        console.log('uuid :'+uuid);
+	        console.log('seq :'+seq);
+	        
+	        if(confirm('해당 파일을 삭제하시겠습니까?')) {
+	            $.ajax({
+	                url: '${CP}/file/doDelete.do',
+	                type: 'GET',
+	                data: {
+	                    "uuid": uuid,
+	                    "seq": seq
+	                },
+	                success: function(response) {
+	                    console.log('파일 삭제 성공');
+	                    alert('파일이 삭제되었습니다.');
+	                    // 성공 시 페이지 새로고침 등의 추가 동작
+	                },
+	                error: function(xhr, status, error) {
+	                    console.log('파일 삭제 실패');
+	                    alert('파일 삭제 중 오류가 발생했습니다.');
+	                }
+	            });
+	        }
+	    });
+	});
     
     // 수정 이벤트 감지 및 처리
     doUpdateBTN.addEventListener("click", function(e){
@@ -171,8 +247,10 @@ document.addEventListener("DOMContentLoaded",function(){
     -->
     <!-- form -->
     
-    
     <form action="#" name="regFrm" id="regFrm">
+        <input type="hidden" name="div" id="div">
+        <input type="text" name="uuid" id="uuid" value="${uuid}">
+        
         
         <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
             <label for="seq" class="col-sm-2 col-form-label">구분</label>
@@ -238,6 +316,16 @@ document.addEventListener("DOMContentLoaded",function(){
         </div>
         
         <div class="container">
+	        <form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm">
+	            <div class="form-group">
+	                <label for="file1">파일1</label>
+	                <input type="file" name="file1" id="file1" placeholder="파일을 선택 하세요."  multiple/>
+	                <input type="button" value="파일 등록" class="button" id="fileUpload">
+	            </div>  
+	        </form>
+	    </div>
+        
+        <div class="container">
 		    <table id="fileList" class="table">
 		        <thead>
 		            <tr>
@@ -247,6 +335,8 @@ document.addEventListener("DOMContentLoaded",function(){
 		                <th>파일크기</th>
 		                <th>확장자</th>
 		                <th>저장경로</th>
+		                <th>UUID</th>
+		                <th>SEQ</th>
 		            </tr>
 		        </thead>
 		        <tbody>
@@ -259,6 +349,9 @@ document.addEventListener("DOMContentLoaded",function(){
 		                        <td>${file.fileSize}</td>
 		                        <td>${file.extension}</td>
 		                        <td>${file.savePath}</td>
+		                        <td>${file.uuid }</td>
+		                        <td>${file.seq }</td>
+		                        <td><button id="upFileDelete" class="btn btn-danger delete-file" data-uuid="${file.uuid}" data-seq="${file.seq}">삭제</button></td>
 		                    </tr>
 		                </c:forEach>
 		            </c:if>

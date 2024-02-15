@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -16,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pcwk.ehr.board.domain.BoardVO;
+import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.file.domain.FileVO;
@@ -86,6 +91,37 @@ public class AttachFileController implements PcwkLogger {
 		}		
 		
 		saveFilePath = FILE_PATH+yyyyMMPath;
+	}
+	
+	@GetMapping(value ="/doDelete.do",produces = "application/json;charset=UTF-8" )//@RequestMapping(value = "/doDelete.do",method = RequestMethod.GET)
+	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
+	public MessageVO doDelete(FileVO inVO) throws SQLException{
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ doDelete                          │");
+		LOG.debug("│ FileVO                            │"+inVO);
+		LOG.debug("└───────────────────────────────────┘");		
+		if(0 == inVO.getSeq() ) {
+			LOG.debug("============================");
+			LOG.debug("==nullPointerException===");
+			LOG.debug("============================");
+			MessageVO messageVO=new MessageVO(String.valueOf("3"), "순번을 선택 하세요.");
+			return messageVO;
+		} 
+		
+		
+		int flag = attachFileService.doDelete(inVO);
+		
+		String   message = "";
+		if(1==flag) {//삭제 성공
+			message = inVO.getSeq()+"삭제 되었습니다.";	
+		}else {
+			message = inVO.getSeq()+"삭제 실패!";
+		}
+		
+		MessageVO messageVO=new MessageVO(String.valueOf(flag), message);
+		
+		LOG.debug("│ messageVO                           │"+messageVO);
+		return messageVO;
 	}
 
 	
@@ -197,6 +233,62 @@ public class AttachFileController implements PcwkLogger {
 		return ResponseEntity.ok(list);
 	}
 	
+	@PostMapping(value="/reUpload.do", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<FileVO>> reUpload(
+	        @RequestParam("uuid") String uuid, // 기존 파일과 동일한 UUID
+	        @RequestParam("uploadFile") MultipartFile[] uploadFiles, // 새로 업로드할 파일
+	        HttpSession session) throws SQLException, IOException {
+
+	    LOG.debug("┌───────────────────────────────────┐");
+	    LOG.debug("│ reUpload                          │");
+	    LOG.debug("└───────────────────────────────────┘");
+
+	    List<FileVO> list = new ArrayList<>();
+
+	    // 기존에 사용된 마지막 SEQ 조회
+	    Integer lastSeq = attachFileService.getLastSeqByUuid(uuid);
+	    // null 처리
+	    if (lastSeq == null) {
+	        lastSeq = 0;
+	    }
+	    int nextSeq = lastSeq + 1;
+
+	    for (MultipartFile multipartFile : uploadFiles) {
+	        if (!multipartFile.isEmpty()) {
+	            FileVO fileVO = new FileVO();
+	            // UUID, SEQ 설정
+	            fileVO.setUuid(uuid);
+	            fileVO.setSeq(nextSeq++); // 다음 SEQ 사용
+
+	            String originalFilename = multipartFile.getOriginalFilename();
+	            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+	            String saveFileName = uuid + "_" + fileVO.getSeq() + ext; // 저장 파일명 생성
+
+	            // 파일 정보 설정
+	            fileVO.setOrgFileName(originalFilename);
+	            fileVO.setSaveFileName(saveFileName);
+	            fileVO.setFileSize(multipartFile.getSize());
+	            fileVO.setExtension(ext);
+	            fileVO.setSavePath(saveFilePath); // 파일 저장 경로
+
+	            String fullPath = saveFilePath + File.separator + saveFileName;
+	            File saveFile = new File(fullPath);
+	            multipartFile.transferTo(saveFile); // 파일 저장
+
+	            list.add(fileVO);
+	        }
+	    }
+
+	    // 새 파일 정보 데이터베이스에 저장
+	    if (!list.isEmpty()) {
+	        attachFileService.upFileSave(list); // 여러 파일 정보를 한 번에 데이터베이스에 저장
+	    }
+
+	    return ResponseEntity.ok(list);
+	}
+
+
 
 	@RequestMapping(value="/fileUpload.do",method = RequestMethod.POST)
 	public ModelAndView fileUpload(ModelAndView modelAndView, MultipartHttpServletRequest mHttp)throws IllegalStateException,IOException {

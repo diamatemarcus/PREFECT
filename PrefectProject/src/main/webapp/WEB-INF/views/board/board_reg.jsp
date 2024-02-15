@@ -28,7 +28,9 @@ document.addEventListener("DOMContentLoaded",function(){
     }); //-- moveToListBTN
     
     function moveToListFun() {
-        window.location.href = "/ehr/board/doRetrieve.do";
+    	let div = document.querySelector("#div").value;
+        console.log('div:'+div);
+        window.location.href = "/ehr/board/doRetrieve.do?div="+div;
     }
 
     // event 감지 및 처리
@@ -235,20 +237,20 @@ document.addEventListener("DOMContentLoaded",function(){
      -->
     <!-- form -->
     <form action="#" name="regFrm" id="regFrm">
-<!--         <div class="mb-3">
+        <!-- <input type="hidden" name="div" id="div" value="10"> -->
+        <input type="text" name="uuid" id="uuid">
+        
+        <div class="mb-3">
             <label for="title" class="form-label">구분</label>
             <select class="form-select" aria-label="Default select example" id="div" name="div">
               <c:forEach var="codeVO" items="${divCode}">
                  <option   value="<c:out value='${codeVO.detCode}'/>"  
-                    <c:if test="${codeVO.detCode == paramVO.getDiv() }">selected</c:if>  
+                    <c:if test="${codeVO.detCode == vo.getDiv() }">selected</c:if>  
                  ><c:out value="${codeVO.detName}"/></option>
               </c:forEach>
-              
             </select>            
-        </div> -->
+        </div>
     
-        <input type="hidden" name="div" id="div" value="10">
-        <input type="text" name="uuid" id="uuid">
      
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
             <label for="title" class="form-label">제목</label>

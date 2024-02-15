@@ -1,7 +1,9 @@
 package com.pcwk.ehr.file.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,5 +125,16 @@ public class AttachFileDaoImpl implements AttachFileDao, PcwkLogger {
 	public List<FileVO> getFileUuid(String uuid) {		
 		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"getFileUuid", uuid);
 	}
+
+	@Override
+	public int upFileDelete(FileVO inVO) throws SQLException {
+		return sqlSessionTemplate.update(NAMESPACE+DOT+"upFileDelete", inVO);
+	}
+
+	@Override
+	public int getLastSeqByUuid(String uuid) {
+		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getLastSeqByUuid", uuid);
+	}
+
 
 }

@@ -9,6 +9,18 @@
      WHERE seq  = #{seq}
        AND reg_id <> #{regId} ]]>  
   </update>
+  
+  <!-- div -->
+  <sql id="divCondition">
+    <choose>
+        <when test=" ''!=div and '20' == div "><!-- 20 -->
+            AND div = '20'
+        </when>
+        <otherwise> <!-- 10 -->
+            AND div = '10'
+        </otherwise>
+    </choose>
+  </sql>
   <sql id="searchCondition">
     <choose>
         <when test=" ''!= searchDiv and '10' == searchDiv ">
