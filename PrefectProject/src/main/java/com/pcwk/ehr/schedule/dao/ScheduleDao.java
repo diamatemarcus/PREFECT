@@ -13,6 +13,6 @@ public interface ScheduleDao extends WorkDiv<ScheduleVO> {
 
 	List<ScheduleVO> doRetrieve(CalendarVO inVO) throws SQLException;
 	
-
+	int doDeleteMultiple(int[] scheduleIDs);
 
 }

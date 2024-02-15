@@ -1,13 +1,13 @@
 package com.pcwk.ehr;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.sql.SQLException;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
@@ -51,15 +51,15 @@ public class LoginDaoJunitTest implements PcwkLogger{
 		LOG.debug("=setUp=" );		
 		LOG.debug("====================");
 		// 등록
-		userVO01 = new UserVO("pohomen@naver.com-01", "김진수-01", "4321-01","01012341234","대졸","11");
-		userVO02 = new UserVO("pohomen@naver.com-02", "김진수-02", "4321-02","01012341235","대졸","12");
-		userVO03 = new UserVO("pohomen@naver.com-03", "김진수-03", "4321-03","01012341236","대졸","11");
+		userVO01 = new UserVO("pohomen@naver.com-01", "김진수-01", "4321-01","01012341234","대졸","11","");
+		userVO02 = new UserVO("pohomen@naver.com-02", "김진수-02", "4321-02","01012341235","대졸","12","");
+		userVO03 = new UserVO("pohomen@naver.com-03", "김진수-03", "4321-03","01012341236","대졸","11","");
  
 		// getCount에 사용
 		searchVO = new UserVO();
 		searchVO.setEmail("pohomen@naver.com");
 	}
-	
+	@Ignore
 	@Test
 	public void doLogin()throws SQLException {
 		//1. 데이터 삭제

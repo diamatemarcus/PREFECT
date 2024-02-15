@@ -32,6 +32,7 @@ import com.pcwk.ehr.licenses.service.LicensesService;
 import com.pcwk.ehr.mail.service.MailSendService;
 import com.pcwk.ehr.user.domain.UserVO;
 import com.pcwk.ehr.user.service.UserService;
+import com.pcwk.ehr.util.ShaUtil;
 
 @Controller
 @RequestMapping("user")
@@ -388,7 +389,15 @@ public class UserController {
 		LOG.debug("│ doSave()                                  │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");		
 		
-		
+		//SHA-256 + salt를 사용한 비밀번호 암호화 (2024-02-13)
+				String salt = ShaUtil.generateSalt();
+				inVO.setSalt(salt);
+				String raw = inVO.getPassword();
+				String rawAndSalt = raw + salt;
+				String hex = ShaUtil.hash(rawAndSalt);
+				inVO.setPassword(hex);
+				//
+				
 		int flag = userService.doSave(inVO);
 		String message = "";
 		

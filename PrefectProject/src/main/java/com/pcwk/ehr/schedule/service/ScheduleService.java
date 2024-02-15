@@ -19,4 +19,6 @@ public interface ScheduleService {
 	public int doSave(ScheduleVO inVO) throws SQLException;
 	
 	public List<ScheduleVO> doRetrieve(CalendarVO inVO) throws SQLException;
+	
+	public int doDeleteMultiple(int[] scheduleIDs) throws SQLException;
 }

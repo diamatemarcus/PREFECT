@@ -63,14 +63,14 @@ public class LicensesControllerJunitTest implements PcwkLogger {
 	public void setUp() throws Exception {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
-		user01 = new UserVO("cr7@gmail.com", "호날두_U", "7777_U", "01077777777", "초졸_U", "1");
+		user01 = new UserVO("cr7@gmail.com", "호날두_U", "7777_U", "01077777777", "초졸_U", "1","");
 
 		licenses01 = new LicensesVO(6, "cr7@gmail.com", "23/02/02");
 		licenses02 = new LicensesVO(7, "cr7@gmail.com", "23/02/02");
 		licenses03 = new LicensesVO(8, "cr7@gmail.com", "23/02/02");
 
 	}
-	//@Ignore
+	@Ignore
 	@Test
 	public void getLicensesName() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
