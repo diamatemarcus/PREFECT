@@ -167,19 +167,6 @@
 		});
 
 	}
-	$(document).ready(function() {
-	    var selectedLicenses = []; // 이미 선택된 자격증을 저장할 배열
-
-	    // 페이지 로드 시 로컬 스토리지에서 선택된 자격증 목록을 로드하여 표에 추가
-	    if (localStorage.getItem('selectedLicenses')) {
-	        selectedLicenses = JSON.parse(localStorage.getItem('selectedLicenses'));
-	        selectedLicenses.forEach(function(licenseSeq) {
-	            var licenseName = $('#licenses option[value="' + licenseSeq + '"]').text();
-	            var regDt = localStorage.getItem('regDt_' + licenseSeq);
-	            var newRow = '<tr><td data-license-seq="' + licenseSeq + '">' + licenseName + '</td><td>' + regDt + '</td><td><button class="deleteRowBtn">삭제</button></td></tr>';
-	            $('#licensesList tbody').append(newRow);
-	        });
-	    }
 
 	    $(document).ready(function() {
 	        var selectedLicenses = []; // 이미 선택된 자격증을 저장할 배열
@@ -316,7 +303,6 @@
 	            return true;
 	        }
 	    });
-	});
 </script>
 </head>
 <body>
