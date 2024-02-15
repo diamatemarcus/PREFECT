@@ -6,6 +6,11 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
+<style>
+#regDt {
+    width: 200px; /* 원하는 크기로 조정하세요 */
+}
+</style>
 <title>마이페이지</title>
 <script>
 	function doDelete() {
@@ -163,10 +168,15 @@
 	    var selectedLicenses = []; // 이미 선택된 자격증을 저장할 배열
 
 	    // 선택 버튼 클릭 시
-	    $('#reg_licenses').click(function() {
-	        // 선택한 자격증 값 가져오기
+	    $('#doSaveLicenses').click(function() {
 	        var selectedLicenseSeq = $('#licenses').val();
 	        var selectedLicenseName = $('#licenses option:selected').text();
+	        var regDt = $('#regDt').val(); // 등록일 가져오기
+
+	        // 등록일 유효성 검사
+	        if (!validateDate(regDt)) {
+	            return;
+	        }
 
 	        // 이미 선택된 자격증인지 확인
 	        if (selectedLicenses.includes(selectedLicenseSeq)) {
@@ -175,16 +185,15 @@
 	        }
 
 	        // 표에 추가
-	        $('#tableTbody').append('<tr><td data-license-seq="' + selectedLicenseSeq + '">' + selectedLicenseName + '</td><td><button class="deleteButton">삭제</button></td></tr>');
+	        var newRow = '<tr><td data-license-seq="' + selectedLicenseSeq + '">' + selectedLicenseName + '</td><td>' + regDt + '</td><td><button class="deleteRowBtn">삭제</button></td></tr>';
+	        $('#licensesList tbody').append(newRow);
 
 	        // 선택된 자격증을 배열에 추가
 	        selectedLicenses.push(selectedLicenseSeq);
 	    });
 
 	    // 삭제 버튼 클릭 시
-	    $(document).on('click', '.deleteButton', function() {
-	        // 삭제할 자격증의 이름 가져오기
-	        var deletedLicenseName = $(this).closest('tr').find('td:first').text();
+	    $(document).on('click', '.deleteRowBtn', function() {
 	        var deletedLicenseSeq = $(this).closest('tr').find('td:first').attr('data-license-seq');
 
 	        // 배열에서 해당 자격증 제거
@@ -196,6 +205,31 @@
 	        // 테이블에서 행 제거
 	        $(this).closest('tr').remove();
 	    });
+
+	    // 등록일 유효성 검사 함수
+	    function validateDate(dateString) {
+	        var regex = /^(\d{2})(\d{2})(\d{2})$/;
+	        if (!regex.test(dateString)) {
+	            alert('날짜 형식이 올바르지 않습니다. (YYMMDD)');
+	            return false;
+	        }
+
+	        var year = parseInt(dateString.substr(0, 2));
+	        var month = parseInt(dateString.substr(2, 2));
+	        var day = parseInt(dateString.substr(4, 2));
+
+	        if (month < 1 || month > 12) {
+	            alert('올바른 월을 입력하세요. (1부터 12까지)');
+	            return false;
+	        }
+
+	        if (day < 1 || day > 31) {
+	            alert('올바른 일을 입력하세요. (1부터 31까지)');
+	            return false;
+	        }
+
+	        return true;
+	    }
 	});
 </script>
 </head>
@@ -280,24 +314,36 @@
                 <!-- 라이센스 부분 -->
 
                 <!-- 셀렉트 박스 -->
-                <div class="mb-3">
-                    <label for="licenses" class="form-label">자격증</label>
-                    <div class="col-auto">
-                        <select id="licenses" name="licenses">
-                            <!-- 검색 조건 옵션을 동적으로 생성 -->
-                            <c:forEach items="${licenses}" var="vo">
-                                <option value="${vo.licensesSeq}">${vo.licensesName}</option>
-                            </c:forEach>
-                        </select>
-                        <input type="button" value="선택" class="button" id="reg_licenses">
-                    </div>
-                </div>
+				<div class="mb-3">
+				    <label for="licenses" class="form-label">자격증</label>
+				    <div class="row align-items-center">
+				        <!-- 자격증 선택 셀렉트 박스 -->
+				        <div class="col-auto">
+				            <select id="licenses" name="licenses" class="form-control">
+				                <!-- 검색 조건 옵션을 동적으로 생성 -->
+				                <c:forEach items="${licenses}" var="vo">
+				                    <option value="${vo.licensesSeq}">${vo.licensesName}</option>
+				                </c:forEach>
+				            </select>
+				        </div>
+				        <!-- 등록일 텍스트 상자 -->
+				        <div class="mb-6">
+				            <label for="regDt" class="form-label">등록일</label>
+				            <input type="text" id="regDt" name="regDt" class="form-control" placeholder="생년월일 6자리">
+				        </div>
+				        <!-- 자격증 저장 버튼 -->
+				        <div class="col-auto">
+				            <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses">
+				        </div>
+				    </div>
+				</div>
 
                 <!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
                 <table id="licensesList">
                     <thead>
                         <tr>
                             <th>자격증명</th>
+                            <th>등록일</th>
                         </tr>
                     </thead>
                     <tbody id="tableTbody">
