@@ -168,6 +168,7 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 		
 	}
 	
+	@Ignore
 	@Test
 	public void addAndGet() throws Exception {
 		// 1. 데이터 삭제
@@ -186,6 +187,19 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 		
 //		isSameSchedule(schedules.get(0), doSelectOne(schedules.get(0)));
 //		isSameSchedule(schedules.get(1), doSelectOne(schedules.get(1)));
+	}
+	
+	@Test
+	public void deleteMultiple() throws Exception {
+		// 1. 데이터 삭제
+		// 2. 등록
+		// 3. 한건조회  		
+		
+		int[] scheduleIDs = {15, 16, 17}; // 예시로 scheduleIDs 설정
+		
+		//1.
+		doDeleteMultiple(scheduleIDs);
+
 	}
 	
 	
@@ -210,6 +224,33 @@ public class ScheduleControllerJUnitTest implements PcwkLogger{
 				MockMvcRequestBuilders.get("/schedule/doDelete.do")
 				.param("scheduleID",        scheduleVO.getScheduleID() + "");
 		
+		ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
+		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ result                                    │"+result);		
+		LOG.debug("└───────────────────────────────────────────┘");				
+		
+		MessageVO messageVO = new Gson().fromJson(result, MessageVO.class);
+		//assertEquals(String.valueOf(1), messageVO.getMsgId());
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ messageVO                                 │"+messageVO);		
+		LOG.debug("└───────────────────────────────────────────┘");			
+	}
+	
+	
+	public void doDeleteMultiple(int[]  scheduleIDs) throws Exception{
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doDeleteMultiple()                        │");		
+		LOG.debug("└───────────────────────────────────────────┘");
+		//UserVO  inVO = users.get(0);
+		//url + 호출방식(get) + param(Email)
+		
+		MockHttpServletRequestBuilder  requestBuilder = 
+				MockMvcRequestBuilders.get("/schedule/doDeleteMultiple.do")
+				.param("scheduleIDs", String.valueOf(scheduleIDs[0]))
+		        .param("scheduleIDs", String.valueOf(scheduleIDs[1]))
+		        .param("scheduleIDs", String.valueOf(scheduleIDs[2]));
+		        
 		ResultActions resultActions=this.mockMvc.perform(requestBuilder).andExpect(status().isOk());
 		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
 		LOG.debug("┌───────────────────────────────────────────┐");

@@ -2,6 +2,7 @@ package com.pcwk.ehr.schedule.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -123,10 +124,23 @@ public class ScheduleDaoImpl implements ScheduleDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
 
+	@Override
+	public int doDeleteMultiple(int[] scheduleIDs) {
+		int flag = 0;
 
+		//----------------------------------------------------------------------
+		String statement = this.NAMESPACE+this.DOT+"doDeleteMultiple";
+		LOG.debug("1.param \n" + Arrays.toString(scheduleIDs));
+		LOG.debug("2.statement \n" + statement);
+		
+		flag=this.sqlSessionTemplate.delete(statement, scheduleIDs);
+		
+		LOG.debug("3.flag \n" + flag);
+		//----------------------------------------------------------------------
+		return flag;
+	}
+	
 
 }
 

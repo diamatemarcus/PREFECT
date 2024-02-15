@@ -12,17 +12,19 @@
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>달력</title>
 <style>
-        /* 초기에는 form 숨기기 */
-        #myForm {
-            display: none;
-        }
+/* 초기에는 form 숨기기 */
+#myForm {
+	display: none;
+}
 </style>
 <script>
 	document
 			.addEventListener(
 					"DOMContentLoaded",
 					function() {
-						console.log("DOMContentLoaded");
+						//DOMContentLoaded-----------------------------------------
+						console.log("DOMContentLoaded"); 
+						
 
 						const saveScheduleBTN = document
 								.querySelector("#doSaveSchedule");
@@ -54,6 +56,7 @@
 							nextMonthBTN.style.display = "none";
 						}
 
+						//------------------------------다음 달 버튼
 						nextMonthBTN
 								.addEventListener(
 										"click",
@@ -79,6 +82,7 @@
 
 										});
 
+						//--------------------------이전 달 버튼
 						lastMonthBTN
 								.addEventListener(
 										"click",
@@ -106,6 +110,7 @@
 
 						let isFormVisible = false;
 						
+						//-------------------------------- 일정 테이블 가져오는 메소드
 						 function scheduleRetrieve(calID) {
 							 let form = document.getElementById("myForm");
 								form.style.display = "none";
@@ -145,6 +150,7 @@
 												//동적인 테이블 헤더 생성
 												let tableHeader = '<thead>\
 										                    <tr>\
+										                    	<th scope="col" class="text-center col-lg-1 col-sm-1"></th>\
 											                    <th scope="col" class="text-center col-lg-1  col-sm-1">calID</th>\
 											                    <th scope="col" class="text-center col-lg-2  col-sm-2" >scheduleID</th>\
 											                    <th scope="col" class="text-center col-lg-2  col-sm-2" >일정 제목</th>\
@@ -154,7 +160,7 @@
 												//동적 테이블 body		                
 												let tableBody = ' <tbody>';
 
-												for (let i = 0; i < data.length; i++) {
+												/* for (let i = 0; i < data.length; i++) {
 													tableBody += '<tr>\
 								                		<td class="text-center">'
 															+ data[i].calID
@@ -170,7 +176,18 @@
 															+ '</td>\
 							         	             </tr>\
 								                     ';
+												} */
+												
+												for (let i = 0; i < data.length; i++) {
+												    tableBody += '<tr>\
+												                    <td class="text-center"><input type="checkbox" name="scheduleID" value="' + data[i].scheduleID + '"></td>\
+												                    <td class="text-center">' + data[i].calID + '</td>\
+												                    <td class="text-left">' + data[i].scheduleID + '</td>\
+												                    <td class="text-left">' + data[i].title + '</td>\
+												                    <td class="text-left">' + data[i].explanation + '</td>\
+												                </tr>';
 												}
+												
 												tableBody += ' </tbody>';
 
 												console
@@ -254,12 +271,16 @@
 							 
 						 }
 						
-						//jquery:table 데이터 선택     
+						//----------------------------------------- 날짜 선택해서 일정 보여주기 (jquery:table 데이터 선택)     
 						$("#calendarTable>tbody")
 								.on(
 										"dblclick",
 										"td",
 										function(e) {
+											
+											document.querySelector("#explanation").value = "";
+							                document.querySelector("#title").value = "";
+							                
 											let form = document.getElementById("myForm");
 											form.style.display = "none";
 											isFormVisible = false;
@@ -286,6 +307,7 @@
 											scheduleRetrieve(calID);
 										});
 						
+						//-------------------------------------------------------------- 일정 추가 버튼
 						saveScheduleBTN.addEventListener("click", function(e) {
 							let form = document.getElementById("myForm");
 							
@@ -350,13 +372,67 @@
 				                });
 				                
 				                form.style.display = "none";
+				                document.querySelector("#explanation").value = "";
+				                document.querySelector("#title").value = "";
 				                
 				            }
 			                
 				            // isFormVisible 변수 업데이트
 				            isFormVisible = !isFormVisible;
 						});
+						
+						
+						//------------------------------------------------------여러 일정 한번에 삭제
+						$("#doDeleteSchedule").click(function() {
+				            // 체크된 일정의 scheduleID 값을 배열로 저장
+				            var scheduleIDs = [];
+				            $("input[name='scheduleID']:checked").each(function() {
+				                scheduleIDs.push($(this).val());
+				            });
 
+				            // 배열이 비어 있는지 확인
+				            if (scheduleIDs.length === 0) {
+				                alert("삭제할 일정을 선택해주세요.");
+				                return;
+				            }
+				            
+				            let calID = document.querySelector("#calID").value;
+				            
+				         // scheduleIDs 배열을 콘솔에 출력
+				            console.log("scheduleIDs:", scheduleIDs);
+				            console.log("calID:", calID);
+				            let length = scheduleIDs.length;
+
+				            // 여러 일정 삭제 Ajax 요청
+				            $.ajax({
+				                type: "GET",
+				                url: "/ehr/schedule/doDeleteMultiple.do",
+				                dataType: "json",
+				                data: {
+				                    "scheduleIDs": JSON.stringify(scheduleIDs)
+				                },
+				                success: function(response) {
+				                    // 삭제 성공 여부 확인
+				                    if (response.msgId == length) {
+				                        alert(response.msgContents); // 성공 메시지 표시
+				                        scheduleRetrieve(calID);	
+				                    } else {
+				                        alert(response.msgContents); // 실패 메시지 표시
+				                    }
+				                },
+				                error: function(xhr, status, error) {
+				                    console.error(xhr.responseText); // 오류 메시지 출력
+				                    alert("일정 삭제 중 오류가 발생했습니다.");
+				                }
+				            });
+				        });
+
+						
+						
+						
+						
+						
+						
 					});//--DOMContentLoaded
 </script>
 </head>
@@ -469,32 +545,43 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5" id="staticBackdropLabel">일정</h1>
-						<input type="text" name="calID" id="calID" />
-						<input type="button" value="일정 추가" class="btn btn-primary"
+						<input type="text" name="calID" id="calID" /> 
+						<input
+							type="button" value="일정 추가" class="btn btn-primary"
 							id="doSaveSchedule">
+						<input
+							type="button" value="일정 삭제" class="btn btn-primary"
+							id="doDeleteSchedule">
+						<input
+							type="button" value="일정 수정" class="btn btn-primary"
+							id="doUpdateSchedule">
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
 					<div class="modal-body" id="modalTable">
 						<!-- 일정 table -->
 					</div>
-					
+
 					<!-- form -->
-				    <div id="myForm" class="modal-body">
-				        <form id="scheduleForm">
-				            <!-- 여기에 form 요소들을 넣으세요 -->
-				            <input type="hidden" name="calID">
-				            <input type="hidden" name="scheduleID">
-					        <div class="mb-3"> <!--  아래쪽으로  여백 -->
-					            <label for="title" class="form-label">제목</label>
-					            <input type="text" class="form-control" id="title" name="title" placeholder="일정제목을 입력 하세요.">
-					        </div>
-				            <div class="mb-3"> <!--  아래쪽으로  여백 -->
-					            <label for="explantaion" class="form-label">설명</label>
-					            <input type="text" class="form-control" id="explanation" name="explanation" placeholder="일정설명을 입력 하세요.">
-					        </div>
-				        </form>
-				    </div>
+					<div id="myForm" class="modal-body">
+						<form id="scheduleForm">
+							<!-- 여기에 form 요소들을 넣으세요 -->
+							<input type="hidden" name="calID"> <input type="hidden"
+								name="scheduleID">
+							<div class="mb-3">
+								<!--  아래쪽으로  여백 -->
+								<label for="title" class="form-label">제목</label> <input
+									type="text" class="form-control" id="title" name="title"
+									placeholder="일정제목을 입력 하세요.">
+							</div>
+							<div class="mb-3">
+								<!--  아래쪽으로  여백 -->
+								<label for="explantaion" class="form-label">설명</label> <input
+									type="text" class="form-control" id="explanation"
+									name="explanation" placeholder="일정설명을 입력 하세요.">
+							</div>
+						</form>
+					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
 							data-bs-dismiss="modal">Close</button>

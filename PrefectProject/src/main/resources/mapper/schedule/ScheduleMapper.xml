@@ -18,7 +18,6 @@
   <update id="doUpdate" parameterType="ScheduleVO">
 	UPDATE schedule
 	SET  
-	    cal_id = #{calID},
 	    title = #{title},
 	    explanation = #{explanation}
 	WHERE schedule_id = #{scheduleID}
@@ -46,7 +45,8 @@
 	    title,
 	    explanation
 	FROM    schedule  
-	WHERE cal_id = #{calID}     
+	WHERE cal_id = #{calID}  
+	ORDER BY schedule_id   
   </select>
   
   <insert id="doSave" parameterType="ScheduleVO">
@@ -62,5 +62,14 @@
 	    #{explanation}
 	)
   </insert>
+  
+  <delete id="doDeleteMultiple" parameterType="int[]">
+    DELETE FROM schedule 
+    WHERE schedule_id IN
+    <foreach item="item" collection="array" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+ </delete>
+ 
   
 </mapper>

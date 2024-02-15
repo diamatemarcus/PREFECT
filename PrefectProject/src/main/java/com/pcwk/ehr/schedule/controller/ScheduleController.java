@@ -1,6 +1,8 @@
 package com.pcwk.ehr.schedule.controller;
 
+import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.pcwk.ehr.calendar.domain.CalendarVO;
 import com.pcwk.ehr.cmn.MessageVO;
@@ -110,6 +114,43 @@ public class ScheduleController implements PcwkLogger{
 				message = inVO.getScheduleID()+"가 삭제 되었습니다.";
 			}else {
 				message = inVO.getScheduleID()+" 삭제 실패.";
+			}
+			
+			MessageVO  messageVO=new MessageVO(String.valueOf(flag),message);
+			jsonString = new Gson().toJson(messageVO);
+			
+			LOG.debug("jsonString:"+jsonString);		
+			return jsonString;
+		}
+		
+		//multiple 삭제
+		@RequestMapping(value = "/doDeleteMultiple.do", method = RequestMethod.GET
+				,produces = "application/json;charset=UTF-8"
+				)
+		@ResponseBody
+		public String doDeleteMultiple(@RequestParam("scheduleIDs") String scheduleIDsJson, HttpServletRequest req) throws SQLException {
+			String jsonString = "";
+			 // JSON 문자열을 int 배열로 변환
+		    ObjectMapper objectMapper = new ObjectMapper();
+		    int[] scheduleIDs;
+		    try {
+		        scheduleIDs = objectMapper.readValue(scheduleIDsJson, int[].class);
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		        return "Error occurred while parsing scheduleIDs";
+		    }
+		    
+			LOG.debug("┌───────────────────────────────────────────┐");
+			LOG.debug("│ doDeleteMultiple()                        │scheduleIDs:"+Arrays.toString(scheduleIDs));
+			LOG.debug("└───────────────────────────────────────────┘");	
+
+			int flag = scheduleService.doDeleteMultiple(scheduleIDs);
+			String message = "";
+			
+			if(scheduleIDs.length==flag) {
+				message = Arrays.toString(scheduleIDs)+"가 삭제 되었습니다.";
+			}else {
+				message = Arrays.toString(scheduleIDs)+" 삭제 실패.";
 			}
 			
 			MessageVO  messageVO=new MessageVO(String.valueOf(flag),message);

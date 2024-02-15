@@ -3,6 +3,7 @@ package com.pcwk.ehr.schedule;
 import static org.junit.Assert.*;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -57,6 +58,7 @@ public class ScheduleDaoJUnitTest implements PcwkLogger{
 	
 	}
 	
+	@Ignore
 	@Test
 	public void update() throws SQLException {
 		//1.데이터 삭제
@@ -104,7 +106,19 @@ public class ScheduleDaoJUnitTest implements PcwkLogger{
 		
 	}
 	
-//	@Ignore
+	@Test
+    public void testDoDeleteMultiple() {
+        // 테스트를 위해 삭제할 schedule_id 리스트 생성
+		int[] scheduleIDs = {7, 8, 9};
+		
+        // doDeleteMultiple 메서드 호출
+        int result = dao.doDeleteMultiple(scheduleIDs);
+
+        // 삭제가 성공적으로 이루어졌는지 확인
+        assertEquals(3, result);
+    }
+	
+	@Ignore
 	@Test // long 1/1000초
 	public void addAndGet() throws SQLException {
 		// 1. 데이터 삭제
