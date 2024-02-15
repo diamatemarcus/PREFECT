@@ -175,7 +175,7 @@
 	        }
 
 	        // 표에 추가
-	        $('#tableTbody').append('<tr><td>' + selectedLicenseName + '</td><td><button class="deleteButton">삭제</button></td></tr>');
+	        $('#tableTbody').append('<tr><td data-license-seq="' + selectedLicenseSeq + '">' + selectedLicenseName + '</td><td><button class="deleteButton">삭제</button></td></tr>');
 
 	        // 선택된 자격증을 배열에 추가
 	        selectedLicenses.push(selectedLicenseSeq);
