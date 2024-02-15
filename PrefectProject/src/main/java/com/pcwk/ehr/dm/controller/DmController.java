@@ -75,7 +75,7 @@ public class DmController implements PcwkLogger{
 	}
 	@GetMapping(value = "/recentMessage.do")
 	public String recentMessage(DmVO inVO, Model model) throws SQLException, EmptyResultDataAccessException{
-		String view = "dm/dm_mng";///WEB-INF/views/+board/board_mng+.jsp ->/WEB-INF/views/board/board_mng.jsp
+		String view = "dm/dm_list";///WEB-INF/views/+board/board_mng+.jsp ->/WEB-INF/views/board/board_mng.jsp
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ recentMessage                     │");
 		LOG.debug("│ DmVO                              │"+inVO);
@@ -134,6 +134,7 @@ public class DmController implements PcwkLogger{
 				UserVO user = (UserVO) httpSession.getAttribute("user");
 				inVO.setSender(user.getEmail());
 			    }
+				
 				//페이지 사이즈:10
 				if(null != inVO && inVO.getPageSize() == 0) {
 					inVO.setPageSize(10L);

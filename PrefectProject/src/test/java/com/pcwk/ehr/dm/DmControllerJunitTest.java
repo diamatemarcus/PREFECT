@@ -57,10 +57,11 @@ public class DmControllerJunitTest implements PcwkLogger{
 		String sendDt= "사용하지않음";
 		String readDt= "사용하지않음";
 		int readChk= 0;
-		
+		String senderName="";
+	    String receiverName="";
 		mockMvc  = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		dmList = Arrays.asList(
-				new DmVO(seq,room,sender,receiver,contents,sendDt,sendDt,readChk)
+				new DmVO(seq,room,sender,receiver,contents,sendDt,sendDt,readChk,senderName,receiverName)
 				);
 		searchVO = new DmVO();
 		searchVO.setRoom(room);
