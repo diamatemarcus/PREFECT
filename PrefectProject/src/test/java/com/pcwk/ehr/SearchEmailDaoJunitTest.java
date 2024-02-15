@@ -42,7 +42,7 @@ public class SearchEmailDaoJunitTest implements PcwkLogger {
 	public void setUp() throws Exception {
 		LOG.debug("데이터에 있는 유저 정보 세팅");
 		// 변수 정보 등록
-		userVO = new UserVO("karina00@naver.com", "유지민", "0000","01087654321","검정","5");	
+		userVO = new UserVO("karina00@naver.com", "유지민", "0000","01087654321","검정","5","");	
  
 	}
 	

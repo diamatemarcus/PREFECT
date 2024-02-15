@@ -85,7 +85,12 @@ public class LoginDaoImpl implements LoginDao {
 	}
 
 	
-	
+	@Override
+	public UserVO getUserEmail(String email) throws SQLException {
+	    String statement = NAMESPACE + DOT + "getUserEmail";
+	    UserVO user = sqlSessionTemplate.selectOne(statement, email);
+	    return user;
+	}
 	
 }
 

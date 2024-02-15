@@ -135,14 +135,16 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		    password,        
 		    tel,         
 		    edu,           
-		    role       		                 
+		    role,
+		    salt       		                 
 		) VALUES (           
 		    #{email},               
 		    #{name},               
 		    #{password},               
 		    #{tel},               
 		    #{edu},               
-		    #{role}                        
+		    #{role},
+		    #{salt}                        
 		)                        
     </insert> <!-- 회원 등록 쿼리 -->
 

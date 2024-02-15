@@ -56,9 +56,9 @@ public class SearchEmailControllerJunitTest implements PcwkLogger{
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 		users = Arrays.asList(
-				 new UserVO("pohomen@naver.com-01", "김진수-01", "4321_01","01012341234","대졸","11")
-				 , new UserVO("pohomen@naver.com-02", "김진수-02", "4321-02","01027512278","대졸","12")
-				 , new UserVO("pohomen@naver.com-03", "김진수-03", "4321-03","01035785999","대졸","11")
+				 new UserVO("pohomen@naver.com-01", "김진수-01", "4321_01","01012341234","대졸","11","")
+				 , new UserVO("pohomen@naver.com-02", "김진수-02", "4321-02","01027512278","대졸","12","")
+				 , new UserVO("pohomen@naver.com-03", "김진수-03", "4321-03","01035785999","대졸","11","")
 				
 			);
 			

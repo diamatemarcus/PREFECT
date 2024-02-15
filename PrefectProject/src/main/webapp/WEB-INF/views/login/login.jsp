@@ -47,7 +47,7 @@
 			</div>
 			<br>
 			<div class="register">
-				<a href="/ehr/login/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
+				<a href="/ehr/user/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
 			</div>
 			</p>
 			<div class="login_sns">

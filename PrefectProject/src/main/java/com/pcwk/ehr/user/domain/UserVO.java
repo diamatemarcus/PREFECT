@@ -18,7 +18,7 @@ public class UserVO extends DTO {
 	private String tel;
 	private String edu;
 	private String role;
-	
+	private String salt;
 	
 	@Override
 	public String toString() {
