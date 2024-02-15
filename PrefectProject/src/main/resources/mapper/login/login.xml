@@ -20,6 +20,15 @@
          WHERE email = #{email} 
          AND   password = #{password}        
     </select>
+    
+       <!-- getUserEmail -->
+    <select id="getUserEmail" parameterType="UserVO" resultType="UserVO">
+         SELECT                   
+            *     
+         FROM                     
+            users                
+         WHERE email = #{email}   
+    </select>
         
     <!-- login -->
     <select id="doSelectOne" parameterType="UserVO" resultType="UserVO">

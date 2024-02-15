@@ -49,7 +49,7 @@ public class UserDaoJUnitTest {
 	public void setUp() throws Exception {
 
 		// 등록
-		userVO01 = new UserVO("mn8467@naver.com", "이름임1", "1234", "01011112222" ,"고졸","1");
+		userVO01 = new UserVO("mn8467@naver.com", "이름임1", "1234", "01011112222" ,"고졸","1","");
 		
 	
 		searchVO = new UserVO();

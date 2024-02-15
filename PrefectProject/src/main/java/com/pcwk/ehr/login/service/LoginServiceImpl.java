@@ -12,48 +12,57 @@ import com.google.gson.Gson;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.login.dao.LoginDao;
 import com.pcwk.ehr.user.domain.UserVO;
+import com.pcwk.ehr.util.ShaUtil;
 
 @Service
 public class LoginServiceImpl implements LoginService, PcwkLogger {
-	
+
 	@Autowired
-	LoginDao  loginDao;
-	
-	public LoginServiceImpl() {}
-	
+	LoginDao loginDao;
+
+	public LoginServiceImpl() {
+	}
 
 	@Override
 	public UserVO doSelectOne(UserVO inVO) throws SQLException, EmptyResultDataAccessException {
 		return loginDao.doSelectOne(inVO);
 	}
 
-  
 	@Override
 	public int loginCheck(UserVO inVO) throws SQLException {
-		//10:ID 없음
-		//20:비번이상
-		//30:로그인
+		// 10:ID 없음
+		// 20:비번이상
+		// 30:로그인
 		int checkStatus = 0;
-		
-		//idCheck
+
+		// idCheck
 		int status = loginDao.idCheck(inVO);
-		
-		if(status==0) {
+
+		if (status == 0) {
 			checkStatus = 10;
-			LOG.debug("10 idCheck checkStatus:"+checkStatus);
+			LOG.debug("10 idCheck checkStatus:" + checkStatus);
 			return checkStatus;
 		}
-		
-		//idCheck:비번 check;
-		status = loginDao.idPassCheck(inVO);
-		if(status==0) {
+		// 비밀번호 검사
+		UserVO user = loginDao.getUserEmail(inVO.getEmail()); // 입력된 아이디에 대한 정보들 user객체에 저장
+		LOG.debug("inVO.getPassword():" + inVO.getPassword()); // View에 입력된 비밀번호 값
+		LOG.debug("user.getSalt():" + user.getSalt()); // 저장된 salt 값
+		String hexPw = ShaUtil.hash(inVO.getPassword() + user.getSalt());
+		LOG.debug("hexPw :"+ hexPw);
+		LOG.debug("user.getPassword():"+user.getPassword());
+		if (hexPw.contentEquals(user.getPassword())) {
+			status = 1;
+		} else {
+			status = 0;
+		}
+		if (status == 0) {
 			checkStatus = 20;
-			LOG.debug("20 idPassCheck checkStatus:"+checkStatus);
+			LOG.debug("20 idPassCheck checkStatus:" + checkStatus);
 			return checkStatus;
 		}
-		
-		checkStatus = 30;//id/비번 정상 로그인 
-		LOG.debug("30 idPassCheck pass checkStatus:"+checkStatus);
+
+		checkStatus = 30;// id/비번 정상 로그인
+		LOG.debug("30 idPassCheck pass checkStatus:" + checkStatus);
 		return checkStatus;
 	}
 

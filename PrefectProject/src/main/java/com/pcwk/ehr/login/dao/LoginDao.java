@@ -24,5 +24,6 @@ public interface LoginDao extends WorkDiv<UserVO> {
 	int idPassCheck(UserVO inVO)throws SQLException;
 	
 
-	
+	UserVO getUserEmail(String email) throws SQLException;
+
 }
