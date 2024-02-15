@@ -427,7 +427,59 @@
 				            });
 				        });
 
-						
+						//------------------------------------------------------일정 수정
+						$("#doUpdateSchedule").click(function() {
+				            // 체크된 일정의 scheduleID 값을 배열로 저장
+				            var scheduleIDs = [];
+				            $("input[name='scheduleID']:checked").each(function() {
+				                scheduleIDs.push($(this).val());
+				            });
+
+				            // 배열이 비어 있는지 확인
+				            if (scheduleIDs.length === 0) {
+				                alert("수정할 일정을 선택해주세요.");
+				                return;
+				            }
+				            
+				         	// 체크가 하나만 되어있는지 확인
+				            if (scheduleIDs.length > 1) {
+				                alert("수정할 일정을 한개만 선택해주세요.");
+				                return;
+				            }
+				            
+				            let calID = document.querySelector("#calID").value;
+				            
+				         // scheduleIDs 배열을 콘솔에 출력
+				            console.log("scheduleIDs:", scheduleIDs);
+				            console.log("calID:", calID);
+				            let length = scheduleIDs.length;
+
+				            // 여러 일정 삭제 Ajax 요청
+				            $.ajax({
+				                type: "POST",
+				                url: "/ehr/schedule/doUpdateMultiple.do",
+				                dataType: "json",
+				                data: {
+				                    "title": ,
+				                    "explanation": ,
+				                    "scheduleID":
+				                },
+				                success: function(response) {
+				                    // 삭제 성공 여부 확인
+				                    if (response.msgId == length) {
+				                        alert(response.msgContents); // 성공 메시지 표시
+				                        scheduleRetrieve(calID);	
+				                    } else {
+				                        alert(response.msgContents); // 실패 메시지 표시
+				                    }
+				                },
+				                error: function(xhr, status, error) {
+				                    console.error(xhr.responseText); // 오류 메시지 출력
+				                    alert("일정 삭제 중 오류가 발생했습니다.");
+				                }
+				            });
+				        });
+
 						
 						
 						
