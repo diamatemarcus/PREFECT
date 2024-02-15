@@ -6,7 +6,6 @@
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />     
 
 <!DOCTYPE html>
-${list}
 <html>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <head>
@@ -263,22 +262,22 @@ document.addEventListener("DOMContentLoaded", function () {
         <c:set var="previousReceiver" value="" />
         <c:forEach var="vo" items="${list}">
             <!-- 이전에 표시한 수신자와 다른 경우에만 수신자 이름 표시 -->
-            <c:if test="${vo.receiver ne previousReceiver}">
-                ${vo.receiver}
-                <c:set var="previousReceiver" value="${vo.receiver}" />
+            <c:if test="${vo.receiverName != previousReceiver}">
+                ${vo.receiverName}
+                <c:set var="previousReceiver" value="${vo.receiverName}" />
             </c:if>
         </c:forEach>
         <button type="button" class="btn btn-primary btn-block" id="doMemberPopup">회원</button>  
     </div>
 </div>
-
 <div class="chat-container">
     <div class="chat-history">
         <ul class="chat-messages">
+            <c:set var="userEmail" value="${sessionScope.user.email}" />
             <c:forEach var="vo" items="${list}">
-                <c:set var="isCurrentUser" value="${vo.sender eq sessionScope.user.email}" />
+                <c:set var="isCurrentUser" value="${vo.sender eq userEmail}" />
                 <li class="message ${isCurrentUser ? 'user-message' : 'bot-message'}">
-                    <div class="name">${isCurrentUser ? '나' : vo.sender}</div>
+                    <div class="name">${isCurrentUser ? '나' : vo.senderName}</div>
                     ${vo.contents}
                     <div class="time">${vo.sendDt}</div>
                 </li>

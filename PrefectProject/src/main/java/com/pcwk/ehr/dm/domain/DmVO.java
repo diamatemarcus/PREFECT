@@ -19,11 +19,15 @@ public class DmVO extends DTO {
 	private String sendDt;
 	private String readDt;
 	private int readChk;
+	private String senderName;
+    private String receiverName;
 	@Override
 	public String toString() {
 		return "DmVO [seq=" + seq + ", room=" + room + ", sender=" + sender + ", receiver=" + receiver + ", contents="
-				+ contents + ", sendDt=" + sendDt + ", readDt=" + readDt + ", readChk=" + readChk + ", toString()="
-				+ super.toString() + "]";
+				+ contents + ", sendDt=" + sendDt + ", readDt=" + readDt + ", readChk=" + readChk + ", senderName="
+				+ senderName + ", receiverName=" + receiverName + ", toString()=" + super.toString() + "]";
 	}
+	
+	
 	
 }

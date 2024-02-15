@@ -47,8 +47,10 @@ public class DmDaoJunitTest implements PcwkLogger{
 		String sendDt= "사용하지않음";
 		String readDt= "사용하지않음";
 		int readChk= 0;
+		String senderName="";
+	    String receiverName="";
 		
-		dm = new DmVO(seq,room,sender,receiver,contents,sendDt,sendDt,readChk);
+		dm = new DmVO(seq,room,sender,receiver,contents,sendDt,sendDt,readChk,senderName,receiverName);
 		searchVO = new DmVO();
 		searchVO.setRoom(1);
 		
