@@ -246,25 +246,49 @@
 	            localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
 	            localStorage.setItem('regDt_' + licensesSeq, regDt);
 	        });
-
-	        // 삭제 버튼 클릭 시
+	     // 삭제 버튼 클릭 시
 	        $(document).on('click', '.deleteRowBtn', function() {
-	            var deletedLicenseSeq = $(this).closest('tr').find('td:first').attr('data-license-seq');
+	        	console.log('deleteRowBtn click');
+                var licensesSeq = $('#licenses').val();
+                var licenseName = $('#licenses option:selected').text();
+                var regDt = $('#regDt').val(); // 등록일 가져오기
 
 	            // 배열에서 해당 자격증 제거
-	            var index = selectedLicenses.indexOf(deletedLicenseSeq);
+	            var index = selectedLicenses.indexOf(licensesSeq);
 	            if (index !== -1) {
 	                selectedLicenses.splice(index, 1);
 	            }
 
 	            // 로컬 스토리지에서 해당 자격증 정보 삭제
-	            localStorage.removeItem('regDt_' + deletedLicenseSeq);
+	            localStorage.removeItem('regDt_' + licensesSeq);
 
 	            // 테이블에서 행 제거
 	            $(this).closest('tr').remove();
 
 	            // 로컬 스토리지에 업데이트된 선택된 자격증 목록 저장
 	            localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
+
+	            // AJAX를 사용하여 선택된 자격증을 삭제하는 요청 보내기
+	            $.ajax({
+	                type: "POST",
+	                url: "/ehr/licenses/doDelete.do",
+	                async: true,
+	                dataType: "json",
+	                data: {
+	                    licensesSeq: licensesSeq,
+	                    email: $("#email").val(), // 이메일 가져오기
+	                    regDt: regDt
+	                },
+	                success: function(data) { // 통신 성공
+	                    console.log("success data:" + data);
+	                },
+	                error: function(data) { // 실패시 처리
+	                    console.log("error:" + data);
+	                },
+	                complete: function(data) { // 성공/실패와 관계없이 수행!
+	                    console.log("complete:" + data);
+	                }
+	            });
 	        });
 
 	        // 등록일 유효성 검사 함수
