@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.pcwk.ehr.licenses.domain.LicensesVO;
+import com.pcwk.ehr.user.domain.UserVO;
 
 @Repository
 public class LicensesDaoImpl implements LicensesDao {
@@ -84,10 +85,21 @@ public class LicensesDaoImpl implements LicensesDao {
 	public List<LicensesVO> getLicensesName() throws SQLException {
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ getLicensesName                   │");
-		LOG.debug("│ BoardVO                           │");
+		LOG.debug("│ LicensesVO                        │");
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"getLicensesName");
 		LOG.debug("└───────────────────────────────────┘");		
 		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"getLicensesName");
+	}
+
+	@Override
+	public List<LicensesVO> getUserLicenses(UserVO inVO) throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ getUserLicenses                   │");
+		LOG.debug("│ LicensesVO                        │"+inVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"getUserLicenses");
+		LOG.debug("└───────────────────────────────────┘");
+		
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"getUserLicenses",inVO);
 	}
 
 }

@@ -23,6 +23,7 @@ import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.licenses.dao.LicensesDao;
 import com.pcwk.ehr.licenses.domain.LicensesVO;
+import com.pcwk.ehr.user.domain.UserVO;
 
 @RunWith(SpringJUnit4ClassRunner.class) // 스프링 테스트 컨텍스트 프레임웤그의 JUnit의 확장기능 지정
 @ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/root-context.xml",
@@ -37,6 +38,8 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 	LicensesVO license03;
 
 	LicensesVO searchVO;
+	
+	UserVO userVO01;
 
 	@Autowired
 	ApplicationContext context;
@@ -47,14 +50,31 @@ public class LicensesDaoJunitTest implements PcwkLogger {
 		LOG.debug("│ setUp                             │");
 		LOG.debug("└───────────────────────────────────┘");
 
-		String email = "cr7@gmail.com";
+		String email = "kjew03@gmail.com";
 		int licensesSeq = 6;
 		String regDt = "2023-02-02";
-
+		
+		userVO01= new UserVO();
+		userVO01.setEmail(email);
 		license01 = new LicensesVO(licensesSeq, email, regDt);
 		license02 = new LicensesVO(licensesSeq+1, email, regDt);
 		license03 = new LicensesVO(licensesSeq+2, email, regDt);
 	}
+	
+	@Test
+	public void getUserLicenses() throws SQLException {
+		dao.doDelete(license01);//지우고
+		
+		int flag = dao.doSave(license01);//주고
+		assertEquals(1, flag);//여기까진ok
+		
+		
+		List<LicensesVO> userLicensesList = dao.getUserLicenses(userVO01);
+		assertNotNull(userLicensesList);
+		assertFalse(userLicensesList.isEmpty());
+	}
+	
+	@Ignore
 	@Test
 	public void getLicensesName() throws SQLException {
 		List<LicensesVO> licensesNameList = dao.getLicensesName();

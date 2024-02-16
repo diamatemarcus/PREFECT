@@ -32,6 +32,23 @@
 	    ul.licenses_seq = #{licensesSeq} AND u.email = #{email}
 </select>
 
+<select id="getUserLicenses" parameterType="UserVO" resultType="LicensesVO">
+    SELECT 
+        ul.email, ul.licenses_seq, l.name as licensesName ,ul.reg_dt
+    FROM 
+        User_Licenses ul
+    JOIN 
+        licenses l 
+    ON 
+        ul.licenses_seq = l.seq
+    JOIN 
+        users u 
+    ON 
+        u.email = ul.email
+    WHERE 
+        u.email = #{email}
+</select>
+
    <select id="doRetrieve" parameterType="LicensesVO" resultType="LicensesVO">
 	SELECT 
 	    ul.email,u.name, ul.licenses_seq, l.name ,ul.reg_dt
