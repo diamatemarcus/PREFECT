@@ -65,31 +65,8 @@ public class SearchPasswordServiceImpl implements SearchPasswordService {
 	@Override
 	public void findPw(HttpServletResponse response, UserVO inVO) throws Exception {
 		response.setContentType("text/html;charset=utf-8");
-		UserVO user = spd.emailCheck(inVO.getEmail());
-		PrintWriter out = response.getWriter();
-		// 가입된 아이디가 없으면
-		if(mdao.idCheck(vo.getId()) == null) {
-			out.print("등록되지 않은 이메일입니다.");
-			out.close();
-		}
-		// 가입된 이메일이 아니면
-		else if(!vo.getEmail().equals(ck.getEmail())) {
-			out.print("등록되지 않은 이메일입니다.");
-			out.close();
-		}else {
-			// 임시 비밀번호 생성
-			String password = "";
-			for (int i = 0; i < 12; i++) {
-				password += (char) ((Math.random() * 26) + 97);
-			}
-			inVO.setPassword(password);
-			// 비밀번호 변경
-			mdao.updatePw(vo);
-			// 비밀번호 변경 메일 발송
-			sendEmail(vo, "findpw");
+		
 
-			out.print("이메일로 임시 비밀번호를 발송하였습니다.");
-			out.close();
-		}
 
+	}
 }
