@@ -238,7 +238,9 @@
 	 // 삭제 버튼 클릭 시
 	    $(document).on('click', '.deleteRowBtn', function() {
 	        console.log('deleteRowBtn click');
-	        var licensesSeq = $(this).closest('tr').find('td:first').data('license-seq'); // 삭제할 자격증의 시퀀스 가져오기
+	        var licensesSeqText = $(this).closest('tr').find('td:first').text();
+	        var licensesSeq = parseInt(licensesSeqText);
+	        var regDt = $(this).closest('tr').find('td:nth-child(2)').text(); // 등록일 가져오기
 
 	        // 배열에서 해당 자격증 제거
 	        var index = selectedLicenses.indexOf(licensesSeq);
@@ -262,9 +264,9 @@
 	            async: true,
 	            dataType: "json",
 	            data: {
-	                licensesSeq: licensesSeq,
-	                email: $("#email").val(), // 이메일 가져오기
-	                regDt: '' // 등록일 값이 없으므로 빈 문자열로 설정
+	            	 licensesSeq: licensesSeq,
+	                 regDt: regDt,
+	                 email: $("#email").val()
 	            },
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
@@ -278,17 +280,18 @@
 	        });
 	    });
 
+
 	    // 등록일 유효성 검사 함수
 	    function validateDate(dateString) {
-	        var regex = /^(\d{2})(\d{2})(\d{2})$/;
+	        var regex = /^(\d{4})(\d{2})(\d{2})$/;
 	        if (!regex.test(dateString)) {
-	            alert('날짜 형식이 올바르지 않습니다. (YYMMDD)');
+	            alert('날짜 형식이 올바르지 않습니다. (YYYYMMDD)');
 	            return false;
 	        }
 
-	        var year = parseInt(dateString.substr(0, 2));
-	        var month = parseInt(dateString.substr(2, 2));
-	        var day = parseInt(dateString.substr(4, 2));
+	        var year = parseInt(dateString.substr(0, 4));
+	        var month = parseInt(dateString.substr(4, 2));
+	        var day = parseInt(dateString.substr(6, 2));
 
 	        if (month < 1 || month > 12) {
 	            alert('올바른 월을 입력하세요. (1부터 12까지)');
@@ -404,7 +407,7 @@
 				        <!-- 등록일 텍스트 상자 -->
 				        <div class="mb-6">
 				            <label for="regDt" class="form-label">등록일</label>
-				            <input type="text" id="regDt" name="regDt" class="form-control" placeholder="취득일자 6자리">
+				            <input type="text" id="regDt" name="regDt" class="form-control" placeholder="취득일자 8자리">
 				        </div>
 				        <!-- 자격증 저장 버튼 -->
 				        <div class="col-auto">
@@ -424,10 +427,9 @@
                     <tbody id="tableTbody">
                         <c:choose>
                             <c:when test="${userLicenses.size()>0 }">
-                                <c:forEach var="vo" items="${userLicenses}" varStatus="status">
-                                    <tr>
+                                <c:forEach var="vo" items="${userLicenses}" >
+                                    <tr id="userLicenses">
                                         <td>${vo.licensesSeq}</td>
-                                        <td>${vo.licensesName}</td>
                                         <td>${vo.regDt}</td>
                                         <td><button class="deleteRowBtn">삭제</button>
                                     </tr>

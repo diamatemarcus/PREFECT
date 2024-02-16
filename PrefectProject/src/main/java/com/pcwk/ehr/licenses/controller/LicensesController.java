@@ -88,7 +88,7 @@ public class LicensesController implements PcwkLogger {
 		MessageVO messageVO = null;
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doDelete                          │");
-		LOG.debug("│ ReplyVO                           │" + inVO);
+		LOG.debug("│ LicensesVO                        │" + inVO);
 		LOG.debug("└───────────────────────────────────┘");
 
 		int flag = service.doDelete(inVO);
@@ -115,7 +115,7 @@ public class LicensesController implements PcwkLogger {
 		
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSave                            │");
-		LOG.debug("│ ReplyVO                           │" + inVO);
+		LOG.debug("│ LicensesVO                        │" + inVO);
 		LOG.debug("└───────────────────────────────────┘");
 		
 		

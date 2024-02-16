@@ -19,14 +19,12 @@ public class LicensesVO {
 	private String licensesName;
 
 	public LicensesVO(int licensesSeq, String email, String regDt) {
-		super();
 		this.licensesSeq = licensesSeq;
 		this.email = email;
 		this.regDt = regDt;
 	}
 
 	public LicensesVO(int licensesSeq, String licensesName) {
-		super();
 		this.licensesSeq = licensesSeq;
 		this.licensesName = licensesName;
 	}
