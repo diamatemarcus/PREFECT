@@ -23,7 +23,7 @@ public class LicensesDaoImpl implements LicensesDao {
 	public int doUpdate(LicensesVO inVO) throws SQLException {
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doUpdate                          │");
-		LOG.debug("│ BoardVO                           │"+inVO);
+		LOG.debug("│ LicensesVO                        │"+inVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doUpdate");
 		LOG.debug("└───────────────────────────────────┘");		
 		return sqlSessionTemplate.update(NAMESPACE+DOT+"doUpdate", inVO);
@@ -33,7 +33,7 @@ public class LicensesDaoImpl implements LicensesDao {
 	public int doDelete(LicensesVO inVO) throws SQLException {
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doDelete                          │");
-		LOG.debug("│ BoardVO                           │"+inVO);
+		LOG.debug("│ LicensesVO                        │"+inVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doDelete");
 		LOG.debug("└───────────────────────────────────┘");		
 		
@@ -44,7 +44,7 @@ public class LicensesDaoImpl implements LicensesDao {
 	public LicensesVO doSelectOne(LicensesVO inVO) throws SQLException, EmptyResultDataAccessException {
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSelectOne                       │");
-		LOG.debug("│ BoardVO                           │"+inVO);
+		LOG.debug("│ LicensesVO                        │"+inVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doSelectOne");
 		LOG.debug("└───────────────────────────────────┘");	
 		

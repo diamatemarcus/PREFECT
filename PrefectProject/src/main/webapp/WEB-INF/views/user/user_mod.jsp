@@ -8,7 +8,11 @@
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <style>
 #regDt {
-    width: 200px; /* 원하는 크기로 조정하세요 */
+    width: 200px;
+}
+
+.hidden {
+    display: none;
 }
 </style>
 <title>마이페이지</title>
@@ -240,7 +244,6 @@
 	        console.log('deleteRowBtn click');
 	        var licensesSeqText = $(this).closest('tr').find('td:first').text();
 	        var licensesSeq = parseInt(licensesSeqText);
-	        var regDt = $(this).closest('tr').find('td:nth-child(2)').text(); // 등록일 가져오기
 
 	        // 배열에서 해당 자격증 제거
 	        var index = selectedLicenses.indexOf(licensesSeq);
@@ -265,7 +268,6 @@
 	            dataType: "json",
 	            data: {
 	            	 licensesSeq: licensesSeq,
-	                 regDt: regDt,
 	                 email: $("#email").val()
 	            },
 	            success: function(data) { // 통신 성공
@@ -314,7 +316,6 @@
   <jsp:include page="/WEB-INF/cmn/nav.jsp"></jsp:include> --%>
  
 	<div class="container">
-	 ${userLicenses}
 		<!-- 제목 -->
 		<div class="row">
 			<div class="col-lg-12">
@@ -428,8 +429,9 @@
                         <c:choose>
                             <c:when test="${userLicenses.size()>0 }">
                                 <c:forEach var="vo" items="${userLicenses}" >
-                                    <tr id="userLicenses">
-                                        <td>${vo.licensesSeq}</td>
+                                    <tr>
+                                        <td class="hidden">${vo.licensesSeq}</td>
+                                        <td>${vo.licensesName}</td>
                                         <td>${vo.regDt}</td>
                                         <td><button class="deleteRowBtn">삭제</button>
                                     </tr>

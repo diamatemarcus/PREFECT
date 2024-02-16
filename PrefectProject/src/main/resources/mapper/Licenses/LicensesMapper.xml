@@ -81,7 +81,6 @@ DELETE FROM user_licenses
 WHERE
     email = #{email}
     AND licenses_seq = #{licensesSeq}
-    AND reg_dt = #{regDt}
 </delete>
 
 <update id="doUpdate" parameterType="LicensesVO">
