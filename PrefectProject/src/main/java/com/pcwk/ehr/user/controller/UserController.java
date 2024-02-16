@@ -343,6 +343,11 @@ public class UserController {
 		
 		model.addAttribute("licenses", licenses);
 		
+		List<LicensesVO> userLicenses = new ArrayList<LicensesVO>();
+		userLicenses = service.getUserLicenses(inVO);
+		
+		model.addAttribute("userLicenses", userLicenses);
+		
 		return view;
 	}
 	

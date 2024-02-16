@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.licenses.dao.LicensesDao;
 import com.pcwk.ehr.licenses.domain.LicensesVO;
+import com.pcwk.ehr.user.domain.UserVO;
 
 @Service
 public class LicensesServiceImpl implements LicensesService, PcwkLogger {
@@ -54,6 +55,12 @@ public class LicensesServiceImpl implements LicensesService, PcwkLogger {
 	public List<LicensesVO> getLicensesName() throws SQLException {
 		
 		return dao.getLicensesName();
+	}
+
+	@Override
+	public List<LicensesVO> getUserLicenses(UserVO inVO) throws SQLException {
+		
+		return dao.getUserLicenses(inVO);
 	}
 
 }

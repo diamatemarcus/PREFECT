@@ -8,8 +8,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.licenses.domain.LicensesVO;
+import com.pcwk.ehr.user.domain.UserVO;
 
 public interface LicensesService {
+	public List<LicensesVO> getUserLicenses(UserVO inVO) throws SQLException;
+	
 	public List<LicensesVO> getLicensesName() throws SQLException;
 
 	public int getLicensesSeq() throws SQLException;

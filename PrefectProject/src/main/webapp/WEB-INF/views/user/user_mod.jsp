@@ -167,13 +167,13 @@
 		});
 
 	}
+	$(document).ready(function() {
+	    var selectedLicenses = []; // 이미 선택된 자격증을 저장할 배열
 
-	    $(document).ready(function() {
-	        var selectedLicenses = []; // 이미 선택된 자격증을 저장할 배열
-
-	        // 페이지 로드 시 로컬 스토리지에서 선택된 자격증 목록을 로드하여 표에 추가
-	        if (localStorage.getItem('selectedLicenses')) {
-	            selectedLicenses = JSON.parse(localStorage.getItem('selectedLicenses'));
+	    // 페이지 로드 시 로컬 스토리지에서 선택된 자격증 목록을 로드하여 표에 추가
+	    /* if (localStorage.getItem('selectedLicenses')) {
+	        selectedLicenses = JSON.parse(localStorage.getItem('selectedLicenses'));
+	        if (selectedLicenses.length > 0) {
 	            selectedLicenses.forEach(function(licenseSeq) {
 	                var licenseName = $('#licenses option[value="' + licenseSeq + '"]').text();
 	                var regDt = localStorage.getItem('regDt_' + licenseSeq);
@@ -181,134 +181,137 @@
 	                $('#licensesList tbody').append(newRow);
 	            });
 	        }
+	    } */
 
-	        // 선택 버튼 클릭 시
-	        $('#doSaveLicenses').click(function() {
-	            console.log('licensesdoSave click');
-	            var licensesSeq = $('#licenses').val();
-	            var licenseName = $('#licenses option:selected').text();
-	            var regDt = $('#regDt').val(); // 등록일 가져오기
+	    // 선택 버튼 클릭 시
+	    $('#doSaveLicenses').click(function() {
+	        console.log('licensesdoSave click');
+	        var licensesSeq = $('#licenses').val();
+	        var licenseName = $('#licenses option:selected').text();
+	        var regDt = $('#regDt').val(); // 등록일 가져오기
 
-	            // 등록일 유효성 검사
-	            if (!validateDate(regDt)) {
-	                return;
-	            }
-
-	            // 이미 선택된 자격증인지 확인
-	            if (selectedLicenses.includes(licensesSeq)) {
-	                alert('이미 선택된 자격증입니다.');
-	                return; // 이미 선택된 자격증이면 함수 종료
-	            }
-
-	            // AJAX 요청 - 선택 버튼 클릭 시 수행할 작업
-	            $.ajax({
-	                type: "POST",
-	                url: "/ehr/licenses/doSave.do",
-	                async: true,
-	                dataType: "json",
-	                data: {
-	                    licensesSeq: licensesSeq,
-	                    email: $("#email").val(),
-	                    regDt: regDt
-	                },
-	                success: function(data) { // 통신 성공
-	                    console.log("success data:" + data);
-	                },
-	                error: function(data) { // 실패시 처리
-	                    console.log("error:" + data);
-	                },
-	                complete: function(data) { // 성공/실패와 관계없이 수행!
-	                    console.log("complete:" + data);
-	                }
-	            });
-
-	            // 표에 추가
-	            var newRow = '<tr><td data-license-seq="' + licensesSeq + '">' + licenseName + '</td><td>' + regDt + '</td><td><button class="deleteRowBtn">삭제</button></td></tr>';
-	            $('#licensesList tbody').append(newRow);
-
-	            // 선택된 자격증을 배열에 추가
-	            selectedLicenses.push(licensesSeq);
-
-	            // 로컬 스토리지에 선택된 자격증 목록 저장
-	            localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
-	            localStorage.setItem('regDt_' + licensesSeq, regDt);
-	        });
-	     // 삭제 버튼 클릭 시
-	        $(document).on('click', '.deleteRowBtn', function() {
-	        	console.log('deleteRowBtn click');
-                var licensesSeq = $('#licenses').val();
-                var licenseName = $('#licenses option:selected').text();
-                var regDt = $('#regDt').val(); // 등록일 가져오기
-
-	            // 배열에서 해당 자격증 제거
-	            var index = selectedLicenses.indexOf(licensesSeq);
-	            if (index !== -1) {
-	                selectedLicenses.splice(index, 1);
-	            }
-
-	            // 로컬 스토리지에서 해당 자격증 정보 삭제
-	            localStorage.removeItem('regDt_' + licensesSeq);
-
-	            // 테이블에서 행 제거
-	            $(this).closest('tr').remove();
-
-	            // 로컬 스토리지에 업데이트된 선택된 자격증 목록 저장
-	            localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
-
-	            // AJAX를 사용하여 선택된 자격증을 삭제하는 요청 보내기
-	            $.ajax({
-	                type: "POST",
-	                url: "/ehr/licenses/doDelete.do",
-	                async: true,
-	                dataType: "json",
-	                data: {
-	                    licensesSeq: licensesSeq,
-	                    email: $("#email").val(), // 이메일 가져오기
-	                    regDt: regDt
-	                },
-	                success: function(data) { // 통신 성공
-	                    console.log("success data:" + data);
-	                },
-	                error: function(data) { // 실패시 처리
-	                    console.log("error:" + data);
-	                },
-	                complete: function(data) { // 성공/실패와 관계없이 수행!
-	                    console.log("complete:" + data);
-	                }
-	            });
-	        });
-
-	        // 등록일 유효성 검사 함수
-	        function validateDate(dateString) {
-	            var regex = /^(\d{2})(\d{2})(\d{2})$/;
-	            if (!regex.test(dateString)) {
-	                alert('날짜 형식이 올바르지 않습니다. (YYMMDD)');
-	                return false;
-	            }
-
-	            var year = parseInt(dateString.substr(0, 2));
-	            var month = parseInt(dateString.substr(2, 2));
-	            var day = parseInt(dateString.substr(4, 2));
-
-	            if (month < 1 || month > 12) {
-	                alert('올바른 월을 입력하세요. (1부터 12까지)');
-	                return false;
-	            }
-
-	            if (day < 1 || day > 31) {
-	                alert('올바른 일을 입력하세요. (1부터 31까지)');
-	                return false;
-	            }
-
-	            return true;
+	        // 등록일 유효성 검사
+	        if (!validateDate(regDt)) {
+	            return;
 	        }
+
+	        // 이미 선택된 자격증인지 확인
+	        if (selectedLicenses.includes(licensesSeq)) {
+	            alert('이미 선택된 자격증입니다.');
+	            return; // 이미 선택된 자격증이면 함수 종료
+	        }
+
+	        // AJAX 요청 - 선택 버튼 클릭 시 수행할 작업
+	        $.ajax({
+	            type: "POST",
+	            url: "/ehr/licenses/doSave.do",
+	            async: true,
+	            dataType: "json",
+	            data: {
+	                licensesSeq: licensesSeq,
+	                email: $("#email").val(),
+	                regDt: regDt
+	            },
+	            success: function(data) { // 통신 성공
+	                console.log("success data:" + data);
+	            },
+	            error: function(data) { // 실패시 처리
+	                console.log("error:" + data);
+	            },
+	            complete: function(data) { // 성공/실패와 관계없이 수행!
+	                console.log("complete:" + data);
+	            }
+	        });
+
+	        // 표에 추가
+	        var newRow = '<tr><td data-license-seq="' + licensesSeq + '">' + licenseName + '</td><td>' + regDt + '</td><td><button class="deleteRowBtn">삭제</button></td></tr>';
+	        $('#licensesList tbody').append(newRow);
+
+	        // 선택된 자격증을 배열에 추가
+	        selectedLicenses.push(licensesSeq);
+
+	        // 로컬 스토리지에 선택된 자격증 목록 저장
+	        localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
+	        localStorage.setItem('regDt_' + licensesSeq, regDt);
 	    });
+
+	 // 삭제 버튼 클릭 시
+	    $(document).on('click', '.deleteRowBtn', function() {
+	        console.log('deleteRowBtn click');
+	        var licensesSeq = $(this).closest('tr').find('td:first').data('license-seq'); // 삭제할 자격증의 시퀀스 가져오기
+
+	        // 배열에서 해당 자격증 제거
+	        var index = selectedLicenses.indexOf(licensesSeq);
+	        if (index !== -1) {
+	            selectedLicenses.splice(index, 1);
+	        }
+
+	        // 로컬 스토리지에서 해당 자격증 정보 삭제
+	        localStorage.removeItem('regDt_' + licensesSeq);
+
+	        // 테이블에서 행 제거
+	        $(this).closest('tr').remove();
+
+	        // 로컬 스토리지에 업데이트된 선택된 자격증 목록 저장
+	        localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
+
+	        // AJAX를 사용하여 선택된 자격증을 삭제하는 요청 보내기
+	        $.ajax({
+	            type: "POST",
+	            url: "/ehr/licenses/doDelete.do",
+	            async: true,
+	            dataType: "json",
+	            data: {
+	                licensesSeq: licensesSeq,
+	                email: $("#email").val(), // 이메일 가져오기
+	                regDt: '' // 등록일 값이 없으므로 빈 문자열로 설정
+	            },
+	            success: function(data) { // 통신 성공
+	                console.log("success data:" + data);
+	            },
+	            error: function(data) { // 실패시 처리
+	                console.log("error:" + data);
+	            },
+	            complete: function(data) { // 성공/실패와 관계없이 수행!
+	                console.log("complete:" + data);
+	            }
+	        });
+	    });
+
+	    // 등록일 유효성 검사 함수
+	    function validateDate(dateString) {
+	        var regex = /^(\d{2})(\d{2})(\d{2})$/;
+	        if (!regex.test(dateString)) {
+	            alert('날짜 형식이 올바르지 않습니다. (YYMMDD)');
+	            return false;
+	        }
+
+	        var year = parseInt(dateString.substr(0, 2));
+	        var month = parseInt(dateString.substr(2, 2));
+	        var day = parseInt(dateString.substr(4, 2));
+
+	        if (month < 1 || month > 12) {
+	            alert('올바른 월을 입력하세요. (1부터 12까지)');
+	            return false;
+	        }
+
+	        if (day < 1 || day > 31) {
+	            alert('올바른 일을 입력하세요. (1부터 31까지)');
+	            return false;
+	        }
+
+	        return true;
+	    }
+	});
+
 </script>
 </head>
 <body>
 	<%--   <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
   <jsp:include page="/WEB-INF/cmn/nav.jsp"></jsp:include> --%>
+ 
 	<div class="container">
+	 ${userLicenses}
 		<!-- 제목 -->
 		<div class="row">
 			<div class="col-lg-12">
@@ -420,10 +423,13 @@
                     </thead>
                     <tbody id="tableTbody">
                         <c:choose>
-                            <c:when test="${list.size()>0 }">
-                                <c:forEach var="vo" items="${licenses}" varStatus="status">
+                            <c:when test="${userLicenses.size()>0 }">
+                                <c:forEach var="vo" items="${userLicenses}" varStatus="status">
                                     <tr>
+                                        <td>${vo.licensesSeq}</td>
                                         <td>${vo.licensesName}</td>
+                                        <td>${vo.regDt}</td>
+                                        <td><button class="deleteRowBtn">삭제</button>
                                     </tr>
                                 </c:forEach>
                             </c:when>
