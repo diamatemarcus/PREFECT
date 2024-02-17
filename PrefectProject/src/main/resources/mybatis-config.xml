@@ -11,6 +11,7 @@
         <setting name="jdbcTypeForNull" value="NULL"/>
     </settings>
     <typeAliases>
+        <typeAlias type="com.pcwk.ehr.reply.domain.ReplyVO"   alias="ReplyVO"/>
         <typeAlias type="com.pcwk.ehr.code.domain.CodeVO"   alias="CodeVO"/>
         <typeAlias type="com.pcwk.ehr.file.domain.FileVO"   alias="FileVO"/>
         <typeAlias type="com.pcwk.ehr.user.domain.UserVO"   alias="UserVO"/>
