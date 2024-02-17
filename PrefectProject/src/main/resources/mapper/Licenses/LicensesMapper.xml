@@ -34,15 +34,18 @@
 
 <select id="getUserLicenses" parameterType="UserVO" resultType="LicensesVO">
     SELECT 
-        ul.email, ul.licenses_seq, l.name as licensesName ,ul.reg_dt
+        ul.email, 
+        ul.licenses_seq, 
+        l.name AS licensesName, 
+        TO_CHAR(ul.reg_dt, 'YYYY-MM-DD') AS reg_dt
     FROM 
         User_Licenses ul
     JOIN 
-        licenses l 
+        Licenses l 
     ON 
         ul.licenses_seq = l.seq
     JOIN 
-        users u 
+        Users u 
     ON 
         u.email = ul.email
     WHERE 

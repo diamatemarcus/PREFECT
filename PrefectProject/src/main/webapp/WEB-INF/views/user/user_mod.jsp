@@ -187,7 +187,7 @@
 	        }
 	    } */
 
-	    // 선택 버튼 클릭 시
+	 // 선택 버튼 클릭 시
 	    $('#doSaveLicenses').click(function() {
 	        console.log('licensesdoSave click');
 	        var licensesSeq = $('#licenses').val();
@@ -218,6 +218,8 @@
 	            },
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
+	                // AJAX 요청 완료 후 페이지 리로드
+	                location.reload();
 	            },
 	            error: function(data) { // 실패시 처리
 	                console.log("error:" + data);
@@ -267,14 +269,17 @@
 	            async: true,
 	            dataType: "json",
 	            data: {
-	            	 licensesSeq: licensesSeq,
-	                 email: $("#email").val()
+	                licensesSeq: licensesSeq,
+	                email: $("#email").val()
 	            },
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
+	                // AJAX 요청 완료 후 페이지 리로드
+	                location.reload();
 	            },
 	            error: function(data) { // 실패시 처리
 	                console.log("error:" + data);
+	                // 실패 처리를 추가할 수 있습니다.
 	            },
 	            complete: function(data) { // 성공/실패와 관계없이 수행!
 	                console.log("complete:" + data);
@@ -283,25 +288,33 @@
 	    });
 
 
-	    // 등록일 유효성 검사 함수
+	 // 등록일 유효성 검사 함수
 	    function validateDate(dateString) {
-	        var regex = /^(\d{4})(\d{2})(\d{2})$/;
+	        var regex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD 형식의 정규식
 	        if (!regex.test(dateString)) {
-	            alert('날짜 형식이 올바르지 않습니다. (YYYYMMDD)');
+	            alert('날짜 형식이 올바르지 않습니다. (YYYY-MM-DD)');
 	            return false;
 	        }
 
-	        var year = parseInt(dateString.substr(0, 4));
-	        var month = parseInt(dateString.substr(4, 2));
-	        var day = parseInt(dateString.substr(6, 2));
+	        var parts = dateString.split('-');
+	        var year = parseInt(parts[0]);
+	        var month = parseInt(parts[1]);
+	        var day = parseInt(parts[2]);
+
+	        if (isNaN(year) || isNaN(month) || isNaN(day)) {
+	            alert('숫자 형식이 아닌 값이 포함되어 있습니다.');
+	            return false;
+	        }
 
 	        if (month < 1 || month > 12) {
 	            alert('올바른 월을 입력하세요. (1부터 12까지)');
 	            return false;
 	        }
 
-	        if (day < 1 || day > 31) {
-	            alert('올바른 일을 입력하세요. (1부터 31까지)');
+	        // 각 월별 일 수 체크
+	        var daysInMonth = new Date(year, month, 0).getDate();
+	        if (day < 1 || day > daysInMonth) {
+	            alert('올바른 일을 입력하세요.');
 	            return false;
 	        }
 
@@ -408,7 +421,7 @@
 				        <!-- 등록일 텍스트 상자 -->
 				        <div class="mb-6">
 				            <label for="regDt" class="form-label">등록일</label>
-				            <input type="text" id="regDt" name="regDt" class="form-control" placeholder="취득일자 8자리">
+				            <input type="date" id="regDt" name="regDt" class="form-control">
 				        </div>
 				        <!-- 자격증 저장 버튼 -->
 				        <div class="col-auto">
