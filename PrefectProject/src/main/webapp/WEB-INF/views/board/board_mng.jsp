@@ -244,6 +244,38 @@ document.addEventListener("DOMContentLoaded",function(){
     </form> 
     <!--// form --------------------------------------------------------------->
     
+      <!-- reply -->  
+    <div id="replyDoSaveArea">
+        <!-- 버튼 -->
+        <div class="dynamicReply">
+            <div class="row justify-content-end">
+                <div class="col-auto">
+                    <input type="button" value="댓글수정" class="btn btn-primary replyDoUpdate"  >
+                    <input type="button" value="댓글삭제" class="btn btn-primary replyDoDelete"  >
+                </div>
+            </div>
+            <!--// 버튼 ----------------------------------------------------------------->
+            <div class="mb-3">
+                <input type="hidden" name="replySeq" value="">
+                <textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents"></textarea>
+            </div>
+        </div>        
+    </div>
+    
+    
+    <div id="replyDoSaveArea">
+        <!-- 버튼 -->
+        <div class="row justify-content-end">
+            <div class="col-auto">
+                <input type="button" value="댓글등록" class="btn btn-primary" id="replyDoSave" >
+            </div>
+        </div>
+        <!--// 버튼 ----------------------------------------------------------------->
+        <div class="mb-3">
+            <textarea rows="3" class="form-control"  id="replyContents" name="replyContents"></textarea>
+        </div>        
+    </div>
+    <!--// reply --------------------------------------------------------------> 
     
 	<!-- 파일 다운로드 -->
 	<form action="${CP}/file/download.do" method="POST" name="fileDownloadForm">

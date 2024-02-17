@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+이 XML 소스코드는 MyBatis 매퍼 파일의 예시로,
+ 스프링 프레임워크 기반 애플리케이션에서 사용됩니다. 
+ MyBatis는 자바 객체와 SQL 데이터베이스 사이의 매핑을 제공하는 퍼시스턴스 프레임워크입니다. 
+ 매퍼 파일은 SQL 쿼리를 정의하고, 이들을 자바 인터페이스의 메서드와 연결하는 데 사용됩니다. 
+ 이 파일은 특히 댓글 데이터(reply)에 대한 CRUD(Create, Read, Update, Delete) 작업을 정의하고 있습니다.
+ -->
+
+<!-- 
+XML 선언과 DOCTYPE 선언: 
+파일의 시작 부분에서 XML 버전과 인코딩 방식을 명시하고,
+MyBatis 매퍼 파일의 DTD(Document Type Definition)를 선언합니다.
+이는 XML 문서가 올바른 형식을 따르고 있는지 검증하는 데 사용됩니다.
+-->  
+  
+<!-- 
+<mapper> 태그: 매퍼 파일의 루트 엘리먼트입니다.
+namespace 속성은 이 매퍼 파일이 속한 네임스페이스를 지정하며,
+일반적으로 관련 자바 인터페이스의 풀 패키지 이름을 사용합니다.
+-->
+<mapper namespace="com.pcwk.ehr.reply">
+<!-- CRUD -->
+
+<!-- 
+: ReplyVO 객체를 파라미터로 받아, 
+댓글 데이터(reply)를 업데이트하는 SQL 쿼리를 정의합니다. 
+#{reply}와 #{replySeq}는 ReplyVO 객체의 속성을 참조합니다.
+-->
+<update id="doUpdate" parameterType="ReplyVO">
+	UPDATE reply
+	   SET reply = #{reply}
+	      ,mod_dt = SYSDATE
+	WHERE  reply_seq = #{replySeq}
+</update>
+
+<!-- 
+게시글 번호(boardSeq)에 해당하는 모든 댓글을 조회하는 SQL 쿼리를 정의합니다.
+조회된 댓글 정보는 ReplyVO 객체의 리스트로 반환됩니다.
+DECODE와 TO_CHAR 함수를 사용해 수정 날짜(modDt)를 특정 형식으로 포맷팅합니다.
+-->
+<select id="doRetrieve" parameterType="ReplyVO" resultType="ReplyVO">
+	SELECT
+	    reply_seq,
+	    board_seq,
+	    reply,
+	    reg_dt,
+	    reg_id,
+	    DECODE(TO_CHAR(mod_dt,'YYYYMMDD'), TO_CHAR(SYSDATE,'YYYYMMDD')
+	         ,TO_CHAR(mod_dt,'HH24:MI')
+	         ,TO_CHAR(mod_dt,'YYYY-MM-DD')) as modDt
+	FROM
+	    reply
+	WHERE board_seq =  #{boardSeq}   
+	ORDER BY reply_seq
+</select>
+
+<!-- 새 댓글을 위한 고유 순번을 생성하기 위해 시퀀스의 다음 값을 조회하는 SQL 쿼리를 정의합니다. -->
+<select id="getReplySeq" resultType="int">
+    SELECT REPLY_SEQ.NEXTVAL FROM dual
+</select>
+
+<!-- 특정 댓글 순번(replySeq)에 해당하는 댓글 정보를 조회하는 SQL 쿼리를 정의합니다.
+결과는 ReplyVO 객체로 반환됩니다. -->
+<select id="doSelectOne" parameterType="ReplyVO" resultType="ReplyVO">
+	SELECT
+	    reply_seq,
+	    board_seq,
+	    reply,
+	    reg_dt,
+	    reg_id,
+	    mod_dt
+	FROM
+	    reply
+	WHERE
+	    reply_seq = #{replySeq}
+
+</select>
+
+<!-- 특정 댓글 순번(replySeq)에 해당하는 댓글을 삭제하는 SQL 쿼리를 정의합니다. -->
+<delete id="doDelete"  parameterType="ReplyVO">
+	DELETE FROM reply
+	WHERE   reply_seq = #{replySeq}
+</delete>
+
+<!-- 새로운 댓글 데이터를 데이터베이스에 삽입하는 SQL 쿼리를 정의합니다.
+SYSDATE 함수를 사용하여 등록 날짜(regDt)와 수정 날짜(modDt)를 현재 시스템 날짜로 설정합니다. -->
+<insert id="doSave" parameterType="ReplyVO">
+	INSERT INTO reply (
+	    reply_seq,
+	    board_seq,
+	    reply,
+	    reg_dt,
+	    reg_id,
+	    mod_dt
+	) VALUES (
+	    #{replySeq},
+	    #{boardSeq},
+        #{reply},
+	    SYSDATE,
+	    #{regId},
+	    SYSDATE
+	)
+</insert>
+
+</mapper>
+<!-- 기능 요약
+이 매퍼 파일은 댓글 데이터에 대한 데이터베이스 작업을 정의합니다.
+각 SQL 쿼리는 특정 작업(업데이트, 조회, 삭제, 삽입)을 수행하며, 
+이러한 작업은 애플리케이션의 서비스 또는 DAO(Data Access Object) 계층에서 사용됩니다. 
+MyBatis를 사용하면 SQL 쿼리를 XML 파일에 명시적으로 작성함으로써, 
+데이터베이스 작업을 보다 선언적으로 관리할 수 있으며, 
+SQL 쿼리와 자바 코드 사이의 분리를 통해 코드의 가독성과 유지보수성을 향상시킬 수 있습니다. -->
