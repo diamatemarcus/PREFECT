@@ -238,7 +238,19 @@ document.addEventListener("DOMContentLoaded", function () {
                        //modal popup닫기
                        $('#staticBackdrop').modal('hide');
                        
-                   });                       
+                   });
+                   $("#doRetrieve").on("click", function(e){
+                       console.log( "doRetrieve click!" );
+                       let frm = document.forms['userFrm'];//form
+                       
+                       
+                       let searchWord = frm.searchWord.value;
+                       console.log('searchWord:'+searchWord);
+                       
+                       frm.action = "/ehr/user/doMemberPopup.do";
+                       //서버 전송
+                       frm.submit();
+                   });
                },
                error:function(data){//실패시 처리
                    console.log("error:"+data);
@@ -301,6 +313,12 @@ document.addEventListener("DOMContentLoaded", function () {
             <h1 class="modal-title fs-5" id="staticBackdropLabel">회원</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
+          <form action="#" method="get" name="userFrm" style="display: inline;">
+            <div class="col-auto">
+                <input type="text"  class="form-control" value="${searchVO.searchWord }" name="searchWord" id="searchWord" placeholder="검색어를 입력하세요">
+                <input type="button" class="btn btn-primary" value="조회"   id="doRetrieve" >
+            </div>
+          </form> 
           <div class="modal-body">
             <!-- 회원정보 table -->
           </div>
