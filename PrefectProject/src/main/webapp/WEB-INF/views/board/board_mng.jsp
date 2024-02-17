@@ -105,6 +105,192 @@ document.addEventListener("DOMContentLoaded",function(){
     function moveToList(){
         window.location.href = "${CP}/board/doRetrieve.do?div="+div;
     }
+    
+//------Reply---------------------------------------------------------------
+    
+    function replyRetrieve(){
+        const boardSeq = document.querySelector("#seq").value
+        console.log('boardSeq:'+boardSeq)
+        
+        if(eUtil.isEmpty(boardSeq) == true){
+            alert('게시글 번호를 확인 하세요.');
+            return;
+        }
+        
+        $.ajax({
+            type: "GET",
+            url:"/ehr/reply/doRetrieve.do",
+            asyn:"true",
+            dataType:"json", //return type
+            data:{
+                "boardSeq": boardSeq  
+            },
+            success:function(data){//통신 성공
+                console.log("success data:"+data);
+                console.log("data.length:"+data.length);
+                
+                let replyDiv = '';
+                
+                //기존 댓글 모두 삭제
+                //#요소의 내용을 모두 지웁니다.
+                //$("#replyDoSaveArea").html('');
+                document.getElementById("replyDoSaveArea").innerHTML = "";
+                
+                
+                if(0==data.length){
+                    console.log("댓글이 없어요1");
+                    return;
+                }
+                    
+                
+                for(let i=0;i<data.length;i++){
+                    replyDiv += '<div class="dynamicReply"> \n';
+                    replyDiv += '<div class="row justify-content-end"> \n';
+                    replyDiv += '<div class="col-auto"> \n';
+                    replyDiv += '<span>등록일:'+data[i].modDt+'</span> \n';
+                    replyDiv += '\t\t\t <input type="button" value="댓글수정" class="btn btn-primary replyDoUpdate"  >   \n';
+                    replyDiv += '\t\t\t <input type="button" value="댓글삭제" class="btn btn-primary replyDoDelete"  >   \n';
+                    replyDiv += '</div> \n';
+                    replyDiv += '</div> \n';
+                    
+                    replyDiv += '<div class="mb-3">  \n';
+                    replyDiv += '<input type="hidden" name="replySeq" value="'+data[i].replySeq +'"> \n';
+                    
+                    replyDiv += '<textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents">'+data[i].reply+'</textarea> \n';
+                    replyDiv += '</div> \n';
+                    
+                    replyDiv += '</div> \n';
+                    
+                }
+                
+                //console.log(replyDiv);
+                
+                //조회 댓글 출력
+                document.getElementById("replyDoSaveArea").innerHTML = replyDiv;
+                //$("#replyDoSaveArea").html(replyDiv);
+                
+                
+                //-댓글:삭제,수정-------------------------------------------------------------
+                //댓글 수정
+/*                 $(".replyDoUpdate").on("click", function(e){
+                    console.log('replyDoUpdate click');
+                }); */
+
+                //javascript
+                replyDoUpdateBTNS = document.querySelectorAll(".replyDoUpdate");
+                replyDoUpdateBTNS.forEach(function(e){
+                    e.addEventListener("click",function(e){
+                        console.log('replyDoUpdate click');
+                        
+                        //reply,reply_seq
+                        const replySeq =this.closest('.dynamicReply').querySelector('input[name="replySeq"]')
+                        console.log('replySeq:'+replySeq.value);
+                        if(eUtil.isEmpty(replySeq.value)==true){
+                            alert('댓글 순번을 확인하세요.');
+                            return;
+                        }
+                        
+                        const reply =this.closest('.dynamicReply').querySelector('textarea[name="dyReplyContents"]')
+                        if(eUtil.isEmpty(reply.value)==true){
+                            alert('댓글을 확인하세요.');
+                            reply.focus();
+                            return;
+                        }
+                        
+                        console.log('reply:'+reply.value);
+                        
+                        if(window.confirm('수정 하시겠습니까?')==false){
+                            return ;
+                        }
+                        
+                        $.ajax({
+                            type: "POST",
+                            url:"/ehr/reply/doUpdate.do",
+                            asyn:"true",
+                            dataType:"json",
+                            data:{
+                                "replySeq": replySeq.value,
+                                "reply":reply.value
+                            },
+                            success:function(data){//통신 성공
+                                console.log("success data:"+data.msgId);
+                                console.log("success data:"+data.msgContents);
+                                
+                                if("1" == data.msgId){
+                                    alert(data.msgContents);
+                                    replyRetrieve();
+                                }else{
+                                    alert(data.msgContents);
+                                }
+                            },
+                            error:function(data){//실패시 처리
+                                console.log("error:"+data);
+                            },
+                            complete:function(data){//성공/실패와 관계없이 수행!
+                                console.log("complete:"+data);
+                            }
+                        });
+                        
+                        
+                    });
+                    
+                });//-----replyDoUpdateBTNS-------------------------------------
+                
+                //댓글삭제
+                $(".replyDoDelete").on("click", function(e){
+                    console.log('replyDoDelete click');
+                    
+                    const replySeq = $(this).closest('.dynamicReply').find('input[name="replySeq"]').val();
+                    console.log('replySeq:'+replySeq);
+                    
+                    if(window.confirm("삭제 하시겠습니까?")==false){
+                        return;
+                    }
+                    
+                    $.ajax({
+                        type: "GET",
+                        url:"/ehr/reply/doDelete.do",
+                        asyn:"true",
+                        dataType:"json",
+                        data:{
+                            "replySeq": replySeq
+                        },
+                        success:function(data){//통신 성공
+                            console.log("success data:"+data.msgId);
+                            console.log("success data:"+data.msgContents);
+                            
+                            if("1" == data.msgId){
+                                alert(data.msgContents);
+                                replyRetrieve();
+                            }else{
+                                alert(data.msgContents);
+                            }
+                        },
+                        error:function(data){//실패시 처리
+                            console.log("error:"+data);
+                        },
+                        complete:function(data){//성공/실패와 관계없이 수행!
+                            console.log("complete:"+data);
+                        }
+                    });                 
+                });
+                
+                
+                //--------------------------------------------------------------
+            },
+            error:function(data){//실패시 처리
+                console.log("error:"+data);
+            },
+            complete:function(data){//성공/실패와 관계없이 수행!
+                console.log("complete:"+data);
+            }
+        });     
+        
+    }
+    
+    
+    
+    //------Reply---------------------------------------------------------------
 	
 });
 </script>
