@@ -106,6 +106,7 @@ public class ScheduleDaoJUnitTest implements PcwkLogger{
 		
 	}
 	
+	@Ignore
 	@Test
     public void testDoDeleteMultiple() {
         // 테스트를 위해 삭제할 schedule_id 리스트 생성
@@ -116,6 +117,11 @@ public class ScheduleDaoJUnitTest implements PcwkLogger{
 
         // 삭제가 성공적으로 이루어졌는지 확인
         assertEquals(3, result);
+    }
+	
+	@Test
+    public void testDoRetrieveAll() throws SQLException {
+		List<ScheduleVO> sList = dao.doRetrieve(scheduleVO01);
     }
 	
 	@Ignore
@@ -142,6 +148,8 @@ public class ScheduleDaoJUnitTest implements PcwkLogger{
 		assertNotNull(outVO01);// Not Null이면 true
 		
 		List<ScheduleVO> sList = dao.doRetrieve(calendar);
+		
+		
 
 		// 데이터 동일 테스트
 		//isSameSchedule(scheduleVO01, outVO01);

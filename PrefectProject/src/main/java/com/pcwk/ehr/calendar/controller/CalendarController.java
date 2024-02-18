@@ -3,8 +3,10 @@ package com.pcwk.ehr.calendar.controller;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +23,9 @@ import com.pcwk.ehr.calendar.service.CalendarService;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.cmn.StringUtil;
+import com.pcwk.ehr.schedule.domain.ScheduleVO;
+import com.pcwk.ehr.schedule.service.ScheduleService;
+import com.pcwk.ehr.user.domain.UserVO;
 
 
 @Controller
@@ -30,6 +35,9 @@ public class CalendarController implements PcwkLogger{
 	@Autowired
 	CalendarService  calendarService;
 	
+	@Autowired
+	ScheduleService scheduleService;
+	
 	public CalendarController () {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ CalendarController                        │");
@@ -38,10 +46,18 @@ public class CalendarController implements PcwkLogger{
 
 	
 	@GetMapping(value = "/doRetrieveCalendar.do")
-	public String doRetrieveCalendar(CalendarVO inVO, Model model) throws SQLException{
+	public String doRetrieveCalendar(CalendarVO inVO, Model model, HttpSession httpSession) throws SQLException{
+		
+		ScheduleVO schedule = new ScheduleVO ();
+		
+		if(null != httpSession.getAttribute("user")) {
+			UserVO user = (UserVO) httpSession.getAttribute("user");
+			schedule.setEmail(user.getEmail());
+		}
+		
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doRetrieveCalendar                │");
-		LOG.debug("│ CalendarVO                        │"+inVO);
+		LOG.debug("│ CalendarVO                        │"+schedule.getEmail());
 		LOG.debug("└───────────────────────────────────┘");
 		
 		//월
@@ -54,16 +70,22 @@ public class CalendarController implements PcwkLogger{
 		}
 		
 		//목록조회
-		List<WeekVO>  list = calendarService.doRetrieveMonth(inVO);
+		List<WeekVO>  weekList = calendarService.doRetrieveMonth(inVO);
 		String year = inVO.getYear();
 		String month = inVO.getMonth();
 		
-		model.addAttribute("calendarList", list);
+		model.addAttribute("calendarList", weekList);
 		model.addAttribute("year", year);
 		model.addAttribute("month", month);	
 		
-		//뷰
-//		modelAndView.setViewName("schedule/calendar");//  /WEB-INF/views/board/board_list.jsp
+		List<ScheduleVO> schedules = scheduleService.doRetrieve(schedule);
+		
+		for(ScheduleVO scheduleVO  :schedules) {
+			LOG.debug("scheduleVO:"+scheduleVO);
+		}
+		
+		model.addAttribute("scheduleList", schedules);
+
 
 		return "schedule/calendar";   
 	}

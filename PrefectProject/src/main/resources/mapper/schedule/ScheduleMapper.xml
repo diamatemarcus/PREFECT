@@ -8,7 +8,7 @@
 	        COUNT(*) cnt         
 		 FROM                     
 		    schedule                
-    </select> <!-- users 테이블에있는 email갯수 카운팅 하는 쿼리 -->
+    </select> 
  
 	<delete id="doDelete" parameterType="ScheduleVO">
 	    DELETE FROM schedule 
@@ -33,9 +33,10 @@
 	    schedule_id,
 	    cal_id,
 	    title,
-	    explanation
+	    explanation,
+	    email
 	FROM    schedule
-	WHERE schedule_id = #{scheduleID}     
+	WHERE schedule_id = #{scheduleID} and email = #{email}
   </select>
   
   <select id="doSelectAllSchedule" parameterType="CalendarVO" resultType="ScheduleVO">
@@ -43,10 +44,11 @@
 	    schedule_id,
 	    cal_id,
 	    title,
-	    explanation
+	    explanation,
+	    email
 	FROM    schedule  
-	WHERE cal_id = #{calID}  
-	ORDER BY schedule_id   
+	WHERE cal_id = #{calID} and email = #{email}
+	ORDER BY schedule_id  
   </select>
   
   <insert id="doSave" parameterType="ScheduleVO">
@@ -54,12 +56,14 @@
 	    schedule_id,
 	    cal_id,
 	    title,
-	    explanation
+	    explanation,
+	    email
 	) VALUES (
 	    schedule_seq.NEXTVAL,
 	    #{calID},
 	    #{title},
-	    #{explanation}
+	    #{explanation},
+	    #{email}
 	)
   </insert>
   
@@ -70,6 +74,19 @@
         #{item}
     </foreach>
  </delete>
+ 
+ <select id="doRetrieve" resultType="ScheduleVO">
+	SELECT
+	    schedule_id,
+	    cal_id,
+	    title,
+	    explanation,
+	    email
+	FROM
+	    schedule
+    WHERE email = #{email}
+	ORDER BY cal_id, schedule_id
+  </select>
  
   
 </mapper>

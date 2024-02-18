@@ -121,8 +121,17 @@ public class ScheduleDaoImpl implements ScheduleDao {
 
 	@Override
 	public List<ScheduleVO> doRetrieve(ScheduleVO inVO) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		List<ScheduleVO> outList=new ArrayList<ScheduleVO>();
+		LOG.debug("1.param \n" + inVO.toString());
+		String statement = NAMESPACE+DOT +"doRetrieve";
+		LOG.debug("2.statement \n" + statement);
+		
+		outList=this.sqlSessionTemplate.selectList(statement, inVO);
+		
+		for(ScheduleVO vo :outList) {
+			LOG.debug(vo);
+		}		
+		return outList;
 	}
 
 	@Override

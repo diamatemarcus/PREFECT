@@ -52,4 +52,9 @@ public class ScheduleServiceImpl implements ScheduleService, PcwkLogger{
 		return scheduleDao.doDeleteMultiple(scheduleIDs);
 	}
 
+	@Override
+	public List<ScheduleVO> doRetrieve(ScheduleVO inVO) throws SQLException {
+		return scheduleDao.doRetrieve(inVO);
+	}
+
 }

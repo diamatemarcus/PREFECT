@@ -13,7 +13,7 @@
 <title>달력</title>
 <style>
 /* 초기에는 form 숨기기 */
-#myForm {
+#myScheduleForm {
 	display: none;
 }
 </style>
@@ -25,6 +25,7 @@
 						//DOMContentLoaded-----------------------------------------
 						console.log("DOMContentLoaded"); 
 						
+						let email = document.querySelector("#email").value;
 
 						const saveScheduleBTN = document
 								.querySelector("#doSaveSchedule");
@@ -112,7 +113,7 @@
 						
 						//-------------------------------- 일정 테이블 가져오는 메소드
 						 function scheduleRetrieve(calID) {
-							 let form = document.getElementById("myForm");
+							 let form = document.getElementById("myScheduleForm");
 								form.style.display = "none";
 								isFormVisible = false;
 								
@@ -141,7 +142,8 @@
 											asyn : "true",
 											dataType : "json",
 											data : {
-												"calID" : calID
+												"calID" : calID,
+												"email" : email
 											},
 											success : function(data) {//통신 성공
 												console
@@ -207,52 +209,12 @@
 														.modal(
 																'show');
 
-												//회원정보 double click
-												$(
-														"#userTable>tbody")
-														.on(
-																"dblclick",
-																"tr",
-																function(
-																		e) {
-																	console
-																			.log("userTable click!");
-
-																	let tdArray = $(
-																			this)
-																			.children();
-																	let userId = tdArray
-																			.eq(
-																					1)
-																			.text();
-																	let password = tdArray
-																			.eq(
-																					3)
-																			.text();
-
-																	console
-																			.log('userId:'
-																					+ userId);
-																	console
-																			.log('password:'
-																					+ password);
-
-																	$(
-																			"#userId")
-																			.val(
-																					userId);
-																	$(
-																			"#password")
-																			.val(
-																					password);
-
-																	//modal popup닫기
-																	$(
-																			'#staticBackdrop')
-																			.modal(
-																					'hide');
-
-																});
+												
+												// modal popup 닫기 및 페이지 리로드
+												$('#staticBackdrop').on('hidden.bs.modal', function (e) {
+												    // 모달이 숨겨지면 페이지를 리로드합니다.
+												    location.reload();
+												});
 											},
 											error : function(data) {//실패시 처리
 												console
@@ -278,10 +240,14 @@
 										"td",
 										function(e) {
 											
+											// 클릭된 요소의 날짜 값 가져오기
+										    let calID = $(this).data("day");
+										    console.log("Clicked day:", calID);
+											
 											document.querySelector("#explanation").value = "";
 							                document.querySelector("#title").value = "";
 							                
-											let form = document.getElementById("myForm");
+											let form = document.getElementById("myScheduleForm");
 											form.style.display = "none";
 											isFormVisible = false;
 											
@@ -291,9 +257,6 @@
 											console
 													.log('----------------------------');
 
-											let calID = $(this).text();
-											console.log('calID:' + calID);
-											console.log(typeof calID);
 											
 											document.querySelector("#calID").value = calID;
 
@@ -309,7 +272,7 @@
 						
 						//-------------------------------------------------------------- 일정 추가 버튼
 						saveScheduleBTN.addEventListener("click", function(e) {
-							let form = document.getElementById("myForm");
+							let form = document.getElementById("myScheduleForm");
 							
 							console.log('saveScheduleBTN click');
 							
@@ -325,6 +288,7 @@
 				                console.log("title:" + title);
 				                console.log("calID:" + calID);
 				                console.log("explanation:" + explanation);
+				                console.log("email:" + email);
 
 				                if (eUtil.isEmpty(title) === true) {
 				                    alert("제목을 입력하세요.");
@@ -350,7 +314,8 @@
 				                    data: {
 				                        "calID": calID,
 				                        "title": title,
-				                        "explanation": explanation
+				                        "explanation": explanation,
+				                        "email": email
 				                    },
 				                    success: function (data) {// 통신 성공 시의 처리
 				                        console.log("data.msgId:" + data.msgId);
@@ -429,7 +394,7 @@
 
 						//------------------------------------------------------일정 수정
 						$("#doUpdateSchedule").click(function() {
-							let form = document.getElementById("myForm");
+							let form = document.getElementById("myScheduleForm");
 							
 				            // 체크된 일정의 scheduleID 값을 배열로 저장
 				            var scheduleIDs = [];
@@ -569,6 +534,7 @@
 </head>
 <body>
 	<div class="container">
+	<input type="text" id="email" name="email" value="${sessionScope.user.email}">
 		<!-- 제목 -->
 		<div class="row">
 			<div class="col-lg-12">
@@ -585,7 +551,7 @@
 		<input type="text" name="year" id="year" value="${year}" /> <input
 			type="text" name="month" id="month" value="${month}" />
 
-		<!-- table -->
+		<!-- 캘린더 table -->
 		<table
 			class="table table-bordered border-primary table-hover table-striped"
 			id="calendarTable">
@@ -606,21 +572,112 @@
 						<!-- 반복문 -->
 						<c:forEach var="vo" items="${calendarList}" varStatus="status">
 							<tr>
-								<td class="text-center col-lg-1  col-sm-1"><c:out
-										value="${vo.sun}" /></td>
-								<td class="text-center col-lg-1  col-sm-1"><c:out
-										value="${vo.mon}" /></td>
-								<td class="text-center col-lg-1  col-sm-1"><c:out
-										value="${vo.tue}" /></td>
-								<td class="text-center col-lg-1  col-sm-1"><c:out
-										value="${vo.wed}" /></td>
-								<td class="text-center col-lg-1  col-sm-1"><c:out
-										value="${vo.thu}" /></td>
-								<td class="text-center col-lg-1  col-sm-1"><c:out
-										value="${vo.fri}" /></td>
-								<td class="text-center col-lg-1  col-sm-1"><c:out
-										value="${vo.sat}" /></td>
+							    <!-- 일요일 -->
+							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.sun}">
+							        ${vo.sun.substring(6)}
+							        <ul>
+								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+								        <c:forEach var="schedule" items="${scheduleList}">
+								            <c:if test="${schedule.calID == vo.sun}">
+							                  <li>
+								                <strong>일정:</strong> ${schedule.title}
+								              </li>
+								            </c:if>
+								        </c:forEach>
+							        </ul>
+							    </td>
+							    <!-- 월요일 -->
+							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.mon}">
+							        ${vo.mon.substring(6)}
+							        <ul>
+								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+								            <c:if test="${schedule.calID == vo.mon}">
+								                  <li>
+									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+									                <!-- 필요한 정보 추가 -->
+									            </li>
+								            </c:if>
+								        </c:forEach>
+							        </ul>
+							    </td>
+							    <!-- 화요일 -->
+							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.tue}">
+							        ${vo.tue.substring(6)}
+							        <ul>
+								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+								            <c:if test="${schedule.calID == vo.tue}">
+								                  <li>
+									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+									                <!-- 필요한 정보 추가 -->
+									            </li>
+								            </c:if>
+								        </c:forEach>
+							        </ul>
+							    </td>
+							    <!-- 수요일 -->
+							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.wed}">
+							        ${vo.wed.substring(6)}
+							        <ul>
+								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+								            <c:if test="${schedule.calID == vo.wed}">
+								                  <li>
+									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+									                <!-- 필요한 정보 추가 -->
+									            </li>
+								            </c:if>
+								        </c:forEach>
+							        </ul>
+							    </td>
+							    <!-- 목요일 -->
+							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.thu}">
+							        ${vo.thu.substring(6)}
+							        <ul>
+								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+								            <c:if test="${schedule.calID == vo.thu}">
+								                  <li>
+									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+									                <!-- 필요한 정보 추가 -->
+									            </li>
+								            </c:if>
+								        </c:forEach>
+							        </ul>
+							    </td>
+							    <!-- 금요일 -->
+							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.fri}">
+							        ${vo.fri.substring(6)}
+							        <ul>
+								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+								            <c:if test="${schedule.calID == vo.fri}">
+								                  <li>
+									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+									                <!-- 필요한 정보 추가 -->
+									            </li>
+								            </c:if>
+								        </c:forEach>
+							        </ul>
+							    </td>
+							    <!-- 토요일 -->
+							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.sat}">
+							        ${vo.sat.substring(6)}
+							        <ul>
+								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+								            <c:if test="${schedule.calID == vo.sat}">
+								                  <li>
+									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+									                <!-- 필요한 정보 추가 -->
+									            </li>
+								            </c:if>
+								        </c:forEach>
+							        </ul>
+							    </td>
 							</tr>
+
 						</c:forEach>
 						<!--// 반복문 -->
 					</c:when>
@@ -641,15 +698,15 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h1 class="modal-title fs-5" id="staticBackdropLabel">일정</h1>
-						<input type="text" name="calID" id="calID" /> 
+						<input type="hidden" name="calID" id="calID" /> 
 						<input
-							type="button" value="일정 추가" class="btn btn-primary"
+							type="button" value="새 일정 등록" class="btn btn-primary"
 							id="doSaveSchedule">
 						<input
-							type="button" value="일정 삭제" class="btn btn-primary"
+							type="button" value="삭제" class="btn btn-primary"
 							id="doDeleteSchedule">
 						<input
-							type="button" value="일정 수정" class="btn btn-primary"
+							type="button" value="수정" class="btn btn-primary"
 							id="doUpdateSchedule">
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
@@ -659,7 +716,7 @@
 					</div>
 
 					<!-- form -->
-					<div id="myForm" class="modal-body">
+					<div id="myScheduleForm" class="modal-body">
 						<form id="scheduleForm">
 							<!-- 여기에 form 요소들을 넣으세요 -->
 							<input type="hidden" name="calID"> <input type="hidden"
