@@ -71,6 +71,9 @@
                <li class="nav-item">
                   <a class="nav-link" href="<c:url value='/user/doSelectOne.do'/>">마이페이지</a>
               </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="<c:url value='/calendar/doRetrieveCalendar.do'/>">캘린더</a>
+              </li>
           </ul>
         </div>
     </div>

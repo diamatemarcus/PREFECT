@@ -429,6 +429,8 @@
 
 						//------------------------------------------------------일정 수정
 						$("#doUpdateSchedule").click(function() {
+							let form = document.getElementById("myForm");
+							
 				            // 체크된 일정의 scheduleID 값을 배열로 저장
 				            var scheduleIDs = [];
 				            $("input[name='scheduleID']:checked").each(function() {
@@ -452,32 +454,109 @@
 				         // scheduleIDs 배열을 콘솔에 출력
 				            console.log("scheduleIDs:", scheduleIDs);
 				            console.log("calID:", calID);
-				            let length = scheduleIDs.length;
-
-				            // 여러 일정 삭제 Ajax 요청
+				            
+				         // 여러 일정 삭제 Ajax 요청
 				            $.ajax({
-				                type: "POST",
-				                url: "/ehr/schedule/doUpdateMultiple.do",
+				                type: "GET",
+				                url: "/ehr/schedule/doSelectOne.do",
 				                dataType: "json",
 				                data: {
-				                    "title": ,
-				                    "explanation": ,
-				                    "scheduleID":
+				                    "scheduleID": scheduleIDs[0]
 				                },
-				                success: function(response) {
-				                    // 삭제 성공 여부 확인
-				                    if (response.msgId == length) {
-				                        alert(response.msgContents); // 성공 메시지 표시
-				                        scheduleRetrieve(calID);	
-				                    } else {
-				                        alert(response.msgContents); // 실패 메시지 표시
-				                    }
+				                success: function(data) {
+				                	console
+									.log("success data:"
+											+ data);
+				                	
+				                	// form을 숨겼으면 보이도록, 보이면 숨기도록 설정
+						            if (!isFormVisible) {
+						                form.style.display = "block";
+						                
+						                console.log("title: " + data.title);
+						                console.log("explanation: " + data.explanation);
+
+						                document.querySelector("#title").value = data.title;
+						                document.querySelector("#explanation").value = data.explanation;
+						                
+						                console.log("block");
+
+						            } else {
+						            	
+						            	let calID = document.querySelector("#calID").value;
+						                let title = document.querySelector("#title").value;
+						                let explanation = document.querySelector("#explanation").value;
+
+						                console.log("title:" + title);
+						                console.log("calID:" + calID);
+						                console.log("explanation:" + explanation);
+
+						                if (eUtil.isEmpty(title) === true) {
+						                    alert("제목을 입력하세요.");
+						                    form.title.focus();
+						                    return;
+						                }
+
+						                if (eUtil.isEmpty(explanation) === true) {
+						                    alert("내용을 입력하세요.");
+						                    from.explanation.focus();
+						                    return;
+						                }
+
+						                if (window.confirm("수정하시겠습니까?") === false) {
+						                    return;
+						                }
+
+						                $.ajax({
+						                    type: "POST",
+						                    url: "/ehr/schedule/doUpdate.do",
+						                    async: true,
+						                    dataType: "json",
+						                    data: {
+						                        "scheduleID": scheduleIDs[0],
+						                        "title": title,
+						                        "explanation": explanation
+						                    },
+						                    success: function (data) {// 통신 성공 시의 처리
+						                        console.log("data.msgId:" + data.msgId);
+						                        console.log("data.msgContents:" + data.msgContents);
+
+						                        if ('1' == data.msgId) {
+						                            alert(data.msgContents);
+						                            scheduleRetrieve(calID);
+						                        } else {
+						                            alert(data.msgContents);
+						                        }
+						                    },
+						                    error: function (data) {// 통신 실패 시의 처리
+						                        console.log("error:" + data);
+						                    },
+						                    complete: function (data) {// 성공/실패와 관계없이 수행되는 처리
+						                        console.log("complete:" + data);
+						                    }
+						                });
+						                
+						                form.style.display = "none";
+						                document.querySelector("#explanation").value = "";
+						                document.querySelector("#title").value = "";
+
+						                console.log("none");
+						            }
+					                
+						            // isFormVisible 변수 업데이트
+						            isFormVisible = !isFormVisible;
+							
+				         
 				                },
 				                error: function(xhr, status, error) {
 				                    console.error(xhr.responseText); // 오류 메시지 출력
-				                    alert("일정 삭제 중 오류가 발생했습니다.");
+				                    alert("일정 수정 중 오류가 발생했습니다.");
 				                }
 				            });
+				         
+				         
+				           
+
+				            
 				        });
 
 						
@@ -505,41 +584,6 @@
 
 		<input type="text" name="year" id="year" value="${year}" /> <input
 			type="text" name="month" id="month" value="${month}" />
-
-		<!--// 제목 ----------------------------------------------------------------->
-
-		<!-- 검색 -->
-		<%-- <form action="#" method="get" id="calendar" name="calendar">
-      <input type="hidden" name="div"    id="div"  value="${paramVO.getDiv() }"/>
-      <div class="row g-1 justify-content-end ">
-          <label for="searchDiv" class="col-auto col-form-label">검색조건</label>
-          <div class="col-auto">
-              <select class="form-select pcwk_select" id="searchDiv" name="searchDiv">
-                     <option value="">전체</option>
-                     <c:forEach var="vo" items="${boardSearch }">
-                        <option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == paramVO.searchDiv }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
-                     </c:forEach>
-              </select>
-          </div>    
-          <div class="col-auto">
-              <input type="text" class="form-control" id="searchWord" name="searchWord" maxlength="100" placeholder="검색어를 입력 하세요" value="${paramVO.searchWord}">
-          </div>   
-          <div class="col-auto"> 
-               <select class="form-select" id="pageSize" name="pageSize">
-                  <c:forEach var="vo" items="${pageSize }">
-                    <option value="<c:out value='${vo.detCode }' />" <c:if test="${vo.detCode == paramVO.pageSize }">selected</c:if>  ><c:out value='${vo.detName}' /></option>
-                  </c:forEach>
-               </select>  
-          </div>    
-          <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-            <input type="button" value="목록" class="btn btn-primary"  id="doRetrieve">
-            <input type="button" value="등록" class="btn btn-primary"  id="moveToReg">
-          </div>              
-      </div>
-                           
-    </form> --%>
-		<!--// 검색 ----------------------------------------------------------------->
-
 
 		<!-- table -->
 		<table

@@ -77,9 +77,11 @@ public class ScheduleController implements PcwkLogger{
 	}
 	
 		//단건조회
-		@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
-		public String doSelectOne(ScheduleVO inVO,HttpServletRequest req, Model model) throws SQLException, EmptyResultDataAccessException {
-			String view = "schedule/schedule_mod";
+		@GetMapping(value = "/doSelectOne.do"
+				,produces = "application/json;charset=UTF-8")
+		@ResponseBody
+		public ScheduleVO doSelectOne(ScheduleVO inVO,HttpServletRequest req, Model model) throws SQLException, EmptyResultDataAccessException {
+			ScheduleVO schedule = this.scheduleService.doSelectOne(inVO);
 			LOG.debug("┌───────────────────────────────────────────┐");
 			LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
 			LOG.debug("└───────────────────────────────────────────┘");	
@@ -89,8 +91,8 @@ public class ScheduleController implements PcwkLogger{
 			ScheduleVO outVO = this.scheduleService.doSelectOne(inVO);
 			LOG.debug("│ outVO                                :"+outVO);		
 
-			model.addAttribute("outVO", outVO);
-			return view;
+			//model.addAttribute("outVO", outVO);
+			return schedule;
 		}
 		
 		//삭제
