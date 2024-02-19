@@ -40,8 +40,13 @@
     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
   </li>
   <li>
-   <a class="nav-link active" aria-current="page" href="<c:url value='/user/doSelectOne.do'/>">마이페이지</a>
-   </li>
+   	<a class="nav-link active" aria-current="page" href="<c:url value='/user/doSelectOne.do'/>">마이페이지</a>
+  </li>
+  <li class="nav-item">
+  	<a class="nav-link active" aria-current="page" href="<c:url value='/subject/doRetrieve.do'/>">성적 관리</a>
+  </li>
+   
+   
 </ul>        
 
 </body>

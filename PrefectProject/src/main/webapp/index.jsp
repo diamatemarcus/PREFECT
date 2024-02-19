@@ -74,6 +74,9 @@
               <li class="nav-item">
                   <a class="nav-link" href="<c:url value='/calendar/doRetrieveCalendar.do'/>">캘린더</a>
               </li>
+              <li class="nav-item">
+              	  <a class="nav-link active" href="<c:url value='/subject/doRetrieve.do'/>">성적 관리</a>
+              </li>
           </ul>
         </div>
     </div>

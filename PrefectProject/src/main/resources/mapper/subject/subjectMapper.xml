@@ -10,17 +10,15 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 
 
     <select id="doRetrieve" parameterType="SubjectVO" resultType="SubjectVO">
-		SELECT u.email, u.role, uc.courses_code, s.trainee
-		FROM users_courses uc
-		JOIN users u  ON uc.email = u.email
-		JOIN Subject s ON s.courses_code = uc.courses_code
-		WHERE u.role = 30 
-		AND uc.courses_code IN (
-		    SELECT courses_code
-		    FROM users_courses
-		    JOIN users ON users.email = users_courses.email
-		    WHERE users.role = 20 and users.email = #{user.email}
-		);
+		SELECT DISTINCT s.subject_code
+                       ,s.courses_code
+                       ,s.professor
+                       ,s.trainee
+                       ,s.score
+	    FROM
+	        subject s
+	    JOIN users u ON s.professor = u.email OR s.trainee = u.email
+	    WHERE s.professor = '' OR s.trainee = ''
     </select>
 
 	
