@@ -160,9 +160,7 @@ public class AttachFileController implements PcwkLogger {
 		
 		List<FileVO>  list=new ArrayList<FileVO>();
 		
-		/*
-		 * //UUID String UUID = StringUtil.getPK();
-		 */
+		//UUID String UUID = StringUtil.getPK();
 		
 		//SEQ
 		int seq = 1;
@@ -245,13 +243,15 @@ public class AttachFileController implements PcwkLogger {
 	    LOG.debug("└───────────────────────────────────┘");
 
 	    List<FileVO> list = new ArrayList<>();
-
+	    
 	    // 기존에 사용된 마지막 SEQ 조회
-	    Integer lastSeq = attachFileService.getLastSeqByUuid(uuid);
+	    int lastSeq = attachFileService.getLastSeqByUuid(uuid);
+	    
 	    // null 처리
-	    if (lastSeq == null) {
+	    if (lastSeq == 0) {
 	        lastSeq = 0;
 	    }
+	    
 	    int nextSeq = lastSeq + 1;
 
 	    for (MultipartFile multipartFile : uploadFiles) {

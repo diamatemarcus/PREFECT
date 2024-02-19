@@ -92,14 +92,34 @@ public class BoardController implements PcwkLogger{
 	}
 	
 	@GetMapping(value="/moveToReg.do")//저 url로 get매핑함
-	public String moveToReg() {
+	public String moveToReg(Model model, BoardVO inVO) throws SQLException {
 		String viewName = "";
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ moveToReg                         │");
 		LOG.debug("└───────────────────────────────────┘");		
+		
+		//DIV코드 조회
+		Map<String, Object> codes=new HashMap<String, Object>();
+		String[] codeStr = {"BOARD_DIV"};
+		codes.put("code", codeStr);
+		
+		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
+		model.addAttribute("divCode", codeList);
+		model.addAttribute("paramVO", inVO);
+		
+//		//공지사항:10, 자유게시판:20
+//		String title = "";
+//		if(inVO.getDiv().equals("10")) {
+//			title = "공지사항-등록";
+//		}else {
+//			title = "자유게시판-등록";
+//		}
+//		model.addAttribute("title", title);	
+		
+		
+		
 		viewName = "board/board_reg";///WEB-INF/views/ viewName .jsp
 		return viewName;
-		
 	}
 	
 	@GetMapping(value = "/doRetrieve.do")
@@ -186,14 +206,14 @@ public class BoardController implements PcwkLogger{
 				"/ehr/board/doRetrieve.do", "pageDoRerive");
 		modelAndView.addObject("pageHtml", html);
 		
-//		//공지사항:10, 자유게시판:20
-//		String title = "";
-//		if(inVO.getDiv().equals("10")) {
-//			title = "공지사항-목록";
-//		}else {
-//			title = "자유게시판-목록";
-//		}
-//		modelAndView.addObject("title", title);	
+		//공지사항:10, 자유게시판:20
+		String title = "";
+		if(inVO.getDiv().equals("10")) {
+			title = "공지사항-목록";
+		}else {
+			title = "자유게시판-목록";
+		}
+		modelAndView.addObject("title", title);	
 		
 		
 		return modelAndView;   
@@ -274,7 +294,6 @@ public class BoardController implements PcwkLogger{
 		return view;
 	}
 	
-	//@RequestMapping(value = "/doSave.do",method = RequestMethod.POST)
 	@PostMapping(value = "/doSave.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public MessageVO doSave(BoardVO inVO, @RequestParam(value = "uuid", required = false) String uuid) throws SQLException{

@@ -21,6 +21,7 @@
         </otherwise>
     </choose>
   </sql>
+  
   <sql id="searchCondition">
     <choose>
         <when test=" ''!= searchDiv and '10' == searchDiv ">
@@ -60,7 +61,8 @@
 	        FROM (
 	            SELECT *
 	            FROM board
-	            --WHERE 검색
+	            WHERE 1=1
+	            <include refid="divCondition"/>
 	            <include refid="searchCondition"/>
 	            ORDER BY mod_dt DESC
 	        )T1   --10,20,30,...
@@ -72,8 +74,9 @@
 	CROSS JOIN (
 	    SELECT COUNT(*) totalCnt
 	    FROM board
-	    --WHERE 검색
-	    <include refid="searchCondition"/>
+	    WHERE 1=1
+        <include refid="divCondition"/>     
+        <include refid="searchCondition"/>
 	)B  
   </select>
 

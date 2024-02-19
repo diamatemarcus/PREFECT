@@ -10,7 +10,7 @@
 <html> 
 <head>  
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
-<title>게시판 목록</title>
+<title>${title }</title>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
 	console.log("DOMContentLoaded");
@@ -39,8 +39,10 @@ document.addEventListener("DOMContentLoaded",function(){
     moveToRegBTN.addEventListener("click",function(e){
         console.log("moveToRegBTN click");
         
-        boardForm.action = "/ehr/board/moveToReg.do";
-        boardForm.submit();
+        /* boardForm.action = "/ehr/board/moveToReg.do";
+        boardForm.submit(); */
+        const div = document.querySelector("#div").value;
+        window.location.href = "${CP}/board/moveToReg.do?div=" + div;
         
     });
 	
@@ -115,7 +117,7 @@ function pageDoRerive(url,pageNo){
     <!-- 제목 -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">게시목록</h1>
+            <h1 class="page-header">${title }</h1>
         </div>
     </div>    
     <!--// 제목 ----------------------------------------------------------------->
