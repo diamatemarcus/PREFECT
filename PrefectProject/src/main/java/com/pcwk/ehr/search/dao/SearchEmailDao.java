@@ -23,4 +23,12 @@ public interface SearchEmailDao {
 	 */
 	int nameTelCheck(UserVO inVO) throws SQLException;
 	
+	/**
+	 * 이메일 확인
+	 * @param inVO
+	 * @return 1(email 있음)/0(email 없음)
+	 * @throws SQLException
+	 */
+	int emailCheck(UserVO inVO) throws SQLException;
+	
 }

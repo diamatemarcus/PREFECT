@@ -18,7 +18,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	    FROM
 	        subject s
 	    JOIN users u ON s.professor = u.email OR s.trainee = u.email
-	    WHERE s.professor = '' OR s.trainee = ''
+	    WHERE s.professor = #{professor} OR s.trainee = #{trainee}
     </select>
 
 	

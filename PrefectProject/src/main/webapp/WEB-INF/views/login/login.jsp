@@ -39,7 +39,7 @@
 				    <a href="${CP}/search/searchEmailView.do">이메일을 잊어버리셨나요?</a>
 				</div>
 				<div class="search_password" id="searchPassword">
-					<a href="/login/search_password">비밀번호를 잊어버리셨나요?</a>
+					<a href="${CP}/search/searchPasswordView.do">비밀번호를 잊어버리셨나요?</a>
 				</div>
 			</div>
 			<div class="submit">

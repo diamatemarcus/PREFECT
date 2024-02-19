@@ -58,6 +58,10 @@ public class SearchEmailDaoJunitTest implements PcwkLogger {
 		cnt = searchEmailDao.nameTelCheck(userVO);
 		assertEquals(1, cnt);
 		
+		//3.2 이름,전화번호 Check
+		cnt = searchEmailDao.emailCheck(userVO);
+		assertEquals(1, cnt);
+		
 	
 	}
 	

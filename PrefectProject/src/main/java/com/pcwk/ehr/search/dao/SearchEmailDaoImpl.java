@@ -45,4 +45,16 @@ public class SearchEmailDaoImpl implements SearchEmailDao,PcwkLogger {
 		return count;
 	}
 
+	@Override
+	public int emailCheck(UserVO inVO) throws SQLException {
+		int count = 0;
+		LOG.debug("1.param :" + inVO.toString());
+		String statement = NAMESPACE+DOT+"emailCheck";
+		LOG.debug("2.statement :" + statement);
+		
+		count = sqlSessionTemplate.selectOne(statement, inVO);
+		LOG.debug("3.count :n" + count);
+		return count;
+	}
+
 }

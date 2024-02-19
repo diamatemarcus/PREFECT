@@ -66,5 +66,34 @@ public class SearchEmailServiceImpl implements PcwkLogger, SearchEmailService {
 		}
 		return outVO; //outVO값 반환
 	}
+
+	@Override
+	public int emailCheckForPassword(UserVO inVO) throws SQLException {
+		//10:ID 없음
+		//20:비번이상
+		//30:로그인
+		int checkStatus = 0;
+		
+		//이름 Check
+		int status = searchEmailDao.nameCheck(inVO);
+		
+		if(status==0) {
+			checkStatus = 10;
+			LOG.debug("10 nameCheck checkStatus:"+checkStatus);
+			return checkStatus;
+		}
+		
+		//아름,전화번호 Check
+		status = searchEmailDao.emailCheck(inVO);
+		if(status==0) {
+			checkStatus = 20;
+			LOG.debug("20 emailCheck checkStatus:"+checkStatus);
+			return checkStatus;
+		}
+		
+		checkStatus = 30;//id/비번 정상 로그인 
+		LOG.debug("30 idPassCheck pass checkStatus:"+checkStatus);
+		return checkStatus;
+	}
 	
 }

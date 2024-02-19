@@ -26,4 +26,12 @@ public interface SearchEmailService {
 	 */
 	UserVO findEmail(UserVO inVO) throws SQLException, EmptyResultDataAccessException;
 	
+	/**
+	 * 이메일 확인
+	 * @param inVO
+	 * @return
+	 * @throws SQLException
+	 */
+	int emailCheckForPassword(UserVO inVO)throws SQLException;
+	
 }
