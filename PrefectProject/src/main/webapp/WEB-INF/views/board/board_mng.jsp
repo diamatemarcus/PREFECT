@@ -14,6 +14,10 @@
 </style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
+	
+	//댓글 조회 
+    replyRetrieve();
+	 
 	console.log('ready');
 	
 	const div = document.querySelector("#div").value;
@@ -24,6 +28,70 @@ document.addEventListener("DOMContentLoaded",function(){
     const moveToModBTN   = document.querySelector("#moveToMod");
     const doDeleteBTN   = document.querySelector("#doDelete");
     const moveToListBTN = document.querySelector("#moveToList");
+    
+    //댓글 등록버튼 : replyDoSave
+    const replyDoSaveBTN = document.querySelector("#replyDoSave");
+    //수정버튼
+    const doUpdateBTN   = document.querySelector("#doUpdate");
+    
+    replyDoSaveBTN.addEventListener("click",function(e){
+        console.log('replyDoSaveBTN click');
+        //board_seq,reply,reg_id
+        
+        const boardSeq = document.querySelector('#seq').value;
+        if(eUtil.isEmpty(boardSeq) == true){
+            alert('게시글 순번을 확인 하세요.');
+            return;
+        }
+        console.log('boardSeq:'+boardSeq);
+        
+        
+        const replyContents = document.querySelector('#replyContents').value;
+        if(eUtil.isEmpty(replyContents) == true){
+            alert('댓글을 확인 하세요.');
+            document.querySelector('#replyContents').focus();
+            return;
+        }
+        console.log('replyContents:'+replyContents);
+        
+/*          const regId    = '${sessionScope.user.userId}';
+        if(eUtil.isEmpty(regId) == true){
+            alert('로그인 하세요.');
+            return;
+        }         
+        console.log('regId:'+regId);  */
+        
+        
+        $.ajax({
+            type: "POST",
+            url:"/ehr/reply/doSave.do",
+            asyn:"true",
+            dataType:"json",
+            data:{
+                "boardSeq": boardSeq,
+                "reply": replyContents
+            },
+            success:function(data){//통신 성공
+                console.log("success msgId:"+data.msgId);
+                console.log("success msgContents:"+data.msgContents);
+                
+                if("1"==data.msgId){
+                    alert(data.msgContents);
+                    replyRetrieve();//댓글 조회
+                    //등록 댓글 초기화
+                    document.querySelector('#replyContents').value = '';
+                }else{
+                    alert(data.msgContents);
+                }
+            },
+            error:function(data){//실패시 처리
+                console.log("error:"+data);
+            },
+            complete:function(data){//성공/실패와 관계없이 수행!
+                console.log("complete:"+data);
+            }
+        });        
+    });
     
     // file download
 	$('#fileList tbody').on("dblclick", 'tr', function() {
@@ -453,7 +521,7 @@ document.addEventListener("DOMContentLoaded",function(){
         <!-- 버튼 -->
         <div class="row justify-content-end">
             <div class="col-auto">
-                <input type="button" value="댓글등록" class="btn btn-primary" id="replyDoSave" >
+                <input type="button" value="댓글 등록" class="btn btn-primary" id="replyDoSave" >
             </div>
         </div>
         <!--// 버튼 ----------------------------------------------------------------->
