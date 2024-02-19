@@ -17,16 +17,6 @@ document.addEventListener("DOMContentLoaded",function(){
     const moveToListBTN = document.querySelector("#moveToList");
     const doSaveBTN     = window.document.querySelector("#doSave");
     
-    function moveToListFun(){
-        window.location.href = "/ehr/board/doRetrieve.do";
-    }
-    
-    //event감지 및 처리
-    moveToListBTN.addEventListener("click",function(e){
-        console.log("moveToListBTN click");
-        moveToListFun();
-    }); //-- moveToListBTN
-    
     function moveToListFun() {
     	let div = document.querySelector("#div").value;
         console.log('div:'+div);
@@ -57,6 +47,76 @@ document.addEventListener("DOMContentLoaded",function(){
 
     // 사용 예:
     var uuid = generateUUID();
+    
+    // doSave event 감지 및 처리
+    doSaveBTN.addEventListener("click", function (e) {
+        console.log("doSaveBTN click");
+
+        let div = document.querySelector("#div").value;
+        let title = document.querySelector("#title").value;
+        let regId = document.querySelector("#regId").value;
+        let contents = document.querySelector("#contents").value;
+        /* let uuid = document.querySelector("#uuid").value; */
+
+        console.log("title:" + title);
+        console.log("regId:" + regId);
+        console.log("contents:" + contents);
+        
+        if(eUtil.isEmpty(regId) == true){
+            alert("로그인 하세요.")
+            regId.focus();
+            return;
+        }
+
+        if (eUtil.isEmpty(title) === true) {
+            alert("제목을 입력하세요.");
+            regForm.title.focus();
+            return;
+        }
+
+        if (eUtil.isEmpty(contents) === true) {
+            alert("내용을 입력하세요.");
+            regForm.contents.focus();
+            return;
+        }
+
+        if (window.confirm("등록하시겠습니까?") === false) {
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/ehr/board/doSave.do",
+            async: true,
+            dataType: "json",
+            data: {
+                "div": div,
+                "title": title,
+                "contents": contents,
+                "readCnt": 0,
+                "regId": regId,
+                "uuid": uuid
+            },
+            success: function (data) {// 통신 성공 시의 처리
+                console.log("data.msgId:" + data.msgId);
+                console.log("data.msgContents:" + data.msgContents);
+                console.log("uuid:" + uuid);
+
+                if ('1' == data.msgId) {
+                    alert(data.msgContents);
+                    moveToListFun();
+                } else {
+                    alert(data.msgContents);
+                }
+            },
+            error: function (data) {// 통신 실패 시의 처리
+                console.log("error:" + data);
+            },
+            complete: function (data) {// 성공/실패와 관계없이 수행되는 처리
+                console.log("complete:" + data);
+            }
+        });
+    });
     
     /* 파일 등록 */
     //fileUpload
@@ -134,76 +194,6 @@ document.addEventListener("DOMContentLoaded",function(){
         
     });
     
-    
-    // doSave event 감지 및 처리
-    doSaveBTN.addEventListener("click", function (e) {
-        console.log("doSaveBTN click");
-
-        let div = document.querySelector("#div").value;
-        let title = document.querySelector("#title").value;
-        let regId = document.querySelector("#regId").value;
-        let contents = document.querySelector("#contents").value;
-        let uuid = document.querySelector("#uuid").value;
-
-        console.log("title:" + title);
-        console.log("regId:" + regId);
-        console.log("contents:" + contents);
-        
-        if(eUtil.isEmpty(regId) == true){
-            alert("로그인 하세요.")
-            regId.focus();
-            return;
-        }
-
-        if (eUtil.isEmpty(title) === true) {
-            alert("제목을 입력하세요.");
-            regForm.title.focus();
-            return;
-        }
-
-        if (eUtil.isEmpty(contents) === true) {
-            alert("내용을 입력하세요.");
-            regForm.contents.focus();
-            return;
-        }
-
-        if (window.confirm("등록하시겠습니까?") === false) {
-            return;
-        }
-
-        $.ajax({
-            type: "POST",
-            url: "/ehr/board/doSave.do",
-            async: true,
-            dataType: "json",
-            data: {
-                "div": div,
-                "title": title,
-                "contents": contents,
-                "readCnt": 0,
-                "regId": regId,
-                "uuid": document.getElementById('uuid').value
-            },
-            success: function (data) {// 통신 성공 시의 처리
-                console.log("data.msgId:" + data.msgId);
-                console.log("data.msgContents:" + data.msgContents);
-
-                if ('1' == data.msgId) {
-                    alert(data.msgContents);
-                    moveToListFun();
-                } else {
-                    alert(data.msgContents);
-                }
-            },
-            error: function (data) {// 통신 실패 시의 처리
-                console.log("error:" + data);
-            },
-            complete: function (data) {// 성공/실패와 관계없이 수행되는 처리
-                console.log("complete:" + data);
-            }
-        });
-    });
-    
 }); //--DOMContentLoaded
 </script>
 </head>
@@ -237,7 +227,6 @@ document.addEventListener("DOMContentLoaded",function(){
      -->
     <!-- form -->
     <form action="#" name="regFrm" id="regFrm">
-        <!-- <input type="hidden" name="div" id="div" value="10"> -->
         <input type="text" name="uuid" id="uuid">
         
         <div class="mb-3">

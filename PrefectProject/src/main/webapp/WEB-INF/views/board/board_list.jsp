@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded",function(){
             const div = document.querySelector("#div").value;
             console.log('div:'+div);
             
-            window.location.href = "${CP}/board/doSelectOne.do?seq="+seq+"&div="+div;   
+            window.location.href = "${CP}/board/doSelectOne.do?seq="+seq;   
         });
     });
 	
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded",function(){
         /* boardForm.action = "/ehr/board/moveToReg.do";
         boardForm.submit(); */
         const div = document.querySelector("#div").value;
-        window.location.href = "${CP}/board/moveToReg.do?div=" + div;
+        window.location.href = "${CP}/board/moveToReg.do";
         
     });
 	
