@@ -282,14 +282,17 @@ public class BoardController implements PcwkLogger{
 		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
 		model.addAttribute("divCode", codeList);
 		
-		//공지사항:10, 자유게시판:20
-		String title = "";
-		if(inVO.getDiv().equals("10")) {
-			title = "공지사항-상세 조회";
-		}else {
-			title = "자유게시판-상세 조회";
-		}
-		model.addAttribute("title", title);	
+		/**
+		 * 실행하면 오류
+		 */
+//		//공지사항:10, 자유게시판:20
+//		String title = "";
+//		if(inVO.getDiv().equals("10")) {
+//			title = "공지사항-상세 조회";
+//		}else {
+//			title = "자유게시판-상세 조회";
+//		}
+//		model.addAttribute("title", title);	
 		
 		return view;
 	}

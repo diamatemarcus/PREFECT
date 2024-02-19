@@ -2,6 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcwk.ehr.file">
 
+	<delete id="deleteFilesByBoardUuid" parameterType="string">
+	    DELETE FROM attach_file
+	    WHERE uuid = #{uuid}
+	</delete>
+
     <select id="getLastSeqByUuid" parameterType="FileVO" resultType="FileVO">
 	    SELECT MAX(seq) FROM attach_file WHERE uuid = #{uuid}
 	</select>
