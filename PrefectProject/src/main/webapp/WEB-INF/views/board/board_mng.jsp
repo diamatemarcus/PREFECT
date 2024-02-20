@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded",function(){
     //수정버튼
     const doUpdateBTN   = document.querySelector("#doUpdate");
     
-    replyDoSaveBTN.addEventListener("click",function(e){
+    /* replyDoSaveBTN.addEventListener("click",function(e){
         console.log('replyDoSaveBTN click');
         //board_seq,reply,reg_id
         
@@ -53,13 +53,6 @@ document.addEventListener("DOMContentLoaded",function(){
             return;
         }
         console.log('replyContents:'+replyContents);
-        
-/*          const regId    = '${sessionScope.user.userId}';
-        if(eUtil.isEmpty(regId) == true){
-            alert('로그인 하세요.');
-            return;
-        }         
-        console.log('regId:'+regId);  */
         
         
         $.ajax({
@@ -91,7 +84,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 console.log("complete:"+data);
             }
         });        
-    });
+    }); */
     
     // file download
 	$('#fileList tbody').on("dblclick", 'tr', function() {

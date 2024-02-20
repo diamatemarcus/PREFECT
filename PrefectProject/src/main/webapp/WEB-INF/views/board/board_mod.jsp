@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded",function(){
     
     // 수정 이벤트 감지 및 처리
     doUpdateBTN.addEventListener("click", function(e){
+    	console.log('div:'+div)
     	
     	if(eUtil.isEmpty(seq) == true){
             alert('순번을 확인 하세요.');
@@ -248,20 +249,19 @@ document.addEventListener("DOMContentLoaded",function(){
     <!-- form -->
     
     <form action="#" name="regFrm" id="regFrm">
-        <input type="hidden" name="div" id="div">
+        <!-- <input type="text" name="div" id="div"> -->
         <input type="text" name="uuid" id="uuid" value="${uuid}">
         
         
         <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
             <label for="seq" class="col-sm-2 col-form-label">구분</label>
             <div class="col-sm-10">
-                <select class="form-select" aria-label="Default select example" id="div" name="div" disabled="disabled">
+                <select class="form-select" aria-label="Default select example" id="div" name="div">
                   <c:forEach var="codeVO" items="${divCode}">
                      <option   value="<c:out value='${codeVO.detCode}'/>"  
                         <c:if test="${codeVO.detCode == vo.getDiv() }">selected</c:if>  
                      ><c:out value="${codeVO.detName}"/></option>
                   </c:forEach>
-                  
                 </select>
             </div>  
         </div>

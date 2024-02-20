@@ -107,16 +107,17 @@ public class BoardController implements PcwkLogger{
 		model.addAttribute("divCode", codeList);
 		model.addAttribute("paramVO", inVO);
 		
-//		//공지사항:10, 자유게시판:20
-//		String title = "";
-//		if(inVO.getDiv().equals("10")) {
-//			title = "공지사항-등록";
-//		}else {
-//			title = "자유게시판-등록";
-//		}
-//		model.addAttribute("title", title);	
-		
-		
+		/**
+		 * error noUse
+		 */
+		//공지사항:10, 자유게시판:20
+		String title = "";
+		if(inVO.getDiv().equals("10")) {
+			title = "공지사항-등록";
+		}else {
+			title = "자유게시판-등록";
+		}
+		model.addAttribute("title", title);	
 		
 		viewName = "board/board_reg";///WEB-INF/views/ viewName .jsp
 		return viewName;
@@ -221,7 +222,7 @@ public class BoardController implements PcwkLogger{
 	
 	@PostMapping(value = "/doUpdate.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
-	public MessageVO doUpdate(BoardVO inVO) throws SQLException{
+	public MessageVO doUpdate(BoardVO inVO, Model model) throws SQLException{
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doUpdate                          │");
 		LOG.debug("│ BoardVO                           │"+inVO);
@@ -282,17 +283,14 @@ public class BoardController implements PcwkLogger{
 		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
 		model.addAttribute("divCode", codeList);
 		
-		/**
-		 * 실행하면 오류
-		 */
-//		//공지사항:10, 자유게시판:20
-//		String title = "";
-//		if(inVO.getDiv().equals("10")) {
-//			title = "공지사항-상세 조회";
-//		}else {
-//			title = "자유게시판-상세 조회";
-//		}
-//		model.addAttribute("title", title);	
+		//공지사항:10, 자유게시판:20
+		String title = "";
+		if(inVO.getDiv().equals("10")) {
+			title = "공지사항-상세 조회";
+		}else {
+			title = "자유게시판-상세 조회";
+		}
+		model.addAttribute("title", title);	
 		
 		return view;
 	}

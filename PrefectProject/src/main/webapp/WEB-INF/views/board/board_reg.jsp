@@ -56,7 +56,6 @@ document.addEventListener("DOMContentLoaded",function(){
         let title = document.querySelector("#title").value;
         let regId = document.querySelector("#regId").value;
         let contents = document.querySelector("#contents").value;
-        /* let uuid = document.querySelector("#uuid").value; */
 
         console.log("title:" + title);
         console.log("regId:" + regId);
@@ -204,7 +203,7 @@ document.addEventListener("DOMContentLoaded",function(){
     <!-- 제목 -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Board Register</h1>
+            <h1 class="page-header">${title }</h1>
         </div>
     </div>    
     <!--// 제목 ----------------------------------------------------------------->
