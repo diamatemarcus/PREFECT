@@ -13,5 +13,7 @@ public interface UserDao extends WorkDiv<UserVO> {
 	int getCount(UserVO inVO) throws SQLException;
 	
 	int emailDuplicateCheck(UserVO inVO) throws SQLException;
+	
+	int doUpdatePassword(UserVO inVO) throws SQLException;
 
 }

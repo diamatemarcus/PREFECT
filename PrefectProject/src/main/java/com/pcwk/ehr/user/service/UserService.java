@@ -70,6 +70,12 @@ public interface UserService {
 	 */
 	public List<UserVO> getAll(UserVO inVO) throws SQLException;
 
-	
+	/**
+	 * 회원정보 수정
+	 * @param inVO
+	 * @return 1(성공)/0(실패)
+	 * @throws SQLException
+	 */
+	public int doUpdatePassword(UserVO inVO) throws SQLException;
 	
 }

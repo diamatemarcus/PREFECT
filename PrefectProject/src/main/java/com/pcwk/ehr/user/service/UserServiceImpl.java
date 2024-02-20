@@ -48,6 +48,11 @@ public class UserServiceImpl implements UserService {
 	public int doUpdate(UserVO inVO) throws SQLException {
 		return userDao.doUpdate(inVO);
 	}
+	
+	@Override
+	public int doUpdatePassword(UserVO inVO) throws SQLException {
+		return userDao.doUpdatePassword(inVO);
+	}
 
 	@Override
 	public int getCount(UserVO inVO) throws SQLException {

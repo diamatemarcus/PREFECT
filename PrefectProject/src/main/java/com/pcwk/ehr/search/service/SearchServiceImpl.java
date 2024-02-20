@@ -8,11 +8,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
-import com.pcwk.ehr.search.dao.SearchEmailDao;
+import com.pcwk.ehr.search.dao.SearchDao;
 import com.pcwk.ehr.user.domain.UserVO;
 
 @Service
-public class SearchEmailServiceImpl implements PcwkLogger, SearchEmailService {
+public class SearchServiceImpl implements PcwkLogger, SearchService {
 	
 	final String NAMESPACE = "com.pcwk.ehr.search";
 	final String DOT       = ".";
@@ -21,7 +21,7 @@ public class SearchEmailServiceImpl implements PcwkLogger, SearchEmailService {
 	SqlSessionTemplate sql;
 	
 	@Autowired
-	SearchEmailDao searchEmailDao;
+	SearchDao searchEmailDao;
 
 	@Override
 	public int searchEmailCheck(UserVO inVO) throws SQLException {

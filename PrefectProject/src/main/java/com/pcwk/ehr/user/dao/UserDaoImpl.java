@@ -153,6 +153,19 @@ public class UserDaoImpl implements UserDao {
 		return flag;
 	}
 
+	@Override
+	public int doUpdatePassword(UserVO inVO) throws SQLException {
+		int flag = 0;
+
+		LOG.debug("1.param \n" + inVO.toString());
+		String statement = NAMESPACE+DOT+"doUpdatePassword";
+		LOG.debug("2.statement \n" + statement);
+		flag=this.sqlSessionTemplate.update(statement, inVO);
+		
+		LOG.debug("3.flag \n" + flag);
+		return flag;
+	}
+
 }
 
 

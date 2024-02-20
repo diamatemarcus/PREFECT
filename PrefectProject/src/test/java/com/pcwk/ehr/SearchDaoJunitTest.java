@@ -15,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
-import com.pcwk.ehr.search.dao.SearchEmailDao;
+import com.pcwk.ehr.search.dao.SearchDao;
 import com.pcwk.ehr.user.dao.UserDao;
 import com.pcwk.ehr.user.domain.UserVO;
 
@@ -23,13 +23,13 @@ import com.pcwk.ehr.user.domain.UserVO;
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"
 		,"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SearchEmailDaoJunitTest implements PcwkLogger {
+public class SearchDaoJunitTest implements PcwkLogger {
 
 	@Autowired  //테스트 오브젝트가 만들어지고 나면 스프링 테스트 컨텍스트에 자동으로 객체값으로 주입
 	ApplicationContext context;
 	
 	@Autowired
-	SearchEmailDao  searchEmailDao;
+	SearchDao  searchEmailDao;
 	
 	@Autowired
 	UserDao   dao;

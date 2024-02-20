@@ -12,7 +12,7 @@ import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.user.domain.UserVO;
 
 @Repository
-public class SearchEmailDaoImpl implements SearchEmailDao,PcwkLogger {
+public class SearchDaoImpl implements SearchDao,PcwkLogger {
 	
 	final String NAMESPACE = "com.pcwk.ehr.search";
 	final String DOT       = ".";

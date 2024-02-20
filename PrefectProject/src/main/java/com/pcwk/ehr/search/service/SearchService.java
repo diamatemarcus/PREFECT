@@ -6,7 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.pcwk.ehr.user.domain.UserVO;
 
-public interface SearchEmailService {
+public interface SearchService {
 
 	/**
 	 * 데이터 베이스 이름,전화번호 체크 

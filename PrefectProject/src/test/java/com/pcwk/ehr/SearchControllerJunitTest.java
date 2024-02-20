@@ -34,7 +34,7 @@ import com.pcwk.ehr.user.domain.UserVO;
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"
 		,"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SearchEmailControllerJunitTest implements PcwkLogger{
+public class SearchControllerJunitTest implements PcwkLogger{
 
 	@Autowired
 	WebApplicationContext webApplicationContext;

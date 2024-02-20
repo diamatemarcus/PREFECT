@@ -111,6 +111,14 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
     </update> <!-- 회원정보 변경 쿼리 -->
 
 
+ 	<!-- update password (비밀번호 찾기 부분)-->
+      <update id="doUpdatePassword" parameterType="UserVO">
+	     UPDATE users             
+		 SET      
+		     password  = #{password}           
+		 WHERE                    
+		     email      = #{email}          
+    	</update> <!-- 회원정보 변경 쿼리 -->
 
 
     <select id="doSelectOne" parameterType="UserVO" 

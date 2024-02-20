@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,24 +16,29 @@ import com.google.gson.Gson;
 import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.mail.service.MailSendService;
-import com.pcwk.ehr.search.service.SearchEmailService;
+import com.pcwk.ehr.search.service.SearchService;
 import com.pcwk.ehr.user.domain.UserVO;
+import com.pcwk.ehr.user.service.UserService;
 
 @Controller
 @RequestMapping("search")
-public class SearchEmailController implements PcwkLogger {
+public class SearchController implements PcwkLogger {
 
 	@Autowired
-	SearchEmailService searchEmailService;
+	SearchService searchEmailService;
 	
 	@Autowired
 	private MailSendService mailService;
+	
+	@Autowired
+	private UserService userService;
 
-	public SearchEmailController() {
+	public SearchController() {
 	}
 
 	@RequestMapping(value = "/searchEmailView.do")
 
+	//이메일 찾기 창 띄우기
 	public String searchEmail() {
 		String view = "search/search_email";
 		LOG.debug("이메일 찾기 창");
@@ -40,6 +46,7 @@ public class SearchEmailController implements PcwkLogger {
 		return view;
 	}
 
+	//이름이랑 전화번호 확인
 	@RequestMapping(value = "/searchEmail.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody // HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
 	public String findEmail(UserVO user, HttpSession httpSession) throws SQLException {
@@ -98,6 +105,7 @@ public class SearchEmailController implements PcwkLogger {
 		return jsonString;
 	}
 
+	//이메일 찾기 결과 창 띄우기
 	@RequestMapping(value = "/searchEmailResultView.do")
 	public String searchEmailResult() {
 		String view = "search/search_result_email";
@@ -107,22 +115,44 @@ public class SearchEmailController implements PcwkLogger {
 
 		return view;
 	}
+	
+	//비밀번호 변경 창 띄우기
+	@RequestMapping(value = "/changePassword.do")
+	public String searchPasswordResult(HttpSession httpSession, Model model) {
+		String view = "search/change_password";
+		UserVO user = new UserVO();
+		
+		if(null != httpSession.getAttribute("user")) {
+			user = (UserVO) httpSession.getAttribute("user");	
+		}
+		
+		model.addAttribute("user", user);	
+		
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ changePasswordView                        │");
+		LOG.debug("└───────────────────────────────────────────┘");
 
+		return view;
+	}
+
+	//비밀번호 찾기 창 띄우기
 	@RequestMapping(value = "/searchPasswordView.do")
-
 	public String searchPassword() {
 		String view = "search/search_password";
-		LOG.debug("비밀번호 찾기 창");
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ searchPassword                            │");
+		LOG.debug("└───────────────────────────────────────────┘");
 
 		return view;
 	}
 	
+	//비밀번호 찾기 (이름, 이메일 인증하기)
 	@RequestMapping(value = "/searchPassword.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody // HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
 	public String findPassword(UserVO user, HttpSession httpSession) throws SQLException {
 		String jsonString = "";
 		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ findPassword                                 │user:" + user);
+		LOG.debug("│ findPassword                              │user:" + user);
 		LOG.debug("└───────────────────────────────────────────┘");
 
 		MessageVO message = new MessageVO();
@@ -158,10 +188,15 @@ public class SearchEmailController implements PcwkLogger {
 			message.setMsgContents("이메일을 확인 하세요.");
 
 		} else if (30 == check) {
-
+			UserVO outVO = userService.doSelectOne(user);
 			message.setMsgId("30");
-			message.setMsgContents("찾으시는 이메일은:");
+			message.setMsgContents("찾으시는 이메일은:" + outVO.getEmail() + "입니다.");
 
+			if (null != outVO) {
+				httpSession.setAttribute("user", outVO);
+			}
+			
+			LOG.debug("outVO:" + outVO);
 		} else {
 			message.setMsgId("99");
 			message.setMsgContents("오류가 발생 했습니다.");
@@ -172,8 +207,8 @@ public class SearchEmailController implements PcwkLogger {
 		return jsonString;
 	}
 	
-	//이메일 인증
-	@RequestMapping(value="/mailCheck.do",method = RequestMethod.GET
+	//이메일 인증번호 보내기
+	@RequestMapping(value="/findPassword.do",method = RequestMethod.GET
 			,produces = "application/json;charset=UTF-8"
 			)
 	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
