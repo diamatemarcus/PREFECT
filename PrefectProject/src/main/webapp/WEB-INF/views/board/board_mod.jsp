@@ -1,3 +1,4 @@
+<%@page import="com.pcwk.ehr.file.domain.FileVO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -14,14 +15,14 @@
 </style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
-	
-	const div = document.querySelector("#div").value;
+    
+    const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
     const uuid = document.querySelector("#uuid").value;
     const modId = '${sessionScope.user.email}';
     
-	console.log('uuid:' + uuid);
-	
+    console.log('uuid:' + uuid);
+    
     const doUpdateBTN   = document.querySelector("#doUpdate");
     const doDeleteBTN   = document.querySelector("#doDelete");
     const moveToListBTN = document.querySelector("#moveToList");
@@ -30,11 +31,10 @@ document.addEventListener("DOMContentLoaded",function(){
     
     // 파일 업로드
     fileUploadBTN.addEventListener("click",function(e){
-    	console.log("fileUploadBTN click");
-    	
-    	console.log('uuid:' + uuid);
-
-    	let formData = new FormData();
+        console.log("fileUploadBTN click");
+        console.log('uuid:' + uuid);
+        
+        let formData = new FormData();
         formData.append('uuid', uuid);
         
         // 선택된 파일을 formData에 추가
@@ -68,47 +68,47 @@ document.addEventListener("DOMContentLoaded",function(){
     });
         
     // 파일 삭제 버튼 클릭 이벤트를 모든 삭제 버튼에 대해 추가
-	document.querySelectorAll('.delete-file').forEach(function(button) {
-	    button.addEventListener('click', function(e) {
-	        const uuid = this.getAttribute('data-uuid');
-	        const seq = this.getAttribute('data-seq');
-	        
-	        console.log('upFileDeleteBTN click');
-	        console.log('uuid :'+uuid);
-	        console.log('seq :'+seq);
-	        
-	        if(confirm('해당 파일을 삭제하시겠습니까?')) {
-	            $.ajax({
-	                url: '${CP}/file/doDelete.do',
-	                type: 'GET',
-	                data: {
-	                    "uuid": uuid,
-	                    "seq": seq
-	                },
-	                success: function(response) {
-	                    console.log('파일 삭제 성공');
-	                    alert('파일이 삭제되었습니다.');
-	                    // 성공 시 페이지 새로고침 등의 추가 동작
-	                },
-	                error: function(xhr, status, error) {
-	                    console.log('파일 삭제 실패');
-	                    alert('파일 삭제 중 오류가 발생했습니다.');
-	                }
-	            });
-	        }
-	    });
-	});
+    document.querySelectorAll('.delete-file').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            const uuid = this.getAttribute('data-uuid');
+            const seq = this.getAttribute('data-seq');
+            
+            console.log('upFileDeleteBTN click');
+            console.log('uuid :'+uuid);
+            console.log('seq :'+seq);
+            
+            if(confirm('해당 파일을 삭제하시겠습니까?')) {
+                $.ajax({
+                    url: '${CP}/file/doDelete.do',
+                    type: 'GET',
+                    data: {
+                        "uuid": uuid,
+                        "seq": seq
+                    },
+                    success: function(response) {
+                        console.log('파일 삭제 성공');
+                        alert('파일이 삭제되었습니다.');
+                        // 성공 시 페이지 새로고침 등의 추가 동작
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('파일 삭제 실패');
+                        alert('파일 삭제 중 오류가 발생했습니다.');
+                    }
+                });
+            }
+        });
+    });
     
     // 수정 이벤트 감지 및 처리
     doUpdateBTN.addEventListener("click", function(e){
-    	console.log('div:'+div)
-    	
-    	if(eUtil.isEmpty(seq) == true){
+        console.log('div:'+div)
+        
+        if(eUtil.isEmpty(seq) == true){
             alert('순번을 확인 하세요.');
             return;
         }
-    	
-    	const title = document.querySelector("#title").value;
+        
+        const title = document.querySelector("#title").value;
         if(eUtil.isEmpty(title) == true){
             alert('제목을 입력 하세요.');
             title.focus();
@@ -213,8 +213,9 @@ document.addEventListener("DOMContentLoaded",function(){
     function moveToList(){
         window.location.href = "${CP}/board/doRetrieve.do?div="+div;
     }
-	
+    
 });
+
 </script>
 </head>
 <body>
@@ -240,18 +241,17 @@ document.addEventListener("DOMContentLoaded",function(){
     <!--// 버튼 ----------------------------------------------------------------->
     
     <!-- 
-	    seq : sequence별도 조회
-	    div : 10(공지사항)고정
-	    read_cnt : 0 
-	    title,contents : 화면에서 전달
-	    reg_id,mod_id  : session에서 처리
+        seq : sequence별도 조회
+        div : 10(공지사항)고정
+        read_cnt : 0 
+        title,contents : 화면에서 전달
+        reg_id,mod_id  : session에서 처리
     -->
     <!-- form -->
     
     <form action="#" name="regFrm" id="regFrm">
         <!-- <input type="text" name="div" id="div"> -->
         <input type="text" name="uuid" id="uuid" value="${uuid}">
-        
         
         <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
             <label for="seq" class="col-sm-2 col-form-label">구분</label>
@@ -316,54 +316,54 @@ document.addEventListener("DOMContentLoaded",function(){
         </div>
         
         <div class="container">
-	        <form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm">
-	            <div class="form-group">
-	                <label for="file1">파일1</label>
-	                <input type="file" name="file1" id="file1" placeholder="파일을 선택 하세요."  multiple/>
-	                <input type="button" value="파일 등록" class="button" id="fileUpload">
-	            </div>  
-	        </form>
-	    </div>
+            <form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm">
+                <div class="form-group">
+                    <label for="file1">파일1</label>
+                    <input type="file" name="file1" id="file1" placeholder="파일을 선택 하세요."  multiple/>
+                    <input type="button" value="파일 등록" class="button" id="fileUpload">
+                </div>  
+            </form>
+        </div>
         
         <div class="container">
-		    <table id="fileList" class="table">
-		        <thead>
-		            <tr>
-		                <th>번호</th>
-		                <th>원본파일명</th>
-		                <th>저장파일명</th>
-		                <th>파일크기</th>
-		                <th>확장자</th>
-		                <th>저장경로</th>
-		                <th>UUID</th>
-		                <th>SEQ</th>
-		            </tr>
-		        </thead>
-		        <tbody>
-		            <c:if test="${not empty fileList}">
-		                <c:forEach var="file" items="${fileList}" varStatus="status">
-		                    <tr>
-		                        <td>${status.index + 1}</td>
-		                        <td>${file.orgFileName}</td>
-		                        <td>${file.saveFileName}</td>
-		                        <td>${file.fileSize}</td>
-		                        <td>${file.extension}</td>
-		                        <td>${file.savePath}</td>
-		                        <td>${file.uuid }</td>
-		                        <td>${file.seq }</td>
-		                        <td><button id="upFileDelete" class="btn btn-danger delete-file" data-uuid="${file.uuid}" data-seq="${file.seq}">삭제</button></td>
-		                    </tr>
-		                </c:forEach>
-		            </c:if>
-		            <c:if test="${empty fileList}">
-		                <tr>
-		                    <td colspan="6">첨부된 파일이 없습니다.</td>
-		                </tr>
-		            </c:if>
-		        </tbody>
-		    </table>
-		</div>
-	    
+            <table id="fileList" class="table">
+                <thead>
+                    <tr>
+                        <th>번호</th>
+                        <th>원본파일명</th>
+                        <th>저장파일명</th>
+                        <th>파일크기</th>
+                        <th>확장자</th>
+                        <th>저장경로</th>
+                        <th>UUID</th>
+                        <th>SEQ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:if test="${not empty fileList}">
+                        <c:forEach var="file" items="${fileList}" varStatus="status">
+                            <tr>
+                                <td>${status.index + 1}</td>
+                                <td>${file.orgFileName}</td>
+                                <td>${file.saveFileName}</td>
+                                <td>${file.fileSize}</td>
+                                <td>${file.extension}</td>
+                                <td>${file.savePath}</td>
+                                <td>${file.uuid }</td>
+                                <td>${file.seq }</td>
+                                <td><button id="upFileDelete" class="btn btn-danger delete-file" data-uuid="${file.uuid}" data-seq="${file.seq}">삭제</button></td>
+                            </tr>
+                        </c:forEach>
+                    </c:if>
+                    <c:if test="${empty fileList}">
+                        <tr>
+                            <td colspan="6">첨부된 파일이 없습니다.</td>
+                        </tr>
+                    </c:if>
+                </tbody>
+            </table>
+        </div>
+        
         
     </form> 
     <!--// form --------------------------------------------------------------->

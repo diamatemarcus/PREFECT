@@ -159,8 +159,6 @@ public class AttachFileController implements PcwkLogger {
 		
 		List<FileVO>  list=new ArrayList<FileVO>();
 		
-		//UUID String UUID = StringUtil.getPK();
-		
 		//SEQ
 		int seq = 1;
 		
@@ -233,7 +231,7 @@ public class AttachFileController implements PcwkLogger {
 	@PostMapping(value="/reUpload.do", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<FileVO>> reUpload(
-	        @RequestParam("uuid") String uuid, // 기존 파일과 동일한 UUID
+	        @RequestParam("uuid") String uuid,
 	        @RequestParam("uploadFile") MultipartFile[] uploadFiles, // 새로 업로드할 파일
 	        HttpSession session) throws SQLException, IOException {
 
@@ -242,39 +240,30 @@ public class AttachFileController implements PcwkLogger {
 	    LOG.debug("└───────────────────────────────────┘");
 
 	    List<FileVO> list = new ArrayList<>();
-	    
-	    // 기존에 사용된 마지막 SEQ 조회
-	    int lastSeq = attachFileService.getLastSeqByUuid(uuid);
-	    
-	    // null 처리
-	    if (lastSeq == 0) {
-	        lastSeq = 0;
-	    }
-	    
-	    int nextSeq = lastSeq + 1;
 
 	    for (MultipartFile multipartFile : uploadFiles) {
 	        if (!multipartFile.isEmpty()) {
-	            FileVO fileVO = new FileVO();
-	            // UUID, SEQ 설정
-	            fileVO.setUuid(uuid);
-	            fileVO.setSeq(nextSeq++); // 다음 SEQ 사용
-
+	            // 클라이언트로부터 받은 seq 값을 사용하지 않고, 대신 fileList에서 계산된 최대 seq + 1 값을 사용
+	            // 파일 기본 정보 설정 (원본 파일명, 저장 파일명, 파일 크기, 확장자 등)
 	            String originalFilename = multipartFile.getOriginalFilename();
 	            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-	            String saveFileName = uuid + "_" + fileVO.getSeq() + ext; // 저장 파일명 생성
+	            String saveFileName = uuid + "_" + (list.size() + 1) + ext; // 저장 파일명 생성, 여기서 list.size() + 1이 새로운 seq 역할을 함
 
-	            // 파일 정보 설정
+	            FileVO fileVO = new FileVO();
+	            fileVO.setUuid(uuid);
+	            fileVO.setSeq(list.size() + 1); // 새로운 seq 할당
 	            fileVO.setOrgFileName(originalFilename);
 	            fileVO.setSaveFileName(saveFileName);
 	            fileVO.setFileSize(multipartFile.getSize());
 	            fileVO.setExtension(ext);
-	            fileVO.setSavePath(saveFilePath); // 파일 저장 경로
+	            fileVO.setSavePath(saveFilePath); // 파일 저장 경로 설정
 
+	            // 파일 저장 로직 구현
 	            String fullPath = saveFilePath + File.separator + saveFileName;
 	            File saveFile = new File(fullPath);
 	            multipartFile.transferTo(saveFile); // 파일 저장
 
+	            // 파일 정보 리스트에 추가
 	            list.add(fileVO);
 	        }
 	    }
@@ -286,9 +275,7 @@ public class AttachFileController implements PcwkLogger {
 
 	    return ResponseEntity.ok(list);
 	}
-
-
-
+	
 	@RequestMapping(value="/fileUpload.do",method = RequestMethod.POST)
 	public ModelAndView fileUpload(ModelAndView modelAndView, MultipartHttpServletRequest mHttp)throws IllegalStateException,IOException {
 		LOG.debug("┌───────────────────────────────────────────┐");
