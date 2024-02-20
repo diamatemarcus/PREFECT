@@ -31,18 +31,16 @@ document.addEventListener("DOMContentLoaded",function(){
             const div = document.querySelector("#div").value;
             console.log('div:'+div);
             
-            window.location.href = "${CP}/board/doSelectOne.do?seq="+seq;   
+            window.location.href = "${CP}/board/doSelectOne.do?seq="+seq +"&div=" + div;   
         });
     });
 	
-	//등록이벤트
+	// 등록 이동 이벤트
     moveToRegBTN.addEventListener("click",function(e){
         console.log("moveToRegBTN click");
         
-        /* boardForm.action = "/ehr/board/moveToReg.do";
-        boardForm.submit(); */
         const div = document.querySelector("#div").value;
-        window.location.href = "${CP}/board/moveToReg.do";
+        window.location.href = "${CP}/board/moveToReg.do?div=" + div;
         
     });
 	

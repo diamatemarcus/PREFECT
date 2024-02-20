@@ -59,4 +59,13 @@ public class DmServiceImpl implements DmService, PcwkLogger {
 		return dao.getDmSeq();
 	}
 
+	@Override
+	public List<DmVO> receiverList(DmVO inVO) throws SQLException {
+		List list =  dao.receiverList(inVO);
+		
+		
+		
+		return list;
+	}
+
 }

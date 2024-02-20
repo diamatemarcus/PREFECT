@@ -20,4 +20,6 @@ public interface DmDao {
 	DmVO recentMessage(DmVO inVO) throws SQLException, EmptyResultDataAccessException;
 	
 	List<DmVO> contentsList(DmVO inVO) throws SQLException;
+	
+	List<DmVO> receiverList(DmVO inVO) throws SQLException;
 }

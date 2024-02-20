@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
                dataType:"json",
                data:{
                    "pageNo": "1",
-                   "pageSize": "10"  
+                   "pageSize": "10" 
                },
                success:function(data){//통신 성공
                    console.log("success data:"+data);
@@ -263,22 +263,90 @@ document.addEventListener("DOMContentLoaded", function () {
            
 
     });
+    $("#doReceiverList").on("click",function(e){
+        console.log( "doReceiverList click!" );
+        
+           $.ajax({
+               type: "GET",
+               url:"/ehr/dm/doReceiverList.do",
+               asyn:"true",
+               dataType:"json",
+               data:{
+                   "pageNo": "1",
+                   "pageSize": "10" 
+               },
+               success:function(data){//통신 성공
+                   console.log("success data:"+data);
+                   //동적인 테이블 헤더 생성
+                   let tableHeader = '<thead>\
+                                           <tr>\
+                                           <th scope="col" class="text-center col-lg-1  col-sm-1">이메일</th>\
+                                           <th scope="col" class="text-center col-lg-2  col-sm-2" >이름</th>\
+                                           <th scope="col" class="text-center col-lg-2  col-sm-2" >읽지않은메세지</th>\
+                                           </tr>\
+                                       </thead>';
+                   //동적 테이블 body                       
+                   let tableBody = ' <tbody>';
+                   
+                   for(let i =0;i< data.length;i++){
+                       tableBody +='<tr>\
+                    	                 <td class="text-center">'+data[i].receiver+'</td>\
+                                         <td class="text-center">'+data[i].receiverName+'</td>\
+                                         <td class="text-center">'+data[i].readChk+'</td>\
+                                    </tr>\
+                                    '; 
+                   }
+                   tableBody += ' </tbody>';                   
+                   console.log(data)
+                   console.log(tableHeader);
+                   console.log(tableBody);
+                   
+                   let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover table-striped">'+tableHeader+tableBody+'</table>';
+                   //
+                   $(".modal-body").html(dynamicTable);
+                   $('#staticBackdrop').modal('show');
+                   
+                   //회원정보 double click
+                   $("#userTable>tbody").on("dblclick","tr" , function(e){
+                       console.log( "userTable click!" );
+                       
+                       let tdArray = $(this).children();
+                       let email = tdArray.eq(1).text();
+                       
+                       
+                       console.log('email:'+email);
+                       
+                       
+                       $("#receiver").val(email);
+                      
+                       
+                       //modal popup닫기
+                       $('#staticBackdrop').modal('hide');
+                       
+                   });
+                   
+               },
+               error:function(data){//실패시 처리
+                   console.log("error:"+data);
+               },
+               complete:function(data){//성공/실패와 관계없이 수행!
+                   console.log("complete:"+data);
+               }
+           });
+        
+           
+
+    });
 });
 
 </script>
 </head>
 <body>
+
 <div class="container">
     <div class="contact-list">
     <div class="contact">
-        <c:set var="previousReceiver" value="" />
-        <c:forEach var="vo" items="${list}">
-            <!-- 이전에 표시한 수신자와 다른 경우에만 수신자 이름 표시 -->
-            <c:if test="${vo.receiverName != previousReceiver}">
-                ${vo.receiverName}
-                <c:set var="previousReceiver" value="${vo.receiverName}" />
-            </c:if>
-        </c:forEach>
+        <button type="button" class="btn btn-primary btn-block" id="doReceiverList">목록</button>
         <button type="button" class="btn btn-primary btn-block" id="doMemberPopup">회원</button>  
     </div>
 </div>
@@ -306,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     
 </div>
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -327,6 +395,23 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         </div>
       </div>
-    </div>    
+    </div>
+ <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">회원</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+           
+          <div class="modal-body">
+            <!-- 회원정보 table -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 </html>

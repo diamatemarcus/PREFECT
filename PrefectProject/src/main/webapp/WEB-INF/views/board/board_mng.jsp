@@ -16,14 +16,14 @@
 document.addEventListener("DOMContentLoaded",function(){
 	
 	//댓글 조회 
-    replyRetrieve();
+    //replyRetrieve();
 	 
 	console.log('ready');
-	
 	const div = document.querySelector("#div").value;
+	/* const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
     const modId = '${sessionScope.user.email}';
-    const regId = document.querySelector("#regId").value;
+    const regId = document.querySelector("#regId").value; */
     
     const moveToModBTN   = document.querySelector("#moveToMod");
     const doDeleteBTN   = document.querySelector("#doDelete");
@@ -54,13 +54,6 @@ document.addEventListener("DOMContentLoaded",function(){
         }
         console.log('replyContents:'+replyContents);
         
-/*          const regId    = '${sessionScope.user.userId}';
-        if(eUtil.isEmpty(regId) == true){
-            alert('로그인 하세요.');
-            return;
-        }         
-        console.log('regId:'+regId);  */
-        
         
         $.ajax({
             type: "POST",
@@ -78,6 +71,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 if("1"==data.msgId){
                     alert(data.msgContents);
                     replyRetrieve();//댓글 조회
+                   
                     //등록 댓글 초기화
                     document.querySelector('#replyContents').value = '';
                 }else{
@@ -91,7 +85,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 console.log("complete:"+data);
             }
         });        
-    });
+    }); 
     
     // file download
 	$('#fileList tbody').on("dblclick", 'tr', function() {
@@ -122,7 +116,11 @@ document.addEventListener("DOMContentLoaded",function(){
     
     //삭제 이벤트 감지 및 처리
     doDeleteBTN.addEventListener("click",function(e){
-        console.log('doDeleteBTN click');
+    	const div = document.querySelector("#div").value;
+        const seq = document.querySelector("#seq").value;
+        const modId = '${sessionScope.user.email}';
+        const regId = document.querySelector("#regId").value;
+    	console.log('doDeleteBTN click');
         
         console.log('seq :'+seq);
         
@@ -178,8 +176,9 @@ document.addEventListener("DOMContentLoaded",function(){
     
     function replyRetrieve(){
         const boardSeq = document.querySelector("#seq").value
+        //const div = document.querySelector("#div").value
         console.log('boardSeq:'+boardSeq)
-        
+        //window.location.href = "${CP}/board/doSelectOne.do?seq="+boardSeq+"&div="+div
         if(eUtil.isEmpty(boardSeq) == true){
             alert('게시글 번호를 확인 하세요.');
             return;
