@@ -109,21 +109,42 @@ function pageDoRerive(url,pageNo){
 
 
 </script>
+<style>
+.page-link {
+  color: #000; 
+  background-color: #fff;
+  border: 1px solid #ccc; 
+}
+
+.page-link.active{
+ z-index: 1;
+ color: #fff;
+ font-weight:bold;
+ background-color: orange;
+ border-color: orange;
+ 
+}
+
+</style>
 </head>
 <body>
 <div class="container">
     <!-- 제목 -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">${title }</h1>
+        <br>
+        <br>
+            <h1 class="page-header" style="text-align: center;">${title }</h1>
         </div>
     </div>    
+    <br>
+    <br>
     <!--// 제목 ----------------------------------------------------------------->
 
     <!-- 검색 -->
     <form action="#" method="get" id="boardForm" name="boardForm">
+      <input type="hidden" name="div"    id="div"  value="${paramVO.getDiv() }"/>
       <input type="hidden" name="pageNo" id="pageNo" />
-      <input type="text" name="div"    id="div"  value="${paramVO.getDiv() }"/>
       <div class="row g-1 justify-content-end ">
           <label for="searchDiv" class="col-auto col-form-label">검색조건</label>
           <div class="col-auto">
@@ -145,17 +166,19 @@ function pageDoRerive(url,pageNo){
                </select>  
           </div>    
           <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-            <input type="button" value="목록" class="btn btn-primary"  id="doRetrieve">
-            <input type="button" value="등록" class="btn btn-primary"  id="moveToReg">
+            <input type="button" value="목록" class="btn btn-primary"  id="doRetrieve" style="background-color: orange; border-color: orange;">
+            <input type="button" value="등록" class="btn btn-primary"  id="moveToReg" style="background-color: orange; border-color: orange;">
           </div>              
       </div>
                            
     </form>
+    <br>
+    <br>
     <!--// 검색 ----------------------------------------------------------------->
     
     
     <!-- table -->
-    <table class="table table-bordered border-primary table-hover table-striped" id="boardTable">
+    <table class="table table-bordered table-hover" id="boardTable">
       <thead>
         <tr >
           <th scope="col" class="text-center col-lg-1  col-sm-1">NO</th>
