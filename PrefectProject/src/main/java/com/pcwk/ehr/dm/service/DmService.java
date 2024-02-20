@@ -20,5 +20,7 @@ public interface DmService {
 	public DmVO recentMessage(DmVO inVO) throws SQLException, EmptyResultDataAccessException;
 	 
 	public List<DmVO> contentsList(DmVO inVO) throws SQLException;
+	
+	public List<DmVO> receiverList(DmVO inVO) throws SQLException;
 
 }

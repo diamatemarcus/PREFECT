@@ -80,4 +80,14 @@ public class DmDaoImple implements DmDao,PcwkLogger {
 		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getDmSeq");
 	}
 
+	@Override
+	public List<DmVO> receiverList(DmVO inVO) throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ receiverList                      │");
+		LOG.debug("│ DmVO                              │"+inVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"receiverList");
+		LOG.debug("└───────────────────────────────────┘");			
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"receiverList", inVO);
+	}
+
 }

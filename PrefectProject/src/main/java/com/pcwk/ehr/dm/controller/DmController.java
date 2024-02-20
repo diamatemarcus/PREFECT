@@ -173,4 +173,53 @@ public class DmController implements PcwkLogger{
 				
 				return modelAndView; 
 	}
+	
+	@GetMapping(value = "/doReceiverList.do"
+			,produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public List<DmVO> doReceiverList(DmVO  searchVO, HttpServletRequest req, Model model) throws SQLException {
+		String view = "dm/dm_list";
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doMemberPopup                             │DTO:"+searchVO);
+		LOG.debug("└───────────────────────────────────────────┘");				
+		
+		//검색 null처리 : null -> ""
+		String searchDiv  = StringUtil.nvl(req.getParameter("searchDiv"));
+		String searchWord = StringUtil.nvl(req.getParameter("searchWord"));
+		searchVO.setSearchDiv(searchDiv);
+		searchVO.setSearchWord(searchWord);
+				
+		//브라우저에서 숫자 : 문자로 들어 온다.
+		//페이지 사이즈: null -> 10
+		//페이지 번호: null -> 1
+		String pageSize   = StringUtil.nvl(req.getParameter("pageSize"),"10");
+		String pageNo     = StringUtil.nvl(req.getParameter("pageNo"),"1");
+		
+		long tPageNo      = Long.parseLong(pageNo);
+		long tPageSize    = Long.parseLong(pageSize);
+
+		long pageValue = (0==tPageNo)?1:tPageNo;
+		searchVO.setPageNo(pageValue);
+		
+		long tPageSizeValue = (0 == tPageSize )?10:tPageSize;
+		searchVO.setPageSize(tPageSizeValue);
+		
+		LOG.debug("pageSize:"+searchVO.getPageSize());	
+		LOG.debug("pageNo:"+searchVO.getPageNo());
+		
+		LOG.debug("searchDiv:"+searchDiv);	
+		LOG.debug("searchWord:"+searchWord);
+		
+		
+		LOG.debug("searchVO:"+searchVO);
+		
+		List<DmVO>  list = this.service.receiverList(searchVO);
+		
+		for(DmVO vo  :list) {
+			LOG.debug("vo:"+vo);
+		}
+		
+		
+		return list;
+	}
 }

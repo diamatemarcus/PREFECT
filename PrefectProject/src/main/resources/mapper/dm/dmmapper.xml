@@ -96,7 +96,22 @@
         ]]>  
     
 </select>
-
+<select id="receiverList" parameterType="DmVO" resultType="DmVO">
+    <![CDATA[
+       SELECT
+    receiver.email AS receiver,
+    receiver.name AS receiverName,
+    COUNT(m.read_chk) AS readChk
+    FROM
+    dm m
+    LEFT JOIN users receiver ON m.receiver = receiver.email
+    GROUP BY
+    receiver.email, receiver.name
+    ORDER BY
+    receiver.name
+        ]]>  
+    
+</select>
 <delete id="doDelete" parameterType="DmVO">
         DELETE FROM dm
         WHERE seq = #{seq}  

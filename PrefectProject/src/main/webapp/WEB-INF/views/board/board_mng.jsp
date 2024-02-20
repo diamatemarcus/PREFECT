@@ -16,14 +16,14 @@
 document.addEventListener("DOMContentLoaded",function(){
 	
 	//댓글 조회 
-    replyRetrieve();
+    //replyRetrieve();
 	 
 	console.log('ready');
-	
 	const div = document.querySelector("#div").value;
+	/* const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
     const modId = '${sessionScope.user.email}';
-    const regId = document.querySelector("#regId").value;
+    const regId = document.querySelector("#regId").value; */
     
     const moveToModBTN   = document.querySelector("#moveToMod");
     const doDeleteBTN   = document.querySelector("#doDelete");
@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 if("1"==data.msgId){
                     alert(data.msgContents);
                     replyRetrieve();//댓글 조회
+                   
                     //등록 댓글 초기화
                     document.querySelector('#replyContents').value = '';
                 }else{
@@ -115,7 +116,11 @@ document.addEventListener("DOMContentLoaded",function(){
     
     //삭제 이벤트 감지 및 처리
     doDeleteBTN.addEventListener("click",function(e){
-        console.log('doDeleteBTN click');
+    	const div = document.querySelector("#div").value;
+        const seq = document.querySelector("#seq").value;
+        const modId = '${sessionScope.user.email}';
+        const regId = document.querySelector("#regId").value;
+    	console.log('doDeleteBTN click');
         
         console.log('seq :'+seq);
         
