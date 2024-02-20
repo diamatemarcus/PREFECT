@@ -1,0 +1,10 @@
+#login.jsp
+login.title = 로그인
+login.id    = 아이디
+login.login.password = 비밀번호
+login.loginButton = 로그인
+login.language.en = English
+login.language.ko = 한글
+
+#message
+common.message.update = {0} 되었습니다.

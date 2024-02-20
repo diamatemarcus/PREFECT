@@ -71,7 +71,9 @@ public class ReplyDaoImpl implements ReplyDao,PcwkLogger {
 		LOG.debug("│ ReplyVO                           │"+inVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doSave");
 		LOG.debug("└───────────────────────────────────┘");		
-		return sqlSessionTemplate.insert(NAMESPACE+DOT+"doSave", inVO);
+		int flag = sqlSessionTemplate.insert(NAMESPACE+DOT+"doSave", inVO);
+		LOG.debug("│ flag                           │"+flag);
+		return flag;
 	}
 
 

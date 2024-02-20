@@ -1,0 +1,7 @@
+#login.jsp
+login.title = \u6fe1\uc493\ub807\ufffd\uc524
+login.id    = \ufffd\ube18\ufffd\uc520\ufffd\ubd52
+login.password = \u936e\uafa8\ufffd\u8e30\ub34a\uc0c7
+login.loginButton = \u6fe1\uc493\ub807\ufffd\uc524
+login.language.en = English
+login.language.ko = \ufffd\ube33\u6e72\ufffd

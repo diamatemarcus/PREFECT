@@ -41,7 +41,9 @@ public class ReplyServiceImpl implements ReplyService, PcwkLogger {
 
 	@Override
 	public int doSave(ReplyVO inVO) throws SQLException {
-		return dao.doSave(inVO);
+		int serviceFlag = dao.doSave(inVO);
+		LOG.debug("serviceFlag:"+serviceFlag);
+		return serviceFlag;
 	}
 
 	@Override

@@ -80,17 +80,17 @@ public class ReplyController implements PcwkLogger {
 		}
 		
 		int flag = service.doUpdate(inVO);
-		Locale  locale=LocaleContextHolder.getLocale();
+		//Locale  locale=LocaleContextHolder.getLocale();
 		
 		String message = "";
 		if(1 == flag ) {
 			//{0} 되었습니다.
-			message = this.messageSource.getMessage("common.message.update",null ,locale);
-			LOG.debug("│ message                           │"+message);
+			//message = this.messageSource.getMessage("common.message.update",null ,locale);
+			//LOG.debug("│ message                           │"+message);
 			
-			String tranMessage = "수정";
-			message = MessageFormat.format(message, tranMessage);
-			
+			//String tranMessage = "수정";
+			//message = MessageFormat.format(message, tranMessage);
+			message = "수정성공";
 			LOG.debug("│ message                           │"+message);
 		}else {
 			message = "수정 실패!";
@@ -122,21 +122,20 @@ public class ReplyController implements PcwkLogger {
 		
 		int flag = service.doDelete(inVO);
 		
-		Locale  locale=LocaleContextHolder.getLocale();
+		//Locale  locale=LocaleContextHolder.getLocale();
 		
 		String message = "";
-		if(1 == flag ) {
-			//{0} 되었습니다.
-			message = this.messageSource.getMessage("common.message.update",null ,locale);
-			LOG.debug("│ message                           │"+message);
-			
-			String tranMessage = "삭제";
-			message = MessageFormat.format(message, tranMessage);
-			
-			LOG.debug("│ message                           │"+message);
-		}else {
-			message = "삭제 실패!";
-		}		
+		
+		  if(1 == flag ) { //{0} 되었습니다. message =
+		  //this.messageSource.getMessage("common.message.update",null ,locale);
+		  LOG.debug("│ message                           │"+message);
+		  
+		  //String tranMessage = "삭제"; message = MessageFormat.format(message,
+		  //tranMessage);
+		  message = "삭제성공";
+		  LOG.debug("│ message                           │"+message); }else { message =
+		 "삭제 실패!"; }
+		 
 		
 		messageVO = new MessageVO(flag+"", message);
 		LOG.debug("│ messageVO                           │"+messageVO);
@@ -177,17 +176,17 @@ public class ReplyController implements PcwkLogger {
 		int flag = service.doSave(inVO);
 		
 		
-		Locale  locale=LocaleContextHolder.getLocale();
+		//Locale  locale=LocaleContextHolder.getLocale();
 		
 		String message = "";
 		if(1 == flag ) {
 			//{0} 되었습니다.
-			message = this.messageSource.getMessage("common.message.update",null ,locale);
-			LOG.debug("│ message                           │"+message);
+//			message = this.messageSource.getMessage("common.message.update",null ,locale);
+//			LOG.debug("│ message                           │"+message);
 			
 			String tranMessage = "등록";
-			message = MessageFormat.format(message, tranMessage);
-			
+//			message = MessageFormat.format(message, tranMessage);
+			message = "등록성공";	
 			LOG.debug("│ message                           │"+message);
 		}else {
 			message = "등록 실패!";

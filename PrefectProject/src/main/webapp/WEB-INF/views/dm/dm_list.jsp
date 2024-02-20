@@ -185,6 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
                type: "GET",
                url:"/ehr/user/doMemberPopup.do",
                asyn:"true",
+               cache: false,
                dataType:"json",
                data:{
                    "pageNo": "1",
@@ -219,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover table-striped">'+tableHeader+tableBody+'</table>';
                    //
                    $(".modal-body").html(dynamicTable);
-                   $('#staticBackdrop').modal('show');
+                   $('#staticBackdrop1').modal('show');
                    
                    //회원정보 double click
                    $("#userTable>tbody").on("dblclick","tr" , function(e){
@@ -236,11 +237,14 @@ document.addEventListener("DOMContentLoaded", function () {
                       
                        
                        //modal popup닫기
-                       $('#staticBackdrop').modal('hide');
+                       $('#staticBackdrop1').modal('hide');
                        
                    });
+                   
+                   
+                   
                    $("#doRetrieve").on("click", function(e){
-                       console.log( "doRetrieve click!" );
+                       /* console.log( "doRetrieve click!" );
                        let frm = document.forms['userFrm'];//form
                        
                        
@@ -249,7 +253,79 @@ document.addEventListener("DOMContentLoaded", function () {
                        
                        frm.action = "/ehr/user/doMemberPopup.do";
                        //서버 전송
-                       frm.submit();
+                       frm.submit(); */
+                       
+                       $.ajax({
+                           type: "GET",
+                           url:"/ehr/user/doMemberPopup.do",
+                           asyn:"true",
+                           cache: false,
+                           dataType:"json",
+                           data:{
+                               "pageNo": "1",
+                               "pageSize": "10" ,
+                               "searchDiv": "20",
+                               "searchWord":document.forms['userFrm'].searchWord.value
+                           },
+                           success:function(data){//통신 성공
+                               console.log("success data:"+data);
+                               //동적인 테이블 헤더 생성
+                               let tableHeader = '<thead>\
+                                                       <tr>\
+                                                           <th scope="col" class="text-center col-lg-1  col-sm-1">번호</th>\
+                                                           <th scope="col" class="text-center col-lg-2  col-sm-2" >사용자ID</th>\
+                                                           <th scope="col" class="text-center col-lg-2  col-sm-2" >이름</th>\
+                                                       </tr>\
+                                                   </thead>';
+                               //동적 테이블 body                       
+                               let tableBody = ' <tbody>';
+                               
+                               for(let i =0;i< data.length;i++){
+                                   tableBody +='<tr>\
+                                                   <td class="text-center">'+data[i].no+'</td>\
+                                                   <td class="text-left">'+data[i].email+'</td>\
+                                                   <td class="text-left">'+data[i].name+'</td>\
+                                                </tr>\
+                                                '; 
+                               }
+                               tableBody += ' </tbody>';                   
+                           
+                               console.log(tableHeader);
+                               console.log(tableBody);
+                               
+                               let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover table-striped">'+tableHeader+tableBody+'</table>';
+                               //
+                               $(".modal-body").html(dynamicTable);
+                               $('#staticBackdrop1').modal('show');
+                               
+                               //회원정보 double click
+                               $("#userTable>tbody").on("dblclick","tr" , function(e){
+                                   console.log( "userTable click!" );
+                                   
+                                   let tdArray = $(this).children();
+                                   let email = tdArray.eq(1).text();
+                                   
+                                   
+                                   console.log('email:'+email);
+                                   
+                                   
+                                   $("#receiver").val(email);
+                                  
+                                   
+                                   //modal popup닫기
+                                   $('#staticBackdrop1').modal('hide');
+                                   
+                               });
+                           },
+                           error:function(data){//실패시 처리
+                               console.log("error:"+data);
+                           },
+                           complete:function(data){//성공/실패와 관계없이 수행!
+                               console.log("complete:"+data);
+                           }
+                       });
+                       
+                       
                    });
                },
                error:function(data){//실패시 처리
@@ -304,14 +380,14 @@ document.addEventListener("DOMContentLoaded", function () {
                    let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover table-striped">'+tableHeader+tableBody+'</table>';
                    //
                    $(".modal-body").html(dynamicTable);
-                   $('#staticBackdrop').modal('show');
+                   $('#staticBackdrop2').modal('show');
                    
                    //회원정보 double click
                    $("#userTable>tbody").on("dblclick","tr" , function(e){
                        console.log( "userTable click!" );
                        
                        let tdArray = $(this).children();
-                       let email = tdArray.eq(1).text();
+                       let email = tdArray.eq(0).text();
                        
                        
                        console.log('email:'+email);
@@ -321,7 +397,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       
                        
                        //modal popup닫기
-                       $('#staticBackdrop').modal('hide');
+                       $('#staticBackdrop2').modal('hide');
                        
                    });
                    
@@ -374,7 +450,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
     
 </div>
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal fade" id="staticBackdrop1" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -396,7 +472,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       </div>
     </div>
- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+ <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
