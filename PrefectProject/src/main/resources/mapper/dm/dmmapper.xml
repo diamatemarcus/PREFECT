@@ -79,20 +79,23 @@
 </select>
 <select id="contentsList" parameterType="DmVO" resultType="DmVO">
     <![CDATA[
-       SELECT m.seq,
-       m.room,
-       sender,
-       receiver,
-       sender.name as senderName,
-       receiver.name as receiverName,
-       m.contents,
-       TO_CHAR(m.send_dt, 'YYYY-MM-DD HH24:MI') AS sendDT,
-       TO_CHAR(m.read_dt, 'YYYY-MM-DD HH24:MI') AS sendDT,
-       m.read_chk AS readChk
-       FROM dm m
-       LEFT OUTER JOIN users sender ON m.sender = sender.email
-       LEFT OUTER JOIN users receiver ON m.receiver = receiver.email
-       ORDER BY seq
+       SELECT m.seq
+            , m.room
+            , sender
+            , receiver
+            , sender.name as senderName
+            , receiver.name as receiverName
+            , m.contents
+            , TO_CHAR(m.send_dt, 'YYYY-MM-DD HH24:MI') AS sendDT
+            , TO_CHAR(m.read_dt, 'YYYY-MM-DD HH24:MI') AS sendDT
+            , m.read_chk AS readChk
+         FROM dm m
+   LEFT OUTER JOIN users sender 
+           ON m.sender = sender.email
+   LEFT OUTER JOIN users receiver 
+           ON m.receiver = receiver.email
+     WHERE m.sender = #{sender} AND m.receiver = #{receiver}    
+     ORDER BY seq
         ]]>  
     
 </select>

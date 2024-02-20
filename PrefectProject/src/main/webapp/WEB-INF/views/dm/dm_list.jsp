@@ -150,14 +150,14 @@ document.addEventListener("DOMContentLoaded", function () {
             data: {
             	
                 "sender": sender,
-                "receiver":receiver,
+                "receiver": receiver,
                 "contents": contents,
                 "readChk":0
             },
             success: function (data) { // 통신 성공
                 console.log("success data.msgId:" + data.msgId);
                 console.log("success data.msgContents:" + data.msgContents);
-
+                
                 if (1 == data.msgId) {
                     alert(data.msgContents);
                     moveToList();
@@ -244,16 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    
                    
                    $("#doRetrieve").on("click", function(e){
-                       /* console.log( "doRetrieve click!" );
-                       let frm = document.forms['userFrm'];//form
                        
-                       
-                       let searchWord = frm.searchWord.value;
-                       console.log('searchWord:'+searchWord);
-                       
-                       frm.action = "/ehr/user/doMemberPopup.do";
-                       //서버 전송
-                       frm.submit(); */
                        
                        $.ajax({
                            type: "GET",
@@ -358,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                            <tr>\
                                            <th scope="col" class="text-center col-lg-1  col-sm-1">이메일</th>\
                                            <th scope="col" class="text-center col-lg-2  col-sm-2" >이름</th>\
-                                           <th scope="col" class="text-center col-lg-2  col-sm-2" >읽지않은메세지</th>\
+                                           <th scope="col" class="text-center col-lg-2  col-sm-1" >안 읽은 메세지</th>\
                                            </tr>\
                                        </thead>';
                    //동적 테이블 body                       
@@ -422,22 +413,31 @@ document.addEventListener("DOMContentLoaded", function () {
 <div class="container">
     <div class="contact-list">
     <div class="contact">
-        <button type="button" class="btn btn-primary btn-block" id="doReceiverList">목록</button>
+        <button type="button" class="btn btn-primary btn-block" id="doReceiverList">채팅방</button>
         <button type="button" class="btn btn-primary btn-block" id="doMemberPopup">회원</button>  
     </div>
 </div>
 <div class="chat-container">
     <div class="chat-history">
         <ul class="chat-messages">
-            <c:set var="userEmail" value="${sessionScope.user.email}" />
-            <c:forEach var="vo" items="${list}">
-                <c:set var="isCurrentUser" value="${vo.sender eq userEmail}" />
-                <li class="message ${isCurrentUser ? 'user-message' : 'bot-message'}">
-                    <div class="name">${isCurrentUser ? '나' : vo.senderName}</div>
-                    ${vo.contents}
-                    <div class="time">${vo.sendDt}</div>
-                </li>
-            </c:forEach>
+           <c:choose>
+              <c:when test="${ not empty list }">
+                <c:set var="userEmail" value="${sessionScope.user.email}" />
+                <c:forEach var="vo" items="${list}">
+                    <c:set var="isCurrentUser" value="${vo.sender eq userEmail}" />
+                    <li class="message ${isCurrentUser ? 'user-message' : 'bot-message'}">
+                        <div class="name">${isCurrentUser ? '나' : vo.senderName}</div>
+                        ${vo.contents}
+                        <div class="time">${vo.sendDt}</div>
+                    </li>
+                </c:forEach>
+               </c:when>
+               <c:otherwise>
+               <tr>
+                <td colspan="99" class="text-center">채팅방을 눌러주세요</td>
+               </tr>              
+                </c:otherwise>
+            </c:choose>
         </ul>
     </div>
 </div>
@@ -476,7 +476,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">회원</h1>
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">채팅방</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
            
