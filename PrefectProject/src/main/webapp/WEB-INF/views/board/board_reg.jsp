@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded",function(){
         </div>
         <div class="mb-3">
             <label for="regId" class="form-label">ID</label>
-            <input type="text" class="form-control" id="regId" name="regId" value="dlgkssk1627@naver.com" 
+            <input type="text" class="form-control" id="regId" name="regId" value="${sessionScope.user.email}" 
             readonly="readonly" >        
         </div>
         <div class="mb-3">

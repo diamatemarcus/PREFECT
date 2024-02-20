@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
                dataType:"json",
                data:{
                    "pageNo": "1",
-                   "pageSize": "10"  
+                   "pageSize": "10" 
                },
                success:function(data){//통신 성공
                    console.log("success data:"+data);

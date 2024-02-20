@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded",function(){
     //수정버튼
     const doUpdateBTN   = document.querySelector("#doUpdate");
     
-    /* replyDoSaveBTN.addEventListener("click",function(e){
+    replyDoSaveBTN.addEventListener("click",function(e){
         console.log('replyDoSaveBTN click');
         //board_seq,reply,reg_id
         
@@ -84,7 +84,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 console.log("complete:"+data);
             }
         });        
-    }); */
+    }); 
     
     // file download
 	$('#fileList tbody').on("dblclick", 'tr', function() {
@@ -171,8 +171,9 @@ document.addEventListener("DOMContentLoaded",function(){
     
     function replyRetrieve(){
         const boardSeq = document.querySelector("#seq").value
+        //const div = document.querySelector("#div").value
         console.log('boardSeq:'+boardSeq)
-        
+        //window.location.href = "${CP}/board/doSelectOne.do?seq="+boardSeq+"&div="+div
         if(eUtil.isEmpty(boardSeq) == true){
             alert('게시글 번호를 확인 하세요.');
             return;
