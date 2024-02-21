@@ -34,6 +34,9 @@ public class SubjectController implements PcwkLogger {
 	@Autowired
 	CodeService codeService;
 	
+	@Autowired
+	UserService userService;
+	
     SubjectVO subjectVO = new SubjectVO();
 
 	public SubjectController() {}
@@ -59,8 +62,20 @@ public class SubjectController implements PcwkLogger {
 	    subjectVO.setProfessor(email); // 로그인한 사용자의 이메일 설정
 	    List<SubjectVO> list = subjectService.doRetrieve(subjectVO);
 		
+	    
+	    UserVO users = new UserVO();
+	    List<UserVO> userList = userService.doRetrieve(users);
 
-
+	    // 각 SubjectVO의 trainee와 일치하는 email을 가진 UserVO 찾기
+	    for (SubjectVO vo : list) {
+	        for (UserVO userVO : userList) {
+	            if (vo.getTrainee().equals(userVO.getEmail())) {
+	                vo.setTrainee(userVO.getName()); //
+	                break; // 일치하는 첫 번째 사
+	            }
+	        }
+	    }
+	    model.addAttribute("userList", userList);
 	    model.addAttribute("list", list);
 
 
@@ -69,34 +84,35 @@ public class SubjectController implements PcwkLogger {
 	}
 	
 	
-	//등록
-	@RequestMapping(value="/doSave.do",method = RequestMethod.POST
-			,produces = "application/json;charset=UTF-8"
-			)
-	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-	public String doSave(SubjectVO inVO) throws SQLException{
-		String jsonString = "";
-		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ doSave()                                  │inVO:"+inVO);
-		LOG.debug("└───────────────────────────────────────────┘");		
-		
-		
-		int flag = subjectService.doSave(inVO);
-		String message = "";
-		
-		if(1==flag) {
-			message = inVO.getScore()+"가 등록 되었습니다.";
-		}else {
-			message = inVO.getScore()+"등록 실패.";
-		}
-		
-		MessageVO messageVO=new MessageVO(flag+"", message);
-		jsonString = new Gson().toJson(messageVO);
-		LOG.debug("jsonString:"+jsonString);		
-				
-		return jsonString;
-	}
-	
+// 일단 사용 안함	
+//	//등록
+//	@RequestMapping(value="/doSave.do",method = RequestMethod.POST
+//			,produces = "application/json;charset=UTF-8"
+//			)
+//	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
+//	public String doSave(SubjectVO inVO) throws SQLException{
+//		String jsonString = "";
+//		LOG.debug("┌───────────────────────────────────────────┐");
+//		LOG.debug("│ doSave()                                  │inVO:"+inVO);
+//		LOG.debug("└───────────────────────────────────────────┘");		
+//		
+//		
+//		int flag = subjectService.doSave(inVO);
+//		String message = "";
+//		
+//		if(1==flag) {
+//			message = inVO.getScore()+"가 등록 되었습니다.";
+//		}else {
+//			message = inVO.getScore()+"등록 실패.";
+//		}
+//		
+//		MessageVO messageVO=new MessageVO(flag+"", message);
+//		jsonString = new Gson().toJson(messageVO);
+//		LOG.debug("jsonString:"+jsonString);		
+//				
+//		return jsonString;
+//	}
+//	
 	
 	
 //	// 단건조회
