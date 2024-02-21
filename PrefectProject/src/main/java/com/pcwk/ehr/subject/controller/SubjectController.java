@@ -1,6 +1,7 @@
 package com.pcwk.ehr.subject.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,20 +62,32 @@ public class SubjectController implements PcwkLogger {
 	    SubjectVO subjectVO = new SubjectVO();
 	    subjectVO.setProfessor(email); // 로그인한 사용자의 이메일 설정
 	    List<SubjectVO> list = subjectService.doRetrieve(subjectVO);
-		
 	    
-	    UserVO users = new UserVO();
-	    List<UserVO> userList = userService.doRetrieve(users);
+	    List<UserVO> userList = new ArrayList<>();
 
-	    // 각 SubjectVO의 trainee와 일치하는 email을 가진 UserVO 찾기
 	    for (SubjectVO vo : list) {
-	        for (UserVO userVO : userList) {
-	            if (vo.getTrainee().equals(userVO.getEmail())) {
-	                vo.setTrainee(userVO.getName()); //
-	                break; // 일치하는 첫 번째 사
-	            }
-	        }
+	        UserVO user = new UserVO();
+	        user.setEmail(vo.getTrainee());
+	        user = userService.doSelectOne(user);
+	        LOG.debug("│ user                                :"+user);
+	        userList.add(user);
 	    }
+		
+//	    UserVO users = new UserVO();
+//	    
+//	    List<UserVO> userList = userService.doRetrieve(users);
+//
+//	    // 각 SubjectVO의 trainee와 일치하는 email을 가진 UserVO 찾기
+//	    for (SubjectVO vo : list) {
+//	        for (UserVO userVO : userList) {
+//	            if (vo.getTrainee().equals(userVO.getEmail())) {
+//	            	
+//	                vo.setTrainee(userVO.getName()); //
+//	                break; // 일치하는 첫 번째 사
+//	            }
+//	        }
+//	    }
+	    
 	    model.addAttribute("userList", userList);
 	    model.addAttribute("list", list);
 
