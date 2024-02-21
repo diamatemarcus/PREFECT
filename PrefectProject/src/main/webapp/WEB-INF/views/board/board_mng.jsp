@@ -20,10 +20,9 @@ document.addEventListener("DOMContentLoaded",function(){
 	 
 	console.log('ready');
 	const div = document.querySelector("#div").value;
-	/* const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
     const modId = '${sessionScope.user.email}';
-    const regId = document.querySelector("#regId").value; */
+    const regId = document.querySelector("#regId").value;
     
     const moveToModBTN   = document.querySelector("#moveToMod");
     const doDeleteBTN   = document.querySelector("#doDelete");

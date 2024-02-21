@@ -228,6 +228,15 @@ public class AttachFileController implements PcwkLogger {
 		return ResponseEntity.ok(list);
 	}
 	
+	/**
+	 *  보드 수정 시, 파일 업로드 및 수정
+	 * @param uuid
+	 * @param uploadFiles
+	 * @param session
+	 * @return
+	 * @throws SQLException
+	 * @throws IOException
+	 */
 	@PostMapping(value="/reUpload.do", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<FileVO>> reUpload(
