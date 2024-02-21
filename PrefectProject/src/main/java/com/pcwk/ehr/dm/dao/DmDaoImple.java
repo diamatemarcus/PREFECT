@@ -67,7 +67,9 @@ public class DmDaoImple implements DmDao,PcwkLogger {
 		LOG.debug("│ DmVO                              │"+inVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"contentsList");
 		LOG.debug("└───────────────────────────────────┘");			
-		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"contentsList", inVO);
+		List flag = sqlSessionTemplate.selectList(NAMESPACE+DOT+"contentsList", inVO);
+		LOG.debug("│ flag                           │"+flag);
+		return flag;
 		
 	}
 

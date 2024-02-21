@@ -94,7 +94,8 @@
            ON m.sender = sender.email
    LEFT OUTER JOIN users receiver 
            ON m.receiver = receiver.email
-     WHERE m.sender = #{sender} AND m.receiver = #{receiver}    
+   WHERE (m.sender = #{sender} AND m.receiver = #{receiver})
+   OR    (m.sender = #{receiver} AND m.receiver = #{sender})      
      ORDER BY seq
         ]]>  
     
@@ -102,16 +103,18 @@
 <select id="receiverList" parameterType="DmVO" resultType="DmVO">
     <![CDATA[
        SELECT
-    receiver.email AS receiver,
-    receiver.name AS receiverName,
-    COUNT(m.read_chk) AS readChk
-    FROM
-    dm m
-    LEFT JOIN users receiver ON m.receiver = receiver.email
-    GROUP BY
-    receiver.email, receiver.name
-    ORDER BY
-    receiver.name
+            receiver.email AS receiver,
+            receiver.name AS receiverName,
+            COUNT(m.read_chk) AS readChk
+       FROM
+           dm m
+       LEFT JOIN users receiver ON m.receiver = receiver.email
+       WHERE m.receiver = #{sender} OR m.sender = #{sender}
+      
+       GROUP BY
+               receiver.email, receiver.name
+       ORDER BY
+              receiver.name
         ]]>  
     
 </select>
