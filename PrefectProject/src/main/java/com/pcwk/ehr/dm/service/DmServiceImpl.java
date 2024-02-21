@@ -46,11 +46,10 @@ public class DmServiceImpl implements DmService, PcwkLogger {
 
 	@Override
 	public List<DmVO> contentsList(DmVO inVO) throws SQLException {
-		List list =  dao.contentsList(inVO);
+		List<DmVO> serviceFlag =  dao.contentsList(inVO);
+		LOG.debug("serviceFlag:"+serviceFlag);
 		
-		
-		
-		return list;
+		return serviceFlag;
 	}
 
 	@Override

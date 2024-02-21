@@ -138,10 +138,9 @@ document.addEventListener("DOMContentLoaded", function () {
     	
     	
     	let sender = document.querySelector("#sender").value;
+    	let receiver = document.querySelector("#receiver").value;
     	let contents = document.querySelector("#contents").value;
     	
-        let receiver = document.querySelector("#receiver").value;
-        
         $.ajax({
             type: "POST",
             url: "/ehr/dm/doSend.do",
@@ -160,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (1 == data.msgId) {
                     alert(data.msgContents);
-                    moveToList();
+                    doContentsList()
                 } else {
                     alert(data.msgContents);
                 }
@@ -234,7 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
                        
                        
                        $("#receiver").val(email);
-                      
+                       doContentsList()
                        
                        //modal popup닫기
                        $('#staticBackdrop1').modal('hide');
@@ -301,7 +300,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                    
                                    
                                    $("#receiver").val(email);
-                                  
+                                   doContentsList()
                                    
                                    //modal popup닫기
                                    $('#staticBackdrop1').modal('hide');
@@ -332,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     $("#doReceiverList").on("click",function(e){
         console.log( "doReceiverList click!" );
-        
+        let sender = document.querySelector("#sender").value;
            $.ajax({
                type: "GET",
                url:"/ehr/dm/doReceiverList.do",
@@ -340,7 +339,8 @@ document.addEventListener("DOMContentLoaded", function () {
                dataType:"json",
                data:{
                    "pageNo": "1",
-                   "pageSize": "10" 
+                   "pageSize": "10",
+                   "sender": sender
                },
                success:function(data){//통신 성공
                    console.log("success data:"+data);
@@ -385,7 +385,7 @@ document.addEventListener("DOMContentLoaded", function () {
                        
                        
                        $("#receiver").val(email);
-                      
+                       doContentsList()
                        
                        //modal popup닫기
                        $('#staticBackdrop2').modal('hide');
@@ -404,6 +404,74 @@ document.addEventListener("DOMContentLoaded", function () {
            
 
     });
+    function doContentsList(){
+    	let sender = document.querySelector("#sender").value;
+        let receiver = document.querySelector("#receiver").value;
+        
+        
+        $.ajax({
+            type: "GET",
+            url:"/ehr/dm/doContents.do",
+            asyn:"true",
+            dataType:"json", //return type
+            data:{
+            	 "sender": sender,
+                 "receiver": receiver
+            },
+            success:function(data){//통신 성공
+                console.log("success data:"+data);
+                console.log("data.length:"+data.length);
+                
+                let replyDiv = '';
+                
+                //기존 댓글 모두 삭제
+                //#요소의 내용을 모두 지웁니다.
+                //$("#replyDoSaveArea").html('');
+                document.getElementById("replyDoSaveArea").innerHTML = "";
+                
+                
+                if(0==data.length){
+                    console.log("처음 보내는 상대입니다");
+                    return;
+                }
+                    
+                
+                for(let i=0;i<data.length;i++){
+                    replyDiv += '<div class="dynamicReply"> \n';
+                    replyDiv += '<div class="row justify-content-end"> \n';
+                    replyDiv += '<div class="col-auto"> \n';
+                    replyDiv += '<span>등록일:'+data[i].sendDt+'</span> \n';
+                   
+                    replyDiv += '</div> \n';
+                    replyDiv += '</div> \n';
+                    
+                    replyDiv += '<div class="mb-3">  \n';
+                    replyDiv += '<input type="text" name="replySeq" value="'+data[i].senderName +'"> \n';
+                    
+                    replyDiv += '<textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents">'+data[i].contents+'</textarea> \n';
+                    replyDiv += '</div> \n';
+                    
+                    replyDiv += '</div> \n';
+                    
+                }
+                
+                //console.log(replyDiv);
+               
+                //조회 댓글 출력
+                document.getElementById("replyDoSaveArea").innerHTML = replyDiv;
+                //$("#replyDoSaveArea").html(replyDiv);
+                
+            },
+            error:function(data){//실패시 처리
+                console.log("error:"+data);
+            },
+            complete:function(data){//성공/실패와 관계없이 수행!
+                console.log("complete:"+data);
+            }
+        });     
+        
+    }
+    
 });
 
 </script>
@@ -418,6 +486,21 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
 </div>
 <div class="chat-container">
+    <div id="replyDoSaveArea">
+        <!-- 버튼 -->
+        <div class="dynamicReply">
+            <div class="row justify-content-end">
+                <div class="col-auto">
+                    
+                </div>
+            </div>
+            <!--// 버튼 ----------------------------------------------------------------->
+            <div class="mb-3">
+                <input type="text" name="replySeq" value="">
+                <textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents"></textarea>
+            </div>
+        </div>        
+</div>
     <div class="chat-history">
         <ul class="chat-messages">
            <c:choose>

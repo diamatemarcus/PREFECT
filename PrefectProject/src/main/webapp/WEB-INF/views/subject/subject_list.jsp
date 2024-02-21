@@ -1,4 +1,5 @@
 <%@page import="com.pcwk.ehr.subject.domain.SubjectVO"%>
+<%@page import="com.pcwk.ehr.user.domain.UserVO"%>
 <%@page import="com.pcwk.ehr.cmn.StringUtil"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -43,7 +44,13 @@
             <c:when test="${not empty list }">
 		        <c:forEach var="vo" items="${list}">
 			        <tr>
-			            <td class="text-center">${vo.trainee}</td>        			
+			            <td class="text-center">
+				            <c:forEach var="user" items="${userList}">
+				                <c:if test="${user.email == vo.trainee}">
+				                    ${user.name} <!-- 사용자 이름을 표시 -->
+				                </c:if>
+				            </c:forEach>
+				        </td>       			
 			            <td class="text-left">${vo.javaScore}</td> <!-- 자바 점수 -->
     					<td class="text-left">${vo.sqlScore}</td> <!-- SQL 점수 -->
 				        <td class="text-left"></td>
