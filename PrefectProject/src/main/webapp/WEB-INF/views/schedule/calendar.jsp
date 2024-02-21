@@ -9,12 +9,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
+<meta charset="utf-8">
+<title>ARMS - IT훈련학원 커뮤니티</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="" name="keywords">
+<meta content="" name="description">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+    rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="${CP}/resources/template/lib/lightbox/css/lightbox.min.css" rel="stylesheet" type="text/css">
+<link href="${CP}/resources/template/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" type="text/css">
+
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="${CP}/resources/template/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+<!-- Template Stylesheet -->
+<link href="${CP}/resources/template/css/style.css" rel="stylesheet" type="text/css">
 <title>달력</title>
 <style>
-/* 초기에는 form 숨기기 */
 #myScheduleForm {
 	display: none;
+}
+.button {
+    width: auto;
+    /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
+    /* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
+    padding: 10px 20px;
+    /* 내용과 버튼의 테두리 간격을 조정합니다. */
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #FFA500
+}
+.day-cell:hover {
+    background-color: #64FF64; /* 호버 시 배경색을 변경합니다. */
+    cursor: pointer; /* 마우스 커서 모양을 변경합니다. */
+}
+
+#doSaveSchedule,
+#doDeleteSchedule,
+#doUpdateSchedule,
+.btn-close {
+    color: aliceblue;
 }
 </style>
 <script>
@@ -535,218 +586,299 @@
 </script>
 </head>
 <body>
-	<div class="container">
-	<input type="text" id="email" name="email" value="${sessionScope.user.email}">
-		<!-- 제목 -->
-		<div class="row">
-			<div class="col-lg-12">
-				<h1 class="page-header">달력</h1>
-				<div class="col-auto ">
-					<!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-					<input type="button" value="이전" class="btn btn-primary"
-						id="lastMonth"> <input type="button" value="다음"
-						class="btn btn-primary" id="nextMonth">
-				</div>
-			</div>
-		</div>
+    <!-- Navbar start -->
+    <div class="container-fluid fixed-top">
+        <div class="container px-5">
+            <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                <a href="index.jsp" class="navbar-brand">
+                    <h1 class="text-primary display-6" style="padding-top: 28px;">A R M S</h1>
+                </a>
+                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars text-primary"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto" style="padding-top: 8px;">
+                        <a href="index.jsp" class="nav-item nav-link" style="font-size: 18px;">게시판</a>
+                        <a href="/board/doRetrieve.do?div=10" class="nav-item nav-link" style="font-size: 18px;">공지사항</a>
+                        <a href="#" class="nav-item nav-link active" style="font-size: 18px;">일정표</a>
+                        <a href="/dm/doContentsList.do" class="nav-item nav-link" style="font-size: 18px;">메시지</a>
+                        <a href="/book/bookApiView.do" class="nav-item nav-link" style="font-size: 18px;">도서구매</a>
+                        <a href="/user/doSelectOne.do" class="nav-item nav-link" style="font-size: 18px;">회원 목록</a> <!-- 관리자에게만 보이게 할 예정-->
+                    </div>
+                    
 
-		<input type="text" name="year" id="year" value="${year}" /> <input
-			type="text" name="month" id="month" value="${month}" />
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="button me-md-2" type="button" onclick="location.href='/login/loginView.do'" style="background-color: #FFA500; font-size: 15px; color: aliceblue;">로그인</button>
+                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="background-color: #FFA500; font-size: 15px; color: aliceblue">회원가입</button>
+                    </div>
+                    <div class="d-flex m-3 me-0">
+                        <a href="/ehr/user/doSelectOne.do" class="my-auto">
+                            <i class="fas fa-user fa-2x"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+    
+   <!-- Tastimonial Start -->
+    <div class="container-fluid testimonial py-2">
+      <input type="text" id="email" name="email" value="${sessionScope.user.email}">
+        <!-- 제목 -->
+        <div class="row">
+            <div class="col-lg-7" style="margin-left: 15%">
+                <div>
+                    <h1 class="page-header" style="margin-bottom: 10px; color: #e44646; font-family: Montserrat; font-style: italic;">Calendar</h1>
+                <div class="col-auto d-flex flex-column ">
+                    <!-- 버튼 그룹 -->
+                    <div class="d-flex" style="margin-bottom: 30px;">
+                        <!-- 이전 버튼 -->
+                        <input type="button" value="이전" class="btn btn-primary me-2" id="lastMonth" style="color: aliceblue;"> 
+                        <!-- 연도 표시 -->
+                        <input type="text" name="year" id="year" value="${year}" readonly class="form-control" style="width: 80px;">
+                        <!-- 월 표시 -->
+                        <input type="text" name="month" id="month" value="${month}" readonly class="form-control" style="width: 60px;">
+                        <!-- 다음 버튼 -->
+                        <input type="button" value="다음" class="btn btn-primary ms-2" id="nextMonth" style="color: aliceblue;">
+                    </div>
+                    <!-- 텍스트 -->
+                    <div>
+                        <span style="color: #81c408;">*날짜를 더블클릭하여 일정을 추가하세요.</span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
 
-		<!-- 캘린더 table -->
-		<table
-			class="table table-bordered border-primary table-hover table-striped"
-			id="calendarTable">
-			<thead>
-				<tr>
-					<th scope="col" class="text-center col-lg-1  col-sm-1">일</th>
-					<th scope="col" class="text-center col-lg-1  col-sm-1">월</th>
-					<th scope="col" class="text-center col-lg-1  col-sm-1">화</th>
-					<th scope="col" class="text-center col-lg-1  col-sm-1">수</th>
-					<th scope="col" class="text-center col-lg-1  col-sm-1">목</th>
-					<th scope="col" class="text-center col-lg-1  col-sm-1">금</th>
-					<th scope="col" class="text-center col-lg-1  col-sm-1">토</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:choose>
-					<c:when test="${ not empty calendarList }">
-						<!-- 반복문 -->
-						<c:forEach var="vo" items="${calendarList}" varStatus="status">
-							<tr>
-							    <!-- 일요일 -->
-							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.sun}">
-							        ${vo.sun.substring(6)}
-							        <ul>
-								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
-								        <c:forEach var="schedule" items="${scheduleList}">
-								            <c:if test="${schedule.calID == vo.sun}">
-							                  <li>
-								                <strong>일정:</strong> ${schedule.title}
-								              </li>
-								            </c:if>
-								        </c:forEach>
-							        </ul>
-							    </td>
-							    <!-- 월요일 -->
-							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.mon}">
-							        ${vo.mon.substring(6)}
-							        <ul>
-								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
-								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
-								            <c:if test="${schedule.calID == vo.mon}">
-								                  <li>
-									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
-									                <!-- 필요한 정보 추가 -->
-									            </li>
-								            </c:if>
-								        </c:forEach>
-							        </ul>
-							    </td>
-							    <!-- 화요일 -->
-							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.tue}">
-							        ${vo.tue.substring(6)}
-							        <ul>
-								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
-								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
-								            <c:if test="${schedule.calID == vo.tue}">
-								                  <li>
-									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
-									                <!-- 필요한 정보 추가 -->
-									            </li>
-								            </c:if>
-								        </c:forEach>
-							        </ul>
-							    </td>
-							    <!-- 수요일 -->
-							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.wed}">
-							        ${vo.wed.substring(6)}
-							        <ul>
-								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
-								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
-								            <c:if test="${schedule.calID == vo.wed}">
-								                  <li>
-									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
-									                <!-- 필요한 정보 추가 -->
-									            </li>
-								            </c:if>
-								        </c:forEach>
-							        </ul>
-							    </td>
-							    <!-- 목요일 -->
-							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.thu}">
-							        ${vo.thu.substring(6)}
-							        <ul>
-								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
-								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
-								            <c:if test="${schedule.calID == vo.thu}">
-								                  <li>
-									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
-									                <!-- 필요한 정보 추가 -->
-									            </li>
-								            </c:if>
-								        </c:forEach>
-							        </ul>
-							    </td>
-							    <!-- 금요일 -->
-							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.fri}">
-							        ${vo.fri.substring(6)}
-							        <ul>
-								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
-								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
-								            <c:if test="${schedule.calID == vo.fri}">
-								                  <li>
-									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
-									                <!-- 필요한 정보 추가 -->
-									            </li>
-								            </c:if>
-								        </c:forEach>
-							        </ul>
-							    </td>
-							    <!-- 토요일 -->
-							    <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.sat}">
-							        ${vo.sat.substring(6)}
-							        <ul>
-								        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
-								        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
-								            <c:if test="${schedule.calID == vo.sat}">
-								                  <li>
-									                <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
-									                <!-- 필요한 정보 추가 -->
-									            </li>
-								            </c:if>
-								        </c:forEach>
-							        </ul>
-							    </td>
-							</tr>
+        
+        
 
-						</c:forEach>
-						<!--// 반복문 -->
-					</c:when>
-					<c:otherwise>
-						<tr>
-							<td colspan="99" class="text-center">조회된 데이터가 없습니다..</td>
-						</tr>
-					</c:otherwise>
-				</c:choose>
-			</tbody>
-		</table>
+        <!-- 캘린더 table -->
+        <div class="col-lg-7" style="margin-top: 10px; margin-left: 15%;">
+        <table
+            class="table table-bordered border-primary table-hover"
+            id="calendarTable" style="margin-top: 10px;" >
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center col-lg-1  col-sm-1">일</th>
+                    <th scope="col" class="text-center col-lg-1  col-sm-1">월</th>
+                    <th scope="col" class="text-center col-lg-1  col-sm-1">화</th>
+                    <th scope="col" class="text-center col-lg-1  col-sm-1">수</th>
+                    <th scope="col" class="text-center col-lg-1  col-sm-1">목</th>
+                    <th scope="col" class="text-center col-lg-1  col-sm-1">금</th>
+                    <th scope="col" class="text-center col-lg-1  col-sm-1">토</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:choose>
+                    <c:when test="${ not empty calendarList }">
+                        <!-- 반복문 -->
+                        <c:forEach var="vo" items="${calendarList}" varStatus="status">
+                            <tr>
+                                <!-- 일요일 -->
+                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.sun}">
+                                    ${vo.sun.substring(6)}
+                                    <ul>
+                                        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+                                        <c:forEach var="schedule" items="${scheduleList}">
+                                            <c:if test="${schedule.calID == vo.sun}">
+                                              <li>
+                                                <strong>일정:</strong> ${schedule.title}
+                                              </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </td>
+                                <!-- 월요일 -->
+                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.mon}">
+                                    ${vo.mon.substring(6)}
+                                    <ul>
+                                        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+                                        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+                                            <c:if test="${schedule.calID == vo.mon}">
+                                                  <li>
+                                                    <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+                                                    <!-- 필요한 정보 추가 -->
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </td>
+                                <!-- 화요일 -->
+                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.tue}">
+                                    ${vo.tue.substring(6)}
+                                    <ul>
+                                        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+                                        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+                                            <c:if test="${schedule.calID == vo.tue}">
+                                                  <li>
+                                                    <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+                                                    <!-- 필요한 정보 추가 -->
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </td>
+                                <!-- 수요일 -->
+                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.wed}">
+                                    ${vo.wed.substring(6)}
+                                    <ul>
+                                        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+                                        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+                                            <c:if test="${schedule.calID == vo.wed}">
+                                                  <li>
+                                                    <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+                                                    <!-- 필요한 정보 추가 -->
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </td>
+                                <!-- 목요일 -->
+                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.thu}">
+                                    ${vo.thu.substring(6)}
+                                    <ul>
+                                        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+                                        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+                                            <c:if test="${schedule.calID == vo.thu}">
+                                                  <li>
+                                                    <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+                                                    <!-- 필요한 정보 추가 -->
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </td>
+                                <!-- 금요일 -->
+                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.fri}">
+                                    ${vo.fri.substring(6)}
+                                    <ul>
+                                        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+                                        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+                                            <c:if test="${schedule.calID == vo.fri}">
+                                                  <li>
+                                                    <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+                                                    <!-- 필요한 정보 추가 -->
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </td>
+                                <!-- 토요일 -->
+                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.sat}">
+                                    ${vo.sat.substring(6)}
+                                    <ul>
+                                        <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
+                                        <c:forEach var="schedule" items="${scheduleList}" varStatus="loop">
+                                            <c:if test="${schedule.calID == vo.sat}">
+                                                  <li>
+                                                    <strong>일정 ${loop.index + 1}:</strong> ${schedule.title}<br>
+                                                    <!-- 필요한 정보 추가 -->
+                                                </li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </ul>
+                                </td>
+                            </tr>
 
-		<!-- Modal -->
-		<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
-			data-bs-keyboard="false" tabindex="-1"
-			aria-labelledby="staticBackdropLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h1 class="modal-title fs-5" id="staticBackdropLabel">일정</h1>
-						<input type="hidden" name="calID" id="calID" /> 
-						<input
-							type="button" value="새 일정 등록" class="btn btn-primary"
-							id="doSaveSchedule">
-						<input
-							type="button" value="삭제" class="btn btn-primary"
-							id="doDeleteSchedule">
-						<input
-							type="button" value="수정" class="btn btn-primary"
-							id="doUpdateSchedule">
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" id="modalTable">
-						<!-- 일정 table -->
-					</div>
+                        </c:forEach>
+                        <!--// 반복문 -->
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="99" class="text-center">조회된 데이터가 없습니다..</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
+            </tbody>
+        </table>
+        </div>
 
-					<!-- form -->
-					<div id="myScheduleForm" class="modal-body">
-						<form id="scheduleForm">
-							<!-- 여기에 form 요소들을 넣으세요 -->
-							<input type="hidden" name="calID"> <input type="hidden"
-								name="scheduleID">
-							<div class="mb-3">
-								<!--  아래쪽으로  여백 -->
-								<label for="title" class="form-label">제목</label> <input
-									type="text" class="form-control" id="title" name="title"
-									placeholder="일정제목을 입력 하세요.">
-							</div>
-							<div class="mb-3">
-								<!--  아래쪽으로  여백 -->
-								<label for="explantaion" class="form-label">설명</label> <input
-									type="text" class="form-control" id="explanation"
-									name="explanation" placeholder="일정설명을 입력 하세요.">
-							</div>
-						</form>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">Close</button>
-					</div>
-				</div>
-			</div>
-		</div>
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+            data-bs-keyboard="false" tabindex="-1"
+            aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <input type="hidden" name="calID" id="calID" /> 
+                        <input
+                            type="button" value="새 일정 등록" class="btn btn-primary"
+                            id="doSaveSchedule" style="margin-right: 2px">
+                        <input
+                            type="button" value="삭제" class="btn btn-primary"
+                            id="doDeleteSchedule" style="margin-right: 2px" style="aliceblue">
+                        <input
+                            type="button" value="수정" class="btn btn-primary"
+                            id="doUpdateSchedule" >
+                        <button type="button" class="btn-close" id="close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalTable">
+                        <!-- 일정 table -->
+                    </div>
 
-		<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
-	</div>
+                    <!-- form -->
+                    <div id="myScheduleForm" class="modal-body">
+                        <form id="scheduleForm">
+                            <!-- 여기에 form 요소들을 넣으세요 -->
+                            <input type="hidden" name="calID"> <input type="hidden"
+                                name="scheduleID">
+                            <div class="mb-3">
+                                <!--  아래쪽으로  여백 -->
+                                <label for="title" class="form-label">제목</label> <input
+                                    type="text" class="form-control" id="title" name="title"
+                                    placeholder="일정제목을 입력 하세요.">
+                            </div>
+                            <div class="mb-3">
+                                <!--  아래쪽으로  여백 -->
+                                <label for="explantaion" class="form-label">설명</label> <input
+                                    type="text" class="form-control" id="explanation"
+                                    name="explanation" placeholder="일정설명을 입력 하세요.">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Tastimonial End -->
 
+
+    <!-- Copyright Start -->
+    <div class="container-fluid copyright bg-dark py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>ARMS</a>, All right reserved.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i
+            class="fa fa-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </body>
+
 </html>
