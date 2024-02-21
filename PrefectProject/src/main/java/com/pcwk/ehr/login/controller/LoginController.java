@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.code.service.CodeService;
+import com.pcwk.ehr.login.dao.LoginDao;
 import com.pcwk.ehr.login.service.LoginService;
+import com.pcwk.ehr.user.domain.UserVO;
 import com.pcwk.ehr.user.service.UserService;
 
 @Controller
@@ -20,6 +22,9 @@ public class LoginController implements PcwkLogger{
 	
 	@Autowired
 	LoginService loginService;
+	
+	@Autowired
+	LoginDao loginDao;
 	
 	@Autowired
 	UserService userService;
@@ -42,6 +47,8 @@ public class LoginController implements PcwkLogger{
 	@GetMapping(value="/doLogin.do")   
 	public String login(String email,String password, HttpSession httpSession)throws SQLException{
 		String id = loginService.login(email, password);
+		UserVO user = loginDao.getUserEmail(email);
+		UserVO outVO = loginService.doSelectOne(user);
 		String view2 = "login/login";
 		String view1 = "index";
 		
@@ -54,7 +61,8 @@ public class LoginController implements PcwkLogger{
 			LOG.debug("로그인 실패");
 			return view2;
         }else {
-		httpSession.setAttribute("email", email);
+		httpSession.setAttribute("user", outVO);
+		LOG.debug(outVO);
         LOG.debug("로그인 성공");
         return view1;
         }
