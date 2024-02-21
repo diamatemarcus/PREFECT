@@ -36,7 +36,7 @@
 	    explanation,
 	    email
 	FROM    schedule
-	WHERE schedule_id = #{scheduleID} and email = #{email}
+	WHERE schedule_id = #{scheduleID}
   </select>
   
   <select id="doSelectAllSchedule" parameterType="CalendarVO" resultType="ScheduleVO">

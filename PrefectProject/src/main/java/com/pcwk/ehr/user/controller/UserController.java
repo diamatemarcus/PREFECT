@@ -279,31 +279,31 @@ public class UserController {
 	}
 	
 	
-		//수정
-		@RequestMapping(value="/doUpdatePassword.do",method = RequestMethod.POST
-				,produces = "application/json;charset=UTF-8"
-				)
-		@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-		public String doUpdatePassword(UserVO inVO) throws SQLException {
-			String jsonString = "";
-			LOG.debug("┌───────────────────────────────────────────┐");
-			LOG.debug("│ doUpdate()                                  │inVO:"+inVO);
-			LOG.debug("└───────────────────────────────────────────┘");		
-					
-			int flag = this.userService.doUpdatePassword(inVO);
-			String message = "";
-			if(1==flag) {
-				message = inVO.getEmail()+"가 수정 되었습니다.";
-			}else {
-				message = inVO.getEmail()+"수정 실패";
-			}
-			MessageVO messageVO = new MessageVO(flag+"", message);
-			jsonString = new Gson().toJson(messageVO);
-			LOG.debug("jsonString:"+jsonString);	
-							
-			
-			return jsonString;
+	//수정
+	@RequestMapping(value="/doUpdatePassword.do",method = RequestMethod.POST
+			,produces = "application/json;charset=UTF-8"
+			)
+	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
+	public String doUpdatePassword(UserVO inVO) throws SQLException {
+		String jsonString = "";
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doUpdate()                                  │inVO:"+inVO);
+		LOG.debug("└───────────────────────────────────────────┘");		
+				
+		int flag = this.userService.doUpdatePassword(inVO);
+		String message = "";
+		if(1==flag) {
+			message = inVO.getEmail()+"가 수정 되었습니다.";
+		}else {
+			message = inVO.getEmail()+"수정 실패";
 		}
+		MessageVO messageVO = new MessageVO(flag+"", message);
+		jsonString = new Gson().toJson(messageVO);
+		LOG.debug("jsonString:"+jsonString);	
+						
+		
+		return jsonString;
+	}
 		
 	
 	

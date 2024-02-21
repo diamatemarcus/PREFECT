@@ -420,13 +420,15 @@
 				            console.log("scheduleIDs:", scheduleIDs);
 				            console.log("calID:", calID);
 				            
+				            let scheduleID = scheduleIDs[0]
+				            
 				         // 여러 일정 삭제 Ajax 요청
 				            $.ajax({
 				                type: "GET",
 				                url: "/ehr/schedule/doSelectOne.do",
 				                dataType: "json",
 				                data: {
-				                    "scheduleID": scheduleIDs[0]
+				                    "scheduleID": scheduleID
 				                },
 				                success: function(data) {
 				                	console

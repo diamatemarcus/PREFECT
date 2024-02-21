@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,9 +39,6 @@ public class LoginController implements PcwkLogger{
 	
 	@Autowired
 	CodeService codeService;
-	
-	@Autowired
-	private MailSendService mailService;
  	
 	public LoginController() {}
 	
@@ -53,6 +51,7 @@ public class LoginController implements PcwkLogger{
 				
 		return view;
 	}
+	
 	@RequestMapping(value="/doLogin.do", method = RequestMethod.POST
 			,produces = "application/json;charset=UTF-8"
 			)
@@ -117,7 +116,15 @@ public class LoginController implements PcwkLogger{
 		return jsonString;
 	}
 	
-
-		
+	@RequestMapping(value="/doLogout.do")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		String view = "login/login";
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ loginView                                 │");
+		LOG.debug("└───────────────────────────────────────────┘");				
+				
+		return view;
+	}
 	
 }
