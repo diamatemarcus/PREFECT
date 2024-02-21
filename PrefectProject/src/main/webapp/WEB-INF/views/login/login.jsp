@@ -59,7 +59,7 @@
 				<div class="form-check">
 					<!-- 빈공간을 만들기 위함-->
 				</div>
-				<a href="/ehr/login/search_password">Forgot password?</a>
+				<a href="/ehr/search/searchPasswordView.do">Forgot password?</a>
 			</div>
 			<div class="d-grid mb-4">
 				<button type="submit" class="btn uf-btn-primary btn-lg" id="doLogin">Login</button>
