@@ -10,31 +10,48 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 
 
     <select id="doRetrieve" parameterType="SubjectVO" resultType="SubjectVO">
-		SELECT DISTINCT s.subject_code
-                       ,s.courses_code
-                       ,s.professor
-                       ,s.trainee
-                       ,s.score
-	    FROM
-	        subject s
-	    JOIN users u ON s.professor = u.email OR s.trainee = u.email
-	    WHERE s.professor = #{professor} OR s.trainee = #{trainee}
+		SELECT * FROM (
+		  SELECT
+		    courses_code,
+		    professor,
+		    trainee,
+		    subject_code,
+		    score
+		  FROM
+		    subject 
+		  JOIN
+		   users ON professor = users.email OR trainee = users.email
+		  WHERE
+		  users.email = #{professor} OR users.email = #{trainee}
+		)
+		PIVOT (
+		  MAX(score)
+		  FOR subject_code IN (10 AS javaScore, 20 AS sqlScore)
+		)
+		ORDER BY courses_code, professor, trainee
     </select>
 
 	
 	
 
 	<select id="doSelectOne" parameterType="SubjectVO" resultType="SubjectVO">
-		SELECT
-		    subject_code,
+		SELECT * FROM (
+		  SELECT
 		    courses_code,
 		    professor,
 		    trainee,
+		    subject_code,
 		    score
-		FROM
-		    subject
-		WHERE
-	        trainee = #{trainee}
+		  FROM
+		    subject 
+		  WHERE
+                trainee = #{trainee}
+		)
+		PIVOT (
+		  MAX(score)
+		  FOR subject_code IN (10 AS javaScore, 20 AS sqlScore)
+		)
+		ORDER BY courses_code, professor, trainee
 	</select>
 	
 	<update id="doUpdate" parameterType="SubjectVO">
