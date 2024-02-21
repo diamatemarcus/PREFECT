@@ -4,17 +4,154 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />
-<!DOCTYPE html>
-<html>
-<head>
-<jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-<script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="EUC-KR">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/bootstrap.min.css" type="text/css">
+    <!-- FontAwesome CSS -->
+    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/all.min.css" type="text/css">
+    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/uf-style.css" type="text/css">
+    <title>Register Form Bootstrap 1 by UIFresh</title>
+    <script src="${CP}/resources/js/eUtil.js" type="text/javascript"></script>
+    
+  </head>
+  <body>
+    <div class="uf-form-signin">
+      <div class="text-center">
+        <a href="https://uifresh.net/"><img src="${CP}/resources/template/login/assets/img/logo-fb.png" alt="" width="100" height="100"></a>
+      <h1 class="text-white h3">회원가입</h1>
+      </div>
+      <form class="mt-4">
+        <div class="form-group email-form">
+        	       <!-- 이메일 본인 인증 -->
+                 <%-- email중복체크 수행 여부 확인:0(미수행),1(수행) --%>
+        <input type="hidden" name="idCheckYet" id="idCheckYet" value="0">
+        <div class="input-group uf-input-group input-group-lg mb-3">
+          <span class="input-group-text fa fa-envelope"></span>
+              <input type="text" class="form-control" name="userEmail1" id="userEmail1" placeholder="이메일" required oninput="idCheck()" >
+              <select class="form-control" name="userEmail2" id="userEmail2" onchange="idCheck()">
+              <option>@naver.com</option>
+              <option>@daum.net</option>
+              <option>@gmail.com</option>
+              <option>@hanmail.com</option>
+              <option>@yahoo.co.kr</option>
+              </select>
+          </div>
+              <div class="input-group-addon">
+                <span class="id_ok" style="color:green; display:none;">사용 가능한 아이디입니다.</span>
+                <span class="id_already" style="color:red; display:none;">중복된 아이디입니다!</span>
+                <button type="button" class="btn btn-primary" id="mail-Check-Btn">본인인증</button>
+              </div>
+          <div class="mail-check-box">
+            <input class="form-control mail-check-input mt-1" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
+          </div>
+            <span id="mail-check-warn"></span>
+        </div>
+
+
+
+        <div class="input-group uf-input-group input-group-lg mb-1 mt-1">
+          <span class="input-group-text fa fa-user"></span>
+          <input type="text"  class="form-control "  name="name" id="name" placeholder="이름" size="20"  maxlength="21">
+        </div>
+
+         <div class="input-group uf-input-group input-group-lg mb-1">
+           <span class="input-group-text fa fa-lock"></span>
+           <input type="password"  class="form-control"  name="password" id="user-password" placeholder="비밀번호" size="20"  maxlength="30" required oninput="passwordCheck()">
+         </div>
+                    <span class="password_ok" style="color:green; display:none;">사용 가능한 비밀번호입니다.</span>
+				   <span class="password_notok" style="color:red; display:none;"> 8글자 이상, 영문, 숫자, 특수문자를 사용해주세요.</span>
+
+        <div class="input-group uf-input-group input-group-lg mb-1">
+          <span class="input-group-text fa fa-lock"></span>
+          <input type="hidden" name="passwordCheckYet" id="passwordCheckYet" value="0">
+		  <input type ="password" class="form-control form-control-user" name="password" id="user-password2" placeholder="비밀번호 확인" required oninput="passwordReCheck()">
+        </div>
+            <span class="ok-ok" style="color:green; display:none;">비밀번호가 일치합니다.</span>
+			<span class="ok-no" style="color:red; display:none;">비밀번호가 일치하지 않습니다.</span>
+
+        <div class="input-group uf-input-group input-group-lg mb-3 mt-2">
+          <span class="input-group-text fa fa-phone"></span>
+          <input type="text"  class="form-control numOnly" name="tel" id="tel" placeholder="전화번호" size="20"  maxlength="11">
+        </div>
+        
+        <div class="input-group uf-input-group input-group-lg mb-3">
+          <label for="edu" class="form-label">학력</label>
+                   <div class="col-auto">
+                    <select id="education" name="education">
+                        <!-- 검색 조건 옵션을 동적으로 생성 -->
+                         <c:forEach items="${education}" var="vo">
+					     	<option value="${vo.detCode}">${vo.detName}</option>
+					     </c:forEach>
+                    </select>
+                	</div>
+        </div>
+
+        <div class="input-group uf-input-group input-group-lg mb-3">
+          <label for="role" class="form-label">역할</label>
+                   <div class="col-auto">
+                    <select id="role" name="role">
+                        <!-- 검색 조건 옵션을 동적으로 생성 -->
+                         <c:forEach items="${role}" var="vo">
+					                 <option value="${vo.detCode}">${vo.detName}</option>
+					              </c:forEach>
+                    </select>
+                	</div>
+        </div>
+	     <!--// 회원 등록영역 ------------------------------------------------------>
+
+
+        
+        <div class="d-grid mb-4">
+          <input type="button" class="btn uf-btn-primary btn-lg" id="doSave" value ="회원가입 "onclick="window.doSave();">
+        </div>
+        <div class="mt-4 text-center">
+          <span class="text-white">이미 회원이신가요?</span>
+          <a href="/ehr/login/loginView.do">로그인</a>
+        </div>
+      </form>
+    </div>
+
+    <!-- JavaScript -->
+     <script>
+     function strongPassword(str) {
+         return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
+     }
+
+     function passwordCheck() {
+         var str = document.querySelector("#user-password").value; // 값을 가져와야 함
+         if (strongPassword(str) === true) { // 문자열을 전달해야 함
+             $('.password_ok').css("display", "inline-block");
+             $('.password_notok').css("display", "none");
+             console.log('----비밀번호 인정----')
+            
+         } else {
+             $('.password_notok').css("display", "inline-block");
+             $('.password_ok').css("display", "none");
+         }
+     }
+
+     function passwordReCheck(){
+         var str1 = document.querySelector("#user-password").value;
+         var str2 = document.querySelector("#user-password2").value;
+
+         if(str1 === str2){
+             $('.ok-ok').css("display", "inline-block");
+             $('.ok-no').css("display", "none");
+            document.querySelector("#passwordCheckYet").value = 1;
+
+         }else{
+             $('.ok-no').css("display", "inline-block");
+             $('.ok-ok').css("display", "none");
+         }
+     }
+     </script>
+    <script>
 $(document).ready(function () {
     $('#mail-Check-Btn').click(function() {
         const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
@@ -242,109 +379,8 @@ function moveToList(){
 
 
 </script>
-</head>
-<body>
-    
-    
-    <div class="container">
-         <!-- 제목 -->
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">회원등록</h1>
-            </div>
-        </div>    
-        <!--// 제목 ----------------------------------------------------------------->
-        <!-- 버튼 -->
-        <div class="row justify-content-end">
-            <div class="col-auto">
-               <input type="button" class="btn btn-primary" value="등록" id="doSave"      onclick="window.doSave();">
-               <input type="button" class="btn btn-primary" value="목록" id="moveToList"  onclick="window.moveToList();">
-            </div>
-        </div>
-        <!--// 버튼 ----------------------------------------------------------------->
-         
-         <!-- 회원 등록영역 -->  
-         <div>
-           <form action="#" name="userRegFrm">
-           
-           
-           <!-- 이메일 본인 인증 -->
-             <%-- email중복체크 수행 여부 확인:0(미수행),1(수행) --%>
-          <input type="hidden" name="idCheckYet" id="idCheckYet" value="0">
-           <div class="form-group email-form">
-            <label for="email">이메일</label>
-                 <div class="input-group">
-                    <input type="text" class="form-control" name="userEmail1" id="userEmail1" placeholder="이메일" required oninput="idCheck()" >
-                    <select class="form-control" name="userEmail2" id="userEmail2" onchange="idCheck()">
-                    <option>@naver.com</option>
-                    <option>@daum.net</option>
-                    <option>@gmail.com</option>
-                    <option>@hanmail.com</option>
-                     <option>@yahoo.co.kr</option>
-                    </select>
-                </div>   
-            <div class="input-group-addon">
-                <span class="id_ok" style="color:green; display:none;">사용 가능한 아이디입니다.</span>
-                <span class="id_already" style="color:red; display:none;">중복된 아이디입니다!</span>
-                <button type="button" class="btn btn-primary" id="mail-Check-Btn">본인인증</button>
-            </div>
-                <div class="mail-check-box">
-            <input class="form-control mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
-            </div>
-                <span id="mail-check-warn"></span>
-            </div>
-            
-             
-               <div class="mb-3"> <!--  아래쪽으로  여백 -->
-                   <label for="name" class="form-label">이름</label>
-                   <input type="text"  class="form-control"  name="name" id="name" placeholder="이름을 입력 하세요." size="20"  maxlength="21">
-               </div>   
-               <div class="mb-3">
-                   <label for="password" class="form-label">비밀번호</label>
-                   <input type="password"  class="form-control"  name="password" id="user-password" placeholder="비밀번호를 입력 하세요." size="20"  maxlength="30" required oninput="passwordCheck()">
-                   <span class="password_ok" style="color:green; display:none;">사용 가능한 비밀번호입니다.</span>
-                   <span class="password_notok" style="color:red; display:none;"> 8글자 이상, 영문, 숫자, 특수문자를 사용해주세요.</span>
-               </div>   
-               <div class="mb-3">
-                        <input type="hidden" name="passwordCheckYet" id="passwordCheckYet" value="0">
-                        <label for="user-password2" class="form-label">비밀번호 확인</label>
-                        <input type ="password" class="form-control form-control-user" name="password" id="user-password2" placeholder="비밀번호를 입력해주세요." required oninput="passwordReCheck()">
-                        <span class="ok-ok" style="color:green; display:none;">비밀번호가 일치합니다.</span>
-                        <span class="ok-no" style="color:red; display:none;">비밀번호가 일치하지 않습니다.</span>
-                </div>              
-               <div class="mb-3">
-                   <label for="tel" class="form-label">전화번호</label>
-                   <input type="text"  class="form-control numOnly" name="tel" id="tel" placeholder="전화번호를 입력하세요" size="20"  maxlength="11">
-               </div>    
-               <div class="mb-3">     
-                   <label for="edu" class="form-label">학력</label>
-                   <div class="col-auto">
-                    <select id="education" name="education">
-                        <!-- 검색 조건 옵션을 동적으로 생성 -->
-                         <c:forEach items="${education}" var="vo">
-                            <option value="${vo.detCode}">${vo.detName}</option>
-                        </c:forEach>
-                    </select>
-                    </div>
-               </div>
-    
-               <div class="mb-3">
-                   <label for="role" class="form-label">역할</label>
-                   <div class="col-auto">
-                    <select id="role" name="role">
-                        <!-- 검색 조건 옵션을 동적으로 생성 -->
-                         <c:forEach items="${role}" var="vo">
-                            <option value="${vo.detCode}">${vo.detName}</option>
-                        </c:forEach>
-                    </select>
-                    </div>
-               </div>                                                        
-           </form>
-         </div>
-         <!--// 회원 등록영역 ------------------------------------------------------>
-         <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>    
-     </div>
-     <script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script>
      function strongPassword(str) {
          return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
      }
@@ -377,5 +413,12 @@ function moveToList(){
          }
      }
      </script>
-</body>
+
+
+    <!-- Separate Popper and Bootstrap JS -->
+    <script src="${CP}/resources/template/login/assets/js/popper.min.js"></script>
+    <script src="${CP}/resources/template/login/assets/js/bootstrap.min.js"></script>
+
+
+  </body>
 </html>
