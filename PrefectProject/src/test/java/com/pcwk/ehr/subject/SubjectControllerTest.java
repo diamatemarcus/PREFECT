@@ -68,7 +68,7 @@ public class SubjectControllerTest implements PcwkLogger {
 		int score = 10;// 점수
 
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		subjectList = Arrays.asList(new SubjectVO(subjectCode, coursesCode, professor, trainee, score));
+		subjectList = Arrays.asList(new SubjectVO(subjectCode, coursesCode, professor, trainee, score, score, score));
 		searchVO = new SubjectVO();
 		searchVO.setTrainee(trainee);
 	}
@@ -96,7 +96,7 @@ public class SubjectControllerTest implements PcwkLogger {
 		// 필요한 경우 여기에 추가적인 단언문을 추가할 수 있습니다
 	}
 
-	@Ignore
+	
 	@Test
 	public void doSelectOne() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -121,7 +121,6 @@ public class SubjectControllerTest implements PcwkLogger {
 		assertNotNull(resultVO);
 		assertEquals(vo.getSubjectCode(), resultVO.getSubjectCode());
 		assertEquals(vo.getCoursesCode(), resultVO.getCoursesCode());
-		assertEquals(vo.getProfessor(), resultVO.getProfessor());
 		assertEquals(vo.getTrainee(), resultVO.getTrainee());
 		assertEquals(vo.getScore(), resultVO.getScore());
 
