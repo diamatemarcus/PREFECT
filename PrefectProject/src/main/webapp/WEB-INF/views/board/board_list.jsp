@@ -176,7 +176,7 @@ function pageDoRerive(url,pageNo){
                 </a>
                 <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars text-primary"></span>
+                    <span class="fa fa-bars text-warning"></span>
                 </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto" style=" padding-top: 8px;">
@@ -190,8 +190,8 @@ function pageDoRerive(url,pageNo){
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="button me-md-2" type="button" onclick="location.href='/login/loginView.do'" style="background-color: FFA500; font-size: 12px; ">로그인</button>
-                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="background-color: FFA500; font-size: 12px">회원가입</button>
+                        <button class="button me-md-2" type="button" onclick="location.href='/login/loginView.do'" style="color:white;background-color: FFA500; font-size: 16px; ">로그인</button>
+                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="color:white;background-color: FFA500; font-size: 16px">회원가입</button>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <button
@@ -263,7 +263,7 @@ function pageDoRerive(url,pageNo){
     
     
     <!-- table -->
-    <table class="table table-bordered table-hover" id="boardTable">
+    <table class="table table-bordered table-hover table-responsive" id="boardTable">
       <thead>
         <tr >
           <th scope="col" class="text-center col-lg-1  col-sm-1">NO</th>
