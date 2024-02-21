@@ -145,33 +145,40 @@ public class SubjectController implements PcwkLogger {
 //		
 //		return view;
 //	}
+	
 	@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
 	public String doSelectOne(SubjectVO inVO, HttpServletRequest req, Model model) throws SQLException {
 	    String view = "subject/subject_mod";
 	    LOG.debug("┌───────────────────────────────────────────┐");
 	    LOG.debug("│ doSelectOne() │inVO:" + inVO);
 	    LOG.debug("└───────────────────────────────────────────┘");
-	    String subjectCode = req.getParameter("subjectCode");
-	    String trainee = req.getParameter("trainee");
-	    String coursesCode = req.getParameter("coursesCode");
+
+	    String traineeEmail = req.getParameter("email");
+	    //String trainee = req.getParameter("trainee");
 	    
-	    inVO.setTrainee(trainee); // inVO 객체에 trainee 설정
+	    inVO.setTrainee(traineeEmail); // inVO 객체에 trainee 설정
+	    
+	    UserVO userTrainee = new UserVO();
+	    userTrainee.setEmail(traineeEmail);
+	    userTrainee = userService.doSelectOne(userTrainee);
+	    LOG.debug("│ userTrainee                                :"+userTrainee);
 
 	    // coursesCode 값이 null이 아니고 숫자로 구성된 문자열인지 확인
-	    if (coursesCode != null && coursesCode.matches("\\d+")) {
-	        inVO.setCoursesCode(Integer.parseInt(coursesCode));
-	    } else {
-	        LOG.error("Invalid coursesCode: " + coursesCode);
-	        // 여기서 오류 처리 로직을 추가하거나 기본값을 설정할 수 있습니다.
-	    }
+//	    if (outVO.getCoursesCode() != null && outVO.getCoursesCode().matches("\\d+")) {
+//	        inVO.setCoursesCode(Integer.parseInt(coursesCode));
+//	    } else {
+//	        LOG.error("Invalid coursesCode: " + coursesCode);
+//	        // 여기서 오류 처리 로직을 추가하거나 기본값을 설정할 수 있습니다.
+//	    }
 
-	    LOG.debug("│ trainee :" + trainee);
-	    LOG.debug("│ coursesCode :" + coursesCode);
 
 	    SubjectVO outVO = this.subjectService.doSelectOne(inVO);
 	    LOG.debug("│ outVO :" + outVO);
-
+	    //LOG.debug("│ trainee :" + trainee);
+	    LOG.debug("│ coursesCode :" + outVO.getCoursesCode());
+	    
 	    model.addAttribute("outVO", outVO);
+	    model.addAttribute("trainee", userTrainee);
 
 	    return view;
 	}

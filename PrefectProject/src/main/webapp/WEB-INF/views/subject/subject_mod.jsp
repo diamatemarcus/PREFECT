@@ -101,7 +101,7 @@ function doUpdate(){
                <div class="mb-3"> <!--  아래쪽으로  여백 -->
                    <label for="trainee" class="form-label">학생</label>
                    <input type="text"  class="form-control" readonly="readonly"  name="name" id="name" 
-                   value= "${vo.trainee} " size="20"  maxlength="21">
+                   value= "${trainee.name} " size="20"  maxlength="21">
                </div>	               
                <div class="mb-3">
                    <label for="score" class="form-label">점수</label>
