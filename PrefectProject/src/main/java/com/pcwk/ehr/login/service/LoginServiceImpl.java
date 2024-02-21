@@ -65,5 +65,19 @@ public class LoginServiceImpl implements LoginService, PcwkLogger {
 		LOG.debug("30 idPassCheck pass checkStatus:" + checkStatus);
 		return checkStatus;
 	}
+	
+	@Override
+	public String login(String email, String password) throws SQLException {
+		UserVO user = loginDao.getUserEmail(email); 
+		LOG.debug(password);
+		LOG.debug(user.getSalt());
+		String hexPw = ShaUtil.hash(password + user.getSalt()); 
+		LOG.debug(user.getPassword());
+		LOG.debug(hexPw);
+		if (hexPw.equals(user.getPassword())) { //
+			return user.getEmail();
+		}
+		return null;
 
+	}
 }

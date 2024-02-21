@@ -26,4 +26,6 @@ public interface LoginService {
 	 */
 	UserVO doSelectOne(UserVO inVO) throws SQLException, EmptyResultDataAccessException;
 	
+	String login(String email,String password)throws SQLException;
+
 }

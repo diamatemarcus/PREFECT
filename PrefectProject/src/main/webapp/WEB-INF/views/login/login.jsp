@@ -5,120 +5,95 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />
-<!DOCTYPE html>
+<c:set var="CP" value="${pageContext.request.contextPath}" />
+
+<!doctype html>
 <html lang="en">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>로그인</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://kit.fontawesome.com/53a8c415f1.js" crossorigin="anonymous"></script>
-    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/53a8c415f1.js"
+	crossorigin="anonymous"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/bootstrap.min.css" type="text/css">
+<!-- FontAwesome CSS -->
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/all.min.css" type="text/css">
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/uf-style.css" type="text/css">
+<title>Login Form Bootstrap 1 by UIFresh</title>
 </head>
 <body>
-	<div class="wrap">
-		<div class="login">
-			<h2>로그인</h2>
-			<div class="login_email">
-				<h4>E-mail</h4>
-				<input type="text" class="form-control" id="email" name="email"
-					placeholder="이메일을 입력하세요" required="required">
-			</div>
-			<div class="login_pw">
-				<h4>비밀번호</h4>
-				<input type="password" class="form-control" id="password"
-					name="password" placeholder="비밀번호를 입력하세요" required="required">
-			</div>
-			<div class="search">
-				<div class="search_email">
-				    <a href="${CP}/search/searchEmailView.do">이메일을 잊어버리셨나요?</a>
-				</div>
-				<div class="search_password" id="searchPassword">
-					<a href="${CP}/search/searchPasswordView.do">비밀번호를 잊어버리셨나요?</a>
-				</div>
-			</div>
-			<div class="submit">
-				<input type="submit" id="doLogin" value="로그인">
-			</div>
-			<br>
-			<div class="register">
-				<a href="/ehr/user/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
-			</div>
-			<div class="login_sns">
-				<a id="custom-login-btn" href="javascript:kakaoLogin()">
-						<img
-						src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
-						width="280" />
-				</a>
-			</div>
+	<div class="uf-form-signin">
+		<div class="text-center">
+			<a href="#"><img src="${CP}/resources/template/login/assets/img/logo-fb.png" alt="" width="100" height="100"></a>
+			<h1 class="text-white h3">Account Login</h1>
 		</div>
+		<form class="login-form" action ="/ehr/login/doLogin.do" method= "GET">
+			<div class="input-group uf-input-group input-group-lg mb-3">
+				<span class="input-group-text fa fa-user"></span>
+				<input type="text" id="user-email" name="email" class="form-control" placeholder="Email address" required="required">
+			</div>
+			<div class="d-flex mb-3 justify-content-between">
+				<div class="form-check">
+					<!-- 빈공간을 만들기 위함-->
+				</div>
+				<div class="search_email">
+					<a href="${CP}/search/searchEmailView.do">Forgot Email?</a>
+				</div>
+			</div>
+			<div class="input-group uf-input-group input-group-lg mb-3">
+				<span class="input-group-text fa fa-lock"></span>
+				<input type="password" id="user-password" name="password" class="form-control" placeholder="Password" required="required">
+			</div>
+			<div class="d-flex mb-3 justify-content-between">
+				<div class="form-check">
+					<!-- 빈공간을 만들기 위함-->
+				</div>
+				<a href="/ehr/login/search_password">Forgot password?</a>
+			</div>
+			<div class="d-grid mb-4">
+				<button type="submit" class="btn uf-btn-primary btn-lg" id="doLogin">Login</button>
+			</div>
+			<div class="d-flex mb-3">
+				<div class="dropdown-divider m-auto w-25"></div>
+				<small class="text-nowrap text-white">Or login with</small>
+				<div class="dropdown-divider m-auto w-25"></div>
+			</div>
+			<div class="uf-social-login d-flex justify-content-center">
+				<a href="#" class="uf-social-ic" title="Login with Facebook"><i class="fab fa-facebook-f"></i></a>
+			</div>
+			<div class="mt-4 text-center">
+				<span class="text-white">Don't have an account?</span> <a
+					href="/ehr/user/moveToReg.do">Sign Up</a>
+			</div>
+		</form>
 	</div>
-	
 
-	<script type="text/javascript">
-		$(document).ready(function() {
-			console.log("ready!");
-
-			$("#doLogin").on("click", function(e) {
-				console.log("doLogin click!");
-
-				let email = $("#email").val();
-				if (email.trim() === "") {
-					alert('이메일을 입력하세요.');
-					$("#email").focus();
-					return;
-				}
-				console.log("email:" + email);
-
-				let password = $("#password").val();
-				if (password.trim() === "") {
-					alert('비밀번호를 입력하세요.');
-					$("#password").focus();
-					return;
-				}
-				console.log("password:" + password);
-
-				if (confirm("로그인 하시겠습니까?") === false)
-					return;
-
-				$.ajax({
-					type : "POST",
-					url : "/ehr/login/doLogin.do",
-					async : true,
-					dataType : "json",
-					data : {
-						"email" : email,
-						"password" : password
-					},
-					success : function(data) {
-						console.log("data.msgId:" + data.msgId);
-						console.log("data.msgContents:" + data.msgContents);
-
-						if ("10" == data.msgId) {
-							alert(data.msgContents);
-							$("#email").focus();
-						} else if ("20" == data.msgId) {
-							alert(data.msgContents);
-							$("#password").focus();
-						} else if ("30" == data.msgId) {
-							alert(data.msgContents);
-							window.location.href = "/ehr/main/mainView.do";
-						}
-					},
-					error : function(data) {
-						console.log("error:" + data);
-					},
-					complete : function(data) {
-						console.log("complete:" + data);
-					}
-				});
-			});
-		});
-	</script>
+	<!-- JavaScript -->
+<script>
+        $('#doLogin').on('click', function () {
+        	console.log("click 하였슴")
+        	
+        if (confirm('로그인 하시겠습니까?')) {
+            if ($('#user-email').val() == '') {
+                alert('아이디를 입력하세요.');
+                return;
+            }
+            if ($('#user-password').val() == ''){
+                alert('비밀번호를 입력하세요.');
+                return;
+            }
+        }});
+</script>
 </body>
 </html>
