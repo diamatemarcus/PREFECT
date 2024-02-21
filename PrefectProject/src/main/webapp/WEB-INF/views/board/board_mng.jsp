@@ -6,11 +6,51 @@
 <html>
 <head> 
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
+<meta charset="utf-8">
 <title>게시판 상세 조회</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="" name="keywords">
+<meta content="" name="description">
+ <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
 <style>
    .readonly-input {
     background-color: #e9ecef ;
    }
+    .button {
+            width: auto;
+            /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
+            /* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
+            padding: 10px 20px;
+            /* 내용과 버튼의 테두리 간격을 조정합니다. */
+            border: none;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            background-color: #FFA500
+}
 </style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
@@ -362,7 +402,51 @@ document.addEventListener("DOMContentLoaded",function(){
 </script>
 </head>
 <body>
+<!-- Navbar start -->
+    <div class="container-fluid fixed-top">
+        <div class="container px-0">
+            <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                <a href="index.jsp" class="navbar-brand">
+                    <h1 class="text-warning display-6" style="color: #ffb526;font-family: 'Raleway', sans-serif; font-weight: bold;padding-top: 8px;">A R M S</h1>
+                </a>
+                <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                    <span class="fa fa-bars text-warning"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                    <div class="navbar-nav mx-auto" style=" padding-top: 8px;">
+                        <a href="index.jsp" class="nav-item nav-link active">게시판</a>
+                        <a href="/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>
+                        <a href="#" class="nav-item nav-link">일정표</a>
+                        <a href="/dm/doContentsList.do'" class="nav-item nav-link">메시지</a>
+                        <a href="/book/bookApiView.do" class="nav-item nav-link">도서구매</a>
+                        <a href="/user/doSelectOne.do" class="nav-item nav-link">마이페이지</a>
+                        <a href="/user/doSelectOne.do" class="nav-item nav-link">회원 목록</a> <!-- 관리자에게만 보이게 할 예정-->
+                    </div>
 
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button class="button me-md-2" type="button" onclick="location.href='/login/loginView.do'" style="color:white;background-color: #FFA500; font-size: 16px; ">로그인</button>
+                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="color:white;background-color: #FFA500; font-size: 16px">회원가입</button>
+                    </div>
+                    <div class="d-flex m-3 me-0">
+                        <button
+                            class="btn-search btn border border-warning btn-md-square rounded-circle bg-white me-4" 
+                            data-bs-toggle="modal" data-bs-target="#searchModal">
+                            <i class="fas fa-search text-warning" ></i></button>
+                        <a href="#" class="my-auto">
+                            <i class="fas fa-user fa-2x" style="color: #ffb526;"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!-- Navbar End -->
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
 <div class="container">
 
     <!-- 제목 -->
@@ -536,8 +620,21 @@ document.addEventListener("DOMContentLoaded",function(){
        <input type="hidden" name="savePath" id="savePath">
     </form>
 	    
-    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+   
 </div>
+<!-- Copyright Start -->
+    <div class="container-fluid copyright py-4" style="background-color: #45595b;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                    <span class="text-light" ><a href="#"  style="color:#ffb526;"><i class="fas fa-copyright text-light me-2"></i>ARMS</a>, All right reserved.</span>
+                </div>
+                    <div class="col-md-6 my-auto text-center text-md-end text-white">
+                    </div>
+                 </div>
+        </div>
+    </div>
+    <!-- Copyright End -->
 
 </body>
 </html>
