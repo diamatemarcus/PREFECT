@@ -172,6 +172,8 @@
 
 	}
 	$(document).ready(function() {
+		
+		var selectedLicenses = [];
 	 // 선택 버튼 클릭 시
 	    $('#doSaveLicenses').click(function() {
 	        console.log('licensesdoSave click');
@@ -185,13 +187,12 @@
 	        }
 
 	     // 이미 선택된 자격증인지 확인
-	        var selectedLicensesSeqs = [];
 	        $('#tableTbody tr').each(function() {
 	            var licenseSeq = $(this).find('td:first').text();
-	            selectedLicensesSeqs.push(licenseSeq);
+	            selectedLicenses.push(licenseSeq);
 	        });
 
-	        if (selectedLicensesSeqs.includes(licensesSeq)) {
+	        if (selectedLicenses.includes(licensesSeq)) {
 	            alert('이미 선택된 자격증입니다.');
 	            return; // 이미 선택된 자격증이면 함수 종료
 	        }
@@ -278,6 +279,7 @@
 	        });
 	    });
 
+	   
 
 	 // 등록일 유효성 검사 함수
 	    function validateDate(dateString) {
