@@ -118,7 +118,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		     password  = #{password}           
 		 WHERE                    
 		     email      = #{email}          
-    	</update> <!-- 회원정보 변경 쿼리 -->
+    	</update>
 
 
     <select id="doSelectOne" parameterType="UserVO" 

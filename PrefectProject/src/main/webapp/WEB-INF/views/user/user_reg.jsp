@@ -20,6 +20,16 @@ $(document).ready(function () {
         const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
         console.log('완성된 이메일 : ' + email); // 이메일 오는지 확인
         const checkInput = $('.mail-check-input') // 인증번호 입력하는곳 
+
+        let email1 = document.querySelector("#userEmail1").value;
+        /* console.log("javascript ppl_input:"+document.querySelector(".ppl_input").value);    */
+         
+         if(eUtil.isEmpty(email1) == true){
+            alert('이메일을 입력 하세요.');
+            //$("#email").focus();//사용자 id에 포커스
+            document.querySelector("#userEmail1").focus();
+            return;
+         }
         
         $.ajax({
             type : 'get',
@@ -38,6 +48,13 @@ $(document).ready(function () {
     $('.mail-check-input').blur(function () {
         const inputCode = $(this).val();
         const $resultMsg = $('#mail-check-warn');
+        const name = $('#name');
+        const tel = $('#tel');
+        const password1 = $('#user-password');
+        const password2 = $('#user-password2');
+        const education = $('#education');
+        const role = $('#role');
+        
         
         if(inputCode == code){
             $resultMsg.html('인증번호가 일치합니다.');
@@ -46,7 +63,13 @@ $(document).ready(function () {
             $('#userEamil1').attr('readonly',true);
             $('#userEamil2').attr('readonly',true);
             $('#userEmail2').attr('onFocus', 'this.initialSelect = this.selectedIndex');
-             $('#userEmail2').attr('onChange', 'this.selectedIndex = this.initialSelect');
+            $('#userEmail2').attr('onChange', 'this.selectedIndex = this.initialSelect');
+            name.attr('disabled',false);
+            password1.attr('disabled',false);
+            password2.attr('disabled',false);
+            tel.attr('disabled',false);
+            education.attr('disabled',false);
+            role.attr('disabled',false);
         }else{
             $resultMsg.html('인증번호가 불일치 합니다. 다시 확인해주세요!.');
             $resultMsg.css('color','red');
@@ -57,9 +80,7 @@ $(document).ready(function () {
     
 function idCheck(){
        console.log("-emailDuplicateCheck()-");  
-       let email1 = document.querySelector("#userEmail1").value;
-       let email2 = document.querySelector("#userEmail2").value;
-       let email0 = email1 + email2;
+       const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
           
     $.ajax({
         type: "GET",
@@ -67,21 +88,21 @@ function idCheck(){
         asyn: "true",
         dataType: "json", /*return dataType: json으로 return */
         data: {
-            email : email0
+            email : email
         },
         success: function (data) {//통신 성공
             console.log("success data:" + data);
-            if ("1" != data.msgId && email1.length > 0) {
+            if ("1" != data.msgId && email.length > 0) {
                 $('.id_ok').css("display", "inline-block");
                 $('.id_already').css("display", "none");
                 document.querySelector("#idCheckYet").value = 1;
 
-            } else if ("1" == data.msgId && email0.length > 0) {
+            } else if ("1" == data.msgId && email.length > 0) {
                 $('.id_already').css("display", "inline-block");
                 $('.id_ok').css("display", "none");
                 document.querySelector("#idCheckYet").value = 0;
 
-            } else if (email1.length == 0){
+            } else if (email.length == 0){
                 $('.id_ok').css("display", "none");
                 $('.id_already').css("display", "none");
                 document.querySelector("#idCheckYet").value = 0;
@@ -117,7 +138,6 @@ function doSave(){
        alert('아이디를 입력 하세요.');
        //$("#email").focus();//사용자 id에 포커스
        document.querySelector("#userEmail1").focus();
-       document.querySelector("#userEmail2").focus();
        return;
     }
     
@@ -215,7 +235,7 @@ function moveToList(){
        console.log("-moveToList()-");
        console.log("----------------------");
        
-       window.location.href = "/ehr/user/doRetrieve.do";
+       window.location.href = "/ehr/login/loginView.do";
 }
 
 
@@ -255,7 +275,7 @@ function moveToList(){
             <label for="email">이메일</label>
                  <div class="input-group">
                     <input type="text" class="form-control" name="userEmail1" id="userEmail1" placeholder="이메일" required oninput="idCheck()" >
-                    <select class="form-control" name="userEmail2" id="userEmail2">
+                    <select class="form-control" name="userEmail2" id="userEmail2" onchange="idCheck()">
                     <option>@naver.com</option>
                     <option>@daum.net</option>
                     <option>@gmail.com</option>

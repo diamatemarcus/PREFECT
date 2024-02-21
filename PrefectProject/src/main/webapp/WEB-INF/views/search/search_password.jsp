@@ -81,7 +81,7 @@
 		            </div>
              </div>
              <p class="w3-center">
-                 <button type="submit" id="searchPasswordResult" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round">비밀번호 찾기</button>
+                 <button type="submit" id="searchPasswordResult" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round" disabled>비밀번호 찾기</button>
                  <button type="button" onclick="history.go(-1);" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-margin-bottom w3-round">취소</button>
              </p>
          </div>
@@ -159,6 +159,7 @@
          $('.mail-check-input').blur(function () {
              const inputCode = $(this).val();
              const $resultMsg = $('#mail-check-warn');
+             const findBtn = $('#searchPasswordResult');
              
              if(inputCode == code){
                  $resultMsg.html('인증번호가 일치합니다.');
@@ -168,6 +169,7 @@
                  $('#userEamil2').attr('readonly',true);
                  $('#userEmail2').attr('onFocus', 'this.initialSelect = this.selectedIndex');
                  $('#userEmail2').attr('onChange', 'this.selectedIndex = this.initialSelect');
+                 findBtn.attr('disabled',false);
              }else{
                  $resultMsg.html('인증번호가 불일치 합니다. 다시 확인해주세요!.');
                  $resultMsg.css('color','red');

@@ -49,9 +49,8 @@
 			<div class="register">
 				<a href="/ehr/user/moveToReg.do"><u>Prefect가 처음이신가요?</u></a>
 			</div>
-			</p>
 			<div class="login_sns">
-				<li><a id="custom-login-btn" href="javascript:kakaoLogin()">
+				<a id="custom-login-btn" href="javascript:kakaoLogin()">
 						<img
 						src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
 						width="280" />
