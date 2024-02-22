@@ -18,65 +18,66 @@ import com.pcwk.ehr.user.service.UserService;
 
 @Controller
 @RequestMapping("login")
-public class LoginController implements PcwkLogger{
-	
+public class LoginController implements PcwkLogger {
+
 	@Autowired
 	LoginService loginService;
-	
+
 	@Autowired
 	LoginDao loginDao;
-	
+
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	CodeService codeService;
- 	
-	public LoginController() {}
-	
-	@RequestMapping(value="/loginView.do")
+
+	public LoginController() {
+	}
+
+	@RequestMapping(value = "/loginView.do")
 	public String loginView() {
 		String view = "login/login";
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ loginView                                 │");
-		LOG.debug("└───────────────────────────────────────────┘");				
-				
+		LOG.debug("└───────────────────────────────────────────┘");
+
 		return view;
 	}
-	
-	@GetMapping(value="/doLogin.do")   
-	public String login(String email,String password, HttpSession httpSession)throws SQLException{
+
+	@GetMapping(value = "/doLogin.do")
+	public String login(String email, String password, HttpSession httpSession) throws SQLException {
 		String id = loginService.login(email, password);
 		UserVO user = loginDao.getUserEmail(email);
 		UserVO outVO = loginService.doSelectOne(user);
 		String view2 = "login/login";
-		String view1 = "index";
-		
+		String view1 = "main/main";
+
 		LOG.debug(id);
 		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ doLogin                                   │user:"+id);
-		LOG.debug("└───────────────────────────────────────────┘");				
-		
-		if (id == null) { 
+		LOG.debug("│ doLogin                                   │user:" + id);
+		LOG.debug("└───────────────────────────────────────────┘");
+
+		if (id == null) {
 			LOG.debug("로그인 실패");
 			return view2;
-        }else {
-		httpSession.setAttribute("user", outVO);
-		LOG.debug(outVO);
-        LOG.debug("로그인 성공");
-        return view1;
-        }
+		} else {
+			httpSession.setAttribute("user", outVO);
+			LOG.debug(outVO);
+			LOG.debug("로그인 성공");
+			return view1;
+		}
 	}
-	
-	@RequestMapping(value="/doLogout.do")
+
+	@RequestMapping(value = "/doLogout.do")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		String view = "login/login";
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ loginView                                 │");
-		LOG.debug("└───────────────────────────────────────────┘");				
-				
+		LOG.debug("└───────────────────────────────────────────┘");
+
 		return view;
 	}
-	
+
 }

@@ -1,6 +1,7 @@
 package com.pcwk.ehr.subject.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,20 +62,32 @@ public class SubjectController implements PcwkLogger {
 	    SubjectVO subjectVO = new SubjectVO();
 	    subjectVO.setProfessor(email); // 로그인한 사용자의 이메일 설정
 	    List<SubjectVO> list = subjectService.doRetrieve(subjectVO);
-		
 	    
-	    UserVO users = new UserVO();
-	    List<UserVO> userList = userService.doRetrieve(users);
+	    List<UserVO> userList = new ArrayList<>();
 
-	    // 각 SubjectVO의 trainee와 일치하는 email을 가진 UserVO 찾기
 	    for (SubjectVO vo : list) {
-	        for (UserVO userVO : userList) {
-	            if (vo.getTrainee().equals(userVO.getEmail())) {
-	                vo.setTrainee(userVO.getName()); //
-	                break; // 일치하는 첫 번째 사
-	            }
-	        }
+	        UserVO user = new UserVO();
+	        user.setEmail(vo.getTrainee());
+	        user = userService.doSelectOne(user);
+	        LOG.debug("│ user                                :"+user);
+	        userList.add(user);
 	    }
+		
+//	    UserVO users = new UserVO();
+//	    
+//	    List<UserVO> userList = userService.doRetrieve(users);
+//
+//	    // 각 SubjectVO의 trainee와 일치하는 email을 가진 UserVO 찾기
+//	    for (SubjectVO vo : list) {
+//	        for (UserVO userVO : userList) {
+//	            if (vo.getTrainee().equals(userVO.getEmail())) {
+//	            	
+//	                vo.setTrainee(userVO.getName()); //
+//	                break; // 일치하는 첫 번째 사
+//	            }
+//	        }
+//	    }
+	    
 	    model.addAttribute("userList", userList);
 	    model.addAttribute("list", list);
 
@@ -132,33 +145,40 @@ public class SubjectController implements PcwkLogger {
 //		
 //		return view;
 //	}
+	
 	@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
 	public String doSelectOne(SubjectVO inVO, HttpServletRequest req, Model model) throws SQLException {
 	    String view = "subject/subject_mod";
 	    LOG.debug("┌───────────────────────────────────────────┐");
 	    LOG.debug("│ doSelectOne() │inVO:" + inVO);
 	    LOG.debug("└───────────────────────────────────────────┘");
-	    String subjectCode = req.getParameter("subjectCode");
-	    String trainee = req.getParameter("trainee");
-	    String coursesCode = req.getParameter("coursesCode");
+
+	    String traineeEmail = req.getParameter("email");
+	    //String trainee = req.getParameter("trainee");
 	    
-	    inVO.setTrainee(trainee); // inVO 객체에 trainee 설정
+	    inVO.setTrainee(traineeEmail); // inVO 객체에 trainee 설정
+	    
+	    UserVO userTrainee = new UserVO();
+	    userTrainee.setEmail(traineeEmail);
+	    userTrainee = userService.doSelectOne(userTrainee);
+	    LOG.debug("│ userTrainee                                :"+userTrainee);
 
 	    // coursesCode 값이 null이 아니고 숫자로 구성된 문자열인지 확인
-	    if (coursesCode != null && coursesCode.matches("\\d+")) {
-	        inVO.setCoursesCode(Integer.parseInt(coursesCode));
-	    } else {
-	        LOG.error("Invalid coursesCode: " + coursesCode);
-	        // 여기서 오류 처리 로직을 추가하거나 기본값을 설정할 수 있습니다.
-	    }
+//	    if (outVO.getCoursesCode() != null && outVO.getCoursesCode().matches("\\d+")) {
+//	        inVO.setCoursesCode(Integer.parseInt(coursesCode));
+//	    } else {
+//	        LOG.error("Invalid coursesCode: " + coursesCode);
+//	        // 여기서 오류 처리 로직을 추가하거나 기본값을 설정할 수 있습니다.
+//	    }
 
-	    LOG.debug("│ trainee :" + trainee);
-	    LOG.debug("│ coursesCode :" + coursesCode);
 
 	    SubjectVO outVO = this.subjectService.doSelectOne(inVO);
 	    LOG.debug("│ outVO :" + outVO);
-
+	    //LOG.debug("│ trainee :" + trainee);
+	    LOG.debug("│ coursesCode :" + outVO.getCoursesCode());
+	    
 	    model.addAttribute("outVO", outVO);
+	    model.addAttribute("trainee", userTrainee);
 
 	    return view;
 	}

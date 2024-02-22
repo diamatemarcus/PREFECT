@@ -47,6 +47,7 @@
 			            <td class="text-center">
 				            <c:forEach var="user" items="${userList}">
 				                <c:if test="${user.email == vo.trainee}">
+				                <input type="hidden" id="traineeEmail" value="${user.email }"/>
 				                    ${user.name} <!-- 사용자 이름을 표시 -->
 				                </c:if>
 				            </c:forEach>
@@ -104,12 +105,14 @@
       console.log('----------------------------');
 
       let tdArray = $(this).children(); //td
-
-      let trainee = tdArray.eq(0).text();
+      let email = document.querySelector("#traineeEmail").value;
+      let trainee = tdArray.eq(0).text().trim();
       console.log('trainee:' + trainee);
+      console.log('email:' + email);
 
       // .do 제거 및 파라미터 이름 변경
-      window.location.href = "/ehr/subject/doSelectOne.do?trainee=" + trainee
+      // window.location.href = "/ehr/subject/doSelectOne.do?trainee=" + trainee;
+      window.location.href = "/ehr/subject/doSelectOne.do?email=" + email;
   });
 
     
