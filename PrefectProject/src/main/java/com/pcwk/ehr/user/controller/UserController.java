@@ -299,9 +299,17 @@ public class UserController {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doUpdatePassword()                        │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");		
-				
 		
-		int flag = this.userService.doUpdatePassword(inVO);
+		//SHA-256 + salt를 사용한 비밀번호 암호화 (2024-02-13)
+				String salt = ShaUtil.generateSalt();
+				inVO.setSalt(salt);
+				String raw = inVO.getPassword();
+				String rawAndSalt = raw + salt;
+				String hex = ShaUtil.hash(rawAndSalt);
+				inVO.setPassword(hex);
+				//
+		
+		int flag = userService.doUpdatePassword(inVO);
 		String message = "";
 		if(1==flag) {
 			message = inVO.getEmail()+"가 수정 되었습니다.";
