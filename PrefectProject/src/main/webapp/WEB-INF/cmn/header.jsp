@@ -50,10 +50,11 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 12px;
     cursor: pointer;
     border-radius: 8px;
-    background-color: #FFA500
+    background-color: #FFA500;
+    color: white;
 }
 
 </style>
@@ -115,8 +116,8 @@
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'" style="background-color: FFA500; color: white; font-size: 12px;">로그인</button>
-                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="background-color: FFA500; color: white; font-size: 12px">회원가입</button>
+                        <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'">로그인</button>
+                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'">회원가입</button>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i>

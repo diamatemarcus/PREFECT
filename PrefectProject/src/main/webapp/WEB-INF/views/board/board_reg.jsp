@@ -210,8 +210,8 @@ document.addEventListener("DOMContentLoaded",function(){
     <!-- 버튼 -->    
     <div class="row justify-content-end">
         <div class="col-auto">
-            <input type="button" value="목록" class="btn btn-primary" id="moveToList" style="color: white;">
-            <input type="button" value="등록" class="btn btn-primary" id="doSave" style="color: white;">
+            <input type="button" value="목록" class="button btn-primary" id="moveToList" style="color: white;">
+            <input type="button" value="등록" class="button btn-primary" id="doSave" style="color: white;">
         </div>
     </div>
     <!--// 버튼 ----------------------------------------------------------------->
@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded",function(){
 		    <div class="form-group">
 		        <label for="file1">파일1</label>
 		        <input type="file" name="file1" id="file1" placeholder="파일을 선택 하세요."  multiple/>
-		        <input type="button" value="파일 등록" class="button" id="fileUpload">
+		        <input type="button" value="파일 등록" class="button" id="fileUpload" style="color: white;">
 		    </div>  
 		</form>
 	</div>
