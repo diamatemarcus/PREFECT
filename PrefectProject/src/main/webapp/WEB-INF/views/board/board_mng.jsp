@@ -38,7 +38,7 @@
 document.addEventListener("DOMContentLoaded",function(){
 	
 	//댓글 조회 
-    //replyRetrieve();
+    replyRetrieve();
 	 
 	console.log('ready');
 	const div = document.querySelector("#div").value;
