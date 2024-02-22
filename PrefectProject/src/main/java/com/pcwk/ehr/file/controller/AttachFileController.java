@@ -247,7 +247,7 @@ public class AttachFileController implements PcwkLogger {
 	    LOG.debug("┌───────────────────────────────────┐");
 	    LOG.debug("│ reUpload                          │");
 	    LOG.debug("└───────────────────────────────────┘");
-
+	    
 	    List<FileVO> list = new ArrayList<>();
 
 	    for (MultipartFile multipartFile : uploadFiles) {

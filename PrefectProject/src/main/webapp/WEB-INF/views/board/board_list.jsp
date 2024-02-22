@@ -109,32 +109,20 @@ function pageDoRerive(url,pageNo){
 
 </script>
 <style>
-/* .page-link {
-  color: #000; 
-  background-color: #fff;
-  border: 1px solid #ccc; 
-}
+    /* 테이블과 관련된 스타일 */
+    .table th, .table td {
+        padding: 0.5rem; /* 셀 내부의 padding을 조절합니다 */
+    }
 
-.page-link.active{
- z-index: 1;
- color: #fff;
- font-weight:bold;
- background-color: orange;
- border-color: orange;
- }
- .button {
-            width: auto;
-            padding: 10px 20px;
-            border: none;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            background-color: #FFA500
-}
- */
+    /* 선택적으로 테이블의 너비를 조절합니다 */
+    .table-responsive {
+        margin: 0 auto; /* 상하 마진은 0, 좌우 마진은 자동으로 설정 */
+    }
+
+    /* 선택적으로 테이블 행의 높이를 조절합니다 */
+    .table tr {
+        height: auto; /* 필요에 따라 조절 */
+    }
 </style>
 </head>
 <body> 
@@ -196,13 +184,13 @@ function pageDoRerive(url,pageNo){
     
     
     <!-- table -->
-    <table class="table table-bordered table-hover table-responsive" id="boardTable">
+    <table class="table table-responsive" id="boardTable">
       <thead>
         <tr >
           <th scope="col" class="text-center col-lg-1  col-sm-1">NO</th>
-          <th scope="col" class="text-center col-lg-6  col-sm-8">제목</th>
+          <th scope="col" class="text-center col-lg-4  col-sm-8">제목</th>
           <th scope="col" class="text-center col-lg-2  col-sm-1">등록일</th>
-          <th scope="col" class="text-center col-lg-1  ">등록자</th>
+          <th scope="col" class="text-center col-lg-2  ">등록자</th>
           <th scope="col" class="text-center col-lg-1  ">조회수</th>
           <th scope="col" class="text-center   " style="display: none;">SEQ</th>
         </tr>

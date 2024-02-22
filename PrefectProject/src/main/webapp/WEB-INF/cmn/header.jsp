@@ -50,10 +50,11 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 12px;
     cursor: pointer;
     border-radius: 8px;
-    background-color: #FFA500
+    background-color: #FFA500;
+    color: white;
 }
 
 </style>
@@ -94,8 +95,10 @@
         <div class="container px-0">
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
                 <a href="/ehr/index.jsp" class="navbar-brand">
-                    <h1 class="text-primary display-6" style="padding-top: 8px;">A
-                        R M S</h1>
+                    <div class="arms-container">
+                        <img src="${CP}/resources/template/img/acorn.png" width="50" height="50">
+                        <h1 class="text-primary display-6">A R M S</h1>
+                    </div>
                 </a>
                 <button class="navbar-toggler py-2 px-3" type="button"
                     data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -108,22 +111,16 @@
                         <a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
                         <a href="/ehr/dm/doContentsList.do" class="nav-item nav-link">메시지</a> 
                         <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서구매</a>
-                        <a href="/ehr/user/doSelectOne.do" class="nav-item nav-link">마이페이지</a>
                         <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
                         <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'" style="background-color: FFA500; color: white; font-size: 12px;">로그인</button>
-                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="background-color: FFA500; color: white; font-size: 12px">회원가입</button>
+                        <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'">로그인</button>
+                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'">회원가입</button>
                     </div>
                     <div class="d-flex m-3 me-0">
-                        <button
-                            class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
-                            data-bs-toggle="modal" data-bs-target="#searchModal">
-                            <i class="fas fa-search text-primary"></i>
-                        </button>
-                        <a href="#" class="my-auto"> <i class="fas fa-user fa-2x"></i>
+                        <a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i>
                         </a>
                     </div>
                 </div>

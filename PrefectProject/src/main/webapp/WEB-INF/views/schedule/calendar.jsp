@@ -603,7 +603,7 @@
         <div class="col-lg-7" style="margin-top: 10px; margin-left: 15%;">
         <table
             class="table table-bordered border-primary table-hover"
-            id="calendarTable" style="margin-top: 10px;" >
+            id="calendarTable" style="margin-top: 10px; margin-bottom: 150px" >
             <thead>
                 <tr>
                     <th scope="col" class="text-center col-lg-1  col-sm-1">일</th>
