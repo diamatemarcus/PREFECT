@@ -41,12 +41,12 @@
 
 .btn-sm-square {
     width: 34px;
-    height: 34px;
+    height: 25px;
 }
 
 .btn-md-square {
     width: 44px;
-    height: 44px;
+    height: 30px;
 }
 
 .btn-lg-square {
@@ -63,7 +63,7 @@
     align-items: center;
     justify-content: center;
     font-weight: normal;
-    border: 1px solid #1d1dff;
+    border: 1px solid #000000;
     border-radius: 5px;
 }
 
@@ -158,6 +158,18 @@
         transition: .5s;
         opacity: 0;
     }
+}
+.basictable
+{
+    border-collapse: collapse;
+    width: 65%;
+    padding: 20px;
+    text-align: center;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    background-color: #f2f2f2;
 }
 
 .dropdown .dropdown-menu a:hover {

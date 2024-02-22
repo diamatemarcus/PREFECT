@@ -205,7 +205,9 @@
                                         <td class="hidden">${vo.licensesSeq}</td>
                                         <td>${vo.licensesName}</td>
                                         <td>${vo.regDt}</td>
-                                        <td><button class="deleteRowBtn btn btn-sm-square">삭제</button>
+                                        <td><button class="deleteRowBtn btn" style="margin-bottom: 5px">
+                                        <img src="${CP}/resources/template/img/x.png" alt="삭제" style="width: 20px; height: 20px;">
+                                        </button>
                                     </tr>
                                 </c:forEach>
                             </c:when>
