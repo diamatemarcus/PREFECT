@@ -90,7 +90,7 @@
 		<!-- 제목 -->
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">마이페이지</h1>
+				<h1 class="page-header" style="margin-bottom: 10px; color: #e44646; font-family: Montserrat; font-style: italic;">My Page</h1>
 			</div>
 		
 		<!--// 제목 ----------------------------------------------------------------->
@@ -184,7 +184,7 @@
 				        </div>
 				        <!-- 자격증 저장 버튼 -->
 				        <div class="col-auto">
-				            <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses">
+				            <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses" style="margin-top: 10px">
 				        </div>
 				    </div>
 				</div>
@@ -205,7 +205,7 @@
                                         <td class="hidden">${vo.licensesSeq}</td>
                                         <td>${vo.licensesName}</td>
                                         <td>${vo.regDt}</td>
-                                        <td><button class="deleteRowBtn">삭제</button>
+                                        <td><button class="deleteRowBtn btn btn-sm-square">삭제</button>
                                     </tr>
                                 </c:forEach>
                             </c:when>

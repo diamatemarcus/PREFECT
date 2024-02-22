@@ -63,7 +63,10 @@
     align-items: center;
     justify-content: center;
     font-weight: normal;
+    border: 1px solid #1d1dff;
+    border-radius: 5px;
 }
+
 
 .btn.border-secondary {
     transition: 0.5s;
