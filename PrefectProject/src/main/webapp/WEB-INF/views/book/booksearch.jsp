@@ -149,7 +149,8 @@ document.addEventListener("DOMContentLoaded", function() {
     </table>
     <!--// book --------------------------------------------------------------->
             
-    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
     </div>
+    
+     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>
 </html>

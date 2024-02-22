@@ -573,5 +573,6 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       </div>
     </div>
+    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>
 </html>

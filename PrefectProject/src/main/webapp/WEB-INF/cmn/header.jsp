@@ -43,7 +43,7 @@
 <!-- html head ------------------------------------------------------------------->
 
 <meta charset="utf-8">
-<title>ARMS - IT훈련학원 커뮤니티</title>
+<title>ARMS - IT 훈련학원 커뮤니티</title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <meta content="" name="keywords">
 <meta content="" name="description">
@@ -75,7 +75,7 @@
     <div class="container-fluid fixed-top">
         <div class="container px-0">
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
-                <a href="index.jsp" class="navbar-brand">
+                <a href="/ehr/index.jsp" class="navbar-brand">
                     <h1 class="text-primary display-6" style="padding-top: 8px;">A
                         R M S</h1>
                 </a>
@@ -91,7 +91,7 @@
                         <a href="/ehr/dm/doContentsList.do" class="nav-item nav-link">메시지</a> 
                         <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서구매</a>
                         <a href="/ehr/user/doSelectOne.do" class="nav-item nav-link">마이페이지</a>
-                        <a href="/ehr/user/doSelectOne.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
+                        <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
                         <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
                     </div>
 

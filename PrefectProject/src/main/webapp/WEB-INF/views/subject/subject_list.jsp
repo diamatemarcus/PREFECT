@@ -68,10 +68,8 @@
         </c:choose>
         </tbody>
     </table>
-
-<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>    
  </div>     
-<%--  <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>   --%>
+<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>    
  <script type="text/javascript">
  
   function pageDoRerive(url, pageNo){
