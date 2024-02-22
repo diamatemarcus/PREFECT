@@ -38,7 +38,7 @@
 			<a href="#"><img src="${CP}/resources/template/login/assets/img/logo-fb.png" alt="" width="100" height="100"></a>
 			<h1 class="text-white h3">Account Login</h1>
 		</div>
-		<form class="login-form" action ="/ehr/login/doLogin.do" method= "GET">
+		<form class="login-form" action ="/ehr/login/doLogin.do" method= "POST">
 			<div class="input-group uf-input-group input-group-lg mb-3">
 				<span class="input-group-text fa fa-user"></span>
 				<input type="text" id="user-email" name="email" class="form-control" placeholder="Email address" required="required">

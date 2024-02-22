@@ -6,8 +6,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.code.service.CodeService;
@@ -45,7 +46,8 @@ public class LoginController implements PcwkLogger {
 		return view;
 	}
 
-	@GetMapping(value = "/doLogin.do")
+	@PostMapping(value = "/doLogin.do")
+	@ResponseBody
 	public String login(String email, String password, HttpSession httpSession) throws SQLException {
 		String id = loginService.login(email, password);
 		UserVO user = loginDao.getUserEmail(email);

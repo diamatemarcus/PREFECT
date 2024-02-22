@@ -83,8 +83,7 @@
 		<div class="container px-0">
 			<nav class="navbar navbar-light bg-white navbar-expand-xl">
 				<a href="index.jsp" class="navbar-brand">
-					<h1 class="text-primary display-6" style="padding-top: 8px;">A
-						R M S</h1>
+					<h1 class="text-primary display-6" style="padding-top: 8px;">A R M S</h1>
 				</a>
 				<button class="navbar-toggler py-2 px-3" type="button"
 					data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -92,14 +91,14 @@
 				</button>
 				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 					<div class="navbar-nav mx-auto" style="padding-top: 8px;">
-						<a href="index.jsp" class="nav-item nav-link active">게시판</a>
+						<a href="index.jsp" class="nav-item nav-link">게시판</a>
 						<a href="/ehr/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>
-						<a href="/subject/doRetrieve.do" class="nav-item nav-link">캘린더</a>
-						<a href="/dm/doContentsList.do'" class="nav-item nav-link">메시지</a> 
-						<a href="/book/bookApiView.do" class="nav-item nav-link">도서구매</a>
-						<a href="/user/doSelectOne.do" class="nav-item nav-link">마이페이지</a>
-						<a href="/user/doSelectOne.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
-						<a href="/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
+						<a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
+						<a href="/ehr/dm/doContentsList.do" class="nav-item nav-link">메시지</a> 
+						<a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서구매</a>
+						<a href="/ehr/user/doSelectOne.do" class="nav-item nav-link">마이페이지</a>
+						<a href="/ehr/user/doRetrieve.do" class="nav-item nav-link active">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
+						<a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
 					</div>
 
 					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -188,7 +187,7 @@
     </form>
     
     <!-- table -->
-    <table id="userTable"  class="table table-bordered border-primary table-hover table-striped">    
+    <table id="userTable"  class="table table-bordered border-primary table-hover table-striped mt-2">    
         <thead>
         <tr>
             <th scope="col" class="text-center col-lg-2  col-sm-2">번호</th>
