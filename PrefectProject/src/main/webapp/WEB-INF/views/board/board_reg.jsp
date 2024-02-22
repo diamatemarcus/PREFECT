@@ -2,11 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<c:set var="CP" value="${pageContext.request.contextPath}" />
+<c:set var="CP" value="${pageContext.request.contextPath}"  scope="page"/>
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="${CP}/resources/css/user20231225.css">
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 등록</title> <!-- http://localhost:8080/ehr/board/moveToReg.do -->
 <script>
@@ -211,8 +210,8 @@ document.addEventListener("DOMContentLoaded",function(){
     <!-- 버튼 -->    
     <div class="row justify-content-end">
         <div class="col-auto">
-            <input type="button" value="목록" class="btn btn-primary" id="moveToList">
-            <input type="button" value="등록" class="btn btn-primary" id="doSave">
+            <input type="button" value="목록" class="btn btn-primary" id="moveToList" style="color: white;">
+            <input type="button" value="등록" class="btn btn-primary" id="doSave" style="color: white;">
         </div>
     </div>
     <!--// 버튼 ----------------------------------------------------------------->

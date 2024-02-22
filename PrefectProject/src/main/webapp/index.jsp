@@ -9,21 +9,7 @@
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 
 <style>
-.button {
-	width: auto;
-	/* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
-	/* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
-	padding: 10px 20px;
-	/* 내용과 버튼의 테두리 간격을 조정합니다. */
-	border: none;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	cursor: pointer;
-	border-radius: 8px;
-	background-color: #FFA500
-}
+
 </style>
 </head>
 
@@ -139,12 +125,10 @@
 						커뮤니티 이용을 위해 <span class="login-text" style="color: red">로그인</span>이
 						필요합니다!
 					</p>
-					<button class="button" type="button"
-						onclick="location.href='/ehr/login/loginView.do'"
-						style="background-color: FFA500; width: 200px; height: 38px; margin-bottom: 10px; font-size: 13px;">로그인</button>
-					<button class="button" type="button"
-						onclick="location.href='/ehr/user/moveToReg.do'"
-						style="background-color: FFA500; width: 200px; height: 38px; font-size: 13px">ARMS
+					<button class="button" type="button" onclick="location.href='/ehr/login/loginView.do'"
+						style="background-color: FFA500; width: 200px; height: 38px; margin-bottom: 10px; color: white; font-size: 13px;">로그인</button>
+					<button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'"
+						style="background-color: FFA500; width: 200px; height: 38px; color: white; font-size: 13px">ARMS
 						회원가입</button>
 				</div>
 			</div>

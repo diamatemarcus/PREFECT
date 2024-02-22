@@ -39,6 +39,24 @@
    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="${CP}/resources/js/eUtil.js"></script>
+<style>
+.button {
+    width: auto;
+    /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
+    /* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
+    padding: 10px 20px;
+    /* 내용과 버튼의 테두리 간격을 조정합니다. */
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #FFA500
+}
+
+</style>
 
 <!-- html head ------------------------------------------------------------------->
 
@@ -96,8 +114,8 @@
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'" style="background-color: FFA500; font-size: 12px;">로그인</button>
-                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="background-color: FFA500; font-size: 12px">회원가입</button>
+                        <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'" style="background-color: FFA500; color: white; font-size: 12px;">로그인</button>
+                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="background-color: FFA500; color: white; font-size: 12px">회원가입</button>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <button

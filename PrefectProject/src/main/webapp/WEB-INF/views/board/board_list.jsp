@@ -109,7 +109,7 @@ function pageDoRerive(url,pageNo){
 
 </script>
 <style>
-.page-link {
+/* .page-link {
   color: #000; 
   background-color: #fff;
   border: 1px solid #ccc; 
@@ -124,10 +124,7 @@ function pageDoRerive(url,pageNo){
  }
  .button {
             width: auto;
-            /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
-            /* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
             padding: 10px 20px;
-            /* 내용과 버튼의 테두리 간격을 조정합니다. */
             border: none;
             text-align: center;
             text-decoration: none;
@@ -137,7 +134,7 @@ function pageDoRerive(url,pageNo){
             border-radius: 8px;
             background-color: #FFA500
 }
-
+ */
 </style>
 </head>
 <body> 
@@ -187,8 +184,8 @@ function pageDoRerive(url,pageNo){
                </select>  
           </div>    
           <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-            <input type="button" value="검색" class="btn btn-primary"  id="doRetrieve" style="background-color: orange; border-color: orange;">
-            <input type="button" value="글쓰기" class="btn btn-primary"  id="moveToReg" style="background-color: orange; border-color: orange;">
+            <input type="button" value="검색" class="button btn-primary"  id="doRetrieve" style="color: white;">
+            <input type="button" value="글쓰기" class="button btn-primary"  id="moveToReg" style="color: white;">
           </div>              
       </div>
                            
