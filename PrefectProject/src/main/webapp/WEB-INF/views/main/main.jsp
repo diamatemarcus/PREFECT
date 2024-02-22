@@ -78,7 +78,7 @@
 				</button>
 				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
 					<div class="navbar-nav mx-auto" style="padding-top: 8px;">
-						<a href="index.jsp" class="nav-item nav-link active">게시판</a>
+						<a href="/ehr/index.jsp" class="nav-item nav-link">게시판</a>
 						<a href="/ehr/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>
 						<a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">캘린더</a>
 						<a href="/ehr/dm/doContentsList.do" class="nav-item nav-link">메시지</a> 

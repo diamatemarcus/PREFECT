@@ -4,7 +4,53 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
+<title>ARMS - 마이페이지</title>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="" name="keywords">
+<meta content="" name="description">
+
+<!-- Google Web Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap"
+	rel="stylesheet">
+
+<!-- Icon Font Stylesheet -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Libraries Stylesheet -->
+<link href="${CP}/resources/template/lib/lightbox/css/lightbox.min.css" rel="stylesheet" type="text/css">
+<link href="${CP}/resources/template/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet" type="text/css">
+
+
+<!-- Customized Bootstrap Stylesheet -->
+<link href="${CP}/resources/template/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+
+<!-- Template Stylesheet -->
+<link href="${CP}/resources/template/css/style.css" rel="stylesheet" type="text/css">
+
+
+<style>
+.button {
+	width: auto;
+	/* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
+	/* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
+	padding: 10px 20px;
+	/* 내용과 버튼의 테두리 간격을 조정합니다. */
+	border: none;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 8px;
+	background-color: #FFA500
+}
+</style>
 <style>
 #regDt {
     width: 200px;
@@ -15,10 +61,248 @@
 }
 </style>
 <title>마이페이지</title>
-<script>
+</head>
+<body>
+<!-- Spinner Start -->
+	<div id="spinner"
+		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+		<div class="spinner-grow text-primary" role="status"></div>
+	</div>
+	<!-- Spinner End -->
+
+
+	<!-- Navbar start -->
+	<div class="container-fluid fixed-top">
+		<div class="container px-0">
+			<nav class="navbar navbar-light bg-white navbar-expand-xl">
+				<a href="index.jsp" class="navbar-brand">
+					<h1 class="text-primary display-6" style="padding-top: 8px;">A R M S</h1>
+				</a>
+				<button class="navbar-toggler py-2 px-3" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+					<span class="fa fa-bars text-primary"></span>
+				</button>
+				<div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+					<div class="navbar-nav mx-auto" style="padding-top: 8px;">
+						<a href="/ehr/index.jsp" class="nav-item nav-link">게시판</a>
+						<a href="/ehr/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>
+						<a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
+						<a href="/ehr/dm/doContentsList.do" class="nav-item nav-link">메시지</a> 
+						<a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서구매</a>
+						<a href="/ehr/user/doSelectOne.do" class="nav-item nav-link active">마이페이지</a>
+						<a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
+						<a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
+					</div>
+
+					<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+						<button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'" style="background-color: FFA500; font-size: 12px;">로그인</button>
+						<button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="background-color: FFA500; font-size: 12px">회원가입</button>
+					</div>
+					<div class="d-flex m-3 me-0">
+						<button
+							class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
+							data-bs-toggle="modal" data-bs-target="#searchModal">
+							<i class="fas fa-search text-primary"></i>
+						</button>
+						<a href="#" class="my-auto"> <i class="fas fa-user fa-2x"></i>
+						</a>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- Navbar End -->
 
 
 
+	<!-- Modal Search Start -->
+	<div class="modal fade" id="searchModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-fullscreen">
+			<div class="modal-content rounded-0">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Search by
+						keyword</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body d-flex align-items-center">
+					<div class="input-group w-75 mx-auto d-flex">
+						<input type="search" class="form-control p-3"
+							placeholder="keywords" aria-describedby="search-icon-1">
+						<span id="search-icon-1" class="input-group-text p-3"><i
+							class="fa fa-search"></i></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal Search End -->
+
+	<%--   <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
+  <jsp:include page="/WEB-INF/cmn/nav.jsp"></jsp:include> --%>
+ 
+	<div class="container">
+		<!-- 제목 -->
+		<div class="row">
+			<div class="col-lg-12">
+				<h1 class="page-header">마이페이지</h1>
+			</div>
+		</div>
+		<!--// 제목 ----------------------------------------------------------------->
+		<!-- 버튼 -->
+		<div class="row justify-content-end">
+			<div class="col-auto">
+				<input type="button" class="btn btn-primary" value="수정"
+					id="doUpdate" onclick="window.doUpdate();"> <input
+					type="button" class="btn btn-primary" value="삭제" id="doDelete"
+					onclick="window.doDelete();"> <input type="button"
+					class="btn btn-primary" value="목록" id="moveToList"
+					onclick="window.moveToList();">
+			</div>
+		</div>
+		<!--// 버튼 ----------------------------------------------------------------->
+
+		<!-- 회원 등록영역 -->
+		<div>
+			<form action="#" name="userRegFrm">
+				<div class="mb-3">
+					<label for="email" class="form-label">이메일</label> <input
+						type="text" class="form-control ppl_input" readonly="readonly"
+						name="email" id="email" value="${outVO.email }" size="20"
+						maxlength="30">
+				</div>
+				<div class="mb-3">
+					<!--  아래쪽으로  여백 -->
+					<label for="name" class="form-label">이름</label> <input type="text"
+						class="form-control" name="name" id="name"
+						placeholder="이름을 입력 하세요." size="20" value="${outVO.name }"
+						maxlength="21">
+				</div>
+				<div class="mb-3">
+					<label for="password" class="form-label">비밀번호</label> <input
+						type="password" class="form-control" name="password" id="password"
+						placeholder="비밀번호를 입력 하세요." value="${outVO.password }" size="20"
+						maxlength="30">
+				</div>
+				<div class="mb-3">
+					<label for="tel" class="form-label">전화번호</label> <input type="text"
+						class="form-control" name="tel" id="tel" placeholder="전화번호 수정"
+						value="${outVO.tel }" size="20" maxlength="11">
+				</div>
+				<div class="mb-3">
+					<label for="edu" class="form-label">학력</label>
+					<div class="col-auto">
+						<select id="education" name="education">
+							<!-- 검색 조건 옵션을 동적으로 생성 -->
+							<c:forEach items="${education}" var="vo">
+								<option value="<c:out value='${vo.detCode}'/>"
+									<c:if test="${vo.detCode == outVO.edu }">selected</c:if>><c:out
+										value="${vo.detName}" /></option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+				<div class="mb-3">
+					<label for="role" class="form-label">역할</label>
+					<div class="col-auto">
+						<select id="role" name="role">
+							<!-- 검색 조건 옵션을 동적으로 생성 -->
+							<c:forEach items="${role}" var="vo">
+								<option value="<c:out value='${vo.detCode}'/>"
+									<c:if test="${vo.detCode == outVO.role }">selected</c:if>><c:out
+										value="${vo.detName}" /></option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+
+                <!-- 라이센스 부분 -->
+
+                <!-- 셀렉트 박스 -->
+				<div class="mb-3">
+				    <label for="licenses" class="form-label">자격증</label>
+				    <div class="row align-items-center">
+				        <!-- 자격증 선택 셀렉트 박스 -->
+				        <div class="col-auto">
+				            <select id="licenses" name="licenses" class="form-control">
+				                <!-- 검색 조건 옵션을 동적으로 생성 -->
+				                <c:forEach items="${licenses}" var="vo">
+				                    <option value="${vo.licensesSeq}">${vo.licensesName}</option>
+				                </c:forEach>
+				            </select>
+				        </div>
+				        <!-- 등록일 텍스트 상자 -->
+				        <div class="mb-6">
+				            <label for="regDt" class="form-label">등록일</label>
+				            <input type="date" id="regDt" name="regDt" class="form-control">
+				        </div>
+				        <!-- 자격증 저장 버튼 -->
+				        <div class="col-auto">
+				            <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses">
+				        </div>
+				    </div>
+				</div>
+
+                <!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
+                <table id="licensesList">
+                    <thead>
+                        <tr>
+                            <th>자격증명</th>
+                            <th>등록일</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableTbody">
+                        <c:choose>
+                            <c:when test="${userLicenses.size()>0 }">
+                                <c:forEach var="vo" items="${userLicenses}" >
+                                    <tr>
+                                        <td class="hidden">${vo.licensesSeq}</td>
+                                        <td>${vo.licensesName}</td>
+                                        <td>${vo.regDt}</td>
+                                        <td><button class="deleteRowBtn">삭제</button>
+                                    </tr>
+                                </c:forEach>
+                            </c:when>
+                        </c:choose>
+                    </tbody>
+                </table>
+			</form>
+		</div>
+		<!--// 회원 등록영역 ------------------------------------------------------>
+		
+	</div>
+	
+	<!-- Copyright Start -->
+	<div class="container-fluid copyright bg-dark py-4">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+					<span class="text-light"><a href="#"><i
+							class="fas fa-copyright text-light me-2"></i>ARMS</a>, All right
+						reserved.</span>
+				</div>
+				<div class="col-md-6 my-auto text-center text-md-end text-white">
+					<!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
+					<!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
+					<!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
+					Designed By <a class="border-bottom" href="#">노동자</a> Distributed
+					By <a class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Copyright End -->
+
+
+
+	<!-- Back to Top -->
+	<a href="#"	class="btn btn-primary border-3 border-primary rounded-circle back-to-top">
+	<i class="fa fa-arrow-up"></i>
+	</a>
+
+	
+	<script>
 	function doDelete() {
 		console.log("----------------------");
 		console.log("-doDelete()-");
@@ -315,140 +599,17 @@
 	});
 
 </script>
-</head>
-<body>
-	<%--   <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
-  <jsp:include page="/WEB-INF/cmn/nav.jsp"></jsp:include> --%>
- 
-	<div class="container">
-		<!-- 제목 -->
-		<div class="row">
-			<div class="col-lg-12">
-				<h1 class="page-header">마이페이지</h1>
-			</div>
-		</div>
-		<!--// 제목 ----------------------------------------------------------------->
-		<!-- 버튼 -->
-		<div class="row justify-content-end">
-			<div class="col-auto">
-				<input type="button" class="btn btn-primary" value="수정"
-					id="doUpdate" onclick="window.doUpdate();"> <input
-					type="button" class="btn btn-primary" value="삭제" id="doDelete"
-					onclick="window.doDelete();"> <input type="button"
-					class="btn btn-primary" value="목록" id="moveToList"
-					onclick="window.moveToList();">
-			</div>
-		</div>
-		<!--// 버튼 ----------------------------------------------------------------->
 
-		<!-- 회원 등록영역 -->
-		<div>
-			<form action="#" name="userRegFrm">
-				<div class="mb-3">
-					<label for="email" class="form-label">이메일</label> <input
-						type="text" class="form-control ppl_input" readonly="readonly"
-						name="email" id="email" value="${outVO.email }" size="20"
-						maxlength="30">
-				</div>
-				<div class="mb-3">
-					<!--  아래쪽으로  여백 -->
-					<label for="name" class="form-label">이름</label> <input type="text"
-						class="form-control" name="name" id="name"
-						placeholder="이름을 입력 하세요." size="20" value="${outVO.name }"
-						maxlength="21">
-				</div>
-				<div class="mb-3">
-					<label for="password" class="form-label">비밀번호</label> <input
-						type="password" class="form-control" name="password" id="password"
-						placeholder="비밀번호를 입력 하세요." value="${outVO.password }" size="20"
-						maxlength="30">
-				</div>
-				<div class="mb-3">
-					<label for="tel" class="form-label">전화번호</label> <input type="text"
-						class="form-control" name="tel" id="tel" placeholder="전화번호 수정"
-						value="${outVO.tel }" size="20" maxlength="11">
-				</div>
-				<div class="mb-3">
-					<label for="edu" class="form-label">학력</label>
-					<div class="col-auto">
-						<select id="education" name="education">
-							<!-- 검색 조건 옵션을 동적으로 생성 -->
-							<c:forEach items="${education}" var="vo">
-								<option value="<c:out value='${vo.detCode}'/>"
-									<c:if test="${vo.detCode == outVO.edu }">selected</c:if>><c:out
-										value="${vo.detName}" /></option>
-							</c:forEach>
-						</select>
-					</div>
-				</div>
-				<div class="mb-3">
-					<label for="role" class="form-label">역할</label>
-					<div class="col-auto">
-						<select id="role" name="role">
-							<!-- 검색 조건 옵션을 동적으로 생성 -->
-							<c:forEach items="${role}" var="vo">
-								<option value="<c:out value='${vo.detCode}'/>"
-									<c:if test="${vo.detCode == outVO.role }">selected</c:if>><c:out
-										value="${vo.detName}" /></option>
-							</c:forEach>
-						</select>
-					</div>
-				</div>
+<!-- JavaScript Libraries -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="${CP}/resources/template/lib/easing/easing.min.js" type="text/javascript"></script>
+	<script src="${CP}/resources/template/lib/waypoints/waypoints.min.js" type="text/javascript"></script>
+	<script src="${CP}/resources/template/lib/lightbox/js/lightbox.min.js" type="text/javascript"></script>
+	<script src="${CP}/resources/template/lib/owlcarousel/owl.carousel.min.js" type="text/javascript"></script>
 
-                <!-- 라이센스 부분 -->
-
-                <!-- 셀렉트 박스 -->
-				<div class="mb-3">
-				    <label for="licenses" class="form-label">자격증</label>
-				    <div class="row align-items-center">
-				        <!-- 자격증 선택 셀렉트 박스 -->
-				        <div class="col-auto">
-				            <select id="licenses" name="licenses" class="form-control">
-				                <!-- 검색 조건 옵션을 동적으로 생성 -->
-				                <c:forEach items="${licenses}" var="vo">
-				                    <option value="${vo.licensesSeq}">${vo.licensesName}</option>
-				                </c:forEach>
-				            </select>
-				        </div>
-				        <!-- 등록일 텍스트 상자 -->
-				        <div class="mb-6">
-				            <label for="regDt" class="form-label">등록일</label>
-				            <input type="date" id="regDt" name="regDt" class="form-control">
-				        </div>
-				        <!-- 자격증 저장 버튼 -->
-				        <div class="col-auto">
-				            <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses">
-				        </div>
-				    </div>
-				</div>
-
-                <!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
-                <table id="licensesList">
-                    <thead>
-                        <tr>
-                            <th>자격증명</th>
-                            <th>등록일</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableTbody">
-                        <c:choose>
-                            <c:when test="${userLicenses.size()>0 }">
-                                <c:forEach var="vo" items="${userLicenses}" >
-                                    <tr>
-                                        <td class="hidden">${vo.licensesSeq}</td>
-                                        <td>${vo.licensesName}</td>
-                                        <td>${vo.regDt}</td>
-                                        <td><button class="deleteRowBtn">삭제</button>
-                                    </tr>
-                                </c:forEach>
-                            </c:when>
-                        </c:choose>
-                    </tbody>
-                </table>
-			</form>
-		</div>
-		<!--// 회원 등록영역 ------------------------------------------------------>
-		<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
-	</div>
+	<!-- Template Javascript -->
+	<script src="${CP}/resources/template/js/main.js" type="text/javascript"></script>
+  
 </body>
 </html>
