@@ -9,24 +9,6 @@
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 수정</title>
 <style>
-   .readonly-input {
-    background-color: #e9ecef ;
-   }
-    .button {
-            width: auto;
-            /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
-            /* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
-            padding: 10px 20px;
-            /* 내용과 버튼의 테두리 간격을 조정합니다. */
-            border: none;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 8px;
-            background-color: #FFA500
-}
 </style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
@@ -73,6 +55,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 console.log('Upload success: ', data);
                 alert('파일이 성공적으로 업로드되었습니다.');
                 // 추가적으로 페이지를 새로고침하거나 업로드된 파일 목록을 갱신하는 로직을 추가할 수 있음
+                location.reload();
             },
             error: function(xhr, status, error) {
                 console.error('Upload failed: ', error);
@@ -103,7 +86,9 @@ document.addEventListener("DOMContentLoaded",function(){
                     success: function(response) {
                         console.log('파일 삭제 성공');
                         alert('파일이 삭제되었습니다.');
+                        
                         // 성공 시 페이지 새로고침 등의 추가 동작
+                        location.reload();
                     },
                     error: function(xhr, status, error) {
                         console.log('파일 삭제 실패');
