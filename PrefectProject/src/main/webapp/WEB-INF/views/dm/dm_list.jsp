@@ -52,6 +52,7 @@
         }
 
         .chat-history {
+            overflow-y: scroll;
             flex: 1;
             background-color: #f2f2f2;
             border-radius: 8px;
@@ -431,7 +432,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 
                 if(0==data.length){
-                    console.log("처음 보내는 상대입니다");
+                	alert("처음 보내는 상대입니다");
                     return;
                 }
                     

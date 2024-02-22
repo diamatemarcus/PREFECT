@@ -102,19 +102,30 @@
 </select>
 <select id="receiverList" parameterType="DmVO" resultType="DmVO">
     <![CDATA[
-       SELECT
-            receiver.email AS receiver,
-            receiver.name AS receiverName,
-            COUNT(m.read_chk) AS readChk
-       FROM
-           dm m
-       LEFT JOIN users receiver ON m.receiver = receiver.email
-       WHERE m.receiver = #{sender} OR m.sender = #{sender}
-      
-       GROUP BY
-               receiver.email, receiver.name
-       ORDER BY
-              receiver.name
+       SELECT DISTINCT
+              EMAIL AS RECEIVER
+            , NAME AS RECEIVERNAME
+            , READ_CHK AS READ_CHK
+         FROM ( SELECT U.EMAIL AS EMAIL
+                     , U.NAME AS NAME
+                     , SUM(M.READ_CHK) AS READ_CHK
+                     , MAX(M.SEQ) AS SEQ
+                  FROM DM M
+             LEFT JOIN USERS U
+                    ON M.RECEIVER = U.EMAIL
+                 WHERE M.SENDER = #{sender}
+              GROUP BY U.EMAIL, U.NAME
+                 UNION
+                SELECT U.EMAIL AS EMAIL
+                     , U.NAME AS NAME
+                     , SUM(M.READ_CHK) AS READ_CHK
+                     , MAX(M.SEQ) AS SEQ
+                  FROM DM M
+              LEFT JOIN users U
+                     ON M.SENDER = U.email
+                  WHERE M.RECEIVER = #{sender}
+               GROUP BY U.EMAIL, U.NAME
+              )
         ]]>  
     
 </select>
