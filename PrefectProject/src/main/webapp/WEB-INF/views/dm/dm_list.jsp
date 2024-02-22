@@ -53,6 +53,8 @@
 
         .chat-history {
             overflow-y: scroll;
+            display: flex;
+            flex-direction: column;
             flex: 1;
             background-color: #f2f2f2;
             border-radius: 8px;
@@ -68,19 +70,18 @@
             height: 100%;
         }
 
-        .message {
-            margin-bottom: 10px;
-            padding: 8px;
-            border-radius: 8px;
-            max-width: 70%;
-            position: relative;
-        }
 
         .user-message {
-            background-color: #4CAF50;
-            color: #fff;
+            background-color: #fff;
+            color: #333;
             align-self: flex-end;
             margin-left: auto;
+            position: relative;
+            padding: 10px 15px; /* 메시지 내부 패딩을 조정 */
+            margin-bottom: 10px; /* 메시지 간 간격 */
+            border-radius: 20px; /* 모서리 둥글기 */
+            border: 1px solid #ccc; /* 경계선 추가 */
+            max-width: 70%; /* 최대 너비 설정 */
         }
 
         .bot-message {
@@ -88,6 +89,12 @@
             color: #333;
             align-self: flex-start;
             margin-right: auto;
+            position: relative;
+            padding: 10px 15px; /* 메시지 내부 패딩을 조정 */
+            margin-bottom: 10px; /* 메시지 간 간격 */
+            border-radius: 20px; /* 모서리 둥글기 */
+            border: 1px solid #ccc; /* 경계선 추가 */
+            max-width: 70%; /* 최대 너비 설정 */
         }
 
         .message .name {
@@ -133,22 +140,29 @@
 document.addEventListener("DOMContentLoaded", function () {
     
     const doSendBTN = document.querySelector("#doSend");
+    const contents = document.querySelector("#contents");
     
-
-    doSendBTN.addEventListener("click", function (e) {
-    	
-    	
-    	let sender = document.querySelector("#sender").value;
-    	let receiver = document.querySelector("#receiver").value;
-    	let contents = document.querySelector("#contents").value;
-    	
+    contents.addEventListener("keyup", function(e) {
+        console.log("keyup:"+e.keyCode);
+        if(13==e.keyCode){//
+            doSend()
+        }
+        //enter event:
+    });
+    
+    function doSend() {
+        
+        let sender = document.querySelector("#sender").value;
+        let receiver = document.querySelector("#receiver").value;
+        let contents = document.querySelector("#contents").value;
+        
         $.ajax({
             type: "POST",
             url: "/ehr/dm/doSend.do",
             async: "true",
             dataType: "json",
             data: {
-            	
+                
                 "sender": sender,
                 "receiver": receiver,
                 "contents": contents,
@@ -159,11 +173,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("success data.msgContents:" + data.msgContents);
                 
                 if (1 == data.msgId) {
-                    alert(data.msgContents);
                     doContentsList()
                 } else {
                     alert(data.msgContents);
                 }
+                
+                $('#contents').val('');
             },
             error: function (data) { // 실패시 처리
                 console.log("error:" + data);
@@ -172,11 +187,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.log("complete:" + data);
             }
         });
+    }
+    
+    doSendBTN.addEventListener("click", function (e) {
+        doSend()
     });
 
-    function moveToList() {
-    	window.location.href = "/ehr/dm/doContentsList.do";
-    }
     
     $("#doMemberPopup").on("click",function(e){
         console.log( "doMemberPopup click!" );
@@ -358,7 +374,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    
                    for(let i =0;i< data.length;i++){
                        tableBody +='<tr>\
-                    	                 <td class="text-center">'+data[i].receiver+'</td>\
+                                         <td class="text-center">'+data[i].receiver+'</td>\
                                          <td class="text-center">'+data[i].receiverName+'</td>\
                                          <td class="text-center">'+data[i].readChk+'</td>\
                                     </tr>\
@@ -406,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
     function doContentsList(){
-    	let sender = document.querySelector("#sender").value;
+        let sender = document.querySelector("#sender").value;
         let receiver = document.querySelector("#receiver").value;
         
         
@@ -416,50 +432,52 @@ document.addEventListener("DOMContentLoaded", function () {
             asyn:"true",
             dataType:"json", //return type
             data:{
-            	 "sender": sender,
+                 "sender": sender,
                  "receiver": receiver
             },
             success:function(data){//통신 성공
                 console.log("success data:"+data);
                 console.log("data.length:"+data.length);
-                
-                let replyDiv = '';
+                let currentUserEmail = sender;
+                let dmDiv = '';
                 
                 //기존 댓글 모두 삭제
                 //#요소의 내용을 모두 지웁니다.
                 //$("#replyDoSaveArea").html('');
-                document.getElementById("replyDoSaveArea").innerHTML = "";
+                document.getElementById("message").innerHTML = "";
                 
                 
                 if(0==data.length){
-                	alert("처음 보내는 상대입니다");
+                    alert("처음 보내는 상대입니다");
                     return;
                 }
                     
                 
                 for(let i=0;i<data.length;i++){
-                    replyDiv += '<div class="dynamicReply"> \n';
-                    replyDiv += '<div class="row justify-content-end"> \n';
-                    replyDiv += '<div class="col-auto"> \n';
-                    replyDiv += '<span>등록일:'+data[i].sendDt+'</span> \n';
+                     // 현재 메시지의 발신자가 로그인한 사용자와 동일한지 확인
+                    let isCurrentUser = data[i].sender === currentUserEmail;
+
+                    // 발신자가 현재 사용자인 경우 'user-message', 아닌 경우 'bot-message' 클래스 사용
+                    let messageClass = isCurrentUser ? 'user-message' : 'bot-message';
+                    let senderName = isCurrentUser ? '나' : data[i].senderName; // 발신자 이름 설정 ('나' 또는 실제 이름)
+
+                    // HTML 구성
+                    
+                    
+                    dmDiv += '<div class="' + messageClass + '"> \n'; // messageClass는 'user-message' 또는 'bot-message'
+                    dmDiv += '<div class="name">' + senderName + '</div> \n'; // 발신자 이름 출력
+                    dmDiv += '<div class="messageClass">' + data[i].contents + '</div> \n'; // 메시지 내용
+                    dmDiv += '<div class="time">' + data[i].sendDt + '</div> \n'; // 메시지 시간
+                    dmDiv += '</div> \n';
+                    
                    
-                    replyDiv += '</div> \n';
-                    replyDiv += '</div> \n';
-                    
-                    replyDiv += '<div class="mb-3">  \n';
-                    replyDiv += '<input type="text" name="replySeq" value="'+data[i].senderName +'"> \n';
-                    
-                    replyDiv += '<textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents">'+data[i].contents+'</textarea> \n';
-                    replyDiv += '</div> \n';
-                    
-                    replyDiv += '</div> \n';
                     
                 }
                 
                 //console.log(replyDiv);
                
                 //조회 댓글 출력
-                document.getElementById("replyDoSaveArea").innerHTML = replyDiv;
+                document.getElementById("message").innerHTML = dmDiv;
                 //$("#replyDoSaveArea").html(replyDiv);
                 
             },
@@ -486,48 +504,27 @@ document.addEventListener("DOMContentLoaded", function () {
         <button type="button" class="btn btn-primary btn-block" id="doMemberPopup">회원</button>  
     </div>
 </div>
-<div class="chat-container">
-    <div id="replyDoSaveArea">
-        <!-- 버튼 -->
-        <div class="dynamicReply">
-            <div class="row justify-content-end">
-                <div class="col-auto">
-                    
-                </div>
-            </div>
-            <!--// 버튼 ----------------------------------------------------------------->
-            <div class="mb-3">
-                <input type="text" name="replySeq" value="">
-                <textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents"></textarea>
-            </div>
-        </div>        
-</div>
-    <div class="chat-history">
-        <ul class="chat-messages">
-           <c:choose>
+<div  class="chat-history">
+    <div id="message" class= "chat-history">
+        <c:choose>
               <c:when test="${ not empty list }">
-                <c:set var="userEmail" value="${sessionScope.user.email}" />
-                <c:forEach var="vo" items="${list}">
-                    <c:set var="isCurrentUser" value="${vo.sender eq userEmail}" />
-                    <li class="message ${isCurrentUser ? 'user-message' : 'bot-message'}">
-                        <div class="name">${isCurrentUser ? '나' : vo.senderName}</div>
-                        ${vo.contents}
-                        <div class="time">${vo.sendDt}</div>
-                    </li>
-                </c:forEach>
-               </c:when>
-               <c:otherwise>
+                <li class="chat-messages" >
+            
+            
+                </li> 
+              </c:when>
+              <c:otherwise>
                <tr>
-                <td colspan="99" class="text-center">채팅방을 눌러주세요</td>
+                <td colspan="99" class="chat-messages">기존 내용은 채팅방, 새로운 채팅은 회원을 눌러주세요</td>
                </tr>              
-                </c:otherwise>
-            </c:choose>
-        </ul>
+              </c:otherwise>
+        </c:choose>               
     </div>
+    
 </div>
         <div class="input-container">
             <input type="hidden" id="sender" name="sender" value="${sessionScope.user.email}"> 
-            <input type="text" id="receiver" name="receiver" value="${receiver}"> 
+            <input type="hidden" id="receiver" name="receiver" value="${receiver}"> 
             <input type="hidden" name="room" id="room" value="1">
             <input type="text"  id="contents" name="contents">
             <button id="doSend" name="doSend">전송</button>
@@ -573,6 +570,5 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       </div>
     </div>
-    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>
 </html>
