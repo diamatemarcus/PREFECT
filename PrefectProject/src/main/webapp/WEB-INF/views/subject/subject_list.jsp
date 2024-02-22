@@ -46,16 +46,22 @@
 			        <tr>
 			            <td class="text-center">
 				            <c:forEach var="user" items="${userList}">
-				                <c:if test="${user.email == vo.trainee}">
-				                <input type="hidden" id="traineeEmail" value="${user.email }"/>
+				               <c:if test="${user.email == vo.trainee}">
+				                <input type="hidden" id="traineeEmail" value="${user.email}"/>
 				                    ${user.name} <!-- 사용자 이름을 표시 -->
 				                </c:if>
 				            </c:forEach>
-				        </td>       			
-			            <td class="text-left">${vo.javaScore}</td> <!-- 자바 점수 -->
-    					<td class="text-left">${vo.sqlScore}</td> <!-- SQL 점수 -->
-				        <td class="text-left"></td>
-
+				        </td>		        	 
+						<td class="text-left">
+					         <c:forEach var="subject" items="${subjectCode}">
+					            <c:if test="${subject.detCode == vo.subjectCode}">
+					              <td class="text-end">
+						           <c:out value="${subject.detName}"/>
+						           </td>
+						         </c:if>
+			 	            </c:forEach>
+				        </td>        			
+			            <td class="text-left">${vo.score}</td> <!-- 자바 점수 -->
 			        </tr>
 		        </c:forEach>
 	        </c:when>

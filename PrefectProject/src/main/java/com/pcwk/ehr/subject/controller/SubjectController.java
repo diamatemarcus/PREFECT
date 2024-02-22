@@ -2,7 +2,10 @@ package com.pcwk.ehr.subject.controller;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,6 +28,8 @@ import com.pcwk.ehr.subject.service.SubjectService;
 import com.pcwk.ehr.user.domain.UserVO;
 import com.pcwk.ehr.user.service.UserService;
 
+
+
 @Controller
 @RequestMapping("subject")
 public class SubjectController implements PcwkLogger {
@@ -44,6 +49,7 @@ public class SubjectController implements PcwkLogger {
 
 
 	
+	//목록조회
 	//목록조회
 	@RequestMapping(value="/doRetrieve.do", method = RequestMethod.GET)
 	public String doRetrieve(HttpServletRequest req, Model model , HttpSession httpSession) throws SQLException {
@@ -73,20 +79,22 @@ public class SubjectController implements PcwkLogger {
 	        userList.add(user);
 	    }
 		
-//	    UserVO users = new UserVO();
-//	    
-//	    List<UserVO> userList = userService.doRetrieve(users);
-//
-//	    // 각 SubjectVO의 trainee와 일치하는 email을 가진 UserVO 찾기
-//	    for (SubjectVO vo : list) {
-//	        for (UserVO userVO : userList) {
-//	            if (vo.getTrainee().equals(userVO.getEmail())) {
-//	            	
-//	                vo.setTrainee(userVO.getName()); //
-//	                break; // 일치하는 첫 번째 사
-//	            }
-//	        }
-//	    }
+		Map<String, Object> codes =new HashMap<String, Object>();
+		String[] codeStr = {"SUBJECT"};
+		codes.put("code", codeStr);
+		
+		List<CodeVO> codeList = codeService.doRetrieve(codes);
+		List<CodeVO> subjectCodeList = new ArrayList<CodeVO>();
+		
+		for (CodeVO vo: codeList) {
+			if(vo.getMstCode().equals("SUBJECT")) {
+				subjectCodeList.add(vo);
+			}
+			LOG.debug(vo);
+		}
+		
+		model.addAttribute("subjectCode",subjectCodeList);
+
 	    
 	    model.addAttribute("userList", userList);
 	    model.addAttribute("list", list);

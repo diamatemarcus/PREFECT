@@ -19,14 +19,11 @@ public class SubjectVO extends DTO {
 	private String professor;// 교수님
 	private String trainee;// 훈련생
 	private int score;// 점수
-    private int javaScore;
-    private int sqlScore;
     
 	@Override
 	public String toString() {
 		return "SubjectVO [subjectCode=" + subjectCode + ", coursesCode=" + coursesCode + ", professor=" + professor
-				+ ", trainee=" + trainee + ", score=" + score + ", java_score=" + javaScore + ", sql_score="
-				+ sqlScore + ", toString()=" + super.toString() + "]";
+				+ ", trainee=" + trainee + ", score=" + score + ", toString()=" + super.toString() + "]";
 	}
 
 	

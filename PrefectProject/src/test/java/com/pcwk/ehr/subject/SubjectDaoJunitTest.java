@@ -57,7 +57,7 @@ public class SubjectDaoJunitTest implements PcwkLogger {
 		String trainee = "ronaldoo1@gmail.com";// 훈련생
 		int score = 10;// 점수
 
-		subjectVO = new SubjectVO(subjectCode, coursesCode, professor, trainee, score, score, score);
+		subjectVO = new SubjectVO(subjectCode, coursesCode, professor, trainee, score);
 		searchVO = new SubjectVO();
 		searchVO.setTrainee("ronaldoo");
 	}

@@ -68,7 +68,7 @@ public class SubjectControllerTest implements PcwkLogger {
 		int score = 10;// 점수
 
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-		subjectList = Arrays.asList(new SubjectVO(subjectCode, coursesCode, professor, trainee, score, score, score));
+		subjectList = Arrays.asList(new SubjectVO(subjectCode, coursesCode, professor, trainee, score));
 		searchVO = new SubjectVO();
 		searchVO.setTrainee(trainee);
 	}
