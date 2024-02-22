@@ -8,7 +8,8 @@
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />     
 <!DOCTYPE html>
 <html> 
-<head>  
+<head>
+<link href="${CP}/resources/css/layout.css" rel="stylesheet" type="text/css">
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
@@ -172,8 +173,8 @@ function pageDoRerive(url,pageNo){
                </select>  
           </div>    
           <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-            <input type="button" value="검색" class="button btn-primary"  id="doRetrieve" style="color: white;">
-            <input type="button" value="글쓰기" class="button btn-primary"  id="moveToReg" style="color: white;">
+            <input type="button" value="검색" class="button btn-primary"  id="doRetrieve">
+            <input type="button" value="글쓰기" class="button btn-primary"  id="moveToReg">
           </div>              
       </div>
                            
@@ -188,11 +189,11 @@ function pageDoRerive(url,pageNo){
       <thead>
         <tr >
           <th scope="col" class="text-center col-lg-1  col-sm-1">NO</th>
-          <th scope="col" class="text-center col-lg-4  col-sm-8">제목</th>
+          <th scope="col" class="text-center col-lg-5  col-sm-6">제목</th>
           <th scope="col" class="text-center col-lg-2  col-sm-1">등록일</th>
           <th scope="col" class="text-center col-lg-2  ">등록자</th>
           <th scope="col" class="text-center col-lg-1  ">조회수</th>
-          <th scope="col" class="text-center   " style="display: none;">SEQ</th>
+          <th scope="col" class="text-center" style="display: none;">SEQ</th>
         </tr>
       </thead>         
       <tbody>
@@ -202,10 +203,10 @@ function pageDoRerive(url,pageNo){
               <c:forEach var="vo" items="${list}" varStatus="status">
                 <tr>
                   <td class="text-center col-lg-1  col-sm-1"><c:out value="${vo.no}" escapeXml="true"/> </th>
-                  <td class="text-left   col-lg-6  col-sm-8" ><c:out value="${vo.title}" escapeXml="true"/></td>
+                  <td class="text-left   col-lg-5  col-sm-8" ><c:out value="${vo.title}" escapeXml="true"/></td>
                   <td class="text-center col-lg-2  col-sm-1"><c:out value="${vo.modDt}" escapeXml="true"/></td>
-                  <td class="            col-lg-1 "><c:out value="${vo.modId}" /></td>
-                  <td class="text-end    col-lg-1 "><c:out value="${vo.readCnt}" /></td>
+                  <td class="text-center col-lg-2 "><c:out value="${vo.modId}" /></td>
+                  <td class="text-center col-lg-1 "><c:out value="${vo.readCnt}" /></td>
                   <td  style="display: none;"><c:out value="${vo.seq}" /></td>
                 </tr>              
               </c:forEach>
@@ -224,13 +225,21 @@ function pageDoRerive(url,pageNo){
     <!-- 페이징 : 함수로 페이징 처리 
          총글수, 페이지 번호, 페이지 사이즈, bottomCount, url,자바스크립트 함수
     -->      
-    <br>     
-    <div class="d-flex justify-content-center">
-        <nav>
-           ${pageHtml }
-        </nav>    
-    </div>
-    <br>
+    <div class="container-fluid py-5">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-lg-12">
+	                <!-- Pagination -->
+	                <div class="pagination d-flex justify-content-center mt-5">
+	                    <nav>
+				            ${pageHtml }
+				        </nav>
+	                </div>
+	                <!-- End of Pagination -->
+	            </div>
+	        </div>
+	    </div>
+	</div>    
     <!--// 페이징 ---------------------------------------------------------------->
 </div>
 <br>
