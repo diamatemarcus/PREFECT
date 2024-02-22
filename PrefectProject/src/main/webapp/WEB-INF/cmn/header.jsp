@@ -94,8 +94,10 @@
         <div class="container px-0">
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
                 <a href="/ehr/index.jsp" class="navbar-brand">
-                    <h1 class="text-primary display-6" style="padding-top: 8px;">A
-                        R M S</h1>
+                    <div class="arms-container">
+                        <img src="${CP}/resources/template/img/acorn.png" width="50" height="50">
+                        <h1 class="text-primary display-6">A R M S</h1>
+                    </div>
                 </a>
                 <button class="navbar-toggler py-2 px-3" type="button"
                     data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -118,11 +120,6 @@
                         <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'" style="background-color: FFA500; color: white; font-size: 12px">회원가입</button>
                     </div>
                     <div class="d-flex m-3 me-0">
-                        <button
-                            class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
-                            data-bs-toggle="modal" data-bs-target="#searchModal">
-                            <i class="fas fa-search text-primary"></i>
-                        </button>
                         <a href="#" class="my-auto"> <i class="fas fa-user fa-2x"></i>
                         </a>
                     </div>
