@@ -6,6 +6,21 @@
 namespace+id -> com.pcwk.ehr.user.doSelectOne
 -->  
 <mapper namespace="com.pcwk.ehr.subject">
+	
+	
+	
+	<sql id="searchCondition">
+	    <where>
+	        <choose>
+	            <when test="searchDiv != null and searchDiv == '10'">
+	                subject_code = #{searchWord}
+	            </when>
+	            <when test="searchDiv != null and searchDiv == '20'">
+	                subject_code = #{searchWord}
+	            </when>
+	        </choose>
+	    </where>
+	</sql>
 
 
 
@@ -13,10 +28,14 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		SELECT DISTINCT subject_code, courses_code, professor, trainee, score
    			FROM subject
     	JOIN users ON professor = users.email OR trainee = users.email
-    	WHERE users.email = #{professor} OR users.email = #{trainee}
+	    <where>
+	       (users.email = #{professor} OR users.email = #{trainee})
+	       <include refid="searchCondition"></include>
+	    </where>
+   
     </select>
 
-	
+
 	
 
 	<select id="doSelectOne" parameterType="SubjectVO" resultType="SubjectVO">

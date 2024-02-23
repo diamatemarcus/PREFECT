@@ -26,53 +26,71 @@
             <h1 class="page-header">훈련생 조회</h1>
         </div>
     </div>  
+    <form action="#" method="get" name="subjectFrm" style="display: inline;">
+           <input type="hidden" name="pageNo" >
+            <!-- 검색구분 -->
+ 			<div class="row g-1 justify-content-end "> 
+                <div class="col-auto">
+		            <select name="searchDiv" id="searchDiv" class="form-select pcwk_select" onchange="doRetrieve(1);">
+					    <option value="">전체</option>
+					    <c:forEach var="subject" items="${subjectCode}">
+					        <option value="${subject.detCode}" <c:if test="${subject.detCode == param.searchDiv}">selected</c:if>>${subject.detName}</option>
+					    </c:forEach>
+					</select>
+	            </div> 
+			    <!-- button -->
+			    <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
+				    <input type="button" class="btn btn-primary" value="조회"   id="doRetrieve"    onclick="window.doRetrieve(0);">
+			    </div>
+            </div>
+    </form>
+      
 
-<!-- table -->
- <table id="subjectTable"  class="table table-bordered border-primary table-hover table-striped">    
-        <thead>
-        <tr>
-            <th scope="col" class="text-center col-lg-2  col-sm-2">학생</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2" >자바</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2" >SQL</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2" >스프링</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2" >파이썬</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:choose>
-            <%-- 조회데이터가 있는 경우:jsp comment(html에 노출 않됨) --%>
-            <c:when test="${not empty list }">
-		        <c:forEach var="vo" items="${list}">
-			        <tr>
-			            <td class="text-center">
-				            <c:forEach var="user" items="${userList}">
-				               <c:if test="${user.email == vo.trainee}">
-				                <input type="hidden" id="traineeEmail" value="${user.email}"/>
-				                    ${user.name} <!-- 사용자 이름을 표시 -->
-				                </c:if>
-				            </c:forEach>
-				        </td>		        	 
-						<td class="text-left">
-					         <c:forEach var="subject" items="${subjectCode}">
-					            <c:if test="${subject.detCode == vo.subjectCode}">
-					              <td class="text-end">
-						           <c:out value="${subject.detName}"/>
-						           </td>
-						         </c:if>
-			 	            </c:forEach>
-				        </td>        			
-			            <td class="text-left">${vo.score}</td> <!-- 자바 점수 -->
-			        </tr>
-		        </c:forEach>
+	<!-- table -->
+	 <table id="subjectTable"  class="table table-bordered border-primary table-hover table-striped">    
+	        <thead>
+	        <tr>
+	            <th scope="col" class="text-center col-lg-2  col-sm-2">학생</th>
+	            <th scope="col" class="text-center col-lg-2  col-sm-2" >과목</th>
+	            <th scope="col" class="text-center col-lg-2  col-sm-2" >점수</th>
+	        </tr>
+	        </thead>
+	       <tbody>
+	    <c:choose>
+	        <%-- 데이터가 있는 경우 --%>
+	        <c:when test="${not empty list}">
+	            <c:forEach var="vo" items="${list}">
+	                <tr>
+	                    <%-- 학생 이름을 출력 --%>
+	                    <td class="text-center">
+	                        <c:forEach var="user" items="${userList}">
+	                            <c:if test="${user.email == vo.trainee}">
+	                                <input type="hidden" id="traineeEmail" value="${user.email}"/>
+	                                ${user.name} <!-- 사용자 이름을 표시 -->
+	                            </c:if>
+	                        </c:forEach>
+	                    </td>		        	 
+	                    <%-- 과목 이름을 출력 --%>
+	                    <td class="text-left">
+	                        <c:forEach var="subject" items="${subjectCode}">
+	                            <c:if test="${subject.detCode == vo.subjectCode}">
+	                                ${subject.detName} <!-- 과목 이름을 표시 -->
+	                            </c:if>
+	                        </c:forEach>
+	                    </td>
+	                    <%-- 점수를 출력 --%>
+	                    <td class="text-left">${vo.score}</td>
+	                </tr>
+	            </c:forEach>
 	        </c:when>
-	        <%-- 조회데이터가 없는 경우:jsp comment(html에 노출 않됨) --%>
+	        <%-- 데이터가 없는 경우 --%>
 	        <c:otherwise>
-	           <tr>
-	               <td colspan="99" class="text-center">No data found.</td>
-	           </tr>
+	            <tr>
+	                <td colspan="3" class="text-center">No data found.</td>
+	            </tr>
 	        </c:otherwise>
-        </c:choose>
-        </tbody>
+	    </c:choose>
+	</tbody>
     </table>
  </div>     
 <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>    
