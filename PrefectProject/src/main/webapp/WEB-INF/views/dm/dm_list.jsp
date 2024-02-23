@@ -12,10 +12,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        body, html {
+        body {
             height: 100%; /* body와 html 요소의 높이를 100%로 설정 */
             margin: 0;
             padding: 0;
+        }
+        .message {
+        display: flex; /* 내부 요소를 flex로 정렬 */
+        flex-direction: column; /* 요소를 세로로 정렬 */
+        position: relative; /* 절대 위치 사용을 위해 상대 위치 설정 */
         }
         .contact-list {
         display: flex;
@@ -34,17 +39,18 @@
         }
 
     /* 최신 메시지 창의 스크롤 바 설정 */
-    .contact-list::-webkit-scrollbar {
+    .chat-history::-webkit-scrollbar {
         width: 5px;
     }
 
-    .contact-list::-webkit-scrollbar-thumb {
+    .chat-history::-webkit-scrollbar-thumb {
         background-color: #aaa;
         border-radius: 10px;
     }
 
         .chat-container {
-           display: flex;
+        overflow-y: scroll;
+        display: flex;
         flex-direction: column;
         flex: 7; /* 채팅 창이 전체 너비의 7/10을 차지하도록 설정 */
         max-width: 800px;
@@ -52,7 +58,6 @@
         }
 
         .chat-history {
-            overflow-y: scroll;
             display: flex;
             flex-direction: column;
             flex: 1;
@@ -60,6 +65,8 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: scroll; /* overflow-y 속성을 뒤로 이동 */
+            height: 500px;
         }
 
         .chat-messages {
@@ -97,19 +104,36 @@
             max-width: 70%; /* 최대 너비 설정 */
         }
 
-        .message .name {
-            font-size: 0.8em;
-            color: #777;
+        .message .bot-name {
+            font-size: 0.9em; /* 크기 조정 */
+            font-weight: bold; /* 글씨 두껍게 설정 */
+            color: #555; /* 색상 조정 */
             margin-bottom: 4px;
+            align-self: flex-start;
         }
 
-        .message .time {
-            font-size: 0.8em;
-            color: #777;
-            position: absolute;
+        .message .bot-time {
+            font-size: 0.7em; /* 크기 조정 */
+            color: #999; /* 색상 조정 */
             bottom: -15px;
+            align-self: flex-start;
+            
+        }
+        .message .user-name {
+            font-size: 0.9em; /* 크기 조정 */
+            font-weight: bold; /* 글씨 두껍게 설정 */
+            color: #555; /* 색상 조정 */
+            margin-bottom: 4px;
+            align-self: flex-end;
         }
 
+        .message .user-time {
+            font-size: 0.7em; /* 크기 조정 */
+            color: #999; /* 색상 조정 */
+            bottom: -15px;
+            align-self: flex-end;
+            
+        }
         .input-container {
             display: flex;
             align-items: center;
@@ -129,7 +153,7 @@
 
         .input-container button {
             padding: 8px;
-            background-color: #4CAF50;
+            background-color: #FFA500;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -454,24 +478,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                 
                 for(let i=0;i<data.length;i++){
-                     // 현재 메시지의 발신자가 로그인한 사용자와 동일한지 확인
-                    let isCurrentUser = data[i].sender === currentUserEmail;
+                	 let isCurrentUser = data[i].sender === currentUserEmail;
 
-                    // 발신자가 현재 사용자인 경우 'user-message', 아닌 경우 'bot-message' 클래스 사용
-                    let messageClass = isCurrentUser ? 'user-message' : 'bot-message';
-                    let senderName = isCurrentUser ? '나' : data[i].senderName; // 발신자 이름 설정 ('나' 또는 실제 이름)
+                	    // 발신자가 현재 사용자인 경우 'user-message', 아닌 경우 'bot-message' 클래스 사용
+                	    let messageClass = isCurrentUser ? 'user-message' : 'bot-message';
+                	    let nameClass = isCurrentUser ? 'user-name' : 'bot-name';
+                	    let timeClass = isCurrentUser ? 'user-time' : 'bot-time';
+                	    let senderName = isCurrentUser ? '나' : data[i].senderName; // 발신자 이름 설정 ('나' 또는 실제 이름)
 
-                    // HTML 구성
-                    
-                    
-                    dmDiv += '<div class="' + messageClass + '"> \n'; // messageClass는 'user-message' 또는 'bot-message'
-                    dmDiv += '<div class="name">' + senderName + '</div> \n'; // 발신자 이름 출력
-                    dmDiv += '<div class="messageClass">' + data[i].contents + '</div> \n'; // 메시지 내용
-                    dmDiv += '<div class="time">' + data[i].sendDt + '</div> \n'; // 메시지 시간
-                    dmDiv += '</div> \n';
-                    
-                   
-                    
+                	    // HTML 구성
+                	    dmDiv += '<div class="message"> \n'; // 메시지 전체를 감싸는 부모 요소에 클래스 추가
+                	    dmDiv += '<div class="name ' + nameClass + '">' + senderName + '</div> \n'; // 발신자 이름 출력
+                	    dmDiv += '<div class="message-content ' + messageClass + '">' + data[i].contents + '</div> \n'; // 메시지 내용, 메시지 종류에 따라 클래스를 지정
+                	    dmDiv += '<div class="time ' + timeClass + '">' + data[i].sendDt + '</div> \n'; // 메시지 시간
+                	    dmDiv += '</div> \n';
                 }
                 
                 //console.log(replyDiv);
@@ -500,12 +520,14 @@ document.addEventListener("DOMContentLoaded", function () {
 <br>
 <br>
 <br>
+
 <div class="container">
-    <div class="contact-list">
-    <div class="contact">
+<div class="contact">
         <button type="button" class="btn btn-primary btn-block" id="doReceiverList">채팅방</button>
         <button type="button" class="btn btn-primary btn-block" id="doMemberPopup">회원</button>  
-    </div>
+</div>
+    <div class="contact-list">
+    
 </div>
 <div  class="chat-history">
     <div id="message" class= "chat-history">
@@ -530,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <input type="hidden" id="receiver" name="receiver" value="${receiver}"> 
             <input type="hidden" name="room" id="room" value="1">
             <input type="text"  id="contents" name="contents">
-            <button id="doSend" name="doSend">전송</button>
+            <button class="btn btn-primary btn-block" id="doSend" name="doSend">전송</button>
         </div>
     
 </div>

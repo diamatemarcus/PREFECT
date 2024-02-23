@@ -36,7 +36,7 @@
         read_chk
     ) VALUES (
         #{seq},
-        1,
+        0,
         #{sender},
         #{receiver},
         #{contents},
@@ -49,8 +49,8 @@
 </insert>
   <update id="updateReadChk" parameterType="DmVO">
     UPDATE dm
-    SET read_chk = 1
-    WHERE read_chk = 0
+    SET read_chk = 0
+    WHERE read_chk = 1
       
       AND (
         <choose>
