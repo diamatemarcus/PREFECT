@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.code.service.CodeService;
@@ -46,15 +47,12 @@ public class LoginController implements PcwkLogger {
 		return view;
 	}
 
-	@PostMapping(value = "/doLogin.do")
-	@ResponseBody
+	@RequestMapping(value = "/doLogin.do")
 	public String login(String email, String password, HttpSession httpSession) throws SQLException {
 		String id = loginService.login(email, password);
 		UserVO user = loginDao.getUserEmail(email);
 		UserVO outVO = loginService.doSelectOne(user);
-		String view2 = "login/login";
-		String view1 = "main/main";
-
+	
 		LOG.debug(id);
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doLogin                                   │user:" + id);
@@ -62,13 +60,14 @@ public class LoginController implements PcwkLogger {
 
 		if (id == null) {
 			LOG.debug("로그인 실패");
-			return view2;
+			return "login/login";
 		} else {
 			httpSession.setAttribute("user", outVO);
 			LOG.debug(outVO);
 			LOG.debug("로그인 성공");
-			return view1;
+			return "main/main";
 		}
+		
 	}
 
 	@RequestMapping(value = "/doLogout.do")
