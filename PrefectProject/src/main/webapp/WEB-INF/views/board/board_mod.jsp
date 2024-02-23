@@ -329,7 +329,7 @@ document.addEventListener("DOMContentLoaded",function(){
         </div>
         
         <div class="container">
-            <form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm" >
+            <form action="${CP}/file/reUpload.do" method="post" enctype="multipart/form-data" name="regForm">
                 <div class="form-group">
                     <label for="file1">파일 첨부</label>
                     <input type="file" name="file1" id="file1" placeholder="파일을 선택 하세요."  multiple/>

@@ -48,12 +48,6 @@ public interface AttachFileService {
 	
 	public List<FileVO> getFileUuid(String uuid);
 	
-	/**
-     * 특정 UUID에 해당하는 파일들 중 가장 큰 SEQ 조회
-     * @param uuid 파일 UUID
-     * @return 가장 큰 SEQ 값
-     * @throws SQLException
-     */
-    int getLastSeqByUuid(String uuid) throws SQLException;
+    int getLastSeq(String uuid) throws SQLException;
 	
 }

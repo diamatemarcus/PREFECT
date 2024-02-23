@@ -115,8 +115,8 @@ public class AttachFileServiceImpl implements AttachFileService, PcwkLogger {
 	}
 
 	@Override
-	public int getLastSeqByUuid(String uuid) throws SQLException {
-		return attachFileDao.getLastSeqByUuid(uuid);
+	public int getLastSeq(String uuid) throws SQLException {
+		return attachFileDao.getLastSeq(uuid);
 	}
 	
 	/*

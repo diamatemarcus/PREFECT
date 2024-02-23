@@ -228,15 +228,6 @@ public class AttachFileController implements PcwkLogger {
 		return ResponseEntity.ok(list);
 	}
 	
-	/**
-	 *  보드 수정 시, 파일 업로드 및 수정
-	 * @param uuid
-	 * @param uploadFiles
-	 * @param session
-	 * @return
-	 * @throws SQLException
-	 * @throws IOException
-	 */
 	@PostMapping(value="/reUpload.do", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<FileVO>> reUpload(
@@ -249,6 +240,16 @@ public class AttachFileController implements PcwkLogger {
 	    LOG.debug("└───────────────────────────────────┘");
 	    
 	    List<FileVO> list = new ArrayList<>();
+	    LOG.debug("UUid : " + uuid);
+	    
+	    int lastSeq = attachFileService.getLastSeq(uuid);
+	    LOG.debug("lastSeq : " + lastSeq);
+	    
+	    FileVO fileVO = new FileVO();
+	    fileVO.setSeq(lastSeq + 1);
+	    
+	    int seq = fileVO.getSeq();
+	    LOG.debug("seq : " + seq);
 
 	    for (MultipartFile multipartFile : uploadFiles) {
 	        if (!multipartFile.isEmpty()) {
@@ -256,11 +257,10 @@ public class AttachFileController implements PcwkLogger {
 	            // 파일 기본 정보 설정 (원본 파일명, 저장 파일명, 파일 크기, 확장자 등)
 	            String originalFilename = multipartFile.getOriginalFilename();
 	            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
-	            String saveFileName = uuid + "_" + (list.size() + 1) + ext; // 저장 파일명 생성, 여기서 list.size() + 1이 새로운 seq 역할을 함
+	            String saveFileName = uuid + "_" + (seq) + ext; // 저장 파일명 생성, 여기서 list.size() + 1이 새로운 seq 역할을 함
 
-	            FileVO fileVO = new FileVO();
 	            fileVO.setUuid(uuid);
-	            fileVO.setSeq(list.size() + 1); // 새로운 seq 할당
+	            fileVO.setSeq(seq); // 새로운 seq 할당
 	            fileVO.setOrgFileName(originalFilename);
 	            fileVO.setSaveFileName(saveFileName);
 	            fileVO.setFileSize(multipartFile.getSize());
@@ -284,6 +284,63 @@ public class AttachFileController implements PcwkLogger {
 
 	    return ResponseEntity.ok(list);
 	}
+	
+//	/**
+//	 *  보드 수정 시, 파일 업로드 및 수정
+//	 * @param uuid
+//	 * @param uploadFiles
+//	 * @param session
+//	 * @return
+//	 * @throws SQLException
+//	 * @throws IOException
+//	 */
+//	@PostMapping(value="/reUpload.do", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//	@ResponseBody
+//	public ResponseEntity<List<FileVO>> reUpload(
+//	        @RequestParam("uuid") String uuid,
+//	        @RequestParam("uploadFile") MultipartFile[] uploadFiles, // 새로 업로드할 파일
+//	        HttpSession session) throws SQLException, IOException {
+//
+//	    LOG.debug("┌───────────────────────────────────┐");
+//	    LOG.debug("│ reUpload                          │");
+//	    LOG.debug("└───────────────────────────────────┘");
+//	    
+//	    List<FileVO> list = new ArrayList<>();
+//
+//	    for (MultipartFile multipartFile : uploadFiles) {
+//	        if (!multipartFile.isEmpty()) {
+//	            // 클라이언트로부터 받은 seq 값을 사용하지 않고, 대신 fileList에서 계산된 최대 seq + 1 값을 사용
+//	            // 파일 기본 정보 설정 (원본 파일명, 저장 파일명, 파일 크기, 확장자 등)
+//	            String originalFilename = multipartFile.getOriginalFilename();
+//	            String ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+//	            String saveFileName = uuid + "_" + (list.size() + 1) + ext; // 저장 파일명 생성, 여기서 list.size() + 1이 새로운 seq 역할을 함
+//
+//	            FileVO fileVO = new FileVO();
+//	            fileVO.setUuid(uuid);
+//	            fileVO.setSeq(list.size() + 1); // 새로운 seq 할당
+//	            fileVO.setOrgFileName(originalFilename);
+//	            fileVO.setSaveFileName(saveFileName);
+//	            fileVO.setFileSize(multipartFile.getSize());
+//	            fileVO.setExtension(ext);
+//	            fileVO.setSavePath(saveFilePath); // 파일 저장 경로 설정
+//
+//	            // 파일 저장 로직 구현
+//	            String fullPath = saveFilePath + File.separator + saveFileName;
+//	            File saveFile = new File(fullPath);
+//	            multipartFile.transferTo(saveFile); // 파일 저장
+//
+//	            // 파일 정보 리스트에 추가
+//	            list.add(fileVO);
+//	        }
+//	    }
+//
+//	    // 새 파일 정보 데이터베이스에 저장
+//	    if (!list.isEmpty()) {
+//	        attachFileService.upFileSave(list); // 여러 파일 정보를 한 번에 데이터베이스에 저장
+//	    }
+//
+//	    return ResponseEntity.ok(list);
+//	}
 	
 	@RequestMapping(value="/fileUpload.do",method = RequestMethod.POST)
 	public ModelAndView fileUpload(ModelAndView modelAndView, MultipartHttpServletRequest mHttp)throws IllegalStateException,IOException {
