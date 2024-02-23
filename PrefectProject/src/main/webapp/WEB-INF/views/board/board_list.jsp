@@ -173,8 +173,8 @@ function pageDoRerive(url,pageNo){
                </select>  
           </div>    
           <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-            <input type="button" value="검색" class="button btn-primary"  id="doRetrieve">
-            <input type="button" value="글쓰기" class="button btn-primary"  id="moveToReg">
+            <input type="button" value="검색" class="button btn-primary"  id="doRetrieve" style="color: white;">
+            <input type="button" value="글쓰기" class="button btn-primary"  id="moveToReg" style="color: white;">
           </div>              
       </div>
                            
