@@ -510,18 +510,6 @@
 	            return false;
 	        }
 
-	        if (month < 1 || month > 12) {
-	            alert('올바른 월을 입력하세요. (1부터 12까지)');
-	            return false;
-	        }
-
-	        // 각 월별 일 수 체크
-	        var daysInMonth = new Date(year, month, 0).getDate();
-	        if (day < 1 || day > daysInMonth) {
-	            alert('올바른 일을 입력하세요.');
-	            return false;
-	        }
-
 	        return true;
 	    }
 	});
