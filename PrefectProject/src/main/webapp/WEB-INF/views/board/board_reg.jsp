@@ -239,8 +239,8 @@ document.addEventListener("DOMContentLoaded",function(){
     <!-- 버튼 -->    
     <div class="row justify-content-end">
         <div class="col-auto">
-            <button class="button btn-primary" id="moveToList" style="color: white;">목록</button>
-            <button class="button btn-primary" id="doSave" style="color: white;">등록</button>
+            <button class="button" id="moveToList">목록</button>
+            <button class="button" id="doSave">등록</button>
         </div>
     </div>
     <br>
@@ -278,8 +278,10 @@ document.addEventListener("DOMContentLoaded",function(){
           </td>
 		    <td style="width: 10%;"><div class="mb-3">
         
-            <input type="text" class="form-control" id="regId" name="regId" value="${sessionScope.user.name}" 
+            <input type="hidden" class="form-control" id="regId" name="regId" value="${sessionScope.user.email}" 
                   readonly="readonly" style="text-align: center;">        
+            <input type="text" class="form-control" id="regIdName" name="regIdName" value="${sessionScope.user.name}" 
+            readonly="readonly" style="text-align: center;">        
         </div>
         </td>
 		  </tr>

@@ -9,6 +9,12 @@
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <title>게시판 수정</title>
 <style>
+/* 읽기 전용 필드의 배경색을 흰색으로 설정 */
+.readonly-input[readonly] {
+    background-color: #ffffff; /* 흰색 배경 */
+    border: 1px solid #ced4da; /* 테두리 색상 추가 (부트스트랩 스타일과 유사하게) */
+    color: gray; /* 텍스트 색상 설정 */
+}
 </style>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
@@ -231,11 +237,11 @@ document.addEventListener("DOMContentLoaded",function(){
     <!--// 제목 ----------------------------------------------------------------->
     
     <!-- 버튼 -->
-    <div class="row justify-content-end">
+    <div class="row justify-content-end" style="margin-bottom: 20px;">
         <div class="col-auto">
-            <input type="button" value="목록" class="btn btn-primary" id="moveToList">
-            <input type="button" value="수정" class="btn btn-primary" id="doUpdate" >
-            <input type="button" value="삭제" class="btn btn-primary" id="doDelete" >
+            <input type="button" value="목록" class="button" id="moveToList">
+            <input type="button" value="수정" class="button" id="doUpdate" >
+            <input type="button" value="삭제" class="button" id="doDelete" >
         </div>
     </div>
     <!--// 버튼 ----------------------------------------------------------------->
@@ -251,9 +257,9 @@ document.addEventListener("DOMContentLoaded",function(){
     
     <form action="#" name="regFrm" id="regFrm">
         <!-- <input type="text" name="div" id="div"> -->
-        <input type="text" name="uuid" id="uuid" value="${uuid}">
+        <input type="hidden" name="uuid" id="uuid" value="${uuid}">
         
-        <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
+        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
             <label for="seq" class="col-sm-2 col-form-label">구분</label>
             <div class="col-sm-10">
                 <select class="form-select" aria-label="Default select example" id="div" name="div">
@@ -266,7 +272,7 @@ document.addEventListener("DOMContentLoaded",function(){
             </div>  
         </div>
         
-        <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
+        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
             <label for="seq" class="col-sm-2 col-form-label">순번</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control readonly-input" id="seq" name="seq" maxlength="100"
@@ -275,7 +281,7 @@ document.addEventListener("DOMContentLoaded",function(){
             </div>
         </div>
 
-        <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
+        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
             <label for="readCnt" class="col-sm-2 col-form-label">조회수</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control readonly-input" id="readCnt" name="readCnt" maxlength="100"
@@ -304,21 +310,28 @@ document.addEventListener("DOMContentLoaded",function(){
                 value="${vo.modId }"  readonly="readonly"  >
             </div>        
         </div>
+        <div class="mb-3 row">
+            <label for="regId" class="col-sm-2 col-form-label">수정일</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control readonly-input" id="modDt" name="modDt" 
+                value="${vo.modDt }"  readonly="readonly"  >
+            </div>        
+        </div>
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
             <label for="title" class="form-label">제목</label>
             <input type="text" class="form-control" id="title" name="title" maxlength="100" 
-             value='${vo.title }'
+             value='${vo.title }' style="color:black;"
             placeholder="제목을 입력 하세요">
         </div>      
         <div class="mb-3">
             <label for="contents" class="form-label">내용</label>
-            <textarea rows="7" class="form-control"  id="contents" name="contents">${vo.contents }</textarea>
+            <textarea rows="7" class="form-control"  id="contents" name="contents" style="color:black;">${vo.contents } </textarea>
         </div>
         
         <div class="container">
-            <form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm">
+            <form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm" >
                 <div class="form-group">
-                    <label for="file1">파일1</label>
+                    <label for="file1">파일 첨부</label>
                     <input type="file" name="file1" id="file1" placeholder="파일을 선택 하세요."  multiple/>
                     <input type="button" value="파일 등록" class="button" id="fileUpload">
                 </div>  
@@ -330,13 +343,13 @@ document.addEventListener("DOMContentLoaded",function(){
                 <thead>
                     <tr>
                         <th>번호</th>
-                        <th>원본파일명</th>
-                        <th>저장파일명</th>
+                        <th>파일 이름</th>
+                        <th style="display:none;">저장파일명</th>
                         <th>파일크기</th>
-                        <th>확장자</th>
-                        <th>저장경로</th>
-                        <th>UUID</th>
-                        <th>SEQ</th>
+                        <th style="display:none;">확장자</th>
+                        <th style="display:none;">저장경로</th>
+                        <th style="display:none;">UUID</th>
+                        <th style="display:none;">SEQ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -345,12 +358,12 @@ document.addEventListener("DOMContentLoaded",function(){
                             <tr>
                                 <td>${status.index + 1}</td>
                                 <td>${file.orgFileName}</td>
-                                <td>${file.saveFileName}</td>
+                                <td style="display:none;">${file.saveFileName}</td>
                                 <td>${file.fileSize}</td>
-                                <td>${file.extension}</td>
-                                <td>${file.savePath}</td>
-                                <td>${file.uuid }</td>
-                                <td>${file.seq }</td>
+                                <td style="display:none;">${file.extension}</td>
+                                <td style="display:none;">${file.savePath}</td>
+                                <td style="display:none;">${file.uuid }</td>
+                                <td style="display:none;">${file.seq }</td>
                                 <td><button id="upFileDelete" class="btn btn-danger delete-file" data-uuid="${file.uuid}" data-seq="${file.seq}">삭제</button></td>
                             </tr>
                         </c:forEach>

@@ -33,8 +33,14 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 <style>
+/* 읽기 전용 필드의 배경색을 흰색으로 설정 */
+.readonly-input[readonly] {
+    background-color: #ffffff; /* 흰색 배경 */
+    border: 1px solid #ced4da; /* 테두리 색상 추가 (부트스트랩 스타일과 유사하게) */
+    color: #495057; /* 텍스트 색상 설정 */
+}
 </style>
-<script>
+ <script>
 document.addEventListener("DOMContentLoaded",function(){
 	
 	//댓글 조회 
@@ -233,11 +239,11 @@ document.addEventListener("DOMContentLoaded",function(){
                 
                 for(let i=0;i<data.length;i++){
                     replyDiv += '<div class="dynamicReply"> \n';
-                    replyDiv += '<div class="row justify-content-end"> \n';
+                    replyDiv += '<div class="row justify-content-end" style="margin-bottom: 5px;"> \n';
                     replyDiv += '<div class="col-auto"> \n';
                     replyDiv += '<span>등록일:'+data[i].modDt+'</span> \n';
-                    replyDiv += '\t\t\t <input type="button" value="댓글수정" class="btn btn-primary replyDoUpdate"  >   \n';
-                    replyDiv += '\t\t\t <input type="button" value="댓글삭제" class="btn btn-primary replyDoDelete"  >   \n';
+                    replyDiv += '\t\t\t <input type="button" value="댓글수정" class="button replyDoUpdate"  >   \n';
+                    replyDiv += '\t\t\t <input type="button" value="댓글삭제" class="button replyDoDelete"  >   \n';
                     replyDiv += '</div> \n';
                     replyDiv += '</div> \n';
                     
@@ -396,11 +402,11 @@ document.addEventListener("DOMContentLoaded",function(){
     <!--// 제목 ----------------------------------------------------------------->
     
     <!-- 버튼 -->
-    <div class="row justify-content-end">
+    <div class="row justify-content-end" style="margin-bottom: 20px;">
         <div class="col-auto">
-            <input type="button" value="목록" class="btn btn-primary" id="moveToList">
-            <input type="button" value="수정" class="btn btn-primary" id="moveToMod" >
-            <input type="button" value="삭제" class="btn btn-primary" id="doDelete" >
+            <input type="button" value="목록" class="button" id="moveToList">
+            <input type="button" value="수정" class="button" id="moveToMod" >
+            <input type="button" value="삭제" class="button" id="doDelete" >
         </div>
     </div>
     <!--// 버튼 ----------------------------------------------------------------->
@@ -417,7 +423,7 @@ document.addEventListener("DOMContentLoaded",function(){
     
     <form action="#" name="regFrm" id="regFrm">
         
-        <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
+        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
             <label for="seq" class="col-sm-2 col-form-label">구분</label>
             <div class="col-sm-10">
                 <select class="form-select" aria-label="Default select example" id="div" name="div" disabled="disabled">
@@ -431,7 +437,7 @@ document.addEventListener("DOMContentLoaded",function(){
             </div>  
         </div>
         
-        <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
+        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
             <label for="seq" class="col-sm-2 col-form-label">순번</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control readonly-input" id="seq" name="seq" maxlength="100"
@@ -462,7 +468,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 value="${vo.regDt }"  readonly="readonly" >
             </div>        
         </div>        
-        <div class="mb-3 row">
+        <div class="mb-3 row" style="display:none;">
             <label for="regId" class="col-sm-2 col-form-label">수정자</label>
             <div class="col-sm-10">
                 <input type="text" class="form-control readonly-input" id="modId" name="modId" 
@@ -471,38 +477,38 @@ document.addEventListener("DOMContentLoaded",function(){
         </div>
         <div class="mb-3"> <!--  아래쪽으로  여백 -->
             <label for="title" class="form-label">제목</label>
-            <input type="text" class="form-control" id="title" name="title" maxlength="100" 
+            <input type="text" class="form-control readonly-input" id="title" name="title" maxlength="100" 
              value='${vo.title }' readonly="readonly">
         </div>      
         <div class="mb-3">
             <label for="contents" class="form-label">내용</label>
-            <textarea rows="7" class="form-control"  id="contents" name="contents" readonly="readonly">${vo.contents }</textarea>
+            <textarea rows="7" class="form-control readonly-input"  id="contents" name="contents" readonly="readonly">${vo.contents }</textarea>
         </div>
         
         
         <!-- 파일 목록 -->        
         <div class="container">
-		    <table id="fileList" class="table">
+		    <table id="fileList" class="table" style="width: auto;">
 		        <thead>
 		            <tr>
 		                <th>번호</th>
-		                <th>원본파일명</th>
-		                <th>저장파일명</th>
-		                <th>파일크기</th>
-		                <th>확장자</th>
-		                <th>저장경로</th>
+		                <th>파일 이름</th>
+		                <th style="display:none;">저장파일명</th>
+		                <th style="display:none;">파일크기</th>
+		                <th style="display:none;">확장자</th>
+		                <th style="display:none;">저장경로</th>
 		            </tr>
 		        </thead>
 		        <tbody>
 		            <c:if test="${not empty fileList}">
 		                <c:forEach var="file" items="${fileList}" varStatus="status">
 		                    <tr data-org-file-name="${file.orgFileName}" data-save-file-name="${file.saveFileName}" data-save-path="${file.savePath}">
-		                        <td>${status.index + 1}</td>
+		                        <td class="text-center">${status.index + 1}</td>
 		                        <td>${file.orgFileName}</td>
-		                        <td>${file.saveFileName}</td>
-		                        <td>${file.fileSize}</td>
-		                        <td>${file.extension}</td>
-		                        <td>${file.savePath}</td>
+		                        <td style="display:none;">${file.saveFileName}</td>
+		                        <td style="display:none;">${file.fileSize}</td>
+		                        <td style="display:none;">${file.extension}</td>
+		                        <td style="display:none;">${file.savePath}</td>
 		                    </tr>
 		                </c:forEach>
 		            </c:if>
@@ -522,10 +528,10 @@ document.addEventListener("DOMContentLoaded",function(){
     <div id="replyDoSaveArea">
         <!-- 버튼 -->
         <div class="dynamicReply">
-            <div class="row justify-content-end">
+            <div class="row justify-content-end" style="margin-bottom: 5px;">
                 <div class="col-auto">
-                    <input type="button" value="댓글수정" class="btn btn-primary replyDoUpdate"  >
-                    <input type="button" value="댓글삭제" class="btn btn-primary replyDoDelete"  >
+                    <input type="button" value="댓글수정" class="button replyDoUpdate">
+                    <input type="button" value="댓글삭제" class="button replyDoDelete">
                 </div>
             </div>
             <!--// 버튼 ----------------------------------------------------------------->
@@ -539,9 +545,9 @@ document.addEventListener("DOMContentLoaded",function(){
     
     <div id="replyDoSaveArea">
         <!-- 버튼 -->
-        <div class="row justify-content-end">
+        <div class="row justify-content-end" style="margin-bottom: 5px;">
             <div class="col-auto">
-                <input type="button" value="댓글 등록" class="btn btn-primary" id="replyDoSave" >
+                <input type="button" value="댓글 등록" class="button" id="replyDoSave" >
             </div>
         </div>
         <!--// 버튼 ----------------------------------------------------------------->
