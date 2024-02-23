@@ -114,14 +114,14 @@
 				<div class="mb-3">
 					<label for="email" class="form-label">이메일</label> <input
 						type="text" class="form-control ppl_input" readonly="readonly"
-						name="email" id="email" value="${outVO.email }" size="20"
+						name="email" id="email" value="${outVO.email}" size="20"
 						maxlength="30">
 				</div>
 				<div class="mb-3">
 					<!--  아래쪽으로  여백 -->
 					<label for="name" class="form-label">이름</label> <input type="text"
 						class="form-control" name="name" id="name"
-						placeholder="이름을 입력 하세요." size="20" value="${outVO.name }"
+						placeholder="이름을 입력 하세요." size="20" value="${outVO.name}"
 						maxlength="21">
 				</div>
 				<div class="mb-3">
