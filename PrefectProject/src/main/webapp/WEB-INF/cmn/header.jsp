@@ -108,7 +108,6 @@
                         <a href="/ehr/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>
                         <a href="/ehr/board/doRetrieve.do?div=20" class="nav-item nav-link active">게시판</a>
                         <a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
-                        <a href="/ehr/dm/doContentsList.do" class="nav-item nav-link">메시지</a> 
                         <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서구매</a>
                         <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
                         <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
@@ -120,6 +119,11 @@
                     </div>
                     <div class="d-flex m-3 me-0">
                         <a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i>
+                        </a>
+                    </div>
+                    <div class="d-flex m-3 me-0">
+                        <a href="/ehr/dm/doContentsList.do" class="my-auto"> 
+                        <i class="fas fa-envelope fa-2x"></i> <!-- 메시지 아이콘 -->
                         </a>
                     </div>
                 </div>

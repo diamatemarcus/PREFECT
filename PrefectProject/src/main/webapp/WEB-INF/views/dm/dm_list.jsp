@@ -79,8 +79,8 @@
 
 
         .user-message {
-            background-color: #fff;
-            color: #333;
+            background-color: #FFA500;
+            color: #fff;
             align-self: flex-end;
             margin-left: auto;
             position: relative;
@@ -146,9 +146,10 @@
             flex: 1;
             padding: 8px;
             margin-right: 10px;
-            border: none;
+            
             border-radius: 4px;
             outline: none;
+            border: 1px solid #ccc;
         }
 
         .input-container button {
@@ -212,6 +213,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+    
+    doContentsList()
     
     doSendBTN.addEventListener("click", function (e) {
         doSend()
