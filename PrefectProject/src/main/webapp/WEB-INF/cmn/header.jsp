@@ -114,8 +114,16 @@
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <% if(session.getAttribute("user") == null) { %>
                         <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'">로그인</button>
                         <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'">회원가입</button>
+                        <% } else { %>
+                            <!-- 사용자 이름과 로그아웃 버튼 표시 -->
+                            <span class="navbar-text">
+                                ${sessionScope.user.name}님 환영합니다.
+                            </span>
+                            <button class="button" type="button" onclick="location.href='/ehr/login/doLogout.do'">로그아웃</button>
+                        <% } %>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i>

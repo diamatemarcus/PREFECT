@@ -73,12 +73,12 @@ public class LoginController implements PcwkLogger {
 	@RequestMapping(value = "/doLogout.do")
 	public String logout(HttpSession session) {
 		session.invalidate();
-		String view = "login/login";
+		//String view = "login/login";
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ loginView                                 │");
 		LOG.debug("└───────────────────────────────────────────┘");
 
-		return view;
+		return "redirect:/login/loginView.do";
 	}
 
 }
