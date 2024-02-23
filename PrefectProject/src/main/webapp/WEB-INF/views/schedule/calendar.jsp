@@ -601,7 +601,7 @@
         
 
         <!-- 캘린더 table -->
-        <div class="col-lg-7 basictable" style="margin-top: 10px; margin-left: 15%;">
+        <div class="col-lg-7 " style="margin-top: 10px; margin-left: 15%;">
         <table
             class="table table-bordered border-primary table-hover"
             id="calendarTable" style="margin-top: 10px; margin-bottom: 10px" >

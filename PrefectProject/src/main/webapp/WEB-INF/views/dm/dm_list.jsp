@@ -175,6 +175,13 @@ document.addEventListener("DOMContentLoaded", function () {
         //enter event:
     });
     
+    function scrollToBottom() {
+        setTimeout(function() {
+            let messageContainer = document.querySelector("#message");
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }, 100); // 100밀리초 후에 실행
+    }
+    
     function doSend() {
         
         let sender = document.querySelector("#sender").value;
@@ -199,11 +206,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (1 == data.msgId) {
                     doContentsList()
+                    
                 } else {
                     alert(data.msgContents);
                 }
                 
                 $('#contents').val('');
+                scrollToBottom()
             },
             error: function (data) { // 실패시 처리
                 console.log("error:" + data);
@@ -533,7 +542,7 @@ document.addEventListener("DOMContentLoaded", function () {
     
 </div>
 <div  class="chat-history">
-    <div id="message" class= "chat-history">
+    <div id="message" class= "chat-history" >
         <c:choose>
               <c:when test="${ not empty list }">
                 <li class="chat-messages" >

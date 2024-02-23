@@ -114,14 +114,14 @@
 				<div class="mb-3">
 					<label for="email" class="form-label">이메일</label> <input
 						type="text" class="form-control ppl_input" readonly="readonly"
-						name="email" id="email" value="${outVO.email }" size="20"
+						name="email" id="email" value="${outVO.email}" size="20"
 						maxlength="30">
 				</div>
 				<div class="mb-3">
 					<!--  아래쪽으로  여백 -->
 					<label for="name" class="form-label">이름</label> <input type="text"
 						class="form-control" name="name" id="name"
-						placeholder="이름을 입력 하세요." size="20" value="${outVO.name }"
+						placeholder="이름을 입력 하세요." size="20" value="${outVO.name}"
 						maxlength="21">
 				</div>
 				<div class="mb-3">
@@ -507,18 +507,6 @@
 
 	        if (isNaN(year) || isNaN(month) || isNaN(day)) {
 	            alert('숫자 형식이 아닌 값이 포함되어 있습니다.');
-	            return false;
-	        }
-
-	        if (month < 1 || month > 12) {
-	            alert('올바른 월을 입력하세요. (1부터 12까지)');
-	            return false;
-	        }
-
-	        // 각 월별 일 수 체크
-	        var daysInMonth = new Date(year, month, 0).getDate();
-	        if (day < 1 || day > daysInMonth) {
-	            alert('올바른 일을 입력하세요.');
 	            return false;
 	        }
 
