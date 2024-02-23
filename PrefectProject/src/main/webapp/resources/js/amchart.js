@@ -71,11 +71,11 @@ var yAxis = chart.yAxes.push(
 
 // Create series
 // https://www.amcharts.com/docs/v5/charts/radar-chart/#Adding_series
-for (var i = 0; i < 4; i++) {
+for (var i = 0; i < 1; i++) {  
   var series = chart.series.push(
     am5radar.RadarColumnSeries.new(root, {
       stacked: true,
-      name: "Series " + i,
+      name: "성적 ",
       xAxis: xAxis,
       yAxis: yAxis,
       valueYField: "value",
