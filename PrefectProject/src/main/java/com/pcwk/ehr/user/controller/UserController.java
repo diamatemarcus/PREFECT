@@ -338,14 +338,17 @@ public class UserController implements PcwkLogger{
 	public String doSelectOne(UserVO inVO,HttpServletRequest req, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException {
 		String view = "user/user_mod";
 		String email = "";
-
 		
+		if(null != httpSession.getAttribute("user")) {
+			UserVO user = (UserVO) httpSession.getAttribute("user");
+			inVO.setEmail(user.getEmail());
+		    }
 	    
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
 		LOG.debug("└───────────────────────────────────────────┘");	
-		String userId = req.getParameter("email");
-		LOG.debug("│ userId                                :"+userId);		
+		//String userId = req.getParameter("email");
+		//LOG.debug("│ userId                                :"+userId);		
 		
 		UserVO outVO = this.userService.doSelectOne(inVO);
 		LOG.debug("│ outVO                                :"+outVO);		

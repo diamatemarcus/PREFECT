@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(function() {
             let messageContainer = document.querySelector("#message");
             messageContainer.scrollTop = messageContainer.scrollHeight;
-        }, 100); // 100밀리초 후에 실행
+        }, 150); // 100밀리초 후에 실행
     }
     
     function doSend() {
@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
                        
                        $("#receiver").val(email);
                        doContentsList()
-                       
+                       scrollToBottom()
                        //modal popup닫기
                        $('#staticBackdrop1').modal('hide');
                        
@@ -511,7 +511,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 //조회 댓글 출력
                 document.getElementById("message").innerHTML = dmDiv;
                 //$("#replyDoSaveArea").html(replyDiv);
-                
+                scrollToBottom()
             },
             error:function(data){//실패시 처리
                 console.log("error:"+data);
