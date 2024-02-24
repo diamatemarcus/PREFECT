@@ -104,8 +104,12 @@ public class BoardController implements PcwkLogger{
 		codes.put("code", codeStr);
 		
 		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
+		
+		String selectedDiv = inVO.getDiv();
+		
 		model.addAttribute("divCode", codeList);
 		model.addAttribute("paramVO", inVO);
+		model.addAttribute("selectedDiv", selectedDiv);
 		
 		/**
 		 * error noUse
@@ -344,9 +348,9 @@ public class BoardController implements PcwkLogger{
 		
 		String   message = "";
 		if(1==flag) {//삭제 성공
-			message = inVO.getSeq()+"삭제 되었습니다.";	
+			message = "삭제 되었습니다.";	
 		}else {
-			message = inVO.getSeq()+"삭제 실패!";
+			message = "삭제 실패!";
 		}
 		
 		MessageVO messageVO=new MessageVO(String.valueOf(flag), message);

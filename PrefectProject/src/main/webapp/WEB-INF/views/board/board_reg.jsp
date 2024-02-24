@@ -12,6 +12,9 @@
 document.addEventListener("DOMContentLoaded",function(){
     console.log("DOMContentLoaded");
     
+    let div = document.querySelector("#div").value;
+    console.log('div:'+div);
+    
     const regForm       = document.querySelector("#regFrm");
     const moveToListBTN = document.querySelector("#moveToList");
     const doSaveBTN     = window.document.querySelector("#doSave");
@@ -25,7 +28,16 @@ document.addEventListener("DOMContentLoaded",function(){
     // event 감지 및 처리
     moveToListBTN.addEventListener("click", function (e) {
         console.log("moveToListBTN click");
+        
+        let div = document.querySelector("#div").value;
+        console.log("div:" + div);
+        
+        if (window.confirm("등록하지 않고 목록으로 가시겠습니까?") === false) {
+            return;
+        }
+        
         moveToListFun();
+        
     });
 
     function generateUUID() {
@@ -56,6 +68,7 @@ document.addEventListener("DOMContentLoaded",function(){
         let regId = document.querySelector("#regId").value;
         let contents = document.querySelector("#contents").value;
 
+        console.log("div:" + div);
         console.log("title:" + title);
         console.log("regId:" + regId);
         console.log("contents:" + contents);
@@ -165,7 +178,7 @@ document.addEventListener("DOMContentLoaded",function(){
 				
 				$.each(data,function( index, value ){
 					 let fileSizeInBytes = value.fileSize; // 바이트 단위의 파일 크기
-					 let fileSizeInMB = fileSizeInBytes / (1024 * 1024); // MB 단위로 변환
+					 let fileSizeInMB = (fileSizeInBytes / (1024 * 1024)); // MB 단위로 변환
 					 fileSizeInMB = fileSizeInMB.toFixed(2); // 소수점 둘째 자리까지 표시
 				    //console.log("vo.orgFileName:"+value.orgFileName);
 				    console.log("index:"+index);
@@ -261,15 +274,26 @@ document.addEventListener("DOMContentLoaded",function(){
 		
 		  <tr>
 		    <td style="padding:10px;width: 15%;">   
-		      <div class="mb-3">
+		        <div class="mb-3">
+		        
+		        
+		        <select class="form-select" aria-label="Default select example" id="div" name="div">
+				    <c:forEach var="codeVO" items="${divCode}">
+				        <option value="${codeVO.detCode}"  
+				            <c:if test="${codeVO.detCode == selectedDiv}">selected</c:if>  
+				        >${codeVO.detName}</option>
+				    </c:forEach>
+				</select>
+				
+		            <%--  
 		            <select class="form-select" aria-label="Default select example" id="div" name="div">
 		              <c:forEach var="codeVO" items="${divCode}">
 		                 <option   value="<c:out value='${codeVO.detCode}'/>"  
 		                    <c:if test="${codeVO.detCode == vo.getDiv() }">selected</c:if>  
 		                 ><c:out value="${codeVO.detName}"/></option>
 		              </c:forEach>
-		            </select>            
-		       </div>
+		            </select>           
+		       </div> --%>
             </td>
           <td style="padding:10px; width: 70%;">
 		    <div class="mb-3"> <!--  아래쪽으로  여백 -->
