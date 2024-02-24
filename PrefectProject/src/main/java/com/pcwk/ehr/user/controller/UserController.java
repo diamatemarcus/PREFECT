@@ -328,18 +328,18 @@ public class UserController implements PcwkLogger{
 		
 	
 	
-	//단건조회
-	//value="/doSelectOne.do" => http://localhost:8080/ehr/user/doSelectOne.do
-	//method = RequestMethod.GET => http://localhost:8080/ehr/user/doSelectOne.do?userId=p99-01
-	//produces = "application/json;charset=UTF-8" => 데이터를 위 형식으로 생성
-	//@ResponseBody : 반환값을 http의 응답의 본문으로 사용
 	@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
-	
 	public String doSelectOne(UserVO inVO,HttpServletRequest req, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException {
 		String view = "user/user_mod";
 		String email = "";
 		
+		UserVO userSession = new UserVO();
 		
+		if(null != httpSession.getAttribute("user")) {
+			UserVO user = (UserVO) httpSession.getAttribute("user");
+			user.setEmail(user.getEmail());
+			userSession = this.userService.doSelectOne(user);
+		    }
 	    
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
@@ -348,9 +348,15 @@ public class UserController implements PcwkLogger{
 		//LOG.debug("│ userId                                :"+userId);		
 		
 		UserVO outVO = this.userService.doSelectOne(inVO);
-		LOG.debug("│ outVO                                :"+outVO);		
-
-		model.addAttribute("outVO", outVO);
+		LOG.debug("│ outVO                                :"+outVO);
+		
+		//유저가 세션담겼으면 session유저 뿌리고 그렇지 않으면 outVO뿌림
+	    if(userSession != null) {
+	        model.addAttribute("userSession", userSession);
+	    }
+	    else {
+	        model.addAttribute("outVO", outVO);
+	    }
 		
 		//코드목록 조회 : 'EDUCATION','ROLE'
 		Map<String, Object> codes =new HashMap<String, Object>();
