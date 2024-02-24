@@ -118,6 +118,11 @@ public class LoginController implements PcwkLogger {
 		
 	    }else if(30==check) {//비번확인
 	    	UserVO outVO = loginService.doSelectOne(user);
+	    	String role = outVO.getRole();
+	    	
+			LOG.debug("role:"+role);
+
+	    	
 	    	message.setMsgId("30");
 			message.setMsgContents(outVO.getName()+"님 반갑습니다.");	   
 			
@@ -125,6 +130,8 @@ public class LoginController implements PcwkLogger {
 			
 			if(null != outVO) {
 				httpSession.setAttribute("user", outVO);
+				httpSession.setAttribute("role", role);
+
 			}			
 	    }else {
 	    	message.setMsgId("99");

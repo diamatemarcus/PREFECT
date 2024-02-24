@@ -331,6 +331,7 @@ public class UserController implements PcwkLogger{
 	@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
 	public String doSelectOne(UserVO inVO,HttpServletRequest req, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException {
 		String view = "user/user_mod";
+		String view2 = "user/user_teacher";
 		String email = "";
 		
 		UserVO userSession = new UserVO();
@@ -394,7 +395,7 @@ public class UserController implements PcwkLogger{
 		
 		model.addAttribute("education", educationList);
 		
-		model.addAttribute("role",roleList);
+		model.addAttribute("role1",roleList); //header 의 ${role}과 겹쳐서 이름 바꿨음
 		
 		
 		List<LicensesVO> licenses = new ArrayList<LicensesVO>();
@@ -407,6 +408,15 @@ public class UserController implements PcwkLogger{
 		
 		model.addAttribute("userLicenses", userLicenses);
 		
+		String role = (String) httpSession.getAttribute("role");
+		model.addAttribute("role", role);
+		LOG.debug("role :" + role);
+
+		if(role == "20") {
+			LOG.debug("role :" + role);
+		return view2;
+		}
+			
 		return view;
 	}
 	

@@ -35,13 +35,7 @@
 }
 </style>
 
-<!-- chart -->
-<style>
-#chartdiv1 {
-  width: 100%;
-  height: 500px;
-}
-</style>
+
 
 
 <title>마이페이지</title>
@@ -109,7 +103,7 @@
 
 		<!-- 회원 등록영역 -->
 	  <div class = "row">
-		<div class = "container col-md-6">
+		<div class = "container col-md-auto">
 			<form action="#" name="userRegFrm">
 				<div class="mb-3">
 					<label for="email" class="form-label">이메일</label> <input
@@ -153,7 +147,7 @@
 					<div class="col-auto">
 						<select id="role" name="role">
 							<!-- 검색 조건 옵션을 동적으로 생성 -->
-							<c:forEach items="${role1}" var="vo"> 
+							<c:forEach items="${role}" var="vo">
 								<option value="<c:out value='${vo.detCode}'/>"
 									<c:if test="${vo.detCode == outVO.role }">selected</c:if>><c:out
 										value="${vo.detName}" /></option>
@@ -217,13 +211,6 @@
 			</form>
 		</div>
 		<!--// 회원 등록영역 ------------------------------------------------------>
-		<!-- chart -->
-		<div class="container col-md-6 mt-4">
-             <div class = "col-sm">
-       				 <!-- Area Chart -->
-            		 <div id="chartdiv1"></div>
-   			 </div>   
-        </div>
 	</div>
  </div>
 </div>
@@ -517,12 +504,6 @@
 </script>
 
 
-<!--  chart Resources -->
-<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
-<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
-<script src="${CP}/resources/js/amchart.js" type="text/javascript"></script>
 
 <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>  
 </body>

@@ -119,8 +119,12 @@
                           </ul>
                         </li>
                         <a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
-                        <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
-                        <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
+                        <c:if test="${role eq '10'}">
+   							 <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
+						</c:if>  
+                        <c:if test="${role eq '20' || role eq '30'}">   
+    						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
+						</c:if>
                         <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서검색</a>
                     </div>
 
@@ -137,8 +141,14 @@
                         <% } %>
                     </div>
                     <div class="d-flex m-3 me-0">
-                        <a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i>
-                        </a>
+                 		<c:choose>
+    						<c:when test="${role eq '30'}"> <!-- 학생 -->
+         						<a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
+    			  		    </c:when>
+    						<c:when test="${role eq '20'}"> <!-- 교수 -->
+         						<a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
+    			   			</c:when>
+						</c:choose>
                     </div>
                     <div class="d-flex m-3 me-0">
                         <a href="/ehr/dm/doContentsList.do" class="my-auto"> 
