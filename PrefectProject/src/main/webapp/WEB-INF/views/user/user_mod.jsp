@@ -422,7 +422,7 @@
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
 	                // AJAX 요청 완료 후 페이지 리로드
-	                location.reload();
+	                selectedLicenses.push(licensesSeq);
 	            },
 	            error: function(data) { // 실패시 처리
 	                console.log("error:" + data);
@@ -437,11 +437,11 @@
 	        $('#licensesList tbody').append(newRow);
 
 	        // 선택된 자격증을 배열에 추가
-	        selectedLicenses.push(licensesSeq);
+	        //selectedLicenses.push(licensesSeq);
 
 	        // 로컬 스토리지에 선택된 자격증 목록 저장
-	        localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
-	        localStorage.setItem('regDt_' + licensesSeq, regDt);
+	        //localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
+	        //localStorage.setItem('regDt_' + licensesSeq, regDt);
 	    });
 
 	 // 삭제 버튼 클릭 시
@@ -463,7 +463,7 @@
 	        $(this).closest('tr').remove();
 
 	        // 로컬 스토리지에 업데이트된 선택된 자격증 목록 저장
-	        localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
+	        //localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
 
 	        // AJAX를 사용하여 선택된 자격증을 삭제하는 요청 보내기
 	        $.ajax({
@@ -478,7 +478,7 @@
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
 	                // AJAX 요청 완료 후 페이지 리로드
-	                location.reload();
+	                $(this).closest('tr').remove();
 	            },
 	            error: function(data) { // 실패시 처리
 	                console.log("error:" + data);

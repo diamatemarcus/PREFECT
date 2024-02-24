@@ -339,10 +339,7 @@ public class UserController implements PcwkLogger{
 		String view = "user/user_mod";
 		String email = "";
 		
-		if(null != httpSession.getAttribute("user")) {
-			UserVO user = (UserVO) httpSession.getAttribute("user");
-			inVO.setEmail(user.getEmail());
-		    }
+		
 	    
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
