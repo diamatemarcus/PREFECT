@@ -38,7 +38,7 @@
 			<a href="#"><img src="${CP}/resources/template/login/assets/img/logo-fb.png" alt="" width="100" height="100"></a>
 			<h1 class="text-white h3">Account Login</h1>
 		</div>
-		<form class="login-form">
+		<form class="login-form" action="/ehr/login/doLogin.do" method="post">
 			<div class="input-group uf-input-group input-group-lg mb-3">
 				<span class="input-group-text fa fa-user"></span>
 				<input type="text" id="email" name="email" class="form-control" placeholder="Email address" required="required">
@@ -122,9 +122,11 @@
                         if("10" == data.msgId){
                             alert(data.msgContents);
                             document.querySelector("#email").focus();
+                            window.location.href = "/ehr/login/loginView.do";
                         }else if("20" == data.msgId){
                             alert(data.msgContents);
-                            document.querySelector("#password").focus();                 
+                            document.querySelector("#password").focus();
+                            window.location.href = "/ehr/login/loginView.do";
                         }else if("30" == data.msgId){
                             alert(data.msgContents);
                             window.location.href = "/ehr/index.jsp";
