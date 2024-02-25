@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pcwk.ehr.course">
+  
+  <!-- 학원 관리자랑 시스템 관리자가 코스 등록하기 -->
+  <insert id="doSaveCourse" parameterType="CourseVO">
+		 INSERT INTO courses (
+		    code,
+		    name,
+		    number_of_times,
+		    info,
+		    academys_seq
+		) VALUES (
+		    #{courseCode},
+		    #{courseName},
+		    #{numberOfTimes},
+		    #{courserInfo},
+		    #{academySeq}
+		)
+  </insert>
+  
+  <!-- 학원관리자가 학생을 과정에 추가/ 시스템관리자가 학원관리자를 과정에 추가 -->
+  <insert id="doSave" parameterType="CourseVO">
+		 INSERT INTO users_courses (
+		    email,
+		    courses_code
+		) VALUES (
+		    #{email},
+		    #{courseCode}
+		)
+  </insert>
+  
+  <!-- 시스템 관리자가 학원 등록하기 -->
+  <insert id="doSaveAcademy" parameterType="CourseVO">
+		 INSERT INTO academys (
+		    seq,
+		    name
+		) VALUES (
+		    #{academySeq},
+		    #{academyName}
+		)
+  </insert>
+  
+  <!-- 학원관리자(교수님)가 교수의 코스를 수강하는 학생들 조회 --> 
+  <select id="doRetrieve" parameterType= "CourseVO" resultType="CourseVO">
+	 SELECT
+	    code AS courseCode,
+	    courses.name AS courseName,
+	    number_of_times,
+	    info,
+	    academys.seq AS academySeq,
+	    academys.name AS academyName,
+	    users_courses.email
+	FROM
+	    users_courses JOIN
+	    courses ON courses_code = code JOIN academys
+	    ON academys.seq = courses.academys_seq JOIN users
+	    ON users.email = users_courses.email
+	WHERE courses_code = #{courseCode} and role = 30
+  </select>
+  
+  <!-- 교수나, 학생이 포함된 과정 정보 조회 --> 
+  <select id="doRetrieveCourseInfo" parameterType= "CourseVO" resultType="CourseVO">
+	 SELECT
+	    code AS courseCode,
+	    courses.name AS courseName,
+	    number_of_times,
+	    info AS courseInfo,
+	    academys.seq AS academySeq,
+	    academys.name AS academyName,
+	    users_courses.email
+	FROM
+	    users_courses JOIN
+	    courses ON courses_code = code JOIN academys
+	    ON academys.seq = courses.academys_seq JOIN users
+	    ON users.email = users_courses.email
+	WHERE users_courses.email = #{email}
+  </select>
+  
+  <!-- 학원관리자가 학원을 다니는 학생들 조회 --> 
+  <select id="doRetrieveAllTrainees" resultType="CourseVO">
+	    SELECT
+	    courses_code,
+	    courses.name,
+	    number_of_times,
+	    info,
+	    academys.seq AS academySeq,
+	    academys.name AS academyName,
+	    users_courses.email
+	FROM
+	    users_courses JOIN
+	    courses ON courses_code = code JOIN academys
+	    ON academys.seq = courses.academys_seq JOIN users
+	    ON users.email = users_courses.email
+	WHERE seq = #{academySeq} and role = 30
+  </select>
+  
+  <!-- 학원관리자가 학원의 모든 코스들 조회 --> 
+  <select id="doRetrieveAllCourses" resultType="CourseVO">
+	 SELECT
+        code,
+        C.name,
+        number_of_times,
+        info,
+        seq AS acdemySeq,
+        A.name AS academyName
+    FROM courses C JOIN academys A
+    ON C.academys_seq = A.seq
+    WHERE seq = #{academySeq}
+    ORDER BY C.code, C.number_of_times
+  </select>
+  
+  <!-- 시스템관리자가 모든 학원의 모든 코스들 조회 -->
+  <select id="doRetrieveAllAcademys" resultType="CourseVO">
+	 SELECT
+        code,
+        C.name,
+        number_of_times,
+        info,
+        seq AS acdemySeq,
+        A.name AS academyName
+    FROM courses C JOIN academys A
+    ON C.academys_seq = A.seq
+    ORDER BY C.code, C.number_of_times
+  </select>
+  
+  <!-- 학원관리자, 시스템관리자가 코스 정보 수정  -->
+  <update id="doUpdateCourse" parameterType="CourseVO">
+	UPDATE schedule
+	SET  
+	    name = #{courseName},
+	    number_of_times = #{numberOfTimes},
+	    info = #{courseInfo},
+	    academy_seq = #{academySeq}
+	WHERE schedule_id = #{courseCode}
+  </update>
+  
+  <!-- 시스템관리자가 학원 정보 수정 -->
+  <update id="doUpdateAcademy" parameterType="CourseVO">
+	UPDATE academys
+	SET  
+	    name = #{academyName}
+	WHERE seq = #{academySeq}
+  </update>
+  
+  <!-- 학원관리자, 시스템관리자가 코스 정보 삭제 -->
+  <delete id="doDeleteCourse" parameterType="CourseVO">
+	    DELETE FROM courses 
+	    WHERE  code = #{courseCode}
+   </delete>
+    
+   <!-- 시스템관리자가 학원 정보 삭제 -->
+   <delete id="doDeleteAcademy" parameterType="CourseVO">
+    DELETE FROM academy 
+    WHERE  seq = #{academySeq}
+   </delete>
+   
+   <!-- 학생이 수강 포기할 때 -->
+   <delete id="doDelete" parameterType="CourseVO">
+    DELETE FROM users_courses 
+    WHERE  email = #{email}
+    AND courses_code = #{coursesCode}
+   </delete>
+ 
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Dao: query찾는 분류 기준 
+namespace+id -> com.pcwk.ehr.user.doSelectOne
+-->  
+<mapper namespace="com.pcwk.ehr.attendance">
+	
+	<!-- 교수님 또는 훈련생의 이름을 기준으로 해당 정보들을 조회하는 쿼리 -->
+    <select id="getAttendanceInfoByEmail" parameterType="String" resultType="AttendanceVO">
+		SELECT
+		    trainee,
+		    professor,
+		    cal_id,
+		    attend_status
+		FROM
+		    attendance
+		WHERE professor = #{email}
+		   OR trainee = #{email}
+    </select>
+
+	<!-- 교수님이 로그인한 상태로 특정 훈련생의 출석 상태를 수정하는 쿼리 -->
+    <update id="updateAttendanceStatus" parameterType="AttendanceVO">
+        UPDATE attendance
+        	SET
+        		attend_status = #{attendStatus},
+        		cal_id = #{calID}
+        WHERE seq = #{seq}
+    </update>
+    
+    <!-- 교수님이 출석 체크 -->
+	  <insert id="doSave" parameterType="CourseVO">
+			 INSERT INTO attendance (
+			    trainee,
+			    professor,
+			    cal_id,
+			    attend_status,
+			    seq
+			) VALUES (
+			    #{trainee},
+			    #{professor},
+			    #{calID},
+			    #{attendStatus},
+			    attendance_seq.NEXTVAL
+			)
+	  </insert>
+
+</mapper>  
