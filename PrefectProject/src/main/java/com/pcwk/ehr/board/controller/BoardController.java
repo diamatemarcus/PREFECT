@@ -133,6 +133,7 @@ public class BoardController implements PcwkLogger{
 		LOG.debug("│ doRetrieve                        │");
 		LOG.debug("│ BoardVO                           │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");
+		
 		//Default처리
 		
 		//페이지 사이즈:10
@@ -179,7 +180,6 @@ public class BoardController implements PcwkLogger{
 		
 		//목록조회
 		List<BoardVO>  list = service.doRetrieve(inVO);
-		
 		
 		long totalCnt = 0;
 		//총글수 
