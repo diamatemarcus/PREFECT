@@ -126,12 +126,10 @@
 						maxlength="21">
 				</div>
 				<div class="mb-3">
-					<label for="password" class="form-label">비밀번호</label>
-					<input type="password" class="form-control" name="password" id="password"
-					    placeholder="비밀번호를 입력하세요."
-					    value="${outVO != null && userSession.role == '10' ? outVO.password : userSession.password}"
-					    size="20" maxlength="30"
-					    ${outVO != null && userSession.role == '10' ? 'readonly' : ''}>
+                    <label for="password" class="form-label">비밀번호</label> 
+                        <input type="password" class="form-control" name="password" id="password"
+                        placeholder="비밀번호를 입력 하세요." value="${outVO != null ? outVO.password : userSession.password}" readonly="readonly" size="20"
+                        maxlength="30">
 				</div>
 				<div class="mb-3">
 					<label for="tel" class="form-label">전화번호</label> <input type="text"
