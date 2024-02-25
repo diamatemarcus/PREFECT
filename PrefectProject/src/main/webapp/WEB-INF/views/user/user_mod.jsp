@@ -168,7 +168,7 @@
                 <!-- 라이센스 부분 -->
 
                 <!-- 셀렉트 박스 -->
-				<div class="mb-3">
+				<div class="mb-3">${userLicenses}
 				    <label for="licenses" class="form-label">자격증</label>
 				    <div class="row align-items-center">
 				        <!-- 자격증 선택 셀렉트 박스 -->
@@ -202,7 +202,7 @@
                     </thead>
                     <tbody id="tableTbody">
                         <c:choose>
-                            <c:when test="${userLicenses.size()>0 }">
+                            <c:when test="${userLicenses.size()>0}">
                                 <c:forEach var="vo" items="${userLicenses}" >
                                     <tr>
                                         <td class="hidden">${vo.licensesSeq}</td>

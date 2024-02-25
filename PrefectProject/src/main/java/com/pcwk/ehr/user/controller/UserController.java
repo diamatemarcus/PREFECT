@@ -337,7 +337,7 @@ public class UserController implements PcwkLogger{
 		UserVO userSession = new UserVO();
 		
 		//user 세션에 들어있는 user정보가null이 아니면, 세션에 user정보를 userVO타입의 user에 담고 그 이메일을 세팅해서 
-		//서비스를 호출해서 doSelectOne을 돌린 결과가 userSession이 되고 그 것을 화면으로 뿌립니다.
+		//서비스를 호출해서 doSelectOne을 돌린 결과가 userSession이 되고 그 것을 화면으로 뿌림.
 		if(null != httpSession.getAttribute("user")) {
 			UserVO user = (UserVO) httpSession.getAttribute("user");
 			user.setEmail(user.getEmail());
@@ -399,14 +399,18 @@ public class UserController implements PcwkLogger{
 		model.addAttribute("role1",roleList); //header 의 ${role}과 겹쳐서 이름 바꿨음
 		
 		
+		//자격증을 담았다.
 		List<LicensesVO> licenses = new ArrayList<LicensesVO>();
 		licenses = service.getLicensesName();
 		
+		//화면으로 뿌린다.
 		model.addAttribute("licenses", licenses);
 		
+		//유저 자격증을 담았다.
 		List<LicensesVO> userLicenses = new ArrayList<LicensesVO>();
 		userLicenses = service.getUserLicenses(inVO);
 		
+		//유저 자격증을 뿌린다.
 		model.addAttribute("userLicenses", userLicenses);
 		
 		String role = (String) httpSession.getAttribute("role");

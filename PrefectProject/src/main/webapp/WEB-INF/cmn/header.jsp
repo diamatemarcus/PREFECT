@@ -143,13 +143,13 @@
                     <div class="d-flex m-3 me-0">
                  		<c:choose>
     						<c:when test="${role eq '30'}"> <!-- 학생 -->
-         						<a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
+         						<a href="/ehr/user/doSelectOne.do?email=${sessionScope.user.email}" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
     			  		    </c:when>
     						<c:when test="${role eq '20'}"> <!-- 교수 -->
-         						<a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
+         						<a href="/ehr/user/doSelectOne.do?email=${sessionScope.user.email}" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
     			   			</c:when>
     			   			<c:when test="${role eq '10'}"> <!-- 관리자 -->
-                                <a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
+                                <a href="/ehr/user/doSelectOne.do?email=${sessionScope.user.email}" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
                             </c:when>
 						</c:choose>
                     </div>
