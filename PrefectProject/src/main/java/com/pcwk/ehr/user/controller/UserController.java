@@ -336,6 +336,8 @@ public class UserController implements PcwkLogger{
 		
 		UserVO userSession = new UserVO();
 		
+		//user 세션에 들어있는 user정보가null이 아니면, 세션에 user정보를 userVO타입의 user에 담고 그 이메일을 세팅해서 
+		//doSelectOne을 돌린 결과가 userSession이 되고 그 것을 화면으로 뿌립니다.
 		if(null != httpSession.getAttribute("user")) {
 			UserVO user = (UserVO) httpSession.getAttribute("user");
 			user.setEmail(user.getEmail());
@@ -348,16 +350,16 @@ public class UserController implements PcwkLogger{
 		//String userId = req.getParameter("email");
 		//LOG.debug("│ userId                                :"+userId);		
 		
+		
+		//
 		UserVO outVO = this.userService.doSelectOne(inVO);
 		LOG.debug("│ outVO                                :"+outVO);
 		
-		//유저가 세션담겼으면 session유저 뿌리고 그렇지 않으면 outVO뿌림
-	    if(userSession != null) {
-	        model.addAttribute("userSession", userSession);
-	    }
-	    else {
-	        model.addAttribute("outVO", outVO);
-	    }
+		if (outVO != null) {
+		    model.addAttribute("outVO", outVO);
+		} else {
+		    model.addAttribute("userSession", userSession);
+		}
 		
 		//코드목록 조회 : 'EDUCATION','ROLE'
 		Map<String, Object> codes =new HashMap<String, Object>();

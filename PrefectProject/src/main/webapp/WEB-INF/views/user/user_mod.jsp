@@ -108,32 +108,33 @@
 		<!--// 버튼 ----------------------------------------------------------------->
 
 		<!-- 회원 등록영역 -->
+		<!-- 삼항연산자 사용해봄 -->
 	  <div class = "row">
 		<div class = "container col-md-6">
 			<form action="#" name="userRegFrm">
 				<div class="mb-3">
 					<label for="email" class="form-label">이메일</label> <input
 						type="text" class="form-control ppl_input" readonly="readonly"
-						name="email" id="email" value="${outVO.email}" size="20"
+						name="email" id="email" value="${outVO != null ? outVO.email : userSession.email}" size="20"
 						maxlength="30">
 				</div>
 				<div class="mb-3">
 					<!--  아래쪽으로  여백 -->
 					<label for="name" class="form-label">이름</label> <input type="text"
 						class="form-control" name="name" id="name"
-						placeholder="이름을 입력 하세요." size="20" value="${outVO.name}"
+						placeholder="이름을 입력 하세요." size="20" value="${outVO != null ? outVO.name : userSession.name}"
 						maxlength="21">
 				</div>
 				<div class="mb-3">
 					<label for="password" class="form-label">비밀번호</label> <input
 						type="password" class="form-control" name="password" id="password"
-						placeholder="비밀번호를 입력 하세요." value="${outVO.password }" size="20"
+						placeholder="비밀번호를 입력 하세요." value="${outVO != null ? outVO.password : userSession.password}" size="20"
 						maxlength="30">
 				</div>
 				<div class="mb-3">
 					<label for="tel" class="form-label">전화번호</label> <input type="text"
 						class="form-control" name="tel" id="tel" placeholder="전화번호 수정"
-						value="${outVO.tel }" size="20" maxlength="11">
+						value="${outVO != null ? outVO.tel : userSession.tel}" size="20" maxlength="11">
 				</div>
 				<div class="mb-3">
 					<label for="edu" class="form-label">학력</label>
@@ -141,9 +142,10 @@
 						<select id="education" name="education">
 							<!-- 검색 조건 옵션을 동적으로 생성 -->
 							<c:forEach items="${education}" var="vo">
-								<option value="<c:out value='${vo.detCode}'/>"
-									<c:if test="${vo.detCode == outVO.edu }">selected</c:if>><c:out
-										value="${vo.detName}" /></option>
+					            <option value="<c:out value='${vo.detCode}'/>"
+					                ${outVO != null ? (vo.detCode eq outVO.edu ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
+					                <c:out value="${vo.detName}" />
+					            </option>
 							</c:forEach>
 						</select>
 					</div>
@@ -154,9 +156,10 @@
 						<select id="role" name="role">
 							<!-- 검색 조건 옵션을 동적으로 생성 -->
 							<c:forEach items="${role1}" var="vo"> 
-								<option value="<c:out value='${vo.detCode}'/>"
-									<c:if test="${vo.detCode == outVO.role }">selected</c:if>><c:out
-										value="${vo.detName}" /></option>
+					            <option value="<c:out value='${vo.detCode}'/>"
+					                ${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
+					                <c:out value="${vo.detName}" />
+					            </option>
 							</c:forEach>
 						</select>
 					</div>
