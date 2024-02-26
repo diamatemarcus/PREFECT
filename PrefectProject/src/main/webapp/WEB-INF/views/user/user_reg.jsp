@@ -91,6 +91,17 @@
                     </select>
                 	</div>
         </div>
+        <div class="input-group uf-input-group input-group-lg mb-3">
+          <label for="gender" class="form-label">성별</label>
+                   <div class="col-auto">
+                    <select id="gender" name="gender">
+                        <!-- 검색 조건 옵션을 동적으로 생성 -->
+                         <c:forEach items="${gender}" var="vo">
+                            <option value="${vo.detCode}">${vo.detName}</option>
+                         </c:forEach>
+                    </select>
+                    </div>
+        </div>
 
         <div class="input-group uf-input-group input-group-lg mb-3">
           <label for="role" class="form-label">역할</label>

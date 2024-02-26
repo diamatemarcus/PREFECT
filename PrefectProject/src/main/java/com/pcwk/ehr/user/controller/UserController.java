@@ -101,7 +101,7 @@ public class UserController implements PcwkLogger{
 		
 		//코드목록 조회 : 'EDUCATION','ROLE'
 		Map<String, Object> codes =new HashMap<String, Object>();
-		String[] codeStr = {"EDUCATION","ROLE"};
+		String[] codeStr = {"EDUCATION","ROLE","GENDER"};
 		
 		codes.put("code", codeStr);
 		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
@@ -120,8 +120,9 @@ public class UserController implements PcwkLogger{
 			if(vo.getMstCode().equals("ROLE")) {
 				roleList.add(vo);
 			}
+			
 			if(vo.getMstCode().equals("GENDER")) {
-				roleList.add(vo);
+				genderList.add(vo);
 			}
 			LOG.debug(vo);
 		}
