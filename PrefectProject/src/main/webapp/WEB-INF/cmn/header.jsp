@@ -42,6 +42,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css">
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
+.arms-container {
+    display: flex; /* 항목들을 가로로 정렬 */
+    align-items: center; /* 항목들을 세로 중앙에 위치 */
+}
+
 .button {
     width: auto;
     /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
@@ -96,15 +101,15 @@
         <div class="container px-0">
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
                 <a href="/ehr/index.jsp" class="navbar-brand">
-                    <div class="arms-container">
-                        <img src="${CP}/resources/template/img/acorn.png" width="50" height="50">
-                        <h1 class="text-primary display-6">A R M S</h1>
-                    </div>
-                </a>
-                <button class="navbar-toggler py-2 px-3" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars text-primary"></span>
-                </button>
+             	<div class="arms-container d-flex align-items-center">
+                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
+                    <h1 class="text-primary display-6 ms-3">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
+                </div>
+            	</a>
+	            <button class="navbar-toggler py-2 px-3" type="button"
+	                data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+	                <span class="fa fa-bars text-primary"></span>
+	            </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto" style="padding-top: 8px;">
                         <a href="/ehr/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>

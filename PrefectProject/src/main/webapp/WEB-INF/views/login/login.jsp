@@ -31,6 +31,14 @@
 <!-- FontAwesome CSS -->
 <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/all.min.css" type="text/css">
 <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/uf-style.css" type="text/css">
+<style>
+.arms-container {
+    display: flex; /* 항목들을 가로로 정렬 */
+    align-items: center; /* 항목들을 세로 중앙에 위치 */
+}
+
+
+</style>
 <script>
 
         $(document).ready(function(){
@@ -102,10 +110,12 @@
 
 <body>
 	<div class="uf-form-signin">
-		<div class="text-start">
-			<a href="#"><img src="${CP}/resources/template/img/acorn.png" alt="" width="100" height="100"><h1 class = "text-center text-white h3">로그인</h1> </a>
-
-		</div>
+ 		 <a href="/ehr/index.jsp" class="navbar-brand">
+             	<div class="arms-container d-flex align-items-center">
+                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
+                    <h1 class="text-primary display-6">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
+                </div>
+        </a>
 		<form class="login-form" action="/ehr/login/doLogin.do" method="post">
 			<div class="input-group uf-input-group input-group-lg mb-3">
 				<span class="input-group-text fa fa-user"></span>
