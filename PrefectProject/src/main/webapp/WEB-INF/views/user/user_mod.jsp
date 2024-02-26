@@ -166,9 +166,8 @@
 				</div>
 
                 <!-- 라이센스 부분 -->
-
                 <!-- 셀렉트 박스 -->
-				<div class="mb-3">${userLicenses}
+				<div class="mb-3">
 				    <label for="licenses" class="form-label">자격증</label>
 				    <div class="row align-items-center">
 				        <!-- 자격증 선택 셀렉트 박스 -->
