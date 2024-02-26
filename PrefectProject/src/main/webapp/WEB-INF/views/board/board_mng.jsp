@@ -49,8 +49,9 @@ document.addEventListener("DOMContentLoaded",function(){
 	console.log('ready');
 	const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
-    const modId = '${sessionScope.user.email}';
     const regId = document.querySelector("#regId").value;
+    const modId = '${sessionScope.user.email}';
+    const userRole = '${sessionScope.user.role}';
     
     const moveToModBTN   = document.querySelector("#moveToMod");
     const doDeleteBTN   = document.querySelector("#doDelete");
@@ -117,12 +118,14 @@ document.addEventListener("DOMContentLoaded",function(){
     // file download
 	$('#fileList tbody').on("dblclick", 'tr', function() {
 		console.log('fileList dbclick');
+		
 	    const orgFileName = $(this).data('org-file-name');
 	    const saveFileName = $(this).data('save-file-name');
 	    const savePath = $(this).data('save-path');
 	    
 	    // 파일 다운로드 로직
 	    const form = document.fileDownloadForm;
+	    
 	    form.orgFileName.value = orgFileName;
 	    form.saveFileName.value = saveFileName;
 	    form.savePath.value = savePath;
@@ -142,24 +145,25 @@ document.addEventListener("DOMContentLoaded",function(){
     });
     
     //삭제 이벤트 감지 및 처리
-    doDeleteBTN.addEventListener("click",function(e){
-    	const div = document.querySelector("#div").value;
-        const seq = document.querySelector("#seq").value;
-        const modId = '${sessionScope.user.email}';
-        const regId = document.querySelector("#regId").value;
-    	console.log('doDeleteBTN click');
-        
+    doDeleteBTN.addEventListener("click",function(e){        
+    	console.log('doDeleteBTN click'); 
+    	
         console.log('seq :'+seq);
         
         if(eUtil.isEmpty(seq) == true){
             alert('순번을 확인 하세요.');
             return;
         }
-
-        if(window.confirm('삭제 하시겠습니까?')==false){
+        
+        if (window.confirm('삭제 하시겠습니까?')) {
+            if (!(userRole === "10" || userRole === "20") && modId !== regId) {
+                alert('삭제 권한이 없습니다.');
+                return; // 시스템 관리자나 학원 관리자가 아니고, 수정자와 등록자가 다를 경우에만 경고 메시지 출력 후 리턴
+            }
+        } else {
             return;
         }
-
+        
         $.ajax({
             type: "GET",
             url:"/ehr/board/doDelete.do",
