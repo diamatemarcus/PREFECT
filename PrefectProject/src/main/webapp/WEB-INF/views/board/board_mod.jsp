@@ -60,7 +60,6 @@ document.addEventListener("DOMContentLoaded",function(){
             success: function(data) {
                 console.log('Upload success: ', data);
                 alert('파일이 성공적으로 업로드되었습니다.');
-                // 추가적으로 페이지를 새로고침하거나 업로드된 파일 목록을 갱신하는 로직을 추가할 수 있음
                 location.reload();
             },
             error: function(xhr, status, error) {

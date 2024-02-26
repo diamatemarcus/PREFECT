@@ -33,6 +33,7 @@ import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.file.domain.FileVO;
 import com.pcwk.ehr.file.service.AttachFileService;
+import com.pcwk.ehr.user.domain.UserVO;
 
 @Controller
 @RequestMapping("file")
@@ -152,7 +153,8 @@ public class AttachFileController implements PcwkLogger {
 	@ResponseBody
 	public ResponseEntity<List<FileVO>> fileUploadAjax(
 			@RequestParam("uuid") String uuid, // 클라이언트로부터 받은 UUID
-	        @RequestParam("uploadFile") MultipartFile[] uploadFiles) {
+	        @RequestParam("uploadFile") MultipartFile[] uploadFiles,
+	        HttpSession session) {
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ fileUploadAjax()                          │");
 		LOG.debug("└───────────────────────────────────────────┘");
@@ -198,10 +200,11 @@ public class AttachFileController implements PcwkLogger {
 			}
 			fileVO.setSavePath(savePath);
 			
-			//------------------------------------------------------------------
-			//TO DO: Session에서 사용자 ID가져올것
-			//------------------------------------------------------------------
-			fileVO.setRegId("Admin");
+			//session이 있는 경우
+			if(null != session.getAttribute("user")) {
+				UserVO user = (UserVO) session.getAttribute("user");
+				fileVO.setRegId(user.getEmail());
+			}
 			
 			try {
 				//fileUpload
@@ -222,8 +225,6 @@ public class AttachFileController implements PcwkLogger {
 			LOG.debug("=upFileSave SQLException=" + e.getMessage());
 			LOG.debug("====================");				
 		}
-		
-		
 		
 		return ResponseEntity.ok(list);
 	}
@@ -250,6 +251,12 @@ public class AttachFileController implements PcwkLogger {
 	    
 	    int seq = fileVO.getSeq();
 	    LOG.debug("seq : " + seq);
+	    
+	    //session이 있는 경우
+		if(null != session.getAttribute("user")) {
+			UserVO user = (UserVO) session.getAttribute("user");
+			fileVO.setRegId(user.getEmail());
+		}
 
 	    for (MultipartFile multipartFile : uploadFiles) {
 	        if (!multipartFile.isEmpty()) {
