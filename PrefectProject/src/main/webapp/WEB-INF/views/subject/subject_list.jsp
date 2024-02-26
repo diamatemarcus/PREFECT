@@ -19,13 +19,25 @@
 <title>학생목록</title>
 </head>
 <body>
-  <div class="container">
+    <!-- Spinner Start -->
+    <div id="spinner"
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    
+
+    <div class="container">
     <!-- 제목 -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">훈련생 조회</h1>
+        <br>
+        <br>
+            <h2 class="page-header" style="text-align: center;">훈련생 조회</h2>
         </div>
-    </div>  
+    </div>    
+    <br>
+    <br>
     <form action="#" method="get" name="subjectFrm" style="display: inline;">
            <input type="hidden" name="pageNo" >
             <!-- 검색구분 -->

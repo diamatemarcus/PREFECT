@@ -26,7 +26,7 @@
     font-size: 16px;
     cursor: pointer;
     border-radius: 8px;
-    background-color: #FFA500
+    background-color: #3986ff
 }
 .day-cell:hover {
     background-color: #64FF64; /* 호버 시 배경색을 변경합니다. */

@@ -154,7 +154,7 @@
 
         .input-container button {
             padding: 8px;
-            background-color: #FFA500;
+            background-color: #3986ff;
             color: #fff;
             border: none;
             border-radius: 4px;

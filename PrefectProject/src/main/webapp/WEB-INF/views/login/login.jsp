@@ -34,9 +34,9 @@
 </head>
 <body>
 	<div class="uf-form-signin">
-		<div class="text-center">
-			<a href="#"><img src="${CP}/resources/template/login/assets/img/logo-fb.png" alt="" width="100" height="100"></a>
-			<h1 class="text-white h3">Account Login</h1>
+		<div class="text-start">
+			<a href="#"><img src="${CP}/resources/template/img/acorn.png" alt="" width="100" height="100"><h1 class = "text-center text-white h3">로그인</h1> </a>
+
 		</div>
 		<form class="login-form" action="/ehr/login/doLogin.do" method="post">
 			<div class="input-group uf-input-group input-group-lg mb-3">
@@ -48,7 +48,7 @@
 					<!-- 빈공간을 만들기 위함-->
 				</div>
 				<div class="search_email">
-					<a href="${CP}/search/searchEmailView.do">Forgot Email?</a>
+					<a href="${CP}/search/searchEmailView.do">이메일 찾기</a>
 				</div>
 			</div>
 			<div class="input-group uf-input-group input-group-lg mb-3">
@@ -59,22 +59,22 @@
 				<div class="form-check">
 					<!-- 빈공간을 만들기 위함-->
 				</div>
-				<a href="/ehr/search/searchPasswordView.do">Forgot password?</a>
+				<a href="/ehr/search/searchPasswordView.do">비밀번호 찾기</a>
 			</div>
 			<div class="d-grid mb-4">
-				<button type="submit" class="btn uf-btn-primary btn-lg" id="doLogin">Login</button>
+				<button type="submit" class="btn uf-btn-primary btn-lg" id="doLogin">로그인</button>
 			</div>
 			<div class="d-flex mb-3">
 				<div class="dropdown-divider m-auto w-25"></div>
-				<small class="text-nowrap text-white">Or login with</small>
+				<small class="text-nowrap text-white">다른 방법 로그인</small>
 				<div class="dropdown-divider m-auto w-25"></div>
 			</div>
 			<div class="uf-social-login d-flex justify-content-center">
 				<a href="#" class="uf-social-ic" title="Login with Facebook"><i class="fab fa-facebook-f"></i></a>
 			</div>
 			<div class="mt-4 text-center">
-				<span class="text-white">Don't have an account?</span> <a
-					href="/ehr/user/moveToReg.do">Sign Up</a>
+				<span class="text-white">회원이 아니신가요?</span> <a
+					href="/ehr/user/moveToReg.do">회원가입</a>
 			</div>
 		</form>
 	</div>

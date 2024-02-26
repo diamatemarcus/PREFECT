@@ -53,7 +53,7 @@
     font-size: 17px;
     cursor: pointer;
     border-radius: 8px;
-    background-color: #FFA500;
+    background-color: #3986ff;
     color: white;
 }
 </style>
@@ -130,8 +130,8 @@
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <% if(session.getAttribute("user") == null) { %>
-                        <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'">로그인</button>
-                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'">회원가입</button>
+                        <button class="button me-md-2 btn-primary:hover" type="button" onclick="location.href='/ehr/login/loginView.do'">로그인</button>
+                        <button class="button btn-primary:hover" type="button" onclick="location.href='/ehr/user/moveToReg.do'">회원가입</button>
                         <% } else { %>
                             <!-- 사용자 이름과 로그아웃 버튼 표시 -->
                             <span class="navbar-text">
@@ -154,7 +154,7 @@
 						</c:choose>
                     </div>
                     <div class="d-flex m-3 me-0">
-                        <a href="/ehr/dm/doContentsList.do" class="my-auto"> 
+                        <a href="/ehr/dm/doContentsList.do" class="my-auto a-dm-header"> 
                         <i class="fas fa-envelope fa-2x"></i> <!-- 메시지 아이콘 -->
                         </a>
                     </div>

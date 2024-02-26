@@ -22,7 +22,7 @@
 	font-size: 16px;
 	cursor: pointer;
 	border-radius: 8px;
-	background-color: #FFA500
+	background-color: #3986ff
 }
 </style>
 <style>

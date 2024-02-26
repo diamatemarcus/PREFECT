@@ -105,7 +105,7 @@ a {
 }
 
 .pagination nav ul li a.active {
-    background-color: var(--bs-primary);
+    background-color: #3986ff;
     color: var(--bs-light);
     border-color: var(--bs-secondary);
 }
