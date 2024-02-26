@@ -141,7 +141,7 @@ function pageDoRerive(url,pageNo){
         <div class="col-lg-12">
         <br>
         <br>
-            <h2 class="page-header" style="text-align: center;">${title }</h2>
+            <h2 class="page-header" style="text-align: left;">${title}</h2>
         </div>
     </div>    
     <br>

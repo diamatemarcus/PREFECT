@@ -8,7 +8,7 @@
 	</delete>
 
 	<select id="getLastSeq" parameterType="string" resultType="int">
-	    SELECT NVL(MAX(seq), 0) FROM attach_file WHERE uuid = #{uuid}
+	    SELECT NVL(MAX(seq), 0)+1 FROM attach_file WHERE uuid = #{uuid}
 	</select>
 	
     <delete id="upFileDelete" parameterType="FileVO">
@@ -18,7 +18,7 @@
     </delete>
 
     <select id="getFileUuid" resultType="FileVO">
-        SELECT * FROM ATTACH_FILE WHERE uuid = #{uuid}
+        SELECT * FROM ATTACH_FILE WHERE uuid = #{uuid} ORDER BY seq
     </select>
 
     <select id="getBoardSeq" resultType="int">
