@@ -61,7 +61,30 @@
         margin-right: 5px; /* 페이지 아이템 사이의 간격을 조절할 수 있습니다. */
     }
 </style>
+<script type="text/javascript">
+<!-- 이 함수는 페이지를 로드 하기 전에 적용되야 하기에  이 함수만 위에서 작용 -->
+$(document).ready(function(){
+    // 전화번호 형식을 변환하는 함수
+    function formatPhoneNumber(phoneNumber) {
+    	//전화번호 사이에 숫자를 제외한 문자 삭제
+        var cleaned = ('' + phoneNumber).replace(/\D/g, '');
+        //정규식 함수를 이용 해서 010,1234,1234 3파트로 나누기
+        var match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+        // 파트 사이마다 -를 적용
+        if (match) {
+            return match[1] + '-' + match[2] + '-' + match[3];
+        }
+        return null;
+    }
 
+    // 모든 전화번호에 대해 형식을 변환합니다.
+    //$('.tel').each(function(){ 선언 함으로써 클래스에 tel이 붙은걸 찾아서 위 함수 적용
+    $('.tel').each(function(){
+        var formattedTel = formatPhoneNumber($(this).text());
+        $(this).text(formattedTel);
+    });
+});    
+</script>
 </head>
 <body>
 
@@ -140,7 +163,7 @@
 			            <td class="text-center">${vo.no}</td>
 			            <td class="text-left">${vo.email}</td>
 			            <td class="text-left">${vo.name }</td>
-			            <td class="text-left">${vo.tel }</td>
+			            <td class="text-left tel">${vo.tel }</td>
 			          	<c:forEach items="${education}" var="eduVO">
 						    <c:if test="${eduVO.detCode == vo.edu}">
 						        <td class="text-center">
@@ -276,6 +299,7 @@
         //서버 전송
         frm.submit();
     }
+    
 </script>
 
 </body>
