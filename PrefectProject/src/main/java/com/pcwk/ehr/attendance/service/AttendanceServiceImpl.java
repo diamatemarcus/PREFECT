@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.pcwk.ehr.attendance.dao.AttendanceDao;
@@ -30,6 +31,11 @@ public class AttendanceServiceImpl implements AttendanceService{
 	@Override
 	public int doSave(AttendanceVO inVO) throws SQLException {
 		return attendanceDao.doSave(inVO);
+	}
+
+	@Override
+	public AttendanceVO doSelectOne(AttendanceVO inVO) throws SQLException, EmptyResultDataAccessException {
+		return attendanceDao.doSelectOne(inVO);
 	}
 
 }

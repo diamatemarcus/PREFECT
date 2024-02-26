@@ -18,13 +18,15 @@ public class CourseVO{
 	private int academySeq;	//학원순번
 	private String academyName; //학원이름
 	private String email; //훈련생, 교수님
+	private String startDate; //시작하는 날
+	private String endDate; //끝나는 날
+	
 	@Override
 	public String toString() {
 		return "CourseVO [courseCode=" + courseCode + ", courseName=" + courseName + ", numberOfTimes=" + numberOfTimes
 				+ ", courseInfo=" + courseInfo + ", academySeq=" + academySeq + ", academyName=" + academyName
-				+ ", email=" + email + "]";
+				+ ", email=" + email + ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
-	
 	
 }
 
