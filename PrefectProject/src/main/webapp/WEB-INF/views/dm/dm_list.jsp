@@ -154,7 +154,7 @@
 
         .input-container button {
             padding: 8px;
-            background-color: #FFA500;
+            background-color: #3986ff;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -174,6 +174,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         //enter event:
     });
+    
+    function scrollToBottom() {
+        setTimeout(function() {
+            let messageContainer = document.querySelector("#message");
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        }, 150); // 100밀리초 후에 실행
+    }
     
     function doSend() {
         
@@ -199,11 +206,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 if (1 == data.msgId) {
                     doContentsList()
+                    
                 } else {
                     alert(data.msgContents);
                 }
                 
                 $('#contents').val('');
+                scrollToBottom()
             },
             error: function (data) { // 실패시 처리
                 console.log("error:" + data);
@@ -214,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
     
-    doContentsList()
+    
     
     doSendBTN.addEventListener("click", function (e) {
         doSend()
@@ -278,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
                        
                        $("#receiver").val(email);
                        doContentsList()
-                       
+                       scrollToBottom()
                        //modal popup닫기
                        $('#staticBackdrop1').modal('hide');
                        
@@ -393,7 +402,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                            <tr>\
                                            <th scope="col" class="text-center col-lg-1  col-sm-1">이메일</th>\
                                            <th scope="col" class="text-center col-lg-2  col-sm-2" >이름</th>\
-                                           <th scope="col" class="text-center col-lg-2  col-sm-1" >안 읽은 메세지</th>\
+                                           <th scope="col" class="text-center col-lg-2  col-sm-1" >안 읽은 쪽지</th>\
                                            </tr>\
                                        </thead>';
                    //동적 테이블 body                       
@@ -502,7 +511,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 //조회 댓글 출력
                 document.getElementById("message").innerHTML = dmDiv;
                 //$("#replyDoSaveArea").html(replyDiv);
-                
+                scrollToBottom()
             },
             error:function(data){//실패시 처리
                 console.log("error:"+data);
@@ -526,14 +535,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <div class="container">
 <div class="contact">
-        <button type="button" class="btn btn-primary btn-block" id="doReceiverList">채팅방</button>
+        <button type="button" class="btn btn-primary btn-block" id="doReceiverList">쪽지함</button>
         <button type="button" class="btn btn-primary btn-block" id="doMemberPopup">회원</button>  
 </div>
     <div class="contact-list">
     
 </div>
 <div  class="chat-history">
-    <div id="message" class= "chat-history">
+    <div id="message" class= "chat-history" >
         <c:choose>
               <c:when test="${ not empty list }">
                 <li class="chat-messages" >
@@ -543,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </c:when>
               <c:otherwise>
                <tr>
-                <td colspan="99" class="chat-messages">기존 내용은 채팅방, 새로운 채팅은 회원을 눌러주세요</td>
+                <td colspan="99" class="chat-messages">기존 내용은 쪽지함, 새로운 채팅은 회원을 눌러주세요</td>
                </tr>              
               </c:otherwise>
         </c:choose>               
@@ -585,7 +594,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="staticBackdropLabel">채팅방</h1>
+            <h1 class="modal-title fs-5" id="staticBackdropLabel">쪽지함</h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
            

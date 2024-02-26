@@ -22,7 +22,7 @@ public class LoginInterceptor implements HandlerInterceptor, PcwkLogger {
 		// 세션에 "user" 속성이 없으면 로그인 페이지로 리다이렉트합니다.
 		if (null == session.getAttribute("user")) {
 			LOG.debug("┌───────────────────────────────────┐");
-			LOG.debug("│ 세션이 null이면 로그인 페이지로 리다이렉트             │");
+			LOG.debug("│ 세션이 null이면 로그인 페이지로 리다이렉트      │");
 			LOG.debug("└───────────────────────────────────┘");
 			String redirectUrl = request.getContextPath() + "/login/loginView.do";
 			LOG.debug("redirectUrl:" + redirectUrl);

@@ -22,9 +22,9 @@
   </head>
   <body>
     <div class="uf-form-signin">
-      <div class="text-center">
-        <a href="https://uifresh.net/"><img src="${CP}/resources/template/login/assets/img/logo-fb.png" alt="" width="100" height="100"></a>
-      <h1 class="text-white h3">회원가입</h1>
+      <div class="text-left">
+        <a href="https://uifresh.net/"><img src="${CP}/resources/template/img/acorn.png" alt="" width="70" height="70">회원가입</a>
+      <h1 class="text-white h3"></h1>
       </div>
       <form class="mt-4">
         <div class="form-group email-form">

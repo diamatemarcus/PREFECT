@@ -19,10 +19,10 @@ html, body{
 body{
 	display: flex;
 	align-items: center;
-	background-image: linear-gradient( to right, #747d88, #747d88);
+	background-image: linear-gradient(to right, #ffffff, #ffffff);
 }
 a{
-	color: #FFA500;
+	color: #3986ff;
 	text-decoration: none;
 }
 a:hover{
@@ -35,8 +35,8 @@ a:hover{
     margin: auto;
 }
 .uf-input-group .input-group-text {
-    background: #ffffff70;
-    color: #f8f9fa;
+    background: #3986ff;
+    color: #ffffff;
     border: unset;
     font-size: 18px;
     padding: 15px;
@@ -47,7 +47,7 @@ a:hover{
     border: unset;
     border-left: 1px solid #ffffff05;
     font-size: 16px;
-    background: #ffffff70;
+    background: #cfcece70;
 }
 
 .uf-input-group .form-control:focus {
@@ -55,7 +55,7 @@ a:hover{
     background: #ffffff;
 }
 .uf-btn-primary {
-    background: #FFA500;
+    background: #3986ff;
     color: #fff;
 }
 

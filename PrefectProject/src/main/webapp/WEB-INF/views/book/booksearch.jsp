@@ -100,13 +100,25 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </head>
 <body>
+	<!-- Spinner Start -->
+    <div id="spinner"
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    
+
     <div class="container">
     <!-- 제목 -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">도서 검색</h1>
+        <br>
+        <br>
+            <h2 class="page-header" style="text-align: center;">도서 검색</h2>
         </div>
     </div>    
+    <br>
+    <br>      
     <!--// 제목 ----------------------------------------------------------------->    
     <form action="#" method="get" id="boardFrm" name="boardFrm">
         <input type="hidden" name="pageNo" id="pageNo" />
@@ -147,6 +159,8 @@ document.addEventListener("DOMContentLoaded", function() {
       <tbody>
       </tbody>
     </table>
+
+    
     <!--// book --------------------------------------------------------------->
             
     </div>

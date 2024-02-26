@@ -11,9 +11,31 @@
 %>  
 <!DOCTYPE html>
 <html> 
-<head>  
+<head>
+<link href="${CP}/resources/css/layout.css" rel="stylesheet" type="text/css">  
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <style>
+.table td {
+    text-align: center; /* 모든 데이터 셀을 가운데 정렬합니다. */
+}
+.text-center {
+    text-align: center;
+}
+
+.table-bordered {
+    border: none; /* 테이블 전체 테두리 제거 */
+}
+
+.table-bordered th,
+.table-bordered td {
+    border: none; /* 셀 테두리 제거 */
+}
+
+
+
+
+
+
 .button {
 	width: auto;
 	/* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
@@ -27,7 +49,7 @@
 	font-size: 16px;
 	cursor: pointer;
 	border-radius: 8px;
-	background-color: #FFA500
+	background-color: #3986ff
 }
 .pagenation {
         display: flex;
@@ -39,24 +61,52 @@
         margin-right: 5px; /* 페이지 아이템 사이의 간격을 조절할 수 있습니다. */
     }
 </style>
+<script type="text/javascript">
+<!-- 이 함수는 페이지를 로드 하기 전에 적용되야 하기에  이 함수만 위에서 작용 -->
+$(document).ready(function(){
+    // 전화번호 형식을 변환하는 함수
+    function formatPhoneNumber(phoneNumber) {
+    	//전화번호 사이에 숫자를 제외한 문자 삭제
+        var cleaned = ('' + phoneNumber).replace(/\D/g, '');
+        //정규식 함수를 이용 해서 010,1234,1234 3파트로 나누기
+        var match = cleaned.match(/^(\d{3})(\d{4})(\d{4})$/);
+        // 파트 사이마다 -를 적용
+        if (match) {
+            return match[1] + '-' + match[2] + '-' + match[3];
+        }
+        return null;
+    }
 
+    // 모든 전화번호에 대해 형식을 변환합니다.
+    //$('.tel').each(function(){ 선언 함으로써 클래스에 tel이 붙은걸 찾아서 위 함수 적용
+    $('.tel').each(function(){
+        var formattedTel = formatPhoneNumber($(this).text());
+        $(this).text(formattedTel);
+    });
+});    
+</script>
 </head>
 <body>
 
 	<!-- Spinner Start -->
-	<div id="spinner"
-		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-		<div class="spinner-grow text-primary" role="status"></div>
-	</div>
-	<!-- Spinner End -->
+    <div id="spinner"
+        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+        <div class="spinner-grow text-primary" role="status"></div>
+    </div>
+    <!-- Spinner End -->
+    
 
-  <div class="container">
+    <div class="container">
     <!-- 제목 -->
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">회원조회</h1>
+        <br>
+        <br>
+            <h2 class="page-header" style="text-align: center;">회원 조회</h2>
         </div>
     </div>    
+    <br>
+    <br>  
     <!--// 제목 ----------------------------------------------------------------->
     <form action="#" method="get" name="userFrm" style="display: inline;">
            <input type="hidden" name="pageNo" >
@@ -90,7 +140,8 @@
 			    </div>
             </div>
     </form>
-    
+     <br>
+     <br>
     <!-- table -->
     <table id="userTable"  class="table table-bordered border-primary table-hover table-striped mt-2">    
         <thead>
@@ -112,30 +163,32 @@
 			            <td class="text-center">${vo.no}</td>
 			            <td class="text-left">${vo.email}</td>
 			            <td class="text-left">${vo.name }</td>
-			            <td class="text-left">${vo.tel }</td>
-			            <c:forEach items="${education}" var="eduVO">
+			            <td class="text-left tel">${vo.tel }</td>
+			          	<c:forEach items="${education}" var="eduVO">
 						    <c:if test="${eduVO.detCode == vo.edu}">
-						        <td class="text-end">
+						        <td class="text-center">
 						            <c:out value="${eduVO.detName}"/>
 						        </td>
 						    </c:if>
 						</c:forEach>
-			            	<c:forEach items="${role}" var="roleVO">
-			            		<c:if test="${roleVO.detCode == vo.role}">
-			            			<td class="text-end">
+						<c:forEach items="${role}" var="roleVO">
+						    <c:if test="${roleVO.detCode == vo.role}">
+						        <td class="text-center">
 						            <c:out value="${roleVO.detName}"/>
-						            </td>  
-						        </c:if>
-			        	</c:forEach>
+						        </td>
+						    </c:if>
+						</c:forEach>
 			        </tr>
 		        </c:forEach>
 	        </c:when>
 	        <%-- 조회데이터가 없는 경우:jsp comment(html에 노출 않됨) --%>
-	        <c:otherwise>
-	           <tr>
-	               <td colspan="99" class="text-center">No data found.</td>
-	           </tr>
-	        </c:otherwise>
+		<c:otherwise>
+		    <tr>
+		        <td colspan="6" class="text-center" style="border: none;">No data found.</td>
+		    </tr>
+		</c:otherwise>
+
+
         </c:choose>
         </tbody>
     </table>
@@ -144,14 +197,24 @@
          총글수, 페이지 번호, 페이지 사이즈, bottomCount, url,자바스크립트 함수
     -->
               
-  	<div class="container">
-			<div class="row">
-				<div class="col">
-            				${pageHtml}
-        		</div>
-        	</div>  
-    </div>
+    <div class="container-fluid py-5">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col-lg-12">
+	                <!-- Pagination -->
+	                <div class="pagination d-flex justify-content-center mt-5">
+	                    <nav>
+				            ${pageHtml }
+				        </nav>
+	                </div>
+	                <!-- End of Pagination -->
+	            </div>
+	        </div>
+	    </div>
+	</div>    
     <!--// 페이징 ---------------------------------------------------------------->    
+	
+
 
  </div>  
    
@@ -236,6 +299,7 @@
         //서버 전송
         frm.submit();
     }
+    
 </script>
 
 </body>

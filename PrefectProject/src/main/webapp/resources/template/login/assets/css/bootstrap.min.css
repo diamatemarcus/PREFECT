@@ -76,7 +76,7 @@
 body {
 	margin: 0;
 	font-family: var(- -bs-body-font-family);
-	font-size: var(- -bs-body-font-size);
+	font-size: 18px;
 	font-weight: var(- -bs-body-font-weight);
 	line-height: var(- -bs-body-line-height);
 	color: var(- -bs-body-color);
@@ -2774,7 +2774,7 @@ textarea.form-control-lg {
 	-moz-user-select: none;
 	user-select: none;
 	background-color: transparent;
-	border: 1px solid transparent;
+	border: 1px solid #ffffff;
 	padding: .375rem .75rem;
 	font-size: 1rem;
 	border-radius: .25rem;
@@ -2804,8 +2804,8 @@ textarea.form-control-lg {
 
 .btn-primary {
 	color: #fff;
-	background-color: #FFA500;
-	border-color: #FFA500
+	background-color: #3986ff;
+	border-color: #3986ff;
 }
 
 .btn-primary:hover {
@@ -3399,7 +3399,7 @@ textarea.form-control-lg {
 
 .btn-group-lg>.btn, .btn-lg {
 	padding: .5rem 1rem;
-	font-size: 1.25rem;
+	font-size: 2rem;
 	border-radius: .3rem
 }
 

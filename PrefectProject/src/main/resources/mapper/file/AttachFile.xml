@@ -7,10 +7,10 @@
 	    WHERE uuid = #{uuid}
 	</delete>
 
-    <select id="getLastSeqByUuid" parameterType="FileVO" resultType="FileVO">
-	    SELECT MAX(seq) FROM attach_file WHERE uuid = #{uuid}
+	<select id="getLastSeq" parameterType="string" resultType="int">
+	    SELECT NVL(MAX(seq), 0) FROM attach_file WHERE uuid = #{uuid}
 	</select>
-
+	
     <delete id="upFileDelete" parameterType="FileVO">
         DELETE FROM attach_file
         WHERE uuid = #{uuid}

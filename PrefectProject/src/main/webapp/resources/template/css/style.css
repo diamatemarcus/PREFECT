@@ -122,7 +122,8 @@
 /*** Navbar Start ***/
 .navbar .navbar-nav .nav-link {
     padding: 10px 15px;
-    font-size: 16px;
+    font-size: 20px;
+    font-weight: bold; /* 글꼴 두께를 굵게 설정 */
     transition: .5s;
 }
 
@@ -430,15 +431,15 @@
     position: absolute;
     top: -58px;
     right: 0;
-    color: var(--bs-primary);
+    color: var #3986ff;
     padding: 5px 25px;
-    border: 1px solid var(--bs-secondary);
+    border: 1px solid #3986ff;
     border-radius: 20px;
     transition: 0.5s;
 }
 
 .testimonial .owl-nav .owl-prev:hover {
-    background: var(--bs-secondary);
+    background: #3986ff;
     color: var(--bs-white);
 }
 
@@ -446,15 +447,15 @@
     position: absolute;
     top: -58px;
     right: 88px;
-    color: var(--bs-primary);
+    color: #3986ff;
     padding: 5px 25px;
-    border: 1px solid var(--bs-secondary);
+    border: 1px solid #3986ff;
     border-radius: 20px;
     transition: 0.5s;
 }
 
 .testimonial .owl-nav .owl-next:hover {
-    background: var(--bs-secondary);
+    background: #3986ff;
     color: var(--bs-white);
 }
 /*** testimonial End ***/

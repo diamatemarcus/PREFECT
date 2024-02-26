@@ -26,7 +26,7 @@
     font-size: 16px;
     cursor: pointer;
     border-radius: 8px;
-    background-color: #FFA500
+    background-color: #3986ff
 }
 .day-cell:hover {
     background-color: #64FF64; /* 호버 시 배경색을 변경합니다. */
@@ -595,13 +595,14 @@
                 
             </div>
         </div>
+        </div>
         
 
         
         
 
         <!-- 캘린더 table -->
-        <div class="col-lg-7 basictable" style="margin-top: 10px; margin-left: 15%;">
+        <div class="col-lg-7 " style="margin-top: 10px; margin-left: 15%;">
         <table
             class="table table-bordered border-primary table-hover"
             id="calendarTable" style="margin-top: 10px; margin-bottom: 10px" >

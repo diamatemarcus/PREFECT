@@ -49,7 +49,7 @@ body {
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #747d88;
+    color: #3986ff;
     background-color: #fff;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0)
@@ -84,7 +84,7 @@ h1,
     font-family: "Raleway", sans-serif;
     font-weight: 600;
     line-height: 1.2;
-    color: #FFA500
+    color: #3986ff
 }
 
 h1,
@@ -241,9 +241,14 @@ sup {
     background-color: currentColor;
     opacity: 0.25;
   }
+  
+a-dm-header {
+    color: #3986ff;
+    text-decoration: none
+}
 
 a {
-    color: #FFA500;
+    color: #3986ff;
     text-decoration: none
 }
 
@@ -3148,7 +3153,7 @@ fieldset:disabled .btn {
 
 .btn-primary {
     color: #000;
-    background-color: #FFA500;
+    background-color: #3986ff;
     border-color: #FFA500
 }
 
@@ -3187,14 +3192,14 @@ fieldset:disabled .btn {
 .btn-primary:disabled,
 .btn-primary.disabled {
     color: #000;
-    background-color: #ffb524;
-    border-color: #ffb524
+    background-color: #3986ff;
+    border-color: #3986ff
 }
 
 .btn-secondary {
     color: #000;
-    background-color: #ffb524;
-    border-color: #ffb524
+    background-color: #3986ff;
+    border-color: #3986ff
 }
 
 .btn-secondary:hover {
@@ -3232,8 +3237,8 @@ fieldset:disabled .btn {
 .btn-secondary:disabled,
 .btn-secondary.disabled {
     color: #000;
-    background-color: #ffb524;
-    border-color: #ffb524
+    background-color: #3986ff;
+    border-color: #3986ff
 }
 
 .btn-success {
@@ -3547,14 +3552,14 @@ fieldset:disabled .btn {
 }
 
 .btn-outline-secondary {
-    color: #ffb524;
-    border-color: #ffb524
+    color: #3986ff;
+    border-color: #3986ff
 }
 
 .btn-outline-secondary:hover {
     color: #000;
-    background-color: #ffb524;
-    border-color: #ffb524
+    background-color: #3986ff;
+    border-color: #3986ff
 }
 
 .btn-check:focus+.btn-outline-secondary,
@@ -3568,8 +3573,8 @@ fieldset:disabled .btn {
 .btn-outline-secondary.active,
 .btn-outline-secondary.dropdown-toggle.show {
     color: #000;
-    background-color: #ffb524;
-    border-color: #ffb524
+    background-color: #3986ff;
+    border-color: #3986ff
 }
 
 .btn-check:checked+.btn-outline-secondary:focus,
@@ -3582,7 +3587,7 @@ fieldset:disabled .btn {
 
 .btn-outline-secondary:disabled,
 .btn-outline-secondary.disabled {
-    color: #ffb524;
+    color: #3986ff;
     background-color: rgba(0, 0, 0, 0)
 }
 
@@ -3828,7 +3833,7 @@ fieldset:disabled .btn {
 
 .btn-link {
     font-weight: 400;
-    color: #ffb524;
+    color: #3986ff;
     text-decoration: none
 }
 
@@ -4204,7 +4209,7 @@ fieldset:disabled .btn {
 .dropdown-item:active {
     color: #fff;
     text-decoration: none;
-    background-color: #ffb524
+    background-color: #3986ff
 }
 
 .dropdown-item.disabled,
@@ -4252,7 +4257,7 @@ fieldset:disabled .btn {
 .dropdown-menu-dark .dropdown-item.active,
 .dropdown-menu-dark .dropdown-item:active {
     color: #fff;
-    background-color: #ffb524
+    background-color: #3986ff
 }
 
 .dropdown-menu-dark .dropdown-item.disabled,
@@ -4394,7 +4399,7 @@ fieldset:disabled .btn {
 .nav-link {
     display: block;
     padding: .5rem 1rem;
-    color: #ffb524;
+    color: #3986ff;
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out
 }
 
@@ -4406,7 +4411,7 @@ fieldset:disabled .btn {
 
 .nav-link:hover,
 .nav-link:focus {
-    color: #ffb524
+    color: #3986ff
 }
 
 .nav-link.disabled {
@@ -4461,7 +4466,7 @@ fieldset:disabled .btn {
 .nav-pills .nav-link.active,
 .nav-pills .show>.nav-link {
     color: #fff;
-    background-color: #ffb524
+    background-color: #3986ff
 }
 
 .nav-fill>.nav-link,
@@ -6959,7 +6964,7 @@ fieldset:disabled .btn {
 }
 
 .link-secondary {
-    color: #ffb524
+    color: #3986ff
 }
 
 .link-secondary:hover,
@@ -7380,7 +7385,7 @@ fieldset:disabled .btn {
 }
 
 .border-secondary {
-    border-color: #ffb524 !important
+    border-color: #3986ff !important
 }
 
 .border-success {
@@ -8353,11 +8358,12 @@ fieldset:disabled .btn {
 }
 
 .text-primary {
-    color: #ffb524 !important
+    color: #3986ff !important
+   
 }
 
 .text-secondary {
-    color: #ffb524 !important
+    color: #3986ff !important
 }
 
 .text-success {
@@ -8413,7 +8419,7 @@ fieldset:disabled .btn {
 }
 
 .bg-secondary {
-    background-color: #ffb524 !important
+    background-color: #3986ff !important
 }
 
 .bg-success {

@@ -132,8 +132,8 @@ public class AttachFileDaoImpl implements AttachFileDao, PcwkLogger {
 	}
 
 	@Override
-	public int getLastSeqByUuid(String uuid) {
-		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getLastSeqByUuid", uuid);
+	public int getLastSeq(String uuid) {
+		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"getLastSeq", uuid);
 	}
 
 

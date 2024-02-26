@@ -23,5 +23,7 @@
         <typeAlias type="com.pcwk.ehr.calendar.domain.CalendarVO" alias="CalendarVO"/>
         <typeAlias type="com.pcwk.ehr.calendar.domain.WeekVO" alias="WeekVO"/>
         <typeAlias type="com.pcwk.ehr.licenses.domain.LicensesVO" alias="LicensesVO"/>
+        <typeAlias type="com.pcwk.ehr.course.domain.CourseVO" alias="CourseVO"/>
+        <typeAlias type="com.pcwk.ehr.attendance.domain.AttendanceVO" alias="AttendanceVO"/>
     </typeAliases>
 </configuration>

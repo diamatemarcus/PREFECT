@@ -104,8 +104,12 @@ public class BoardController implements PcwkLogger{
 		codes.put("code", codeStr);
 		
 		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
+		
+		String selectedDiv = inVO.getDiv();
+		
 		model.addAttribute("divCode", codeList);
 		model.addAttribute("paramVO", inVO);
+		model.addAttribute("selectedDiv", selectedDiv);
 		
 		/**
 		 * error noUse
@@ -129,6 +133,7 @@ public class BoardController implements PcwkLogger{
 		LOG.debug("│ doRetrieve                        │");
 		LOG.debug("│ BoardVO                           │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");
+		
 		//Default처리
 		
 		//페이지 사이즈:10
@@ -175,7 +180,6 @@ public class BoardController implements PcwkLogger{
 		
 		//목록조회
 		List<BoardVO>  list = service.doRetrieve(inVO);
-		
 		
 		long totalCnt = 0;
 		//총글수 
@@ -326,7 +330,7 @@ public class BoardController implements PcwkLogger{
 
 	@GetMapping(value ="/doDelete.do",produces = "application/json;charset=UTF-8" )//@RequestMapping(value = "/doDelete.do",method = RequestMethod.GET)
 	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-	public MessageVO doDelete(BoardVO inVO) throws SQLException{
+	public MessageVO doDelete(BoardVO inVO, HttpSession session) throws SQLException{
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doDelete                          │");
 		LOG.debug("│ BoardVO                           │"+inVO);
@@ -339,14 +343,23 @@ public class BoardController implements PcwkLogger{
 			return messageVO;
 		} 
 		
+		// 세션에서 현재 사용자의 정보를 가져옴
+        UserVO user = (UserVO) session.getAttribute("user");
+        LOG.debug("user:" + user);
+        
+        if (user == null) {
+            // 세션이 없는 경우 로그인 페이지 등으로 이동하거나 처리할 내용을 결정
+            MessageVO messageVO = new MessageVO("0", "로그인 후 이용해주세요.");
+            return messageVO;
+        }
 		
 		int flag = service.doDelete(inVO);
 		
 		String   message = "";
 		if(1==flag) {//삭제 성공
-			message = inVO.getSeq()+"삭제 되었습니다.";	
+			message = "삭제 되었습니다.";	
 		}else {
-			message = inVO.getSeq()+"삭제 실패!";
+			message = "삭제 실패!";
 		}
 		
 		MessageVO messageVO=new MessageVO(String.valueOf(flag), message);
@@ -354,7 +367,5 @@ public class BoardController implements PcwkLogger{
 		LOG.debug("│ messageVO                           │"+messageVO);
 		return messageVO;
 	}
-	
-	
 	
 }

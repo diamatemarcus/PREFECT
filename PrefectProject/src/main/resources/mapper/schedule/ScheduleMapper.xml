@@ -13,7 +13,7 @@
 	<delete id="doDelete" parameterType="ScheduleVO">
 	    DELETE FROM schedule 
 	    WHERE  schedule_id = #{scheduleID}
-    </delete> <!--  회원 삭제 쿼리  -->
+    </delete>
   
   <update id="doUpdate" parameterType="ScheduleVO">
 	UPDATE schedule

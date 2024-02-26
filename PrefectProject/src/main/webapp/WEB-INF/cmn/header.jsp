@@ -50,10 +50,10 @@
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 12px;
+    font-size: 17px;
     cursor: pointer;
     border-radius: 8px;
-    background-color: #FFA500;
+    background-color: #3986ff;
     color: white;
 }
 </style>
@@ -106,23 +106,52 @@
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto" style="padding-top: 8px;">
                         <a href="/ehr/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>
-                        <a href="/ehr/board/doRetrieve.do?div=20" class="nav-item nav-link active">게시판</a>
+                        <a href="/ehr/board/doRetrieve.do?div=20" class="nav-item nav-link">게시판</a>
+                        <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                  게시판
+                          </a>
+                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/ehr/board/doRetrieve.do?div=20">자유게시판</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                          </ul>
+                        </li>
                         <a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
-                        <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서구매</a>
-                        <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
-                        <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
+                        <c:if test="${role eq '10'}">
+   							 <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
+						</c:if>  
+                        <c:if test="${role eq '20' || role eq '30'}">   
+    						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
+						</c:if>
+                        <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서검색</a>
                     </div>
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="button me-md-2" type="button" onclick="location.href='/ehr/login/loginView.do'">로그인</button>
-                        <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'">회원가입</button>
+                        <% if(session.getAttribute("user") == null) { %>
+                        <button class="button me-md-2 btn-primary:hover" type="button" onclick="location.href='/ehr/login/loginView.do'">로그인</button>
+                        <button class="button btn-primary:hover" type="button" onclick="location.href='/ehr/user/moveToReg.do'">회원가입</button>
+                        <% } else { %>
+                            <!-- 사용자 이름과 로그아웃 버튼 표시 -->
+                            <span class="navbar-text">
+                                ${sessionScope.user.name}님 환영합니다.
+                            </span>
+                            <button class="button" type="button" onclick="location.href='/ehr/login/doLogout.do'">로그아웃</button>
+                        <% } %>
                     </div>
                     <div class="d-flex m-3 me-0">
-                        <a href="/ehr/user/doSelectOne.do" class="my-auto"> <i class="fas fa-user fa-2x"></i>
-                        </a>
+                 		<c:choose>
+    						<c:when test="${role eq '30'}"> <!-- 학생 -->
+         						<a href="/ehr/user/doSelectOne.do?email=${sessionScope.user.email}" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
+    			  		    </c:when>
+    						<c:when test="${role eq '20'}"> <!-- 교수 -->
+         						<a href="/ehr/user/doSelectOne.do?email=${sessionScope.user.email}" class="my-auto"> <i class="fas fa-user fa-2x"></i></a>
+    			   			</c:when>
+						</c:choose>
                     </div>
                     <div class="d-flex m-3 me-0">
-                        <a href="/ehr/dm/doContentsList.do" class="my-auto"> 
+                        <a href="/ehr/dm/doContentsList.do" class="my-auto a-dm-header"> 
                         <i class="fas fa-envelope fa-2x"></i> <!-- 메시지 아이콘 -->
                         </a>
                     </div>

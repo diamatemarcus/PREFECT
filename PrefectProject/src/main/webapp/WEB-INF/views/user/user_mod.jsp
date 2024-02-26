@@ -22,7 +22,7 @@
 	font-size: 16px;
 	cursor: pointer;
 	border-radius: 8px;
-	background-color: #FFA500
+	background-color: #3986ff
 }
 </style>
 <style>
@@ -108,32 +108,33 @@
 		<!--// 버튼 ----------------------------------------------------------------->
 
 		<!-- 회원 등록영역 -->
+		<!-- 삼항연산자 사용해봄 -->
 	  <div class = "row">
 		<div class = "container col-md-6">
 			<form action="#" name="userRegFrm">
 				<div class="mb-3">
 					<label for="email" class="form-label">이메일</label> <input
 						type="text" class="form-control ppl_input" readonly="readonly"
-						name="email" id="email" value="${outVO.email }" size="20"
+						name="email" id="email" value="${outVO != null ? outVO.email : userSession.email}" size="20"
 						maxlength="30">
 				</div>
 				<div class="mb-3">
 					<!--  아래쪽으로  여백 -->
 					<label for="name" class="form-label">이름</label> <input type="text"
 						class="form-control" name="name" id="name"
-						placeholder="이름을 입력 하세요." size="20" value="${outVO.name }"
+						placeholder="이름을 입력 하세요." size="20" value="${outVO != null ? outVO.name : userSession.name}"
 						maxlength="21">
 				</div>
 				<div class="mb-3">
-					<label for="password" class="form-label">비밀번호</label> <input
-						type="password" class="form-control" name="password" id="password"
-						placeholder="비밀번호를 입력 하세요." value="${outVO.password }" size="20"
-						maxlength="30">
+                    <label for="password" class="form-label">비밀번호</label> 
+                        <input type="password" class="form-control" name="password" id="password"
+                        placeholder="비밀번호를 입력 하세요." value="${outVO != null ? outVO.password : userSession.password}" readonly="readonly" size="20"
+                        maxlength="30">
 				</div>
 				<div class="mb-3">
 					<label for="tel" class="form-label">전화번호</label> <input type="text"
 						class="form-control" name="tel" id="tel" placeholder="전화번호 수정"
-						value="${outVO.tel }" size="20" maxlength="11">
+						value="${outVO != null ? outVO.tel : userSession.tel}" size="20" maxlength="11">
 				</div>
 				<div class="mb-3">
 					<label for="edu" class="form-label">학력</label>
@@ -141,9 +142,10 @@
 						<select id="education" name="education">
 							<!-- 검색 조건 옵션을 동적으로 생성 -->
 							<c:forEach items="${education}" var="vo">
-								<option value="<c:out value='${vo.detCode}'/>"
-									<c:if test="${vo.detCode == outVO.edu }">selected</c:if>><c:out
-										value="${vo.detName}" /></option>
+					            <option value="<c:out value='${vo.detCode}'/>"
+					                ${outVO != null ? (vo.detCode eq outVO.edu ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
+					                <c:out value="${vo.detName}" />
+					            </option>
 							</c:forEach>
 						</select>
 					</div>
@@ -153,17 +155,17 @@
 					<div class="col-auto">
 						<select id="role" name="role">
 							<!-- 검색 조건 옵션을 동적으로 생성 -->
-							<c:forEach items="${role}" var="vo">
-								<option value="<c:out value='${vo.detCode}'/>"
-									<c:if test="${vo.detCode == outVO.role }">selected</c:if>><c:out
-										value="${vo.detName}" /></option>
+							<c:forEach items="${role1}" var="vo"> 
+					            <option value="<c:out value='${vo.detCode}'/>"
+					                ${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
+					                <c:out value="${vo.detName}" />
+					            </option>
 							</c:forEach>
 						</select>
 					</div>
 				</div>
 
                 <!-- 라이센스 부분 -->
-
                 <!-- 셀렉트 박스 -->
 				<div class="mb-3">
 				    <label for="licenses" class="form-label">자격증</label>
@@ -199,7 +201,7 @@
                     </thead>
                     <tbody id="tableTbody">
                         <c:choose>
-                            <c:when test="${userLicenses.size()>0 }">
+                            <c:when test="${userLicenses.size()>0}">
                                 <c:forEach var="vo" items="${userLicenses}" >
                                     <tr>
                                         <td class="hidden">${vo.licensesSeq}</td>
@@ -422,7 +424,7 @@
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
 	                // AJAX 요청 완료 후 페이지 리로드
-	                location.reload();
+	                selectedLicenses.push(licensesSeq);
 	            },
 	            error: function(data) { // 실패시 처리
 	                console.log("error:" + data);
@@ -437,11 +439,11 @@
 	        $('#licensesList tbody').append(newRow);
 
 	        // 선택된 자격증을 배열에 추가
-	        selectedLicenses.push(licensesSeq);
+	        //selectedLicenses.push(licensesSeq);
 
 	        // 로컬 스토리지에 선택된 자격증 목록 저장
-	        localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
-	        localStorage.setItem('regDt_' + licensesSeq, regDt);
+	        //localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
+	        //localStorage.setItem('regDt_' + licensesSeq, regDt);
 	    });
 
 	 // 삭제 버튼 클릭 시
@@ -463,7 +465,7 @@
 	        $(this).closest('tr').remove();
 
 	        // 로컬 스토리지에 업데이트된 선택된 자격증 목록 저장
-	        localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
+	        //localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
 
 	        // AJAX를 사용하여 선택된 자격증을 삭제하는 요청 보내기
 	        $.ajax({
@@ -478,7 +480,7 @@
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
 	                // AJAX 요청 완료 후 페이지 리로드
-	                location.reload();
+	                $(this).closest('tr').remove();
 	            },
 	            error: function(data) { // 실패시 처리
 	                console.log("error:" + data);
@@ -507,18 +509,6 @@
 
 	        if (isNaN(year) || isNaN(month) || isNaN(day)) {
 	            alert('숫자 형식이 아닌 값이 포함되어 있습니다.');
-	            return false;
-	        }
-
-	        if (month < 1 || month > 12) {
-	            alert('올바른 월을 입력하세요. (1부터 12까지)');
-	            return false;
-	        }
-
-	        // 각 월별 일 수 체크
-	        var daysInMonth = new Date(year, month, 0).getDate();
-	        if (day < 1 || day > daysInMonth) {
-	            alert('올바른 일을 입력하세요.');
 	            return false;
 	        }
 

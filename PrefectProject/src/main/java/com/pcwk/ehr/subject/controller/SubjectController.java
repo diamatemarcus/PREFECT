@@ -3,9 +3,10 @@ package com.pcwk.ehr.subject.controller;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,8 +15,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
@@ -27,8 +30,6 @@ import com.pcwk.ehr.subject.domain.SubjectVO;
 import com.pcwk.ehr.subject.service.SubjectService;
 import com.pcwk.ehr.user.domain.UserVO;
 import com.pcwk.ehr.user.service.UserService;
-
-
 
 @Controller
 @RequestMapping("subject")
@@ -50,9 +51,10 @@ public class SubjectController implements PcwkLogger {
 
 	
 	//목록조회
-	//목록조회
 	@RequestMapping(value="/doRetrieve.do", method = RequestMethod.GET)
-	public String doRetrieve(HttpServletRequest req, Model model , HttpSession httpSession) throws SQLException {
+	public String doRetrieve(@RequestParam(value = "searchDiv", required = false) String searchDiv, HttpServletRequest req, Model model , HttpSession httpSession) throws SQLException {
+		
+		// 로그인한 유저의 이메일을 서브젝트 테이블에서 찾는 코드
 		String view = "subject/subject_list";
 		String email = "";
 
@@ -67,18 +69,40 @@ public class SubjectController implements PcwkLogger {
 		
 	    SubjectVO subjectVO = new SubjectVO();
 	    subjectVO.setProfessor(email); // 로그인한 사용자의 이메일 설정
-	    List<SubjectVO> list = subjectService.doRetrieve(subjectVO);
 	    
+	    if (searchDiv != null && !searchDiv.isEmpty()) {
+	        try {
+	            // searchDiv를 int로 변환
+	            int subjectCode = Integer.parseInt(searchDiv);
+	            // 변환된 값을 setSubjectCode에 전달
+	            subjectVO.setSubjectCode(subjectCode);
+	        } catch(NumberFormatException e) {
+	            // searchDiv가 유효한 정수가 아닌 경우의 처리
+	            LOG.error("Invalid SUBJECT_CODE: " + searchDiv, e);
+	        }
+	    }
+    
+	    List<SubjectVO> list = subjectService.doRetrieve(subjectVO);   
+
+	    // user정보에서 일치하는 trainee 찾아서 이름으로 보여주기 위한 코드
 	    List<UserVO> userList = new ArrayList<>();
+	    Set<String> addedEmails = new HashSet<>(); // 중복 이메일 추적을 위한 Set
 
 	    for (SubjectVO vo : list) {
-	        UserVO user = new UserVO();
-	        user.setEmail(vo.getTrainee());
-	        user = userService.doSelectOne(user);
-	        LOG.debug("│ user                                :"+user);
-	        userList.add(user);
+
+	        if (!addedEmails.contains(vo.getTrainee())) {
+	            UserVO user = new UserVO();
+	            user.setEmail(vo.getTrainee());
+	            user = userService.doSelectOne(user);
+	            if (user != null) {
+	                LOG.debug("│ user: " + user);
+	                userList.add(user);
+	                addedEmails.add(user.getEmail()); // 이메일을 Set에 추가
+	            }
+	        }
 	    }
 		
+	    // CMN_CODE_SUBJECT 찾아서 뷰어에서 subject_code 이름으로 사용하려고
 		Map<String, Object> codes =new HashMap<String, Object>();
 		String[] codeStr = {"SUBJECT"};
 		codes.put("code", codeStr);
@@ -93,10 +117,11 @@ public class SubjectController implements PcwkLogger {
 			LOG.debug(vo);
 		}
 		
+		// CMN_CODE
 		model.addAttribute("subjectCode",subjectCodeList);
-
-	    
+		// trainee 이름 표시
 	    model.addAttribute("userList", userList);
+	    //로그인한 유저 subject테이블에서 찾은 결과
 	    model.addAttribute("list", list);
 
 
@@ -105,7 +130,7 @@ public class SubjectController implements PcwkLogger {
 	}
 	
 	
-// 일단 사용 안함	
+// 사용 안함	
 //	//등록
 //	@RequestMapping(value="/doSave.do",method = RequestMethod.POST
 //			,produces = "application/json;charset=UTF-8"
@@ -135,24 +160,7 @@ public class SubjectController implements PcwkLogger {
 //	}
 //	
 	
-	
-//	// 단건조회
-//	@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
-//	public String doSelectOne(SubjectVO inVO,HttpServletRequest req, Model model) throws SQLException, EmptyResultDataAccessException {
-//		String view = "subject/subject_mod";
-//		LOG.debug("┌───────────────────────────────────────────┐");
-//		LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
-//		LOG.debug("└───────────────────────────────────────────┘");	
-//		String trainee = req.getParameter("trainee");
-//		LOG.debug("│ trainee                                :"+trainee);		
-//		
-//		SubjectVO outVO = this.subjectService.doSelectOne(inVO);
-//		LOG.debug("│ outVO                                :"+outVO);		
-//
-//		model.addAttribute("outVO", outVO);
-//		
-//		return view;
-//	}
+
 	
 	@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
 	public String doSelectOne(SubjectVO inVO, HttpServletRequest req, Model model) throws SQLException {
@@ -161,30 +169,27 @@ public class SubjectController implements PcwkLogger {
 	    LOG.debug("│ doSelectOne() │inVO:" + inVO);
 	    LOG.debug("└───────────────────────────────────────────┘");
 
+	    // HttpServletRequest를 사용하여 "email" 파라미터 값을 가져옵니다.
 	    String traineeEmail = req.getParameter("email");
-	    //String trainee = req.getParameter("trainee");
+	    // 가져온 email 값을 inVO 객체의 trainee 필드에 설정합니다.
 	    
-	    inVO.setTrainee(traineeEmail); // inVO 객체에 trainee 설정
-	    
+	    LOG.debug("traineeEmail: " + traineeEmail);
+
+	    inVO.setTrainee(traineeEmail);
+	    LOG.debug("inVO: " + inVO.toString());
+
+	    // trainee 정보를 조회합니다.
 	    UserVO userTrainee = new UserVO();
 	    userTrainee.setEmail(traineeEmail);
 	    userTrainee = userService.doSelectOne(userTrainee);
-	    LOG.debug("│ userTrainee                                :"+userTrainee);
+	    LOG.debug("│ userTrainee                                :" + userTrainee);
 
-	    // coursesCode 값이 null이 아니고 숫자로 구성된 문자열인지 확인
-//	    if (outVO.getCoursesCode() != null && outVO.getCoursesCode().matches("\\d+")) {
-//	        inVO.setCoursesCode(Integer.parseInt(coursesCode));
-//	    } else {
-//	        LOG.error("Invalid coursesCode: " + coursesCode);
-//	        // 여기서 오류 처리 로직을 추가하거나 기본값을 설정할 수 있습니다.
-//	    }
-
-
+	    // subject 정보를 조회합니다.
 	    SubjectVO outVO = this.subjectService.doSelectOne(inVO);
 	    LOG.debug("│ outVO :" + outVO);
-	    //LOG.debug("│ trainee :" + trainee);
 	    LOG.debug("│ coursesCode :" + outVO.getCoursesCode());
-	    
+
+	    // 모델에 조회된 데이터를 추가합니다.
 	    model.addAttribute("outVO", outVO);
 	    model.addAttribute("trainee", userTrainee);
 
@@ -222,12 +227,6 @@ public class SubjectController implements PcwkLogger {
 		return jsonString;
 	}
 	
-	
-
-	
-	 
-
-
 	
 
 }

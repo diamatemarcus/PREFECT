@@ -78,6 +78,11 @@ a {
    border-radius: 4px;
 }
 
+.button {
+	color: white;
+}
+
+
 /*** Single Page Start ***/
 /* Pagination 스타일 */
 .pagination nav ul {
@@ -100,7 +105,7 @@ a {
 }
 
 .pagination nav ul li a.active {
-    background-color: var(--bs-primary);
+    background-color: #3986ff;
     color: var(--bs-light);
     border-color: var(--bs-secondary);
 }
@@ -109,7 +114,6 @@ a {
     background-color: var(--bs-primary);
     color: var(--bs-light);
 }
-
 /*** Single Page End ***/
   
 /* header,

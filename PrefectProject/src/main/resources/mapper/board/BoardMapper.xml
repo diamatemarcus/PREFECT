@@ -25,20 +25,17 @@
   <sql id="searchCondition">
     <choose>
         <when test=" ''!= searchDiv and '10' == searchDiv ">
-            <where>
-                AND title LIKE #{searchWord} || '%'
-            </where>
+            AND title LIKE #{searchWord} || '%'
         </when>
         <when test=" ''!= searchDiv and '20' == searchDiv ">
-            <where>
-               AND contents LIKE #{searchWord} || '%'
-            </where>
+            AND contents LIKE #{searchWord} || '%'
         </when>
         <when test=" ''!= searchDiv and '30' == searchDiv ">
-            <where>
-               AND mod_id LIKE #{searchWord} || '%'
-            </where>
-        </when>        
+            AND mod_id LIKE #{searchWord} || '%'
+        </when>
+        <otherwise>
+            <!-- '전체' 검색을 위해 모든 데이터를 조회해야 하므로, 조건을 적용하지 않습니다. -->
+        </otherwise>
     </choose>
   </sql>  
 
@@ -50,7 +47,7 @@
 	           tt1.div,
 	           tt1.title,
 	           tt1.read_cnt as readCnt,
-	           --당일 등록: 시:분, 그렇치 않으면 년-월-일
+	           --당일 등록: 시:분, 그렇지 않으면 년-월-일
 	           DECODE(TO_CHAR(tt1.mod_dt,'YYYYMMDD'), TO_CHAR(SYSDATE,'YYYYMMDD')
 	                 ,TO_CHAR(tt1.mod_dt,'HH24:MI')
 	                 ,TO_CHAR(tt1.mod_dt,'YYYY-MM-DD')) as modDt,

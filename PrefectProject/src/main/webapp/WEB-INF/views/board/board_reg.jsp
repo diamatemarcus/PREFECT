@@ -12,6 +12,9 @@
 document.addEventListener("DOMContentLoaded",function(){
     console.log("DOMContentLoaded");
     
+    let div = document.querySelector("#div").value;
+    console.log('div:'+div);
+    
     const regForm       = document.querySelector("#regFrm");
     const moveToListBTN = document.querySelector("#moveToList");
     const doSaveBTN     = window.document.querySelector("#doSave");
@@ -25,7 +28,16 @@ document.addEventListener("DOMContentLoaded",function(){
     // event 감지 및 처리
     moveToListBTN.addEventListener("click", function (e) {
         console.log("moveToListBTN click");
+        
+        let div = document.querySelector("#div").value;
+        console.log("div:" + div);
+        
+        if (window.confirm("등록하지 않고 목록으로 가시겠습니까?") === false) {
+            return;
+        }
+        
         moveToListFun();
+        
     });
 
     function generateUUID() {
@@ -56,6 +68,7 @@ document.addEventListener("DOMContentLoaded",function(){
         let regId = document.querySelector("#regId").value;
         let contents = document.querySelector("#contents").value;
 
+        console.log("div:" + div);
         console.log("title:" + title);
         console.log("regId:" + regId);
         console.log("contents:" + contents);
@@ -164,15 +177,16 @@ document.addEventListener("DOMContentLoaded",function(){
 				let listData = "";
 				
 				$.each(data,function( index, value ){
+					 let fileSizeInBytes = value.fileSize; // 바이트 단위의 파일 크기
+					 let fileSizeInMB = (fileSizeInBytes / (1024 * 1024)); // MB 단위로 변환
+					 fileSizeInMB = fileSizeInMB.toFixed(2); // 소수점 둘째 자리까지 표시
 				    //console.log("vo.orgFileName:"+value.orgFileName);
 				    console.log("index:"+index);
 				    listData += "<tr>"; 
 				    listData +="<td>"+(index+1)+"</td>";
 				    listData +="<td>"+(value.orgFileName)+"</td>";
-				    listData +="<td>"+(value.saveFileName)+"</td>";
-				    listData +="<td>"+(value.fileSize)+"</td>";
+				    listData +="<td>"+fileSizeInMB+"</td>";
 				    listData +="<td>"+(value.extension)+"</td>";
-				    listData +="<td>"+(value.savePath)+"</td>";
 				    listData += "</tr>";
 				});
 				
@@ -194,6 +208,34 @@ document.addEventListener("DOMContentLoaded",function(){
     
 }); //--DOMContentLoaded
 </script>
+<style>
+    input[type=file]::file-selector-button {
+    width: auto;
+    /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
+    /* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
+    padding: 10px 20px;
+    /* 내용과 버튼의 테두리 간격을 조정합니다. */
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #FFA500;
+    color: white;
+}
+    .filebox {
+	  width: 80%; /* 넓이를 페이지의 80%로 설정 */
+	  margin: 0 auto; /* 페이지 중앙에 위치하도록 마진 설정 */
+	  text-align: right;
+}
+    .fileinfo{
+     width: 65%; /* 넓이를 페이지의 80%로 설정 */
+     margin: 0 auto; /* 페이지 중앙에 위치하도록 마진 설정 */
+     text-align: center;
+    }
+</style>
 </head>
 <body>
 
@@ -201,7 +243,7 @@ document.addEventListener("DOMContentLoaded",function(){
     
     <!-- 제목 -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="text-align: center;">
             <h1 class="page-header">${title }</h1>
         </div>
     </div>    
@@ -210,10 +252,12 @@ document.addEventListener("DOMContentLoaded",function(){
     <!-- 버튼 -->    
     <div class="row justify-content-end">
         <div class="col-auto">
-            <input type="button" value="목록" class="button btn-primary" id="moveToList" style="color: white;">
-            <input type="button" value="등록" class="button btn-primary" id="doSave" style="color: white;">
+            <button class="button" id="moveToList">목록</button>
+            <button class="button" id="doSave">등록</button>
         </div>
     </div>
+    <br>
+    <br>
     <!--// 버튼 ----------------------------------------------------------------->
     
      <!-- 
@@ -223,62 +267,83 @@ document.addEventListener("DOMContentLoaded",function(){
 	    title, contents : 화면에서 전달
 	    reg_id, mod_id  : session에서 처리
      -->
-    <!-- form -->
-    <form action="#" name="regFrm" id="regFrm">
-        <input type="text" name="uuid" id="uuid">
+      <form action="#" name="regFrm" id="regFrm">
+        <input type="hidden" name="uuid" id="uuid">
+        </form>
+     <table style="margin: auto;width: 80%;"> 
+		
+		  <tr>
+		    <td style="padding:10px;width: 15%;">   
+		        <div class="mb-3">
+		        
+		        
+		        <select class="form-select" aria-label="Default select example" id="div" name="div">
+				    <c:forEach var="codeVO" items="${divCode}">
+				        <option value="${codeVO.detCode}"  
+				            <c:if test="${codeVO.detCode == selectedDiv}">selected</c:if>  
+				        >${codeVO.detName}</option>
+				    </c:forEach>
+				</select>
+				
+		            <%--  
+		            <select class="form-select" aria-label="Default select example" id="div" name="div">
+		              <c:forEach var="codeVO" items="${divCode}">
+		                 <option   value="<c:out value='${codeVO.detCode}'/>"  
+		                    <c:if test="${codeVO.detCode == vo.getDiv() }">selected</c:if>  
+		                 ><c:out value="${codeVO.detName}"/></option>
+		              </c:forEach>
+		            </select>           
+		       </div> --%>
+            </td>
+          <td style="padding:10px; width: 70%;">
+		    <div class="mb-3"> <!--  아래쪽으로  여백 -->
+                <input type="text" class="form-control" id="title" name="title" maxlength="100" placeholder="제목을 입력 하세요.">
+            </div>
+          </td>
+		    <td style="width: 10%;"><div class="mb-3">
         
-        <div class="mb-3">
-            <label for="title" class="form-label">구분</label>
-            <select class="form-select" aria-label="Default select example" id="div" name="div">
-              <c:forEach var="codeVO" items="${divCode}">
-                 <option   value="<c:out value='${codeVO.detCode}'/>"  
-                    <c:if test="${codeVO.detCode == vo.getDiv() }">selected</c:if>  
-                 ><c:out value="${codeVO.detName}"/></option>
-              </c:forEach>
-            </select>            
+            <input type="hidden" class="form-control" id="regId" name="regId" value="${sessionScope.user.email}" 
+                  readonly="readonly" style="text-align: center;">        
+            <input type="text" class="form-control" id="regIdName" name="regIdName" value="${sessionScope.user.name}" 
+            readonly="readonly" style="text-align: center;">        
         </div>
+        </td>
+		  </tr>
+		  <tr>
+		    <td colspan="3">
+		      <div class="mb-3">
+	             <textarea rows="14" class="form-control"  id="contents" name="contents" placeholder="내용을 입력해 주세요"></textarea>
+	          </div>
+           </td>
+		  </tr>
+	  </table>
+    <!-- form -->
     
-     
-        <div class="mb-3"> <!--  아래쪽으로  여백 -->
-            <label for="title" class="form-label">제목</label>
-            <input type="text" class="form-control" id="title" name="title" maxlength="100" placeholder="제목을 입력 하세요.">
-        </div>
-        <div class="mb-3">
-            <label for="regId" class="form-label">ID</label>
-            <input type="text" class="form-control" id="regId" name="regId" value="${sessionScope.user.email}" 
-            readonly="readonly" >        
-        </div>
-        <div class="mb-3">
-            <label for="title" class="form-label">내용</label>
-            <textarea rows="7" class="form-control"  id="contents" name="contents"></textarea>
-        </div>
-    </form>
     <!--// form --------------------------------------------------------------->
     
     <!-- 파일 업로드 -->
-    <div class="container">
+    <br>
+    <div class="filebox">
 		<form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm">
-		    <div class="form-group">
-		        <label for="file1">파일1</label>
-		        <input type="file" name="file1" id="file1" placeholder="파일을 선택 하세요."  multiple/>
-		        <input type="button" value="파일 등록" class="button" id="fileUpload" style="color: white;">
-		    </div>  
+		        <input type="file" name="file1" id="file1" multiple/>
+	            <input type="button" class="button" value="파일 등록" id="fileUpload">
 		</form>
 	</div>
-	
-	<div class="container">
-       <table id="fileList">
+	<br>
+	<div class="fileinfo">
+       <table id="fileList"">
            <thead>
                <tr>
                    <th>번호</th>
-                   <th>원본파일명</th>
-                   <th>저장파일명</th>
-                   <th>파일크기</th>              
-                   <th>확장자</th>       
-                   <th>저장경로</th>                               
+                   <th>파일명</th>
+                   <th>파일크기(MB)</th>              
+                   <th>확장자</th>                                      
                </tr>
            </thead>
-           <tbody id="tableTbody">
+            <tbody id="tableTbody">
+              <tr>
+			    <td style="height: 20px;" colspan="1"></td> <!-- 여백을 위한 빈 셀 -->
+			  </tr>
                <c:choose>
                    <c:when test="${list.size()>0 }">
                       <c:forEach var="vo" items="${list}"  varStatus="status">
@@ -295,16 +360,14 @@ document.addEventListener("DOMContentLoaded",function(){
                        <tr>
                            <td>${ status.index+1 }</td>
                            <td>${ vo.orgFileName}</td>
-                           <td>${ vo.saveFileName}</td>
                            <td>${ vo.fileSize}</td>
                            <td>${ vo.extension}</td>
-                           <td>${ vo.savePath}</td>
                        </tr>
                       </c:forEach>
                    </c:when>
                    <c:otherwise>
                        <tr>
-                           <td colspan="99">no data found</td>
+                           <td colspan="99" style="text-align: center;">파일이 없습니다</td>
                        </tr>
                    </c:otherwise>
                </c:choose>
@@ -313,9 +376,9 @@ document.addEventListener("DOMContentLoaded",function(){
     </div>
     <!-- 파일 업로드 ------------------------------------------------------------->
     
-    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+  
     
 </div>
-	
+	  <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>
 </html>

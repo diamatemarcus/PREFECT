@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.DTO;
 import com.pcwk.ehr.cmn.MessageVO;
+import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.code.domain.CodeVO;
 import com.pcwk.ehr.code.service.CodeService;
@@ -36,8 +38,8 @@ import com.pcwk.ehr.util.ShaUtil;
 
 @Controller
 @RequestMapping("user")
-public class UserController {
-	final Logger LOG = LogManager.getLogger(getClass());
+public class UserController implements PcwkLogger{
+	
 	
 	@Autowired
 	UserService  userService;
@@ -326,24 +328,37 @@ public class UserController {
 		
 	
 	
-	//단건조회
-	//value="/doSelectOne.do" => http://localhost:8080/ehr/user/doSelectOne.do
-	//method = RequestMethod.GET => http://localhost:8080/ehr/user/doSelectOne.do?userId=p99-01
-	//produces = "application/json;charset=UTF-8" => 데이터를 위 형식으로 생성
-	//@ResponseBody : 반환값을 http의 응답의 본문으로 사용
 	@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
-	public String doSelectOne(UserVO inVO,HttpServletRequest req, Model model) throws SQLException, EmptyResultDataAccessException {
+	public String doSelectOne(UserVO inVO,HttpServletRequest req, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException {
 		String view = "user/user_mod";
+		String view2 = "user/user_teacher";
+		String email = "";
+		
+		UserVO userSession = new UserVO();
+		
+		//user 세션에 들어있는 user정보가null이 아니면, 세션에 user정보를 userVO타입의 user에 담고 그 이메일을 세팅해서 
+		//서비스를 호출해서 doSelectOne을 돌린 결과가 userSession이 되고 그 것을 화면으로 뿌림.
+		if(null != httpSession.getAttribute("user")) {
+			UserVO user = (UserVO) httpSession.getAttribute("user");
+			user.setEmail(user.getEmail());
+			userSession = this.userService.doSelectOne(user);
+		    }
+	    
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doSelectOne()                             │inVO:"+inVO);
-		LOG.debug("└───────────────────────────────────────────┘");	
-		String userId = req.getParameter("email");
-		LOG.debug("│ userId                                :"+userId);		
+		LOG.debug("└───────────────────────────────────────────┘");		
 		
+		
+		//서비스 호출하고 inVO를 doSelectOne한 결과. outVO
 		UserVO outVO = this.userService.doSelectOne(inVO);
-		LOG.debug("│ outVO                                :"+outVO);		
-
-		model.addAttribute("outVO", outVO);
+		LOG.debug("│ outVO                                :"+outVO);
+		
+		//outVO가 null이 아니면 outVO를 화면으로 보내고 null이면 userSession을 화면으로 보낸다.
+		if (outVO != null) {
+		    model.addAttribute("outVO", outVO);
+		} else {
+		    model.addAttribute("userSession", userSession);
+		}
 		
 		//코드목록 조회 : 'EDUCATION','ROLE'
 		Map<String, Object> codes =new HashMap<String, Object>();
@@ -381,19 +396,32 @@ public class UserController {
 		
 		model.addAttribute("education", educationList);
 		
-		model.addAttribute("role",roleList);
+		model.addAttribute("role1",roleList); //header 의 ${role}과 겹쳐서 이름 바꿨음
 		
 		
+		//자격증을 담았다.
 		List<LicensesVO> licenses = new ArrayList<LicensesVO>();
 		licenses = service.getLicensesName();
 		
+		//화면으로 뿌린다.
 		model.addAttribute("licenses", licenses);
 		
+		//유저 자격증을 담았다.
 		List<LicensesVO> userLicenses = new ArrayList<LicensesVO>();
 		userLicenses = service.getUserLicenses(inVO);
 		
+		//유저 자격증을 뿌린다.
 		model.addAttribute("userLicenses", userLicenses);
 		
+		String role = (String) httpSession.getAttribute("role");
+		model.addAttribute("role", role);
+		LOG.debug("role :" + role);
+
+		if(role == "20") {
+			LOG.debug("role :" + role);
+		return view2;
+		}
+			
 		return view;
 	}
 	
