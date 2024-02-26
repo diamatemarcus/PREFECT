@@ -10,13 +10,17 @@
 		    name,
 		    number_of_times,
 		    info,
-		    academys_seq
+		    academys_seq,
+		    start_date,
+		    end_date
 		) VALUES (
 		    #{courseCode},
 		    #{courseName},
 		    #{numberOfTimes},
 		    #{courserInfo},
-		    #{academySeq}
+		    courses_seq.NEXTVAL,
+		    #{startDate},
+		    #{endDate}
 		)
   </insert>
   
@@ -69,7 +73,9 @@
 	    info AS courseInfo,
 	    academys.seq AS academySeq,
 	    academys.name AS academyName,
-	    users_courses.email
+	    users_courses.email,
+	    start_date,
+	    end_date
 	FROM
 	    users_courses JOIN
 	    courses ON courses_code = code JOIN academys
@@ -80,11 +86,11 @@
   
   <!-- 학원관리자가 학원을 다니는 학생들 조회 --> 
   <select id="doRetrieveAllTrainees" resultType="CourseVO">
-	    SELECT
-	    courses_code,
-	    courses.name,
+	SELECT
+	    code AS courseCode,
+	    courses.name AS courseName,
 	    number_of_times,
-	    info,
+	    info AS courseInfo,
 	    academys.seq AS academySeq,
 	    academys.name AS academyName,
 	    users_courses.email
@@ -99,10 +105,10 @@
   <!-- 학원관리자가 학원의 모든 코스들 조회 --> 
   <select id="doRetrieveAllCourses" resultType="CourseVO">
 	 SELECT
-        code,
-        C.name,
+        code AS courseCode,
+        C.name AS courseName,
         number_of_times,
-        info,
+        info AS courseInfo,
         seq AS acdemySeq,
         A.name AS academyName
     FROM courses C JOIN academys A
@@ -114,10 +120,10 @@
   <!-- 시스템관리자가 모든 학원의 모든 코스들 조회 -->
   <select id="doRetrieveAllAcademys" resultType="CourseVO">
 	 SELECT
-        code,
-        C.name,
+        code AS courseCode,
+        C.name AS courseName,
         number_of_times,
-        info,
+        info AS courseInfo,
         seq AS acdemySeq,
         A.name AS academyName
     FROM courses C JOIN academys A
@@ -127,13 +133,13 @@
   
   <!-- 학원관리자, 시스템관리자가 코스 정보 수정  -->
   <update id="doUpdateCourse" parameterType="CourseVO">
-	UPDATE schedule
+	UPDATE courses
 	SET  
 	    name = #{courseName},
 	    number_of_times = #{numberOfTimes},
 	    info = #{courseInfo},
 	    academy_seq = #{academySeq}
-	WHERE schedule_id = #{courseCode}
+	WHERE code = #{courseCode}
   </update>
   
   <!-- 시스템관리자가 학원 정보 수정 -->

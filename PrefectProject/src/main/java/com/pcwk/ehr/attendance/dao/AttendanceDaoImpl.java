@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
@@ -48,8 +49,16 @@ public class AttendanceDaoImpl implements AttendanceDao {
 
 	@Override
 	public AttendanceVO doSelectOne(AttendanceVO inVO) throws SQLException, EmptyResultDataAccessException {
-		// TODO Auto-generated method stub
-		return null;
+		AttendanceVO outVO =new AttendanceVO();
+		LOG.debug("1.param \n" + inVO);
+		String statement = NAMESPACE+DOT +"doSelectOne";
+		LOG.debug("2.statement \n" + statement);
+		
+		outVO=this.sqlSessionTemplate.selectOne(statement, inVO);
+		
+		LOG.debug(outVO);
+	
+		return outVO;
 	}
 
 	@Override
@@ -59,7 +68,15 @@ public class AttendanceDaoImpl implements AttendanceDao {
 		LOG.debug("1.param \n" + inVO.toString());
 		String statement = NAMESPACE+DOT+"doSave";
 		LOG.debug("2.statement \n" + statement);
-		flag=this.sqlSessionTemplate.update(statement, inVO);
+		
+		try {
+	        flag = this.sqlSessionTemplate.update(statement, inVO);
+	    } catch (DataIntegrityViolationException e) {
+	        // 무결성 제약 조건이 발생한 경우
+	        flag = 2;
+	        LOG.error("무결성 제약 조건이 발생하였습니다.", e);
+	    }
+
 		
 		LOG.debug("3.flag \n" + flag);
 		return flag;
