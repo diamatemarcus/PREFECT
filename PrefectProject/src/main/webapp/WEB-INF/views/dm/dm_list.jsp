@@ -79,7 +79,7 @@
 
 
         .user-message {
-            background-color: #FFA500;
+            background-color: #6fa1ff;
             color: #fff;
             align-self: flex-end;
             margin-left: auto;
@@ -608,4 +608,5 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     </div>
 </body>
+<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </html>

@@ -2,19 +2,23 @@
 <%@page import="com.pcwk.ehr.cmn.StringUtil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />   
 <%
     UserVO dto = (UserVO)request.getAttribute("searchVO");
 %>  
 <!DOCTYPE html>
-<html> 
-<head>
-<link href="${CP}/resources/css/layout.css" rel="stylesheet" type="text/css">  
+<html>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="${CP}/resources/css/layout.css" rel="stylesheet" type="text/css">  
+
 <style>
+
 .table td {
     text-align: center; /* 모든 데이터 셀을 가운데 정렬합니다. */
 }
