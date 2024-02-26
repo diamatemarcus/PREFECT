@@ -108,6 +108,7 @@ public class UserController implements PcwkLogger{
 		
 		List<CodeVO> educationList=new ArrayList<CodeVO>();
 		List<CodeVO> roleList=new ArrayList<CodeVO>();
+		List<CodeVO> genderList = new ArrayList<CodeVO>();
 		
 		
 		for(CodeVO vo :codeList) {
@@ -118,7 +119,10 @@ public class UserController implements PcwkLogger{
 			
 			if(vo.getMstCode().equals("ROLE")) {
 				roleList.add(vo);
-			}	
+			}
+			if(vo.getMstCode().equals("GENDER")) {
+				roleList.add(vo);
+			}
 			LOG.debug(vo);
 		}
 		
@@ -132,10 +136,17 @@ public class UserController implements PcwkLogger{
 			LOG.debug(vo);
 		}
 		
+		LOG.debug("genderList");
+		for(CodeVO vo :genderList) {
+			LOG.debug(vo);
+		}
+		
 		
 		model.addAttribute("education", educationList);
 		
 		model.addAttribute("role",roleList);
+		
+		model.addAttribute("gender",genderList);
 		
 		
 		
@@ -186,7 +197,7 @@ public class UserController implements PcwkLogger{
 	
 		//코드목록 조회 : 'PAGE_SIZE', 'USER_SEARCH', 'EDUCATION','ROLE'
 		Map<String, Object> codes =new HashMap<String, Object>();
-		String[] codeStr = {"PAGE_SIZE","USER_SEARCH", "EDUCATION","ROLE"};
+		String[] codeStr = {"PAGE_SIZE","USER_SEARCH", "EDUCATION","ROLE","GENDER"};
 		codes.put("code", codeStr);
 		
 		List<CodeVO> codeList = codeService.doRetrieve(codes);
@@ -195,6 +206,7 @@ public class UserController implements PcwkLogger{
 		List<CodeVO> pageSizeList = new ArrayList<CodeVO>();
 		List<CodeVO> educationList=new ArrayList<CodeVO>();
 		List<CodeVO> roleList=new ArrayList<CodeVO>();
+		List<CodeVO> genderList=new ArrayList<CodeVO>();
 		
 		
 		for(CodeVO vo: codeList) {
@@ -213,7 +225,10 @@ public class UserController implements PcwkLogger{
 			
 			if(vo.getMstCode().equals("ROLE")) {
 				roleList.add(vo);
-			}	
+			}
+			if(vo.getMstCode().equals("GENDER")) {
+				genderList.add(vo);
+			}
 			LOG.debug(vo);
 		}
 		
@@ -226,6 +241,8 @@ public class UserController implements PcwkLogger{
 		model.addAttribute("education", educationList);
 		
 		model.addAttribute("role",roleList);
+		
+		model.addAttribute("gender",genderList);
 		
 		List<UserVO>  list = this.userService.doRetrieve(searchVO);
 		
@@ -362,13 +379,14 @@ public class UserController implements PcwkLogger{
 		
 		//코드목록 조회 : 'EDUCATION','ROLE'
 		Map<String, Object> codes =new HashMap<String, Object>();
-		String[] codeStr = {"EDUCATION","ROLE"};
+		String[] codeStr = {"EDUCATION","ROLE","GENDER"};
 		
 		codes.put("code", codeStr);
 		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
 		
 		List<CodeVO> educationList=new ArrayList<CodeVO>();
 		List<CodeVO> roleList=new ArrayList<CodeVO>();
+		List<CodeVO> genderList=new ArrayList<CodeVO>();
 		
 		
 		for(CodeVO vo :codeList) {
@@ -379,7 +397,10 @@ public class UserController implements PcwkLogger{
 			
 			if(vo.getMstCode().equals("ROLE")) {
 				roleList.add(vo);
-			}	
+			}
+			if(vo.getMstCode().equals("GENDER")) {
+				genderList.add(vo);
+			}
 			LOG.debug(vo);
 		}
 		
@@ -393,10 +414,16 @@ public class UserController implements PcwkLogger{
 			LOG.debug(vo);
 		}
 		
+		LOG.debug("genderList");
+		for(CodeVO vo :genderList) {
+			LOG.debug(vo);
+		}
+		
 		
 		model.addAttribute("education", educationList);
 		
 		model.addAttribute("role1",roleList); //header 의 ${role}과 겹쳐서 이름 바꿨음
+		model.addAttribute("gender",genderList);
 		
 		
 		//자격증을 담았다.
