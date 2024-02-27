@@ -92,7 +92,7 @@ public class BoardController implements PcwkLogger{
 	}
 	
 	@GetMapping(value="/moveToReg.do")//저 url로 get매핑함
-	public String moveToReg(Model model, BoardVO inVO) throws SQLException {
+	public String moveToReg(Model model, BoardVO inVO, HttpSession session) throws SQLException {
 		String viewName = "";
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ moveToReg                         │");
