@@ -1,12 +1,17 @@
 package com.pcwk.ehr.main.controller;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.pcwk.ehr.user.service.UserService;
 
 
 @Controller
@@ -16,9 +21,10 @@ public class MainController {
 	
 	
 	public MainController() {}
-	
+	@Autowired
+	UserService userService;
 	@RequestMapping(value="/mainView.do")
-	public String mainView(Model model,HttpSession httpsession) {
+	public String mainView(Model model,HttpSession httpsession) throws SQLException{
 		
 
 		String role = (String) httpsession.getAttribute("role");
@@ -27,6 +33,9 @@ public class MainController {
 		 
 		 LOG.debug("role:" + role);
 		
+		 int totalUsers = userService.totalUsers();
+	     model.addAttribute("totalUsers", totalUsers);
+	        
 		String view ="main/main";
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ mainView                				   │");
