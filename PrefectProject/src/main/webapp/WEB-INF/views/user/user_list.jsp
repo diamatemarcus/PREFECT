@@ -19,51 +19,114 @@
 
 <style>
 
-.table td {
-    text-align: center; /* 모든 데이터 셀을 가운데 정렬합니다. */
+
+/* 호버 가능한 행에 대한 스타일 */
+.hoverable:hover {
+    background-color: #f5f5f5; /* 마우스 호버 시 배경색 변경 */
+    cursor: pointer; /* 클릭 가능한 항목임을 나타내는 커서 스타일 */
 }
-.text-center {
+
+/* 툴팁 스타일 */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
     text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* 위치 */
+    position: absolute;
+    z-index: 1;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -60px;
+
+    /* 페이드인 효과 */
+    opacity: 0;
+    transition: opacity 0.6s;
 }
 
-.table-bordered {
-    border: none; /* 테이블 전체 테두리 제거 */
-}
-
-.table-bordered th,
-.table-bordered td {
-    border: none; /* 셀 테두리 제거 */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
 }
 
 
+/* 테이블 스타일 */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+.data-cell {
+    text-align: left; /* 텍스트를 왼쪽 정렬합니다. */
+    padding-left: 20px; /* 왼쪽 패딩을 조정하여 내용을 오른쪽으로 조금 이동합니다. */
+}
 
 
+/* 테이블 헤더 스타일 */
+.table thead th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #dee2e6;
+}
 
+/* 테이블 바디 스타일 */
+.table tbody + tbody {
+    border-top: 2px solid #dee2e6;
+}
+
+/* 테이블 행 스타일 */
+.table tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+}
+
+/* 페이지네이션 및 버튼 스타일 */
+.pagination {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.25rem;
+}
 
 .button {
-	width: auto;
-	/* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
-	/* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
-	padding: 10px 20px;
-	/* 내용과 버튼의 테두리 간격을 조정합니다. */
-	border: none;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	cursor: pointer;
-	border-radius: 8px;
-	background-color: #3986ff
+    display: inline-block;
+    font-weight: 400;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-.pagenation {
-        display: flex;
-        list-style-type: none;
-        padding: 0;
-    }
 
-.pagenation .page-item {
-        margin-right: 5px; /* 페이지 아이템 사이의 간격을 조절할 수 있습니다. */
-    }
+.button:hover {
+    color: #212529;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
     
 </style>
 <script type="text/javascript">
@@ -148,18 +211,18 @@ $(document).ready(function(){
      <br>
      <br>
     <!-- table -->
-    <table id="userTable"  class="table table-bordered border-primary table-hover table-striped mt-2">    
-        <thead>
-        <tr>
-            <th scope="col" class="text-center col-lg-1  col-sm-1">번호</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2" >사용자이메일</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2" >이름</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2" >전화번호</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2" >학력</th>
-            <th scope="col" class="text-center col-lg-1  col-sm-1"  >성별</th>
-            <th scope="col" class="text-center col-lg-2  col-sm-2"  >역할</th>
-        </tr>
-        </thead>
+	<table class="table table-responsive" id="userTable">    
+	    <thead>
+	        <tr>
+	            <th scope="col" class="text-center">번호</th>
+	            <th scope="col" class="text-center">사용자이메일</th>
+	            <th scope="col" class="text-center">이름</th>
+	            <th scope="col" class="text-center">전화번호</th>
+	            <th scope="col" class="text-center">학력</th>
+	            <th scope="col" class="text-center">성별</th>
+	            <th scope="col" class="text-center">역할</th>
+	        </tr>
+	    </thead>
         <tbody>
         <c:choose>
             <%-- 조회데이터가 있는 경우:jsp comment(html에 노출 않됨) --%>
@@ -167,9 +230,9 @@ $(document).ready(function(){
 		        <c:forEach var="vo" items="${list}">
 			        <tr>
 			            <td class="text-center">${vo.no}</td>
-			            <td class="text-left">${vo.email}</td>
-			            <td class="text-left">${vo.name }</td>
-			            <td class="text-left tel">${vo.tel }</td>
+			            <td class="text-center">${vo.email}</td>
+			            <td class="text-center">${vo.name }</td>
+			            <td class="text-center tel">${vo.tel }</td>
 			          	<c:forEach items="${education}" var="eduVO">
 						    <c:if test="${eduVO.detCode == vo.edu}">
 						        <td class="text-center">
@@ -177,22 +240,29 @@ $(document).ready(function(){
 						        </td>
 						    </c:if>
 						</c:forEach>
-						<c:forEach items="${gender}" var="genderVO">
-                            <c:if test="${genderVO.detCode == vo.gender}">
-                                <td class="text-center">
-                                    <c:out value="${genderVO.detName}"/>
-                                </td>
-                            </c:if>
-                        </c:forEach>
-						<c:forEach items="${role}" var="roleVO">
-						    <c:if test="${roleVO.detCode == vo.role}">
-						        <td class="text-center">
-						            <c:out value="${roleVO.detName}"/>
-						        </td>
-						    </c:if>
-						</c:forEach>
-			        </tr>
-		        </c:forEach>
+						<td class="text-center">
+				            <c:forEach items="${gender}" var="genderVO">
+				                <c:if test="${genderVO.detCode == vo.gender}">
+				                    <c:out value="${genderVO.detName}"/>
+				                </c:if>
+				            </c:forEach>
+				            <c:if test="${vo.gender == null}">
+				                &nbsp; <!-- 성별이 null일 때 빈 칸을 표시 -->
+				            </c:if>
+			       		</td>
+				        <!-- 역할 -->
+				        <td class="text-center">
+				            <c:forEach items="${role}" var="roleVO">
+				                <c:if test="${roleVO.detCode == vo.role}">
+				                    <c:out value="${roleVO.detName}"/>
+				                </c:if>
+				            </c:forEach>
+							 <c:if test="${vo.role == null}">
+				                &nbsp; <!-- 성별이 null일 때 빈 칸을 표시 -->
+				            </c:if>
+				        </td>
+				    </tr>
+				</c:forEach>
 	        </c:when>
 	        <%-- 조회데이터가 없는 경우:jsp comment(html에 노출 않됨) --%>
 		<c:otherwise>
@@ -231,7 +301,7 @@ $(document).ready(function(){
 
  </div>  
    
-  <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+
 
  <script type="text/javascript">
  
@@ -314,6 +384,6 @@ $(document).ready(function(){
     }
     
 </script>
-
+  <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>
 </html>

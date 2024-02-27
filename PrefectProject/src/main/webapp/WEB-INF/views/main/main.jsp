@@ -44,7 +44,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal Search End -->
+<!--  Modal Search End
     <div class="container-fluid py-5">
         <div id="container">
             <div class="bg-light p-5 rounded">
@@ -115,7 +115,7 @@
         </div>
     </div>
     </div>
-
+ -->    
     <!-- Middle -->
     <div class="container py-4 col-md-3">
         <div class="row bg-light p-4 rounded">
@@ -183,8 +183,8 @@
     <div class="container-fluid testimonial py-5">
         <div class="container py-5">
             <div class="testimonial-header text-center">
-                <h4 class="text-primary">이거 함 보쉴?</h4>
-                <h1 class="display-5 mb-5 text-dark">BEST 게시물</h1>
+                <h4 class="text-primary">출석이벤트</h4>
+                <h1 class="display-5 mb-5 text-dark">수상자</h1>
             </div>
             <div class="owl-carousel testimonial-carousel">
                 <div class="testimonial-item img-border-radius bg-light rounded p-4">

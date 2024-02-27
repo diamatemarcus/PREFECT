@@ -155,40 +155,6 @@ function pageDoRerive(url,pageNo){
     <br>
     <!--// 제목 ----------------------------------------------------------------->
 
-    <!-- 검색 -->
-    <form action="#" method="get" id="boardForm" name="boardForm">
-      <input type="hidden" name="div"    id="div"  value="${paramVO.getDiv() }"/>
-      <input type="hidden" name="pageNo" id="pageNo" />
-      <div class="row g-1 justify-content-end ">
-          <label for="searchDiv" class="col-auto col-form-label">검색조건</label>
-          <div class="col-auto">
-              <select class="form-select pcwk_select" id="searchDiv" name="searchDiv">
-                     <option value="">전체</option>
-                     <c:forEach var="vo" items="${boardSearch }">
-                        <option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == paramVO.searchDiv }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
-                     </c:forEach>
-              </select>
-          </div>    
-          <div class="col-auto">
-              <input type="text" class="form-control" id="searchWord" name="searchWord" maxlength="100" placeholder="검색어를 입력 하세요" value="${paramVO.searchWord}">
-          </div>   
-          <div class="col-auto"> 
-               <select class="form-select" id="pageSize" name="pageSize">
-                  <c:forEach var="vo" items="${pageSize }">
-                    <option value="<c:out value='${vo.detCode }' />" <c:if test="${vo.detCode == paramVO.pageSize }">selected</c:if>  ><c:out value='${vo.detName}' /></option>
-                  </c:forEach>
-               </select>  
-          </div>    
-          <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-            <input type="button" value="검색" class="button"  id="doRetrieve">
-            <input type="button" value="글쓰기" class="button"  id="moveToReg">
-          </div>              
-      </div>
-                           
-    </form>
-    <br>
-    <br>
-    <!--// 검색 ----------------------------------------------------------------->
     
     
     <!-- table -->
@@ -227,6 +193,10 @@ function pageDoRerive(url,pageNo){
         </c:choose>
       </tbody>
     </table>
+ 	 <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
+       <input type="button" value="글쓰기" class="button"  id="moveToReg">
+   	 </div>   
+    
     <!--// table --------------------------------------------------------------> 
     
     <!-- 페이징 : 함수로 페이징 처리 
@@ -248,6 +218,41 @@ function pageDoRerive(url,pageNo){
 	    </div>
 	</div>    
     <!--// 페이징 ---------------------------------------------------------------->
+    
+    <!-- 검색 -->
+    <form action="#" method="get" id="boardForm" name="boardForm">
+      <input type="hidden" name="div"    id="div"  value="${paramVO.getDiv() }"/>
+      <input type="hidden" name="pageNo" id="pageNo" />
+      <div class="row g-1 justify-content-end ">
+          <label for="searchDiv" class="col-auto col-form-label">검색조건</label>
+          <div class="col-auto">
+              <select class="form-select pcwk_select" id="searchDiv" name="searchDiv">
+                     <option value="">전체</option>
+                     <c:forEach var="vo" items="${boardSearch }">
+                        <option value="<c:out value='${vo.detCode}'/>"  <c:if test="${vo.detCode == paramVO.searchDiv }">selected</c:if>  ><c:out value="${vo.detName}"/></option>
+                     </c:forEach>
+              </select>
+          </div>    
+          <div class="col-auto">
+              <input type="text" class="form-control" id="searchWord" name="searchWord" maxlength="100" placeholder="검색어를 입력 하세요" value="${paramVO.searchWord}">
+          </div>   
+          <div class="col-auto"> 
+               <select class="form-select" id="pageSize" name="pageSize">
+                  <c:forEach var="vo" items="${pageSize }">
+                    <option value="<c:out value='${vo.detCode }' />" <c:if test="${vo.detCode == paramVO.pageSize }">selected</c:if>  ><c:out value='${vo.detName}' /></option>
+                  </c:forEach>
+               </select>  
+          </div>    
+          <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
+            <input type="button" value="검색" class="button"  id="doRetrieve">
+          </div>              
+      </div>
+                           
+    </form>
+    <br>
+    <br>
+    <!--// 검색 ----------------------------------------------------------------->   
+    
 </div>
 <br>
 <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
