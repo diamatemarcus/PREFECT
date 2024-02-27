@@ -399,6 +399,7 @@ function doSave(){
            tel: document.querySelector("#tel").value,
            edu: document.querySelector("#education").value,
            role: document.querySelector("#role").value,
+           gender: document.querySelector("#gender").value
         },
         success:function(data){//통신 성공     
             console.log("success data:"+data);
