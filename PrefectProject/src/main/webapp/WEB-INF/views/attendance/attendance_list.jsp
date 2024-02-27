@@ -15,6 +15,13 @@
 
 document.addEventListener("DOMContentLoaded",function(){
 	console.log("DOMContentLoaded");
+	
+	var selectedDate = new Date(this.value);
+    var today = new Date();
+    if (selectedDate > today) {
+        alert('오늘 이후의 날짜는 선택할 수 없습니다.');
+        this.value = today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
+    }
 
 	
 });//--DOMContentLoaded
@@ -163,6 +170,23 @@ document.addEventListener("DOMContentLoaded",function(){
 	function reloadPage(input) {
 		// 변경된 날짜 값을 가져옵니다.
         var selectedDate = input.value;
+        var selectedDate1 = new Date(input.value);
+        console.log(selectedDate);
+	    
+		var today = new Date();
+		console.log(today);
+	    
+	    // 선택된 날짜가 오늘 이후인지 확인
+	    if (selectedDate1 > today) {
+	        alert('오늘 이후의 날짜는 선택할 수 없습니다.');
+	        var year = today.getFullYear();
+	        var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	        var day = ('0' + today.getDate()).slice(-2);
+
+	        var formattedDate = year + '-' + month + '-' + day;
+	        console.log(formattedDate); // 출력 예: 2024-02-27
+	        selectedDate = formattedDate;
+	    }
 		
        // 입력된 날짜를 '-'로 분리하여 배열로 만듭니다.
         var parts = selectedDate.split("-");
@@ -209,12 +233,45 @@ document.addEventListener("DOMContentLoaded",function(){
 <body> 
 
 	<input type="hidden" id="sessionEmail" value="${sessionScope.user.email}"/>
-    
-    <br><br><br><br><br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<div class="row">
+		<div class="container col-md-6">
+			<table class="table">
+				<tbody>
+					<tr>
+						<td class="form-label">훈련과정명</td>
+						<td><input type="text" class="form-control ppl_input"
+							readonly="readonly" name="courseName" id="courseName"
+							value="${course.courseName}_${course.numberOfTimes}회차" size="20" maxlength="30"></td>
+					</tr>
+					<tr>
+						<td class="form-label">훈련 기관명</td>
+						<td><input type="text" class="form-control"
+							name="academyName" id="academyName" size="20"
+							value="${course.academyName}" maxlength="21" readonly></td>
+					</tr>
+					<tr>
+						<td class="form-label">훈련기간</td>
+						<td><input type="text" class="form-control" name="period"
+							id="period" value="${course.startDate} ~ ${course.endDate}"
+							readonly="readonly" size="20" maxlength="30"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
     <div class="text-center">
 	    <label for="calID">날짜 선택:</label>
-	    <input type="date" id="calID" name="calID" value="<%=java.time.LocalDate.now()%>" onchange="reloadPage(this)">
+	    <input type="date" id="calID" name="calID" onchange="reloadPage(this)"
+	           min="${course.startDate}" max="${course.endDate}" value="<%=java.time.LocalDate.now()%>">
 	</div>
+
 
 	 <div class="container-fluid testimonial py-2">
 	    <!-- table -->
@@ -224,7 +281,11 @@ document.addEventListener("DOMContentLoaded",function(){
 	        	<th scope="col" class="text-center col-lg-2  col-sm-2">순번</th>
 	            <th scope="col" class="text-center col-lg-2  col-sm-2">이름</th>
 	            <th scope="col" class="text-center col-lg-2  col-sm-2" >출석여부</th>
-	            <th scope="col" class="text-center col-lg-2  col-sm-2" ></th>
+	            <c:choose>
+		            <c:when test="${not empty attendances }">
+	    	            <th scope="col" class="text-center col-lg-2  col-sm-2" ></th>
+				    </c:when>
+			    </c:choose>
 	        </tr>
 	        </thead>
 	        <tbody>
@@ -257,16 +318,20 @@ document.addEventListener("DOMContentLoaded",function(){
 			                        </select>
 			                    </div>
 			                </td>
-			                <td class="text-center">
-			                	<input type="button" value="수정" class="button"  id="doUpdate" onclick="doUpdate(this);">
-			                </td>
+			                <c:choose>
+							    <c:when test="${not empty attendances }">
+		        	                <td class="text-center">
+					                	<input type="button" value="수정" class="button"  id="doUpdate" onclick="doUpdate(this);">
+					                </td>
+							    </c:when>
+							</c:choose>
 				        </tr>
 			        </c:forEach>
 		        </c:when>
 		        <%-- 조회데이터가 없는 경우:jsp comment(html에 노출 않됨) --%>
 		        <c:otherwise>
 		           <tr>
-		               <td colspan="99" class="text-center">No data found.</td>
+		               <td colspan="99" class="text-center">훈련 과정이 현재 진행 중이 아닙니다. </td>
 		           </tr>
 		        </c:otherwise>
 	        </c:choose>
