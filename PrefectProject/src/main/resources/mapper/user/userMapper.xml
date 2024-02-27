@@ -6,7 +6,26 @@
 namespace+id -> com.pcwk.ehr.user.doSelectOne
 -->  
 <mapper namespace="com.pcwk.ehr.user">
+    
+   <select id="totalUsers" resultType="int">
+    select count(email) as totalUsers from users
+   </select>
 
+   <select id="selectMalePercentage" resultType="int">
+    SELECT
+        ROUND(AVG(DECODE(gender, '남자', 1, 0)) * 100, 2) AS male_percentage  
+    FROM
+        users
+   </select>
+
+   <select id="selectFemalePercentage" resultType="int">
+    SELECT
+        ROUND(AVG(DECODE(gender, '남자', 1, 0)) * 100, 2) AS male_percentage, 
+    FROM
+        users
+   </select>
+    
+    
    <select id="emailDuplicateCheck" parameterType="UserVO" resultType="int">
          SELECT                   
             COUNT(*) cnt         

@@ -37,8 +37,9 @@
     display: flex; /* 항목들을 가로로 정렬 */
     align-items: center; /* 항목들을 세로 중앙에 위치 */
 }
-
-
+element.style {
+    overflow-y: hidden;
+}
 </style>
 <script>
 $(document).ready(function(){
@@ -68,8 +69,8 @@ $(document).ready(function(){
             title: '로그인 하시겠습니까?',
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
             confirmButtonText: '예',
             cancelButtonText: '아니오'
         }).then((result) => {

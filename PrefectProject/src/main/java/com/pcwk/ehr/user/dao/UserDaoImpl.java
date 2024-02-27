@@ -166,6 +166,19 @@ public class UserDaoImpl implements UserDao {
 		return flag;
 	}
 
+	@Override
+	public int totalUsers() throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ totalUsers                       │");
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"totalUsers");
+		LOG.debug("└───────────────────────────────────┘");	
+		int totalCount = sqlSessionTemplate.selectOne(NAMESPACE+DOT+"totalUsers");
+		
+		LOG.debug("│ totalCount                       │"+totalCount);
+				
+		return totalCount;
+	}
+
 }
 
 

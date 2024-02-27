@@ -20,7 +20,7 @@ public class UserVO extends DTO {
 	private String role;
 	private String salt;
 	private String gender;
-	
+	private int totalUsers;
 	
 	@Override
 	public String toString() {
