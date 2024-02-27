@@ -423,7 +423,7 @@
         var setPasswordUrl = "/ehr/search/searchPasswordView.do";
 
         // 새 창에서 URL을 엽니다.
-        window.open(setPasswordUrl);
+        window.location.href = setPasswordUrl;
     });
     
 	function doDelete() {

@@ -151,7 +151,14 @@
 		    <select id="role" name="role">
 		        <!-- 동적으로 생성된 옵션 -->
 		        <c:forEach items="${role}" var="vo">
-		            <option value="${vo.detCode}">${vo.detName}</option>
+		            <c:choose>
+		                <c:when test="${vo.detCode == 30}">
+		                    <option value="${vo.detCode}" selected>${vo.detName}</option>
+		                </c:when>
+		                <c:otherwise>
+		                    <option value="${vo.detCode}">${vo.detName}</option>
+		                </c:otherwise>
+		            </c:choose>
 		        </c:forEach>
 		    </select>
 		</div>
