@@ -23,7 +23,7 @@ public class BoardVO extends DTO {
 	private String modDt;// 수정일
 	private String modId;// 수정자
 	private String uuid;
-	
+	private int totalBoard;
 	@Override
 	public String toString() {
 		return "BoardVO [seq=" + seq + ", div=" + div + ", title=" + title + ", contents=" + contents + ", readCnt="

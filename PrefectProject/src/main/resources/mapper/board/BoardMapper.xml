@@ -10,6 +10,10 @@
        AND reg_id <> #{regId} ]]>  
   </update>
   
+  <select id="totalBoard" resultType="int">
+    SELECT count(seq) as totalBoard FROM board
+  </select>
+  
   <!-- div -->
   <sql id="divCondition">
     <choose>

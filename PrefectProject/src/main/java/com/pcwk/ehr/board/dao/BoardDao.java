@@ -31,4 +31,5 @@ public interface BoardDao extends WorkDiv<BoardVO>,PcwkLogger {
 	 */
 	int updateReadCnt(BoardVO inVO)throws SQLException;  
 	
+	int totalBoard() throws SQLException;
 }
