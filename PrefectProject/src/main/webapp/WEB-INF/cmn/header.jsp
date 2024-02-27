@@ -147,14 +147,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         <c:if test="${role eq '10'}">
    							 <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
 						</c:if>  
-                        <c:if test="${role eq '20' || role eq '30'}">   
-    						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
+                        <c:if test="${role eq '20' || role eq '30'}">
+                        	<a href="/ehr/attendance/moveToCourseInfo.do" class="nav-item nav-link">과정정보</a>   
+    						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적관리</a>
 						</c:if>
 						<c:if test="${role eq '20'}">   
-    						 <a href="/ehr/attendance/moveToAttendance.do" class="nav-item nav-link">출석 체크</a>
+    						 <a href="/ehr/attendance/moveToAttendance.do" class="nav-item nav-link">출석체크</a>
 						</c:if>
 						<c:if test="${role eq '30'}">   
-    						 <a href="/ehr/attendance/moveToAttendStatus.do" class="nav-item nav-link">출석 현황</a>
+    						 <a href="/ehr/attendance/moveToAttendStatus.do" class="nav-item nav-link">출석현황</a>
 						</c:if>
 						<a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
                         <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서검색</a>

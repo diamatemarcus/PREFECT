@@ -41,6 +41,14 @@
   width: 100%;
   height: 500px;
 }
+
+ .basicselect {
+    border: 1px solid #ced4da; /* 테두리 선 스타일 및 색상 지정 */
+    border-radius: .25rem; /* 테두리 모서리를 둥글게 만듭니다. */
+    padding: .375rem .75rem; /* 콘텐츠와 테두리 사이의 간격을 조정합니다. */
+    line-height: 1.5; /* 텍스트 라인 높이를 설정합니다. */
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out; /* 테두리 색상이 변할 때 부드럽게 전환되도록 지정합니다. */
+}
 </style>
 
 
@@ -140,7 +148,7 @@
                 <div class="mb-3">
                     <label for="gender" class="form-label">성별</label>
                     <div class="col-auto">
-                        <select id="gender" name="gender">
+                        <select id="gender" name="gender" class="basicselect">
                             <!-- 검색 조건 옵션을 동적으로 생성 -->
                             <c:forEach items="${gender}" var="vo">
                                 <option value="<c:out value='${vo.detCode}'/>"
@@ -155,7 +163,7 @@
 				<div class="mb-3">
 					<label for="edu" class="form-label">학력</label>
 					<div class="col-auto">
-						<select id="education" name="education">
+						<select id="education" name="education" class="basicselect">
 							<!-- 검색 조건 옵션을 동적으로 생성 -->
 							<c:forEach items="${education}" var="vo">
 					            <option value="<c:out value='${vo.detCode}'/>"
@@ -166,10 +174,11 @@
 						</select>
 					</div>
 				</div>
+				
 				<div class="mb-3">
 					<label for="role" class="form-label">역할</label>
 					<div class="col-auto">
-						<select id="role" name="role">
+						<select id="role" name="role" class="basicselect">
 							<!-- 검색 조건 옵션을 동적으로 생성 -->
 							<c:forEach items="${role1}" var="vo"> 
 					            <option value="<c:out value='${vo.detCode}'/>"
@@ -182,38 +191,36 @@
 				</div>
 				
                 
-                <!-- 라이센스 부분 -->
-                <!-- 셀렉트 박스 -->
-				<div class="mb-3">
-				    <label for="licenses" class="form-label">자격증</label>
-				    <div class="row align-items-center">
-				        <!-- 자격증 선택 셀렉트 박스 -->
-				        <div class="col-auto">
-				            <select id="licenses" name="licenses" class="form-control">
-				                <!-- 검색 조건 옵션을 동적으로 생성 -->
-				                <c:forEach items="${licenses}" var="vo">
-				                    <option value="${vo.licensesSeq}">${vo.licensesName}</option>
-				                </c:forEach>
-				            </select>
-				        </div>
-				        <!-- 등록일 텍스트 상자 -->
-				        <div class="mb-6">
-				            <label for="regDt" class="form-label">등록일</label>
-				            <input type="date" id="regDt" name="regDt" class="form-control">
-				        </div>
-				        <!-- 자격증 저장 버튼 -->
-				        <div class="col-auto">
-				            <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses" style="margin-top: 10px">
-				        </div>
+				<div class="row">
+				    <!-- 라이센스 부분 -->
+				    <div class="col-md-6">
+				        <label for="licenses" class="form-label">자격증</label>
+				        <select id="licenses" name="licenses" class="form-select">
+				            <!-- 검색 조건 옵션을 동적으로 생성 -->
+				            <c:forEach items="${licenses}" var="vo">
+				                <option value="${vo.licensesSeq}">${vo.licensesName}</option>
+				            </c:forEach>
+				        </select>
+				    </div>
+				
+				    <!-- 등록일 텍스트 상자 -->
+				    <div class="col-md-6">
+				        <label for="regDt" class="form-label">등록일</label>
+				        <input type="date" id="regDt" name="regDt" class="form-control">
 				    </div>
 				</div>
-
-                <!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
-                <table id="licensesList">
+				
+				<!-- 자격증 저장 버튼 -->
+				<div class="mb-4">
+				    <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses" style="margin-top: 10px">
+				</div>
+<!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
+                <table id="licensesList" class="table table-responsive">
                     <thead>
                         <tr>
                             <th>자격증명</th>
-                            <th>등록일</th>
+                            <th>등록일</th> 
+                            <th>취소</th>
                         </tr>
                     </thead>
                     <tbody id="tableTbody">
@@ -441,8 +448,9 @@
 	            },
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
-	                // AJAX 요청 완료 후 페이지 리로드
 	                selectedLicenses.push(licensesSeq);
+	                // AJAX 요청 완료 후 페이지 리로드
+	                location.reload(); // 페이지 리로드
 	            },
 	            error: function(data) { // 실패시 처리
 	                console.log("error:" + data);
@@ -455,13 +463,6 @@
 	        // 표에 추가
 	        var newRow = '<tr><td data-license-seq="' + licensesSeq + '">' + licenseName + '</td><td>' + regDt + '</td><td><button class="deleteRowBtn">삭제</button></td></tr>';
 	        $('#licensesList tbody').append(newRow);
-
-	        // 선택된 자격증을 배열에 추가
-	        //selectedLicenses.push(licensesSeq);
-
-	        // 로컬 스토리지에 선택된 자격증 목록 저장
-	        //localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
-	        //localStorage.setItem('regDt_' + licensesSeq, regDt);
 	    });
 
 	 // 삭제 버튼 클릭 시
@@ -475,15 +476,8 @@
 	        if (index !== -1) {
 	            selectedLicenses.splice(index, 1);
 	        }
-
-	        // 로컬 스토리지에서 해당 자격증 정보 삭제
-	        localStorage.removeItem('regDt_' + licensesSeq);
-
 	        // 테이블에서 행 제거
 	        $(this).closest('tr').remove();
-
-	        // 로컬 스토리지에 업데이트된 선택된 자격증 목록 저장
-	        //localStorage.setItem('selectedLicenses', JSON.stringify(selectedLicenses));
 
 	        // AJAX를 사용하여 선택된 자격증을 삭제하는 요청 보내기
 	        $.ajax({
@@ -497,8 +491,9 @@
 	            },
 	            success: function(data) { // 통신 성공
 	                console.log("success data:" + data);
-	                // AJAX 요청 완료 후 페이지 리로드
 	                $(this).closest('tr').remove();
+	                // AJAX 요청 완료 후 페이지 리로드
+	                location.reload(); // 페이지 리로드
 	            },
 	            error: function(data) { // 실패시 처리
 	                console.log("error:" + data);
