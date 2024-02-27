@@ -7,6 +7,49 @@
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />
 
 <!doctype html>
+
+<style>
+
+.select-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.select-wrapper select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd; /* 테두리 색상은 유지 */
+    border-radius: 5px;
+    background-color: #cfcece70; /* 셀렉트 박스 배경색을 #cfcece70로 변경 */
+    font-size: 16px;
+    color: #333; /* 글자 색상 */
+    appearance: none; /* 기본 화살표 제거 */
+}
+
+.select-wrapper::after {
+    content: '▼';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #333; /* 드롭다운 화살표 색상 */
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    .select-wrapper select {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+}
+
+
+
+</style>
+
 <html lang="en">
   <head>
     <!-- Required meta tags -->
@@ -23,8 +66,13 @@
   <body>
     <div class="uf-form-signin">
       <div class="text-left">
-        <a href="https://uifresh.net/"><img src="${CP}/resources/template/img/acorn.png" alt="" width="70" height="70">회원가입</a>
-      <h1 class="text-white h3"></h1>
+		 <a href="/ehr/index.jsp" class="navbar-brand">
+            <div class="arms-container d-flex align-items-center">
+             <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
+            <h1 class="text-primary display-6">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
+           </div>
+        </a>
+      <h1 class="text-white h3">회원가입</h1>
       </div>
       <form class="mt-4">
         <div class="form-group email-form">
@@ -80,29 +128,34 @@
           <input type="text"  class="form-control numOnly" name="tel" id="tel" placeholder="전화번호" size="20"  maxlength="11">
         </div>
         
-        <div class="input-group uf-input-group input-group-lg mb-3">
-          <label for="edu" class="form-label">학력</label>
-                   <div class="col-auto">
-                    <select id="education" name="education">
-                        <!-- 검색 조건 옵션을 동적으로 생성 -->
-                         <c:forEach items="${education}" var="vo">
-					     	<option value="${vo.detCode}">${vo.detName}</option>
-					     </c:forEach>
-                    </select>
-                	</div>
-        </div>
+		<div class="select-wrapper">
+		    <select id="education" name="education">
+		        <!-- 동적으로 생성된 옵션 -->
+		        <c:forEach items="${education}" var="vo">
+		            <option value="${vo.detCode}">${vo.detName}</option>
+		        </c:forEach>
+		    </select>
+		</div>
+		<!-- 성별 셀렉트 박스 -->
+		<div class="select-wrapper">
+		    <select id="gender" name="gender">
+		        <!-- 동적으로 생성된 옵션 -->
+		        <c:forEach items="${gender}" var="vo">
+		            <option value="${vo.detCode}">${vo.detName}</option>
+		        </c:forEach>
+		    </select>
+		</div>
+		
+		<!-- 역할 셀렉트 박스 -->
+		<div class="select-wrapper">
+		    <select id="role" name="role">
+		        <!-- 동적으로 생성된 옵션 -->
+		        <c:forEach items="${role}" var="vo">
+		            <option value="${vo.detCode}">${vo.detName}</option>
+		        </c:forEach>
+		    </select>
+		</div>
 
-        <div class="input-group uf-input-group input-group-lg mb-3">
-          <label for="role" class="form-label">역할</label>
-                   <div class="col-auto">
-                    <select id="role" name="role">
-                        <!-- 검색 조건 옵션을 동적으로 생성 -->
-                         <c:forEach items="${role}" var="vo">
-					                 <option value="${vo.detCode}">${vo.detName}</option>
-					              </c:forEach>
-                    </select>
-                	</div>
-        </div>
 	     <!--// 회원 등록영역 ------------------------------------------------------>
 
 
@@ -117,7 +170,8 @@
       </form>
     </div>
 
-    <!-- JavaScript -->
+    <!-- JavaScript -->    
+    
      <script>
      function strongPassword(str) {
          return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);

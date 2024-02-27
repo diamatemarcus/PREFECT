@@ -19,7 +19,8 @@
 
     <!-- JavaScript Libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" 
+   integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <script src="${CP}/resources/template/lib/easing/easing.min.js" type="text/javascript"></script>
     <script src="${CP}/resources/template/lib/waypoints/waypoints.min.js" type="text/javascript"></script>
     <script src="${CP}/resources/template/lib/lightbox/js/lightbox.min.js" type="text/javascript"></script>

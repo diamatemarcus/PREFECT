@@ -41,7 +41,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		           TT1.password,
 		           TT1.tel,
 		           TT1.edu,
-		           TT1.role
+		           TT1.role,
+		           TT1.gender
 		    FROM (
 		        SELECT ROWNUM AS rnum, T1.*
 		        FROM (SELECT *
@@ -73,6 +74,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
         <result column="TEL"     property="tel"/>
         <result column="EDU"       property="edu"/>
         <result column="ROLE"   property="role"/>
+        <result column="gender"   property="gender"/>
 
     </resultMap>
     
@@ -82,7 +84,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
                     password,        
                     tel,         
                     edu,           
-                    role                                       
+                    role,
+                    gender                                       
 		 FROM                                                     
 		           users                                           
 		 WHERE email LIKE #{email}||'%'                                
@@ -106,7 +109,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		     ,tel       = #{tel}       
 		     ,edu       = #{edu}       
 		     ,role      = #{role}
-		     ,salt      = #{salt}       
+		     ,salt      = #{salt}
+		     ,gender    = #{gender}       
 		 WHERE                    
 		     email      = #{email}          
     </update> <!-- 회원정보 변경 쿼리 -->
@@ -131,7 +135,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
             password,        
             tel,         
             edu,           
-            role  
+            role,
+            gender  
 		 FROM               
 		     users          
 		 WHERE email = #{email}      
@@ -146,7 +151,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		    tel,         
 		    edu,           
 		    role,
-		    salt       		                 
+		    salt,
+		    gender       		                 
 		) VALUES (           
 		    #{email},               
 		    #{name},               
@@ -154,7 +160,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		    #{tel},               
 		    #{edu},               
 		    #{role},
-		    #{salt}                        
+		    #{salt},
+		    #{gender}                        
 		)                        
     </insert> <!-- 회원 등록 쿼리 -->
 

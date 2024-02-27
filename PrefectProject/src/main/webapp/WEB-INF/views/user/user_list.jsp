@@ -2,19 +2,23 @@
 <%@page import="com.pcwk.ehr.cmn.StringUtil"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"   uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <c:set var="CP" value="${pageContext.request.contextPath}" scope="page" />   
 <%
     UserVO dto = (UserVO)request.getAttribute("searchVO");
 %>  
 <!DOCTYPE html>
-<html> 
-<head>
-<link href="${CP}/resources/css/layout.css" rel="stylesheet" type="text/css">  
+<html>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="${CP}/resources/css/layout.css" rel="stylesheet" type="text/css">  
+
 <style>
+
 .table td {
     text-align: center; /* 모든 데이터 셀을 가운데 정렬합니다. */
 }
@@ -60,6 +64,7 @@
 .pagenation .page-item {
         margin-right: 5px; /* 페이지 아이템 사이의 간격을 조절할 수 있습니다. */
     }
+    
 </style>
 <script type="text/javascript">
 <!-- 이 함수는 페이지를 로드 하기 전에 적용되야 하기에  이 함수만 위에서 작용 -->
@@ -146,11 +151,12 @@ $(document).ready(function(){
     <table id="userTable"  class="table table-bordered border-primary table-hover table-striped mt-2">    
         <thead>
         <tr>
-            <th scope="col" class="text-center col-lg-2  col-sm-2">번호</th>
+            <th scope="col" class="text-center col-lg-1  col-sm-1">번호</th>
             <th scope="col" class="text-center col-lg-2  col-sm-2" >사용자이메일</th>
             <th scope="col" class="text-center col-lg-2  col-sm-2" >이름</th>
             <th scope="col" class="text-center col-lg-2  col-sm-2" >전화번호</th>
             <th scope="col" class="text-center col-lg-2  col-sm-2" >학력</th>
+            <th scope="col" class="text-center col-lg-1  col-sm-1"  >성별</th>
             <th scope="col" class="text-center col-lg-2  col-sm-2"  >역할</th>
         </tr>
         </thead>
@@ -171,6 +177,13 @@ $(document).ready(function(){
 						        </td>
 						    </c:if>
 						</c:forEach>
+						<c:forEach items="${gender}" var="genderVO">
+                            <c:if test="${genderVO.detCode == vo.gender}">
+                                <td class="text-center">
+                                    <c:out value="${genderVO.detName}"/>
+                                </td>
+                            </c:if>
+                        </c:forEach>
 						<c:forEach items="${role}" var="roleVO">
 						    <c:if test="${roleVO.detCode == vo.role}">
 						        <td class="text-center">

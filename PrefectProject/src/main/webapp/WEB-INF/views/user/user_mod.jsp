@@ -136,6 +136,22 @@
 						class="form-control" name="tel" id="tel" placeholder="전화번호 수정"
 						value="${outVO != null ? outVO.tel : userSession.tel}" size="20" maxlength="11">
 				</div>
+				
+                <div class="mb-3">
+                    <label for="gender" class="form-label">성별</label>
+                    <div class="col-auto">
+                        <select id="gender" name="gender">
+                            <!-- 검색 조건 옵션을 동적으로 생성 -->
+                            <c:forEach items="${gender}" var="vo">
+                                <option value="<c:out value='${vo.detCode}'/>"
+                                    ${outVO != null ? (vo.detCode eq outVO.gender ? 'selected' : '') : (userSession.gender eq vo.detCode ? 'selected' : '')}>
+                                    <c:out value="${vo.detName}" />
+                                </option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+				
 				<div class="mb-3">
 					<label for="edu" class="form-label">학력</label>
 					<div class="col-auto">
@@ -164,7 +180,8 @@
 						</select>
 					</div>
 				</div>
-
+				
+                
                 <!-- 라이센스 부분 -->
                 <!-- 셀렉트 박스 -->
 				<div class="mb-3">
@@ -362,6 +379,7 @@
 				tel : document.querySelector("#tel").value,
 				edu : document.querySelector("#education").value,
 				role : document.querySelector("#role").value,
+				gender : document.querySelector("#gender").value,
 			},
 			success : function(data) {//통신 성공     
 				console.log("success data:" + data);

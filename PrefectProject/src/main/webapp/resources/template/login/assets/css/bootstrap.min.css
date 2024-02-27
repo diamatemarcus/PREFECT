@@ -3399,7 +3399,7 @@ textarea.form-control-lg {
 
 .btn-group-lg>.btn, .btn-lg {
 	padding: .5rem 1rem;
-	font-size: 2rem;
+	font-size: 1.3rem;
 	border-radius: .3rem
 }
 
@@ -7495,6 +7495,8 @@ keyframes placeholder-wave { 100%{
 .mt-0 {
 	margin-top: 0 !important
 }
+
+
 
 .mt-1 {
 	margin-top: .25rem !important

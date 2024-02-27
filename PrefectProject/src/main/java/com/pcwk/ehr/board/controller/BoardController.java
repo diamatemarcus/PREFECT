@@ -214,9 +214,9 @@ public class BoardController implements PcwkLogger{
 		//공지사항:10, 자유게시판:20
 		String title = "";
 		if(inVO.getDiv().equals("10")) {
-			title = "공지사항-목록";
+			title = "공지사항";
 		}else {
-			title = "자유게시판-목록";
+			title = "자유게시판";
 		}
 		modelAndView.addObject("title", title);	
 		

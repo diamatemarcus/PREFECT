@@ -235,16 +235,6 @@ document.addEventListener("DOMContentLoaded",function(){
     </div>    
     <!--// 제목 ----------------------------------------------------------------->
     
-    <!-- 버튼 -->
-    <div class="row justify-content-end" style="margin-bottom: 20px;">
-        <div class="col-auto">
-            <input type="button" value="목록" class="button" id="moveToList">
-            <input type="button" value="수정" class="button" id="doUpdate" >
-            <input type="button" value="삭제" class="button" id="doDelete" >
-        </div>
-    </div>
-    <!--// 버튼 ----------------------------------------------------------------->
-    
     <!-- 
         seq : sequence별도 조회
         div : 10(공지사항)고정
@@ -344,7 +334,7 @@ document.addEventListener("DOMContentLoaded",function(){
                         <th>번호</th>
                         <th>파일 이름</th>
                         <th style="display:none;">저장파일명</th>
-                        <th>파일크기</th>
+                        <th>파일크기(MB)</th>
                         <th style="display:none;">확장자</th>
                         <th style="display:none;">저장경로</th>
                         <th style="display:none;">UUID</th>
@@ -379,6 +369,19 @@ document.addEventListener("DOMContentLoaded",function(){
         
     </form> 
     <!--// form --------------------------------------------------------------->
+    
+    
+    <!-- 버튼 -->
+    <div class="row justify-content-end" style="margin-bottom: 20px;">
+        <div class="col-auto">
+            <input type="button" value="취소" class="button" id="moveToList">
+            <input type="button" value="수정" class="button" id="doUpdate" >
+            <input type="button" value="삭제" class="button" id="doDelete" >
+        </div>
+    </div>
+    <!--// 버튼 ----------------------------------------------------------------->
+    
+    
     <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </div>
 

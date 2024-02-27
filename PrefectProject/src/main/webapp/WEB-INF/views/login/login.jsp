@@ -24,24 +24,108 @@
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script src="${CP}/resources/js/eUtil.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
 <!-- Bootstrap CSS -->
 <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/bootstrap.min.css" type="text/css">
 <!-- FontAwesome CSS -->
 <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/all.min.css" type="text/css">
 <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/uf-style.css" type="text/css">
+<style>
+.arms-container {
+    display: flex; /* 항목들을 가로로 정렬 */
+    align-items: center; /* 항목들을 세로 중앙에 위치 */
+}
+
+
+</style>
+<script>
+$(document).ready(function(){
+    console.log("ready!");
+    
+    $("#doLogin").on("click", function(e){
+        e.preventDefault(); // Prevent form submission
+        console.log("doLogin click!");
+        
+        let email = document.querySelector("#email").value;
+        if(eUtil.isEmpty(email)){
+        	Swal.fire("아이디를 입력 하세요", "","warning");
+            //document.querySelector("#email").focus();
+            return;
+        }
+        console.log("email:" + email);
+        
+        let password = document.querySelector("#password").value;
+        if(eUtil.isEmpty(password)){
+        	Swal.fire("비밀번호를 입력 하세요", "","warning");
+            //document.querySelector("#password").focus();
+            return;
+        }
+        console.log("password:" + password);
+        
+        Swal.fire({
+            title: '로그인 하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/ehr/login/doLogin.do",
+                    async: true,
+                    dataType: "json",
+                    data: {
+                        "email": email,
+                        "password": password
+                    },
+                    success: function(data){
+                        console.log("data.msgId:" + data.msgId);
+                        console.log("data.msgContents:" + data.msgContents);
+                        
+                        if("10" == data.msgId){
+                        	Swal.fire(data.msgContents, "","error");
+                            document.querySelector("#email").focus();
+                        } else if("20" == data.msgId){
+                        	Swal.fire(data.msgContents, "","error");
+                            document.querySelector("#password").focus();
+                        } else if("30" == data.msgId){
+                        	Swal.fire(data.msgContents, "","success").then((value) => {
+                                window.location.href = "/ehr/index.jsp";
+                            });
+                        }
+                    },
+                    error: function(data){
+                        console.log("error:" + data);
+                    },
+                    complete: function(data){
+                        console.log("complete:" + data);
+                    }
+                });
+            }
+        });
+    });
+});
+</script>
 <title>ARMS Login</title>
 </head>
+
 <body>
 	<div class="uf-form-signin">
-		<div class="text-start">
-			<a href="#"><img src="${CP}/resources/template/img/acorn.png" alt="" width="100" height="100"><h1 class = "text-center text-white h3">로그인</h1> </a>
-
-		</div>
+ 		 <a href="/ehr/index.jsp" class="navbar-brand">
+             	<div class="arms-container d-flex align-items-center">
+                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
+                    <h1 class="text-primary display-6">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
+                </div>
+        </a>
 		<form class="login-form" action="/ehr/login/doLogin.do" method="post">
 			<div class="input-group uf-input-group input-group-lg mb-3">
 				<span class="input-group-text fa fa-user"></span>
-				<input type="text" id="email" name="email" class="form-control" placeholder="Email address" required="required">
+				<input type="text" id="email" name="email" class="form-control" placeholder="Email address">
 			</div>
 			<div class="d-flex mb-3 justify-content-between">
 				<div class="form-check">
@@ -53,7 +137,7 @@
 			</div>
 			<div class="input-group uf-input-group input-group-lg mb-3">
 				<span class="input-group-text fa fa-lock"></span>
-				<input type="password" id="password" name="password" class="form-control" placeholder="Password" required="required">
+				<input type="password" id="password" name="password" class="form-control" placeholder="Password">
 			</div>
 			<div class="d-flex mb-3 justify-content-between">
 				<div class="form-check">
@@ -79,72 +163,5 @@
 		</form>
 	</div>
 
-	<!-- JavaScript -->
-<script>
-
-        $(document).ready(function(){
-            console.log( "ready!" );
-            
-            $("#doLogin").on("click",function(e){
-                console.log( "doLogin click!" );
-                
-                let email = document.querySelector("#email").value;
-                if(eUtil.isEmpty(email)==true){
-                    alert('아이드를 입력 하세요.');
-                    document.querySelector("#email").focus();
-                    return;
-                }
-                console.log( "email:"+email );
-                
-                let password = document.querySelector("#password").value;
-                if(eUtil.isEmpty(password)==true){
-                    alert('비번을 입력 하세요.');
-                    document.querySelector("#password").focus();
-                    return;
-                }
-                console.log( "password:"+password );
-                
-                if(confirm("로그인 하시겠습니까?")===false) return;
-                
-                $.ajax({
-                    type: "POST",
-                    url:"/ehr/login/doLogin.do",
-                    asyn:"true",
-                    dataType:"json",
-                    data:{
-                        "email": email,
-                        "password": password
-                    },
-                    success:function(data){//통신 성공
-                        console.log("data.msgId:"+data.msgId);
-                        console.log("data.msgContents:"+data.msgContents);
-                        
-                        if("10" == data.msgId){
-                            alert(data.msgContents);
-                            document.querySelector("#email").focus();
-                            window.location.href = "/ehr/login/loginView.do";
-                        }else if("20" == data.msgId){
-                            alert(data.msgContents);
-                            document.querySelector("#password").focus();
-                            window.location.href = "/ehr/login/loginView.do";
-                        }else if("30" == data.msgId){
-                            alert(data.msgContents);
-                            window.location.href = "/ehr/index.jsp";
-                        }
-                    },
-                    error:function(data){//실패시 처리
-                        console.log("error:"+data);
-                    },
-                    complete:function(data){//성공/실패와 관계없이 수행!
-                        console.log("complete:"+data);
-                    }
-                });         
-                
-                
-            });//--#doLogin
-            
-            
-        });       
-</script>
 </body>
 </html>

@@ -129,6 +129,48 @@ document.addEventListener("DOMContentLoaded",function(){
         });
     });
     
+    // 파일 리스트 업데이트 함수
+    function updateFileList() {
+        $.ajax({
+            type: "GET",
+            url: "${CP}/file/getFileList.do",
+            data: {
+                "uuid": uuid
+            },
+            success: function (data) {
+                console.log("파일 리스트 업데이트 성공");
+                console.log("data:", data);
+
+                // 파일 목록 테이블의 tbody 선택
+                let fileListTable = $("#tableTbody");
+
+                // 파일 목록 초기화
+                fileListTable.empty();
+
+                // 파일 목록 생성
+                data.forEach(function (item, index) {
+                    console.log('Item ' + index + ':', item); // 각 항목 로그 출력
+                    console.log('UUID of item ' + index + ':', item.uuid);
+
+                    // 파일 정보를 파일 목록에 추가
+                    let row = "<tr>";
+                    row += "<td>" + (index + 1) + "</td>";
+                    row += "<td>" + item.orgFileName + "</td>";
+                    row += "<td>" + item.fileSize + "</td>";
+                    row += "<td>" + item.extension + "</td>";
+                    row += "<td><button id='upFileDelete' class='btn btn-danger delete-file' data-seq='" + item.seq + "'>삭제</button></td>";
+                    row += "</tr>";
+
+                    fileListTable.append(row);
+                });
+            },
+            error: function (data) {// 실패 시 처리
+                console.log("파일 리스트 업데이트 실패");
+                console.log("error:", data);
+            }
+        });
+    }
+    
     /* 파일 등록 */
     //fileUpload
     $("#fileUpload").on("click",function(e){
@@ -154,47 +196,8 @@ document.addEventListener("DOMContentLoaded",function(){
             success:function(data){//통신 성공
 				console.log("data:"+data); // 응답 구조 확인
 				
-				data.forEach(function(item, index) {
-					 console.log('Item ' + index + ':', item); // 각 항목 로그 출력
-				     console.log('UUID of item ' + index + ':', item.uuid);
-				});
-				
-				if (data.length > 0) {
-				    var uuid = data[0].uuid; // 배열의 첫 번째 객체에서 UUID 값을 가져옴
-				    console.log(uuid); // 콘솔에 UUID 출력
-				}
-				
-				document.getElementById('uuid').value = uuid;
-				
-				/* var uuid = data.uuid;
-				console.log(uuid);
-				
-				let uuidV = document.querySelector("#uuid").value;
-				console.log(uuidV); */
-            
-				let target = $('#tableTbody');
-				
-				let listData = "";
-				
-				$.each(data,function( index, value ){
-					 let fileSizeInBytes = value.fileSize; // 바이트 단위의 파일 크기
-					 let fileSizeInMB = (fileSizeInBytes / (1024 * 1024)); // MB 단위로 변환
-					 fileSizeInMB = fileSizeInMB.toFixed(2); // 소수점 둘째 자리까지 표시
-				    //console.log("vo.orgFileName:"+value.orgFileName);
-				    console.log("index:"+index);
-				    listData += "<tr>"; 
-				    listData +="<td>"+(index+1)+"</td>";
-				    listData +="<td>"+(value.orgFileName)+"</td>";
-				    listData +="<td>"+fileSizeInMB+"</td>";
-				    listData +="<td>"+(value.extension)+"</td>";
-				    listData += "</tr>";
-				});
-				
-				//tbody 내용 삭제
-				$("#tableTbody").empty();
-				console.log("listData:"+listData);
-				//tbody에 내용 추가
-				target.append(listData);
+                // 파일 리스트 업데이트
+                updateFileList();			    
 			},
 			error:function(data){//실패시 처리
 			   console.log("error:"+data);
@@ -203,6 +206,79 @@ document.addEventListener("DOMContentLoaded",function(){
 			   console.log("complete:"+data);
 			}           
         });//-- $.ajax
+        
+        // 파일 재등록 버튼으로 변경
+        $('#reUpload').show();
+        $('#fileUpload').hide();
+        
+    });
+    
+    // 파일 삭제 버튼 클릭 이벤트를 모든 삭제 버튼에 대해 추가
+    $(document).on("click", ".delete-file", function(e){
+        console.log('delete-file click');
+        
+        const seq = $(this).data('seq'); // 삭제할 파일의 seq 가져오기
+        console.log('seq:', seq);
+        
+        if(confirm('해당 파일을 삭제하시겠습니까?')) {
+            $.ajax({
+                url: '${CP}/file/doDelete.do',
+                type: 'GET',
+                data: {
+                    "uuid": uuid,
+                    "seq": seq
+                },
+                success: function(response) {
+                    console.log('파일 삭제 성공');
+                    alert('파일이 삭제되었습니다.');
+                    
+                    // 파일 삭제 후 파일 리스트 업데이트
+                    updateFileList();
+                },
+                error: function(xhr, status, error) {
+                    console.log('파일 삭제 실패');
+                    alert('파일 삭제 중 오류가 발생했습니다.');
+                }
+            });
+        }
+    });
+    
+    // 파일 재업로드
+     $("#reUpload").on("click",function(e){
+        console.log("reUpload click");
+        console.log('uuid:' + uuid);
+        
+        let formData = new FormData();
+        formData.append('uuid', uuid);
+        
+        // 선택된 파일을 formData에 추가
+        $('input[type="file"]').each(function() {
+            let fileInput = $(this)[0];
+            if(fileInput.files.length > 0) {
+                for(let i = 0; i < fileInput.files.length; i++) {
+                    formData.append('uploadFile', fileInput.files[i]);
+                }
+            }
+        });
+        
+        // AJAX 요청으로 서버에 파일 업로드
+        $.ajax({
+            url: '${CP}/file/reUpload.do',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false, 
+            success: function(data) {
+                console.log('Upload success: ', data);
+                alert('파일이 성공적으로 업로드되었습니다.');
+                
+                updateFileList();
+            },
+            error: function(xhr, status, error) {
+                console.error('Upload failed: ', error);
+                alert('파일 업로드 중 오류가 발생했습니다.');
+            }
+        });
         
     });
     
@@ -222,7 +298,7 @@ document.addEventListener("DOMContentLoaded",function(){
     font-size: 14px;
     cursor: pointer;
     border-radius: 8px;
-    background-color: #FFA500;
+    background-color: #3986ff;
     color: white;
 }
     .filebox {
@@ -243,8 +319,8 @@ document.addEventListener("DOMContentLoaded",function(){
     
     <!-- 제목 -->
     <div class="row">
-        <div class="col-lg-12" style="text-align: center;">
-            <h1 class="page-header">${title }</h1>
+        <div class="col-lg-12" style="text-align: left;">
+            <h1 class="page-header">게시글 등록</h1>
         </div>
     </div>    
     <!--// 제목 ----------------------------------------------------------------->
@@ -275,9 +351,8 @@ document.addEventListener("DOMContentLoaded",function(){
 		  <tr>
 		    <td style="padding:10px;width: 15%;">   
 		        <div class="mb-3">
-		        
-		        
-		        <select class="form-select" aria-label="Default select example" id="div" name="div">
+		        		        
+		        <select class="form-select" aria-label="Default select example" id="div" name="div" style="width:auto;">
 				    <c:forEach var="codeVO" items="${divCode}">
 				        <option value="${codeVO.detCode}"  
 				            <c:if test="${codeVO.detCode == selectedDiv}">selected</c:if>  
@@ -285,15 +360,6 @@ document.addEventListener("DOMContentLoaded",function(){
 				    </c:forEach>
 				</select>
 				
-		            <%--  
-		            <select class="form-select" aria-label="Default select example" id="div" name="div">
-		              <c:forEach var="codeVO" items="${divCode}">
-		                 <option   value="<c:out value='${codeVO.detCode}'/>"  
-		                    <c:if test="${codeVO.detCode == vo.getDiv() }">selected</c:if>  
-		                 ><c:out value="${codeVO.detName}"/></option>
-		              </c:forEach>
-		            </select>           
-		       </div> --%>
             </td>
           <td style="padding:10px; width: 70%;">
 		    <div class="mb-3"> <!--  아래쪽으로  여백 -->
@@ -325,60 +391,61 @@ document.addEventListener("DOMContentLoaded",function(){
     <br>
     <div class="filebox">
 		<form action="${CP}/file/fileUpload.do" method="post" enctype="multipart/form-data" name="regForm">
-		        <input type="file" name="file1" id="file1" multiple/>
-	            <input type="button" class="button" value="파일 등록" id="fileUpload">
+	        <input type="file" name="file1" id="file1" multiple/>
+	        <input type="button" class="button" value="파일 등록" id="fileUpload">
+	        <input type="button" class="button" value="파일 등록" id="reUpload" style="display: none;">
 		</form>
 	</div>
 	<br>
+	
 	<div class="fileinfo">
-       <table id="fileList"">
-           <thead>
-               <tr>
-                   <th>번호</th>
-                   <th>파일명</th>
-                   <th>파일크기(MB)</th>              
-                   <th>확장자</th>                                      
-               </tr>
-           </thead>
-            <tbody id="tableTbody">
-              <tr>
-			    <td style="height: 20px;" colspan="1"></td> <!-- 여백을 위한 빈 셀 -->
-			  </tr>
-               <c:choose>
-                   <c:when test="${list.size()>0 }">
-                      <c:forEach var="vo" items="${list}"  varStatus="status">
-                      <!-- 순번출력: status 
-                      items: collection
-                      var: collection데이터 추출
-                      varStatus:status
-                       index: 현재 반복순서(0번부터 시작)
-                       first: 첫 번째 반복인 경여 true
-                       last: 마지막 반복인 경우 true
-                       being: 반복의 시작인덱스
-                       end: 반복의 끝 인덱스
-                      -->
-                       <tr>
-                           <td>${ status.index+1 }</td>
-                           <td>${ vo.orgFileName}</td>
-                           <td>${ vo.fileSize}</td>
-                           <td>${ vo.extension}</td>
-                       </tr>
-                      </c:forEach>
-                   </c:when>
-                   <c:otherwise>
-                       <tr>
-                           <td colspan="99" style="text-align: center;">파일이 없습니다</td>
-                       </tr>
-                   </c:otherwise>
-               </c:choose>
-           </tbody>
-       </table>
+		<table id="fileList" class="table">
+			<thead>
+			    <tr>
+			        <th>번호</th>
+			        <th>파일명</th>
+			        <th>파일크기(MB)</th>              
+			        <th>확장자</th>                                      
+			    </tr>
+			</thead>
+			<tbody id="tableTbody">
+			    <tr>
+			        <td style="height: 20px;" colspan="1"></td> <!-- 여백을 위한 빈 셀 -->
+			    </tr>
+			    <c:choose>
+			        <c:when test="${list.size()>0 }">
+			            <c:forEach var="vo" items="${list}"  varStatus="status">
+					        <!-- 순번출력: status 
+					        items: collection
+					        var: collection데이터 추출
+					        varStatus:status
+					         index: 현재 반복순서(0번부터 시작)
+					         first: 첫 번째 반복인 경여 true
+					         last: 마지막 반복인 경우 true
+					         being: 반복의 시작인덱스
+					         end: 반복의 끝 인덱스
+					        -->
+							<tr>
+							    <td>${ status.index+1 }</td>
+							    <td>${ vo.orgFileName}</td>
+							    <td>${ vo.fileSize}</td>
+							    <td>${ vo.extension}</td>
+							    <td><button class='btn btn-danger delete-file' data-seq='${vo.seq}'>삭제</button></td>
+							</tr>
+			            </c:forEach>
+			        </c:when>
+			        <c:otherwise>
+						<tr>
+						    <td colspan="99" style="text-align: center;">파일이 없습니다</td>
+						</tr>
+			        </c:otherwise>
+			    </c:choose>
+		    </tbody>
+	    </table>
     </div>
-    <!-- 파일 업로드 ------------------------------------------------------------->
+	<!-- 파일 업로드 ------------------------------------------------------------->
     
-  
-    
+    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </div>
-	  <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>
 </html>

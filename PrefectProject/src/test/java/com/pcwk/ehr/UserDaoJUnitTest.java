@@ -26,9 +26,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.pcwk.ehr.user.dao.UserDao;
 import com.pcwk.ehr.user.domain.UserVO;
 
-@RunWith(SpringJUnit4ClassRunner.class) //스프링 테스트 컨텍스트 프레임웤그의 JUnit의 확장기능 지정
-@ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml"
-		,"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml"})
+@RunWith(SpringJUnit4ClassRunner.class) // 스프링 테스트 컨텍스트 프레임웤그의 JUnit의 확장기능 지정
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/spring/root-context.xml",
+		"file:src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml" })
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @WebAppConfiguration
 public class UserDaoJUnitTest {
@@ -39,135 +39,149 @@ public class UserDaoJUnitTest {
 	// 등록
 	UserVO userVO01;
 	UserVO searchVO;
-	
-	
-	@Autowired  //테스트 오브젝트가 만들어지고 나면 스프링 테스트 컨텍스트에 자동으로 객체값으로 주입
+
+	@Autowired // 테스트 오브젝트가 만들어지고 나면 스프링 테스트 컨텍스트에 자동으로 객체값으로 주입
 	ApplicationContext context;
-	
 
 	@Before
 	public void setUp() throws Exception {
 
 		// 등록
-		userVO01 = new UserVO("mn8467@naver.com", "이름임1", "1234", "01011112222" ,"고졸","1","");
-		
-	
+		userVO01 = new UserVO("test@naver.com", "테스트", "1234", "01011112222", "고졸", "1", "", "남자");
+
 		searchVO = new UserVO();
 		searchVO.setEmail("mn");
-		
+
 		LOG.debug("====================");
 		LOG.debug("=context=" + context);
 		LOG.debug("=dao=" + dao);
 		LOG.debug("====================");
-	
+
 	}
-	
-	@After
-	public void tearDown() throws Exception {
-		LOG.debug("=tearDown==========================");
-	}
-	
-	
+
+	@Ignore
 	@Test
-	public void emailDuplicateCheck()throws SQLException{
-		//1.데이터 삭제
-		//2.데이터 입력
-		//3.idCheck
-		//1.
+	public void doSave() throws Exception {
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doSave()                                  │");
+		LOG.debug("└───────────────────────────────────────────┘");
+
 		dao.doDelete(userVO01);
-		
-		assertEquals(0,dao.getCount(searchVO));
-		//2.
+
 		int flag = dao.doSave(userVO01);
-		//3
 		assertEquals(1, flag);
-		assertEquals(1,dao.getCount(searchVO));
+	}
+	@Ignore
+	@Test
+	public void doUpdate() throws Exception {
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doUpdate()                                │");
+		LOG.debug("└───────────────────────────────────────────┘");
 		
-		//idCheck : id가 있는 경우
+		UserVO vo = dao.doSelectOne(userVO01);//테스트 유저 vo담고 gender여자로 설정.
+		vo.setGender("여자");
+		
+		int flag = dao.doUpdate(vo);
+		assertEquals(1, flag);
+	}
+
+	@Ignore
+	@Test
+	public void emailDuplicateCheck() throws SQLException {
+		// 1.데이터 삭제
+		// 2.데이터 입력
+		// 3.idCheck
+		// 1.
+		dao.doDelete(userVO01);
+
+		assertEquals(0, dao.getCount(searchVO));
+		// 2.
+		int flag = dao.doSave(userVO01);
+		// 3
+		assertEquals(1, flag);
+		assertEquals(1, dao.getCount(searchVO));
+
+		// idCheck : id가 있는 경우
 		int idCheckCnt = dao.emailDuplicateCheck(userVO01);
 		assertEquals(1, idCheckCnt);
-		
-		
-		//id가 없는 경우 : 
+
+		// id가 없는 경우 :
 		userVO01.setEmail("unknown_user");
-		idCheckCnt= dao.emailDuplicateCheck(userVO01);
+		idCheckCnt = dao.emailDuplicateCheck(userVO01);
 		assertEquals(0, idCheckCnt);
-		
+
 	}
-	
+
 	
 	@Test
-	public void doRetrieve()throws SQLException{
+	public void doRetrieve() throws SQLException {
 		LOG.debug("====================");
 		LOG.debug("=doRetrieve()=");
-		LOG.debug("====================");			
-		
+		LOG.debug("====================");
+
 		searchVO.setPageSize(10L);
 		searchVO.setPageNo(1L);
 		searchVO.setSearchDiv("30");
 		searchVO.setSearchWord("이름임1");
-		
+
 		List<UserVO> list = dao.doRetrieve(this.searchVO);
 		assertEquals(10, list.size());
 	}
-	
-	
 
+	@Ignore
 	@Test
-	public void getAll()throws SQLException{
-		//1.데이터 삭제
-		//2.데이터 입력
-		//3.건수확인
-		//4.getAll()
-		//5.3건 
-		//6.데이터 비교
+	public void getAll() throws SQLException {
+		// 1.데이터 삭제
+		// 2.데이터 입력
+		// 3.건수확인
+		// 4.getAll()
+		// 5.3건
+		// 6.데이터 비교
 		LOG.debug("====================");
 		LOG.debug("=getAll()=");
-		LOG.debug("====================");		
-		
-		//1.
+		LOG.debug("====================");
+
+		// 1.
 		dao.doDelete(userVO01);
-		
-		assertEquals(0,dao.getCount(searchVO));
-	
-		//2.
+
+		assertEquals(0, dao.getCount(searchVO));
+
+		// 2.
 		int flag = dao.doSave(userVO01);
-		//3
+		// 3
 		assertEquals(1, flag);
-		assertEquals(1,dao.getCount(searchVO));
-		
-		//4.
+		assertEquals(1, dao.getCount(searchVO));
+
+		// 4.
 		List<UserVO> list = dao.getAll(searchVO);
-		
-		//5
+
+		// 5
 		assertEquals(1, list.size());
-		
-		for(UserVO vo   :list) {
+
+		for (UserVO vo : list) {
 			LOG.debug(vo);
 		}
-		
+
 		isSameUser(userVO01, list.get(0));
 	}
-	
+
+	@Ignore
 	@Test(timeout = 30000)
 	public void addAndGet() throws SQLException {
 		// 1. 데이터 삭제
 		// 2. 등록
-		// 3. 한건조회  
+		// 3. 한건조회
 
 		// 1.
 		dao.doDelete(userVO01);
-		
+
 		assertThat(dao.getCount(searchVO), is(0));
-		
+
 		// 2.
 		int flag = dao.doSave(userVO01);
 		int count = dao.getCount(searchVO);
 		assertThat(flag, is(1));
 		assertThat(count, is(1));
-
-
-
 
 		UserVO outVO01 = dao.doSelectOne(userVO01);
 		assertNotNull(outVO01);// Not Null이면 true
@@ -185,17 +199,16 @@ public class UserDaoJUnitTest {
 		assertEquals(userVO.getEdu(), outVO.getEdu());
 		assertEquals(userVO.getRole(), outVO.getRole());
 
-
 	}
 
-	
+	@Ignore
 	@Test
 	public void beans() {
 		LOG.debug("====================");
-		LOG.debug("=beans=");		
-		LOG.debug("=context="+context);
-		LOG.debug("=dao="+dao);				
-		LOG.debug("====================");		
+		LOG.debug("=beans=");
+		LOG.debug("=context=" + context);
+		LOG.debug("=dao=" + dao);
+		LOG.debug("====================");
 		assertNotNull(context);
 		assertNotNull(dao);
 

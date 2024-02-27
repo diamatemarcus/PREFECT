@@ -39,7 +39,33 @@
    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="${CP}/resources/js/eUtil.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 현재 페이지 URL 가져오기
+    var currentPageUrl = window.location.pathname;
+
+    // Navbar 링크 요소 선택
+    var navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+    // 각 링크에 대해 현재 페이지와 일치하는지 확인하고 클래스 추가
+    navLinks.forEach(function(link) {
+        if (link.getAttribute('href') === currentPageUrl) {
+            link.classList.add('active');
+        }
+    });
+});
+</script>
+
+
 <style>
+.arms-container {
+    display: flex; /* 항목들을 가로로 정렬 */
+    align-items: center; /* 항목들을 세로 중앙에 위치 */
+}
+
 .button {
     width: auto;
     /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
@@ -87,6 +113,8 @@
 <!-- Template Stylesheet -->
 <link href="${CP}/resources/template/css/style.css" rel="stylesheet" type="text/css">
 
+<c:set var="currentPage" value="${pageContext.request.requestURI}"/>
+
 <!--// html head --------------------------------------------------------------> 
 
     <!-- Navbar start -->
@@ -94,37 +122,41 @@
         <div class="container px-0">
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
                 <a href="/ehr/index.jsp" class="navbar-brand">
-                    <div class="arms-container">
-                        <img src="${CP}/resources/template/img/acorn.png" width="50" height="50">
-                        <h1 class="text-primary display-6">A R M S</h1>
-                    </div>
-                </a>
-                <button class="navbar-toggler py-2 px-3" type="button"
-                    data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars text-primary"></span>
-                </button>
+             	<div class="arms-container d-flex align-items-center">
+                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
+                    <h1 class="text-primary display-6 ms-3">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
+                </div>
+            	</a>
+	            <button class="navbar-toggler py-2 px-3" type="button"
+	                data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+	                <span class="fa fa-bars text-primary"></span>
+	            </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto" style="padding-top: 8px;">
                         <a href="/ehr/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>
-                        <a href="/ehr/board/doRetrieve.do?div=20" class="nav-item nav-link">게시판</a>
                         <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                   게시판
                           </a>
                           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                         	<li><a class="dropdown-item" href="/ehr/board/doRetrieve.do?div=10">공지사항</a></li>
+                          	<li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/ehr/board/doRetrieve.do?div=20">자유게시판</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
                           </ul>
                         </li>
-                        <a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
                         <c:if test="${role eq '10'}">
    							 <a href="/ehr/user/doRetrieve.do" class="nav-item nav-link">회원 목록</a><!-- 관리자에게만 보이게 할 예정-->
 						</c:if>  
                         <c:if test="${role eq '20' || role eq '30'}">   
     						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적 관리</a>
 						</c:if>
+						<c:if test="${role eq '20'}">   
+    						 <a href="/ehr/attendance/moveToAttendance.do" class="nav-item nav-link">출석 체크</a>
+						</c:if>
+						<c:if test="${role eq '30'}">   
+    						 <a href="/ehr/attendance/moveToAttendStatus.do" class="nav-item nav-link">출석 현황</a>
+						</c:if>
+						<a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
                         <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서검색</a>
                     </div>
 

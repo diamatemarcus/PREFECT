@@ -9,82 +9,107 @@
 <!DOCTYPE html>
 <html>
 <head>
- <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<title>이메일 찾기</title>
-	<style>
-		* {
-		  margin: 0;
-		  padding: 0;
-		  box-sizing: border-box;}
-		  
-		.wrap{
-			width: 100%;
-		  	height: 100vh;
-		  	display: flex;
-		  	align-items: center;
-			justify-content: center;
-		}
-		.searchEmail{
-		  width: 30%;
-		  height: 600px;
-		  background: white;
-		  border-radius: 20px;
-		  display: flex;
-		  justify-content: center;
-		  align-items: center;
-		  flex-direction: column;
-		
-		}
-		.w3-input {
-		  margin-top: 20px;
-		  width: 80%;
-		  }
-	</style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/fontawesome-all.min.css" type="text/css">
+    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/uf-style.css" type="text/css">
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <title>비밀번호 찾기</title>
+    <style>
+        body {
+            background-color: #f7f8fa;
+            color: #495057;
+        }
+        .uf-form-signin {
+            max-width: 400px;
+            padding: 15px;
+            margin: 100px auto;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,.1);
+        }
+        .uf-form-signin h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border: none;
+            margin-top: 1.05rem
+        }
+        .btn-secondary:hover {
+            background-color: #545b62;
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .select-wrapper select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            appearance: none;
+        }
+        .select-wrapper::after {
+            content: '▼';
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <div class="wrap">
-        <div class="searchEmail">
-             <h3>비밀번호 찾기</h3>
-             <div class="name">
-                 <label>이름</label>
-                 <input class="w3-input" type="text" id="name" name="name" placeholder="이름을 입력하세요"required>
-             </div>
-                 <!-- 이메일 본인 인증 -->
-		           <div class="form-group email-form">
-		            <label for="email">이메일</label>
-		                 <div class="input-group">
-		                    <input type="text" class="form-control" name="userEmail1" id="userEmail1" placeholder="이메일" required>
-		                    <select class="form-control" name="userEmail2" id="userEmail2">
-		                    <option>@naver.com</option>
-		                    <option>@daum.net</option>
-		                    <option>@gmail.com</option>
-		                    <option>@hanmail.com</option>
-		                     <option>@yahoo.co.kr</option>
-		                    </select>
-		                </div>   
-		            <div class="input-group-addon">
-		                <span class="id_ok" style="color:green; display:none;">사용 가능한 아이디입니다.</span>
-		                <span class="id_already" style="color:red; display:none;">중복된 아이디입니다!</span>
-		                <button type="button" class="btn btn-primary" id="mail-Check-Btn">본인인증</button>
-		            </div>
-		                <div class="mail-check-box">
-		            <input class="form-control mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
-		            </div>
-		                <span id="mail-check-warn"></span>
-		            </div>
-             </div>
-             <p class="w3-center">
-                 <button type="submit" id="searchPasswordResult" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-round" disabled>비밀번호 찾기</button>
-                 <button type="button" onclick="history.go(-1);" class="w3-button w3-block w3-black w3-ripple w3-margin-top w3-margin-bottom w3-round">취소</button>
-             </p>
-         </div>
+    <div class="uf-form-signin">
+        <h1 class="h3 mb-3 font-weight-normal text-center">비밀번호 찾기</h1>
+        <!-- 비밀번호 찾기 양식 -->
+        <form>
+            <div class="mb-3">
+                <label for="name" class="form-label">이름</label>
+                <input type="text" id="name" class="form-control" placeholder="이름을 입력하세요" required autofocus>
+            </div>
+            <div class="mb-3 email-form">
+                <label for="userEmail1" class="form-label">이메일</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="userEmail1" placeholder="이메일" required>
+                    <select class="form-control" id="userEmail2">
+                        <option>@naver.com</option>
+                        <option>@daum.net</option>
+                        <option>@gmail.com</option>
+                        <option>@hanmail.net</option>
+                        <option>@yahoo.co.kr</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary mt-2" id="mail-Check-Btn">본인인증</button>
+            </div>
+            <div class="mb-3 mail-check-box">
+                <input class="form-control mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
+            </div>
+            <span id="mail-check-warn"></span>
+            <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" id="searchPasswordResult">비밀번호 찾기</button>
+            <button class="btn btn-lg btn-secondary btn-block" onclick="history.go(-1);">취소</button>
+        </form>
+    </div>
      <script type="text/javascript">
      $(document).ready(function(){
          console.log("ready!");

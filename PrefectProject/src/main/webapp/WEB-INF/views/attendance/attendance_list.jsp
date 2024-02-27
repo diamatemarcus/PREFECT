@@ -22,7 +22,8 @@ document.addEventListener("DOMContentLoaded",function(){
 	function doSave() {
 	    // 모든 훈련생의 출석 상태를 저장하기 위해 테이블 내의 모든 select 요소를 찾습니다.
 	    
-	    var count = 0; // 무결성 제약 조건이 발생한 횟수를 저장하는 변수
+	    // 등록 횟수를 저장하는 변수
+	    var count = 0;
 	    
 	    //hidden input session 요소의 값을 가져옵니다.
 		var sessionEmail = document.getElementById('sessionEmail').value;
@@ -73,10 +74,10 @@ document.addEventListener("DOMContentLoaded",function(){
 		            console.log("success data:", data);
 		            if ("1" === data.msgId) {
 		                console.log(data.msgContents);
+		                count++;
 		                // 성공 시 필요한 작업 수행
 		            } else if ("2" === data.msgId) {
 		            	console.log(data.msgContents); // 실패 시 메시지 출력
-		                count++;
 		                // 실패 시 필요한 작업 수행
 		            } else {
 		                console.log(data.msgContents);
@@ -89,13 +90,14 @@ document.addEventListener("DOMContentLoaded",function(){
 		        },
 		        complete: function(xhr, status) { // 성공/실패와 관계없이 수행!
 		            console.log("complete:", status);
-		            // Spinner를 숨깁니다.
-		            document.getElementById('spinner').classList.remove('show');
+		           
 		            
 		         	// 모든 AJAX 요청이 완료되었을 때 count와 loop의 길이를 비교하여 alert 표시
 		            if (count === selectElements.length) {
-		                alert("이미 저장한 내용입니다.");
+		                alert("출석 내역을 저장했습니다.");
+		                window.location.reload();
 		            }
+		         	
 		        }
 		    });
 	    });
@@ -103,61 +105,14 @@ document.addEventListener("DOMContentLoaded",function(){
 	    console.log(attendData);
 	}
 	
-	/* function doUpdate(button) {
-		// 각 행의 수정 버튼을 클릭할 때 해당 행의 정보를 가져옵니다.
-	    var row = $(this).closest('tr'); // 클릭된 버튼이 속한 행을 가져옵니다.
-	    var traineeEmail = row.find('#traineeEmail').val(); // 이메일 가져오기
-	    var attendStatus = row.find('#attendStatus').val(); // 출석 상태 가져오기
-	    
-	   // 입력된 날짜를 Date 객체로 변환합니다.
-		var selectedDate = new Date(document.getElementById('calID').value);
-		// 날짜를 숫자로 변환합니다.
-		var calID = selectedDate.getFullYear() * 10000 +
-		            (selectedDate.getMonth() + 1) * 100 +
-		            selectedDate.getDate();
-		
-		console.log(calID);
 
-	    // 수정할 정보를 확인합니다.
-	    console.log("Trainee Email:", traineeEmail);
-	    console.log("Attendance Status:", attendStatus);
-	    console.log("row:", row);
-
-	    // 여기에 수정 로직을 추가하세요.
-	    // AJAX 요청을 통해 서버에 수정 요청을 보낼 수 있습니다.
-	    
-	   //confirm
-		if (confirm("수정 하시겠습니까?") == false)
-			return;
-
-		$.ajax({
-			type : "POST",
-			url : "/ehr/attendance/doUpdate.do",
-			asyn : "true",
-			dataType : "html",
-			data : {
-				trainee : traineeEmail,
-				calID : calID,
-				attendStatus: attendStatus
-			},
-			success : function(data) {//통신 성공     
-				console.log("success data:" + data);
-
-			},
-			error : function(data) {//실패시 처리
-				console.log("error:" + data);
-			},
-			complete : function(data) {//성공/실패와 관계없이 수행!
-				console.log("complete:" + data);
-			}
-		});
-	} */
 	
 	function doUpdate(button) {
 		// 클릭한 버튼의 부모 요소를 통해 해당 행(tr)을 찾습니다.
 	    var row = button.parentNode.parentNode;
 	    
 	    // 해당 행에서 이름과 출석 여부를 찾아 값을 가져옵니다.
+	    var traineeName = row.querySelector("#traineeName").innerText;
 	    var traineeEmail = row.querySelector("#traineeEmail").value;
 	    var attendStatus = row.querySelector("#attendStatus").value;
 	    
@@ -193,7 +148,8 @@ document.addEventListener("DOMContentLoaded",function(){
 	        },
 	        success : function(data) {//통신 성공     
 	            console.log("success data:" + data);
-
+				alert(traineeName + "의 출석정보가 수정되었습니다.");
+				window.location.reload();
 	        },
 	        error : function(data) {//실패시 처리
 	            console.log("error:" + data);
@@ -223,10 +179,12 @@ document.addEventListener("DOMContentLoaded",function(){
     window.onload = function() {
         var urlParams = new URLSearchParams(window.location.search);
         var selectedDate = urlParams.get('calID');
-        var formattedDate = selectedDate.substring(0, 4) + "-" + selectedDate.substring(4, 6) + "-" + selectedDate.substring(6);
-        console.log(formattedDate);
-        if (selectedDate) {
-            document.getElementById('calID').value = formattedDate;
+        if(selectedDate){
+        	var formattedDate = selectedDate.substring(0, 4) + "-" + selectedDate.substring(4, 6) + "-" + selectedDate.substring(6);
+	        console.log(formattedDate);
+	        if (selectedDate) {
+	            document.getElementById('calID').value = formattedDate;
+	        }
         }
     };
 </script>
@@ -251,13 +209,6 @@ document.addEventListener("DOMContentLoaded",function(){
 <body> 
 
 	<input type="hidden" id="sessionEmail" value="${sessionScope.user.email}"/>
-	
-    <!-- Spinner Start -->
-    <div id="spinner"
-        class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
-        <div class="spinner-grow text-primary" role="status"></div>
-    </div>
-    <!-- Spinner End -->
     
     <br><br><br><br><br>
     <div class="text-center">
