@@ -324,7 +324,6 @@ public class UserController implements PcwkLogger {
 	public String doSelectOne(UserVO inVO, HttpServletRequest req, Model model, HttpSession httpSession)
 			throws SQLException, EmptyResultDataAccessException {
 		String view = "user/user_mod";
-		String view2 = "user/user_teacher";
 		String email = "";
 
 		UserVO userSession = new UserVO();
@@ -416,17 +415,8 @@ public class UserController implements PcwkLogger {
 		model.addAttribute("role", role);
 		LOG.debug("role :" + role);
 
-		if (Integer.valueOf(role).equals(20)) {
-			LOG.debug("role :" + role);
-			LOG.debug("선생 켰다");
-			return view2;
-			
-			
-		} else {
-			
-			LOG.debug("이거 켰다");
-			return view;
-		}
+		return view;
+		
 	}
 
 	// 삭제
