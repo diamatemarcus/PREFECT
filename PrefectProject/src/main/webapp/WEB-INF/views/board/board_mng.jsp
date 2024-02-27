@@ -39,7 +39,23 @@
     border: 1px solid #ced4da; /* 테두리 색상 추가 (부트스트랩 스타일과 유사하게) */
     color: #495057; /* 텍스트 색상 설정 */
 }
+
+.flex-container {
+    display: flex;
+    align-items: center;
+}
+
+.dynamicReply {
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.button {
+    margin-left: 5px;
+}
 </style>
+
  <script>
 document.addEventListener("DOMContentLoaded",function(){
 	
@@ -207,9 +223,8 @@ document.addEventListener("DOMContentLoaded",function(){
     
     function replyRetrieve(){
         const boardSeq = document.querySelector("#seq").value
-        //const div = document.querySelector("#div").value
         console.log('boardSeq:'+boardSeq)
-        //window.location.href = "${CP}/board/doSelectOne.do?seq="+boardSeq+"&div="+div
+       
         if(eUtil.isEmpty(boardSeq) == true){
             alert('게시글 번호를 확인 하세요.');
             return;
@@ -241,25 +256,30 @@ document.addEventListener("DOMContentLoaded",function(){
                 }
                     
                 
-                for(let i=0;i<data.length;i++){
+                for(let i=0; i<data.length; i++){
                     replyDiv += '<div class="dynamicReply"> \n';
-                    replyDiv += '<div class="row justify-content-end" style="margin-bottom: 5px;"> \n';
-                    replyDiv += '<div class="col-auto"> \n';
-                    replyDiv += '<span>등록일:'+data[i].modDt+'</span> \n';
-                    replyDiv += '\t\t\t <input type="button" value="댓글수정" class="button replyDoUpdate"  >   \n';
-                    replyDiv += '\t\t\t <input type="button" value="댓글삭제" class="button replyDoDelete"  >   \n';
+                    // Flex 컨테이너 시작
+                    replyDiv += '<div class="flex-container" style="justify-content: space-between; margin-bottom: 5px;"> \n'; 
+                    // 왼쪽 부분: 등록자와 등록일
+                    replyDiv += '<div> \n'; 
+                    replyDiv += '<span>' + data[i].regId + '</span> \n';
+                    replyDiv += '<span>(' + data[i].modDt + ')</span> \n';
+                    replyDiv += '</div> \n';
+                    // 오른쪽 부분: 수정 및 삭제 버튼
+                    replyDiv += '<div> \n';
+                    replyDiv += '<input type="button" value="댓글수정" class="button replyDoUpdate"> \n';
+                    replyDiv += '<input type="button" value="댓글삭제" class="button replyDoDelete"> \n';
+                    replyDiv += '</div> \n';
+                    // Flex 컨테이너 종료
+                    replyDiv += '</div> \n';
+
+                    replyDiv += '<div class="mb-3"> \n';
+                    replyDiv += '<input type="hidden" name="replySeq" value="' + data[i].replySeq + '"> \n';
+                    replyDiv += '<textarea rows="3" class="form-control dyReplyContents" name="dyReplyContents">' + data[i].reply + '</textarea> \n';
                     replyDiv += '</div> \n';
                     replyDiv += '</div> \n';
-                    
-                    replyDiv += '<div class="mb-3">  \n';
-                    replyDiv += '<input type="hidden" name="replySeq" value="'+data[i].replySeq +'"> \n';
-                    
-                    replyDiv += '<textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents">'+data[i].reply+'</textarea> \n';
-                    replyDiv += '</div> \n';
-                    
-                    replyDiv += '</div> \n';
-                    
                 }
+
                 
                 //console.log(replyDiv);
                 
@@ -395,18 +415,17 @@ document.addEventListener("DOMContentLoaded",function(){
 </head>
 <body>
 
-<div class="container">
-
-    <!-- 제목 -->
+<div class="container" style="margin-top: 150px;">
+    <!-- 제목 --><%-- 
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">${title}</h1>
         </div>
-    </div>    
+    </div> --%>    
     <!--// 제목 ----------------------------------------------------------------->
     
     <!-- 버튼 -->
-    <div class="row justify-content-end" style="margin-bottom: 20px;">
+    <div class="row justify-content-end" style="margin-bottom: 20px; margin-top:40px;">
         <div class="col-auto">
             <input type="button" value="목록" class="button" id="moveToList">
             <input type="button" value="수정" class="button" id="moveToMod" >
@@ -528,37 +547,56 @@ document.addEventListener("DOMContentLoaded",function(){
     </form> 
     <!--// form --------------------------------------------------------------->
     
-      <!-- reply -->  
-    <div id="replyDoSaveArea">
-        <!-- 버튼 -->
-        <div class="dynamicReply">
-            <div class="row justify-content-end" style="margin-bottom: 5px;">
-                <div class="col-auto">
-                    <input type="button" value="댓글수정" class="button replyDoUpdate">
-                    <input type="button" value="댓글삭제" class="button replyDoDelete">
-                </div>
-            </div>
-            <!--// 버튼 ----------------------------------------------------------------->
-            <div class="mb-3">
-                <input type="hidden" name="replySeq" value="">
-                <textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents"></textarea>
-            </div>
-        </div>        
-    </div>
+    <!-- reply -->  
+    <!-- 댓글 영역 전체를 감싸는 컨테이너 -->
+    <div id="commentsSection" class="comments-container">
+        
+        <!-- 기존 댓글 목록을 표시할 영역 -->
+	    <div id="replyDoSaveArea"></div>
+	
+	    <!-- 댓글 등록 영역 -->
+	    <div class="reply-input-area">
+	        <div class="row justify-content-end" style="margin-bottom: 5px;">
+	            <div class="col-auto">
+	                <input type="button" value="댓글 등록" class="button" id="replyDoSave" >
+	            </div>
+	        </div>
+	        <div class="mb-3">
+	            <textarea rows="3" class="form-control" id="replyContents" name="replyContents"></textarea>
+	        </div>        
+	    </div>
     
-    
-    <div id="replyDoSaveArea">
-        <!-- 버튼 -->
-        <div class="row justify-content-end" style="margin-bottom: 5px;">
-            <div class="col-auto">
-                <input type="button" value="댓글 등록" class="button" id="replyDoSave" >
-            </div>
-        </div>
-        <!--// 버튼 ----------------------------------------------------------------->
-        <div class="mb-3">
-            <textarea rows="3" class="form-control"  id="replyContents" name="replyContents"></textarea>
-        </div>        
-    </div>
+    <!-- 
+	    <div id="replyDoSaveArea">
+	        버튼
+	        <div class="dynamicReply">
+	            <div class="row justify-content-end" style="margin-bottom: 5px;">
+	                <div class="col-auto">
+	                    <input type="button" value="댓글수정" class="button replyDoUpdate">
+	                    <input type="button" value="댓글삭제" class="button replyDoDelete">
+	                </div>
+	            </div>
+	            // 버튼 ---------------------------------------------------------------
+	            <div class="mb-3">
+	                <input type="hidden" name="replySeq" value="">
+	                <textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents"></textarea>
+	            </div>
+	        </div>        
+	    </div>
+	    
+	    
+	    <div id="replyDoSaveArea">
+	        버튼
+	        <div class="row justify-content-end" style="margin-bottom: 5px;">
+	            <div class="col-auto">
+	                <input type="button" value="댓글 등록" class="button" id="replyDoSave" >
+	            </div>
+	        </div>
+	        // 버튼 ---------------------------------------------------------------
+	        <div class="mb-3">
+	            <textarea rows="3" class="form-control"  id="replyContents" name="replyContents"></textarea>
+	        </div>        
+	    </div> -->
     <!--// reply --------------------------------------------------------------> 
     
 	<!-- 파일 다운로드 -->

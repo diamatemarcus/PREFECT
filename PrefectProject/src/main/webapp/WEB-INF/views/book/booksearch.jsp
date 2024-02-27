@@ -96,6 +96,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
+    
+    /* 페이징 로직 */
+    
+    
 }); //--DOMContentLoaded end
 </script>
 </head>
@@ -162,6 +166,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
     <!--// book --------------------------------------------------------------->
+    
+    
             
     </div>
     

@@ -39,7 +39,14 @@ document.addEventListener("DOMContentLoaded",function(){
     moveToRegBTN.addEventListener("click",function(e){
         console.log("moveToRegBTN click");
         
+        const regId = '${sessionScope.user.email}';
         const div = document.querySelector("#div").value;
+        
+        if(eUtil.isEmpty(regId) == true){
+            alert("로그인 후 작성 가능합니다.")
+            return;
+        }
+        
         window.location.href = "${CP}/board/moveToReg.do?div=" + div;
         
     });
