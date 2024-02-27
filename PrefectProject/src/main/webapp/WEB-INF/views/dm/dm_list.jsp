@@ -160,6 +160,12 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .swal2-popup {
+        font-size: 10px !important;
+        }
+
+        
+
     </style>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -484,7 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 
                 if(0==data.length){
-                    alert("처음 보내는 상대입니다");
+                	Swal.fire("처음 보내는 상대 입니다", "","info");
                     return;
                 }
                     

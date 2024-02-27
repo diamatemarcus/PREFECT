@@ -166,10 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
     <!--// book --------------------------------------------------------------->
-    
-    
-            
-    </div>
+
     
      <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>
