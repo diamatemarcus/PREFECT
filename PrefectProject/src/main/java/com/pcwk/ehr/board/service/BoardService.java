@@ -20,4 +20,6 @@ public interface BoardService {
 	public int doSave(BoardVO inVO) throws SQLException;
 	
 	public List<BoardVO> doRetrieve(BoardVO inVO) throws SQLException;
+	
+	public int totalBoard() throws SQLException;
 }

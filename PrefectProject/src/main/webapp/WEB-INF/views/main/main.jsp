@@ -167,8 +167,8 @@
                     <div class="col-md-3 col-lg-3 col-xl-3">
                         <div class="counter bg-white rounded p-5">
                             <i class="fa fa-users text-secondary"></i>
-                            <h5>업데이트 된 게시판</h5>
-                            <div class="d" style="font-size: 17px">12</div>
+                            <h5>게시글 수</h5>
+                            <div class="d" style="font-size: 17px">${totalBoard}</div>
                             </h1>
                         </div>
                     </div>

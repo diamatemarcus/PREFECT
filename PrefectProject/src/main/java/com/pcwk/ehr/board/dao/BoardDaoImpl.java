@@ -98,4 +98,14 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSessionTemplate.update(NAMESPACE+DOT+"updateReadCnt", inVO);
 	}
 
+	@Override
+	public int totalBoard() throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ totalBoard                        │");
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"totalBoard");
+		LOG.debug("└───────────────────────────────────┘");	
+		
+		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"totalBoard");
+	}
+
 }

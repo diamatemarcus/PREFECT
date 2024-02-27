@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.pcwk.ehr.board.service.BoardService;
 import com.pcwk.ehr.user.service.UserService;
 
 
@@ -21,6 +22,10 @@ public class MainController {
 	
 	
 	public MainController() {}
+	
+	@Autowired
+	BoardService boardService;
+	
 	@Autowired
 	UserService userService;
 	@RequestMapping(value="/mainView.do")
@@ -32,7 +37,10 @@ public class MainController {
 		 model.addAttribute("role", role);
 		 
 		 LOG.debug("role:" + role);
-		
+		 
+		 int totalBoard =boardService.totalBoard();
+		 model.addAttribute("totalBoard", totalBoard);
+		 
 		 int totalUsers = userService.totalUsers();
 	     model.addAttribute("totalUsers", totalUsers);
 	        
