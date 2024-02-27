@@ -111,7 +111,7 @@
 
 	        // AJAX 요청으로 서버에 단건 조회를 요청
 	        $.ajax({
-	            url: "${CP}/subject/doSelectOne.do",
+	            url: "/ehr/subject/doSelectOne.do",
 	            type: 'GET',
 	            data: {
 	                trainee: trainee,
