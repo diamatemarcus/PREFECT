@@ -147,7 +147,7 @@
 					<div class="col-auto">
 						<select id="role" name="role">
 							<!-- 검색 조건 옵션을 동적으로 생성 -->
-							<c:forEach items="${role}" var="vo">
+							<c:forEach items="${role1}" var="vo">
 								<option value="<c:out value='${vo.detCode}'/>"
 									<c:if test="${vo.detCode == outVO.role }">selected</c:if>><c:out
 										value="${vo.detName}" /></option>
