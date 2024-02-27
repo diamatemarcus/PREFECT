@@ -193,7 +193,7 @@
                 
 				<div class="row">
 				    <!-- 라이센스 부분 -->
-				    <div class="col-md-6 mb-3">
+				    <div class="col-md-6">
 				        <label for="licenses" class="form-label">자격증</label>
 				        <select id="licenses" name="licenses" class="form-select">
 				            <!-- 검색 조건 옵션을 동적으로 생성 -->
@@ -204,22 +204,23 @@
 				    </div>
 				
 				    <!-- 등록일 텍스트 상자 -->
-				    <div class="col-md-6 mb-3">
+				    <div class="col-md-6">
 				        <label for="regDt" class="form-label">등록일</label>
 				        <input type="date" id="regDt" name="regDt" class="form-control">
 				    </div>
 				</div>
 				
 				<!-- 자격증 저장 버튼 -->
-				<div class="col-auto">
+				<div class="mb-4">
 				    <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses" style="margin-top: 10px">
 				</div>
 <!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
-                <table id="licensesList">
+                <table id="licensesList" class="table table-responsive">
                     <thead>
                         <tr>
                             <th>자격증명</th>
-                            <th>등록일</th>
+                            <th>등록일</th> 
+                            <th>취소</th>
                         </tr>
                     </thead>
                     <tbody id="tableTbody">
