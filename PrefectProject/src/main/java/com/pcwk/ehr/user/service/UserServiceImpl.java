@@ -83,7 +83,12 @@ public class UserServiceImpl implements UserService {
 	public int emailDuplicateCheck(UserVO inVO) throws SQLException {
 		return userDao.emailDuplicateCheck(inVO);
 	}
-
+	
+	@Override
+	public int totalUsers() throws SQLException {
+		
+		return userDao.totalUsers();
+	}
 
 }
 
