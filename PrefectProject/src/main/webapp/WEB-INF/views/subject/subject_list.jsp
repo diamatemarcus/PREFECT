@@ -50,10 +50,6 @@
 					    </c:forEach>
 					</select>
 	            </div> 
-			    <!-- button -->
-			    <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-				    <input type="button" class="btn btn-primary" value="조회"   id="doRetrieve"    onclick="window.doRetrieve(0);">
-			    </div>
             </div>
     </form>
       
@@ -83,7 +79,7 @@
 	                        </c:forEach>
 	                    </td>		        	 
 	                    <%-- 과목 이름을 출력 --%>
-	                    <td class="text-left">
+	                    <td class="text-left" data-code="${vo.subjectCode}">
 	                        <c:forEach var="subject" items="${subjectCode}">
 	                            <c:if test="${subject.detCode == vo.subjectCode}">
 	                                ${subject.detName} <!-- 과목 이름을 표시 -->
@@ -107,75 +103,53 @@
  </div>     
 <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>    
  <script type="text/javascript">
- 
-  function pageDoRerive(url, pageNo){
-	  console.log('url:'+url);
-	  console.log('pageNo:'+pageNo);
-	  
-      let frm = document.forms['subjectFrm'];//form
+ $(document).ready(function() {
+	    $('.traineeEmail').click(function() {
+	        var trainee = $(this).data('trainee');
+	        var subjectCode = $(this).data('subjectcode');
+	        var coursesCode = $(this).data('coursescode');
 
-      frm.pageNo.value = pageNo;
-      //pageNo
-      frm.action = url;
-      //서버 전송
-      frm.submit();	  
-  }
-  //jquery event감지
-  $("#searchWord").on("keypress",function(e){
-	  console.log('searchWord:keypress');
-	  //e.which : 13
-	  console.log(e.type+':'+e.which);
-	  if(13==e.which){
-		  e.preventDefault();//버블링 중단
-		  doRetrieve(1);
-	  }
-  });
-  
- 
-//jquery:table 데이터 선택
-  $("#subjectTable>tbody").on("dblclick", "tr", function(e) {
-      console.log('----------------------------');
-      console.log('subjectTable>tbody');
-      console.log('----------------------------');
+	        // AJAX 요청으로 서버에 단건 조회를 요청
+	        $.ajax({
+	            url: "${CP}/subject/doSelectOne.do",
+	            type: 'GET',
+	            data: {
+	                trainee: trainee,
+	                subjectCode: subjectCode,
+	                coursesCode: coursesCode
+	            },
+	            success: function(data) {
+	                // 성공적으로 정보를 받아온 경우 처리 로직
+	                console.log(data);
+	                // 예: 상세 정보 표시 로직
+	            },
+	            error: function(xhr, status, error) {
+	                console.error('Error: ' + error);
+	            }
+	        });
+	    });
+	});
 
-      let tdArray = $(this).children(); //td
-      let email = document.querySelector("#traineeEmail").value;
-      let trainee = tdArray.eq(0).text().trim();
-      console.log('trainee:' + trainee);
-      console.log('email:' + email);
+ document.addEventListener("DOMContentLoaded", function() {
+     // 과목 선택 드롭다운의 변경사항을 감지합니다.
+     document.getElementById('searchDiv').addEventListener('change', function() {
+         var selectedSubjectCode = this.value; // 선택된 과목 코드를 가져옵니다.
+         var tableRows = document.querySelectorAll("#subjectTable tbody tr"); // 테이블의 모든 행을 선택합니다.
 
-      // .do 제거 및 파라미터 이름 변경
-      // window.location.href = "/ehr/subject/doSelectOne.do?trainee=" + trainee;
-      window.location.href = "/ehr/subject/doSelectOne.do?email=" + email;
-  });
+         // 각 행에 대해 반복하여 선택된 과목과 일치하는지 여부에 따라 표시합니다.
+         tableRows.forEach(function(row) {
+             var subjectCode = row.querySelector("td:nth-child(2)").getAttribute('data-code'); // 각 행의 과목 코드를 가져옵니다.
 
-    
-    
-    function  doRetrieve(pageNo){
-        console.log('----------------------------');
-        console.log('doRetrieve');
-        console.log('----------------------------');
-        
-        let frm = document.forms['subjectFrm'];//form
-        let pageSize = frm.pageSize.value;
-        console.log('pageSize:'+pageSize);
-        
-        let searchDiv = frm.searchDiv.value;
-        console.log('searchDiv:'+searchDiv);
-        
-        let searchWord = frm.searchWord.value;
-        console.log('searchWord:'+searchWord);
-        
-        console.log('pageNo:'+pageNo);
-        frm.pageNo.value = pageNo;
-        
-        console.log('pageNo:'+frm.pageNo.value);
-        //pageNo
-        frm.action = "/ehr/subject/doRetrieve.do";
-        //서버 전송
-        frm.submit();
-    }
-</script>  
+             // 과목 코드가 선택된 과목 코드와 일치하거나, 전체 과목이 선택된 경우(값이 빈 문자열)에 행을 표시합니다.
+             if(subjectCode === selectedSubjectCode || selectedSubjectCode === "") {
+                 row.style.display = ""; // 행을 표시합니다.
+             } else {
+                 row.style.display = "none"; // 과목 코드가 일치하지 않는 행은 숨깁니다.
+             }
+         });
+     });
+ });
+</script>
     
 </body>
 </html>

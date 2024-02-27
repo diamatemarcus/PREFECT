@@ -100,28 +100,30 @@ public class AttendanceController implements PcwkLogger {
 		course = courseService.doSelectOne(course);
 		LOG.debug("course:" + course);
 
-		LOG.debug("user.getRole():" + user.getRole());
-
-		// 로그인한 사람이 교수님이면 그 코스를 수강하는 훈련생들 리스트와 회원 정보 가져오기
-		courses = courseService.doRetrieve(course);
-
-		for (CourseVO courseVO : courses) {
-			LOG.debug("courseVO:" + courseVO);
-			UserVO userVO = new UserVO();
-			userVO.setEmail(courseVO.getEmail());
-			userVO = userService.doSelectOne(userVO);
-			trainees.add(userVO);
-		}
-
-		for (UserVO userVO : trainees) {
-			LOG.debug("userVO:" + userVO);
-			AttendanceVO attendanceVO = new AttendanceVO();
-			attendanceVO.setTrainee(userVO.getEmail());
-			attendanceVO.setCalID(inVO.getCalID());
-			attendanceVO = attendanceService.doSelectOne(attendanceVO);
-			if (attendanceVO != null)
-				attendances.add(attendanceVO);
-		}
+		// 주어진 코스의 시작일과 종료일 사이에 오늘 날짜가 있는지 확인합니다.
+		if (!LocalDate.parse(course.getStartDate()).isAfter(LocalDate.now()) && 
+			    !LocalDate.parse(course.getEndDate()).isBefore(LocalDate.now())) {
+			// 로그인한 사람이 교수님이면 그 코스를 수강하는 훈련생들 리스트와 회원 정보 가져오기
+			courses = courseService.doRetrieve(course);
+	
+			for (CourseVO courseVO : courses) {
+				LOG.debug("courseVO:" + courseVO);
+				UserVO userVO = new UserVO();
+				userVO.setEmail(courseVO.getEmail());
+				userVO = userService.doSelectOne(userVO);
+				trainees.add(userVO);
+			}
+	
+			for (UserVO userVO : trainees) {
+				LOG.debug("userVO:" + userVO);
+				AttendanceVO attendanceVO = new AttendanceVO();
+				attendanceVO.setTrainee(userVO.getEmail());
+				attendanceVO.setCalID(inVO.getCalID());
+				attendanceVO = attendanceService.doSelectOne(attendanceVO);
+				if (attendanceVO != null)
+					attendances.add(attendanceVO);
+			}
+		 }
 
 		// 코드목록 조회 : 'ATTEND_STAUS'
 		Map<String, Object> codes = new HashMap<String, Object>();
@@ -142,6 +144,7 @@ public class AttendanceController implements PcwkLogger {
 		model.addAttribute("attendStatusList", attendStatusList);
 		model.addAttribute("trainees", trainees);
 		model.addAttribute("attendances", attendances);
+		model.addAttribute("course", course);
 
 		return view;
 
@@ -232,21 +235,81 @@ public class AttendanceController implements PcwkLogger {
 		course = courseService.doSelectOne(course);
 		LOG.debug("course:" + course);
 		
-		// 로그인한 훈련생의 모든 출석정보
-		List<AttendanceVO> attendances = attendanceService.doRetrieve(user.getEmail());
-
-		// 로그인한 훈련생의 그 날의 출석정보 조회
-		LOG.debug("sessionUser:" + user);
+		List<AttendanceVO> attendances = new ArrayList<AttendanceVO>();
 		AttendanceVO attendanceVO = new AttendanceVO();
-		attendanceVO.setTrainee(user.getEmail());
-		attendanceVO.setCalID(inVO.getCalID());
-		attendanceVO = attendanceService.doSelectOne(attendanceVO);
+		
+		// 주어진 코스의 시작일과 종료일 사이에 오늘 날짜가 있는지 확인합니다.
+		if (!LocalDate.parse(course.getStartDate()).isAfter(LocalDate.now()) && 
+			    !LocalDate.parse(course.getEndDate()).isBefore(LocalDate.now())) {
+		
+			// 로그인한 훈련생의 모든 출석정보
+			attendances = attendanceService.doRetrieve(user.getEmail());
+	
+			// 로그인한 훈련생의 그 날의 출석정보 조회
+			LOG.debug("sessionUser:" + user);
+			attendanceVO.setTrainee(user.getEmail());
+			attendanceVO.setCalID(inVO.getCalID());
+			attendanceVO = attendanceService.doSelectOne(attendanceVO);
+		
+		}
+		
+		// 코드목록 조회 : 'ATTEND_STAUS'
+		Map<String, Object> codes = new HashMap<String, Object>();
+		String[] codeStr = { "ATTEND_STATUS" };
+		codes.put("code", codeStr);
 
+		List<CodeVO> codeList = codeService.doRetrieve(codes);
+
+		List<CodeVO> attendStatusList = new ArrayList<CodeVO>();
+
+		for (CodeVO vo : codeList) {
+			if (vo.getMstCode().equals("ATTEND_STATUS")) {
+				attendStatusList.add(vo);
+			}
+			LOG.debug(vo);
+		}
+
+		model.addAttribute("attendStatusList", attendStatusList);
 		model.addAttribute("attendanceVO", attendanceVO);
 		model.addAttribute("attendances", attendances);
-
+		model.addAttribute("course", course);
+		
 		return view;
 
 	}
+	
+	    // 출석 현황
+		@GetMapping(value = "/moveToCourseInfo.do")
+		public String moveToCourseInfo(AttendanceVO inVO, Model model, HttpSession httpSession)
+				throws SQLException, EmptyResultDataAccessException, ParseException {
+			String view = "course/course";
+
+			LOG.debug("┌───────────────────────────────────┐");
+			LOG.debug("│ moveToAttendStatus                │");
+			LOG.debug("│ AttendanceVO                      │" + inVO);
+			LOG.debug("└───────────────────────────────────┘");
+
+			// 로그인 한 회원의 정보
+			UserVO user = new UserVO();
+			
+			// 로그인 한 사람의 코스정보 가져오기
+			CourseVO course = new CourseVO();
+			if (null != httpSession.getAttribute("user")) {
+				user = (UserVO) httpSession.getAttribute("user");
+				LOG.debug("email:" + user.getEmail());
+				course.setEmail(user.getEmail());
+			}
+			course = courseService.doSelectOne(course);
+			LOG.debug("course:" + course);
+			
+			// 로그인한 훈련생의 모든 출석정보
+			List<AttendanceVO> attendances = attendanceService.doRetrieve(user.getEmail());
+
+			model.addAttribute("attendances", attendances);
+			model.addAttribute("course", course);
+			
+			return view;
+
+		}
 
 }

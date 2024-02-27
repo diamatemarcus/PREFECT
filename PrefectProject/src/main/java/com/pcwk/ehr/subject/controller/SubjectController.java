@@ -130,72 +130,53 @@ public class SubjectController implements PcwkLogger {
 	}
 	
 	
-// 사용 안함	
-//	//등록
-//	@RequestMapping(value="/doSave.do",method = RequestMethod.POST
-//			,produces = "application/json;charset=UTF-8"
-//			)
-//	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-//	public String doSave(SubjectVO inVO) throws SQLException{
-//		String jsonString = "";
-//		LOG.debug("┌───────────────────────────────────────────┐");
-//		LOG.debug("│ doSave()                                  │inVO:"+inVO);
-//		LOG.debug("└───────────────────────────────────────────┘");		
-//		
-//		
-//		int flag = subjectService.doSave(inVO);
-//		String message = "";
-//		
-//		if(1==flag) {
-//			message = inVO.getScore()+"가 등록 되었습니다.";
-//		}else {
-//			message = inVO.getScore()+"등록 실패.";
+
+	
+    //단건조회
+    @RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
+    public String doSelectOne(@RequestParam("trainee") String trainee,
+                              @RequestParam("subjectCode") int subjectCode,
+                              @RequestParam("coursesCode") int coursesCode,
+                              Model model) throws SQLException {
+        String view = "subject/subject_mod";
+
+        // 조회 로직 구현...
+        SubjectVO result = subjectService.doSelectOne(subjectVO); // 단건 조회 서비스 호출
+        model.addAttribute("subject", result); // 조회 결과를 모델에 추가
+        return view; // 상세 정보를 표시할 JSP 페이지 반환
+    }
+
+	
+	
+	// 사용 안함	
+//		//등록
+//		@RequestMapping(value="/doSave.do",method = RequestMethod.POST
+//				,produces = "application/json;charset=UTF-8"
+//				)
+//		@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
+//		public String doSave(SubjectVO inVO) throws SQLException{
+//			String jsonString = "";
+//			LOG.debug("┌───────────────────────────────────────────┐");
+//			LOG.debug("│ doSave()                                  │inVO:"+inVO);
+//			LOG.debug("└───────────────────────────────────────────┘");		
+//			
+//			
+//			int flag = subjectService.doSave(inVO);
+//			String message = "";
+//			
+//			if(1==flag) {
+//				message = inVO.getScore()+"가 등록 되었습니다.";
+//			}else {
+//				message = inVO.getScore()+"등록 실패.";
+//			}
+//			
+//			MessageVO messageVO=new MessageVO(flag+"", message);
+//			jsonString = new Gson().toJson(messageVO);
+//			LOG.debug("jsonString:"+jsonString);		
+//					
+//			return jsonString;
 //		}
-//		
-//		MessageVO messageVO=new MessageVO(flag+"", message);
-//		jsonString = new Gson().toJson(messageVO);
-//		LOG.debug("jsonString:"+jsonString);		
-//				
-//		return jsonString;
-//	}
-//	
-	
-
-	
-	@RequestMapping(value="/doSelectOne.do", method = RequestMethod.GET)
-	public String doSelectOne(SubjectVO inVO, HttpServletRequest req, Model model) throws SQLException {
-	    String view = "subject/subject_mod";
-	    LOG.debug("┌───────────────────────────────────────────┐");
-	    LOG.debug("│ doSelectOne() │inVO:" + inVO);
-	    LOG.debug("└───────────────────────────────────────────┘");
-
-	    // HttpServletRequest를 사용하여 "email" 파라미터 값을 가져옵니다.
-	    String traineeEmail = req.getParameter("email");
-	    // 가져온 email 값을 inVO 객체의 trainee 필드에 설정합니다.
-	    
-	    LOG.debug("traineeEmail: " + traineeEmail);
-
-	    inVO.setTrainee(traineeEmail);
-	    LOG.debug("inVO: " + inVO.toString());
-
-	    // trainee 정보를 조회합니다.
-	    UserVO userTrainee = new UserVO();
-	    userTrainee.setEmail(traineeEmail);
-	    userTrainee = userService.doSelectOne(userTrainee);
-	    LOG.debug("│ userTrainee                                :" + userTrainee);
-
-	    // subject 정보를 조회합니다.
-	    SubjectVO outVO = this.subjectService.doSelectOne(inVO);
-	    LOG.debug("│ outVO :" + outVO);
-	    LOG.debug("│ coursesCode :" + outVO.getCoursesCode());
-
-	    // 모델에 조회된 데이터를 추가합니다.
-	    model.addAttribute("outVO", outVO);
-	    model.addAttribute("trainee", userTrainee);
-
-	    return view;
-	}
-	
+	//	
 	
 	
 	

@@ -74,8 +74,8 @@
 	    academys.seq AS academySeq,
 	    academys.name AS academyName,
 	    users_courses.email,
-	    start_date,
-	    end_date
+	    TO_CHAR(start_date, 'YYYY-MM-DD') AS startDate,
+        TO_CHAR(end_date, 'YYYY-MM-DD') AS endDate
 	FROM
 	    users_courses JOIN
 	    courses ON courses_code = code JOIN academys
