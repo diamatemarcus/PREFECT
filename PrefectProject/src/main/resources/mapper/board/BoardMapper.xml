@@ -42,45 +42,53 @@
         </otherwise>
     </choose>
   </sql>  
-
-  <select id="doRetrieve" parameterType="BoardVO" resultType="BoardVO">
-	SELECT A.*,B.totalCnt
-	FROM (
-	    SELECT tt1.seq,
-	           tt1.rnum as no,
-	           tt1.div,
-	           tt1.title,
-	           tt1.read_cnt as readCnt,
-	           --당일 등록: 시:분, 그렇지 않으면 년-월-일
-	           DECODE(TO_CHAR(tt1.mod_dt,'YYYYMMDD'), TO_CHAR(SYSDATE,'YYYYMMDD')
-	                 ,TO_CHAR(tt1.mod_dt,'HH24:MI')
-	                 ,TO_CHAR(tt1.mod_dt,'YYYY-MM-DD')) as modDt,
-	           tt1.mod_id as modId,
-	           tt1.uuid
+  
+	<select id="doRetrieve" parameterType="BoardVO" resultType="BoardVO">
+	    SELECT A.*, B.totalCnt, R.replyCnt
 	    FROM (
-	        SELECT ROWNUM rnum, T1.*
+	        SELECT tt1.seq,
+	               tt1.rnum as no,
+	               tt1.div,
+	               tt1.title,
+	               tt1.read_cnt as readCnt,
+	               tt1.modDt,
+	               tt1.mod_Id as modId,
+	               tt1.uuid
 	        FROM (
-	            SELECT *
-	            FROM board
-	            WHERE 1=1
-	            <include refid="divCondition"/>
-	            <include refid="searchCondition"/>
-	            ORDER BY mod_dt DESC
-	        )T1   --10,20,30,...
-	      <![CDATA[   WHERE ROWNUM <=#{pageSize} * (#{pageNo}-1) + #{pageSize} ]]>
-	    )TT1
-	    --1,11,21,31,..
-	    <![CDATA[ WHERE rnum >= #{pageSize} * (#{pageNo}-1) + 1 ]]>
-	)A
-	CROSS JOIN (
-	    SELECT COUNT(*) totalCnt
-	    FROM board
-	    WHERE 1=1
-        <include refid="divCondition"/>     
-        <include refid="searchCondition"/>
-	)B  
-  </select>
-
+	            SELECT ROWNUM as rnum, T1.*
+	            FROM (
+	                SELECT b.seq,
+	                       b.div,
+	                       b.title,
+	                       b.read_cnt,
+	                       DECODE(TO_CHAR(b.mod_dt, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'YYYYMMDD'),
+	                              TO_CHAR(b.mod_dt, 'HH24:MI'),
+	                              TO_CHAR(b.mod_dt, 'YYYY-MM-DD')) as modDt,
+	                       b.mod_id,
+	                       b.uuid
+	                FROM board b
+	                WHERE 1=1
+	                <include refid="divCondition"/>
+	                <include refid="searchCondition"/>
+	                ORDER BY b.mod_dt DESC
+	            ) T1
+	            <![CDATA[   WHERE ROWNUM <= #{pageSize} * (#{pageNo}-1) + #{pageSize} ]]>
+	        ) tt1
+	        <![CDATA[ WHERE rnum >= #{pageSize} * (#{pageNo}-1) + 1 ]]>
+	    ) A
+	    LEFT JOIN (
+	        SELECT board_seq, COUNT(*) as replyCnt
+	        FROM reply
+	        GROUP BY board_seq
+	    ) R ON A.seq = R.board_seq
+	    CROSS JOIN (
+	        SELECT COUNT(*) as totalCnt
+	        FROM board
+	        WHERE 1=1
+	        <include refid="divCondition"/>
+	        <include refid="searchCondition"/>
+	    ) B
+	</select>
 
   <delete id="doDeleteAll" parameterType="BoardVO" >
     DELETE FROM board

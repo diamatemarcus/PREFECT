@@ -192,6 +192,16 @@ public class BoardController implements PcwkLogger{
 		
 		modelAndView.addObject("totalCnt", totalCnt);
 		
+		long replyCnt = 0;
+		//총댓글 수
+		for(BoardVO vo  :list) {
+			if(replyCnt == 0) {
+				replyCnt = vo.getreplyCnt();
+				break;
+			}
+		}
+		modelAndView.addObject("replyCnt", replyCnt);
+		
 		//뷰
 		modelAndView.setViewName("board/board_list");//  /WEB-INF/views/board/board_list.jsp
 		//Model
