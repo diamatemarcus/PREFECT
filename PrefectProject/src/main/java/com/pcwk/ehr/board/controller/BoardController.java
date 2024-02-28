@@ -268,7 +268,7 @@ public class BoardController implements PcwkLogger{
 		if(1==flag) {
 			message = "수정 되었습니다.";
 		}else {
-			message = "수정 실패.";
+			message = "수정이 실패되었습니다.";
 		}
 		
 		MessageVO messageVO=new MessageVO(flag+"",message);
@@ -359,7 +359,7 @@ public class BoardController implements PcwkLogger{
 		if(1 == flag) {
 			message = "등록 되었습니다.";
 		}else {
-			message = "등록 실패.";
+			message = "등록이 실패되었습니다.";
 		}
 		
 		MessageVO  messageVO=new MessageVO(String.valueOf(flag), message);

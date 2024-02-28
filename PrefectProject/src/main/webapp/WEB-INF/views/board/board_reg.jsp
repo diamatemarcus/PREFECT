@@ -483,7 +483,7 @@ document.addEventListener("DOMContentLoaded",function(){
     </div>
 	<!-- 파일 업로드 ------------------------------------------------------------->
     
-    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+    <%-- <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include> --%>
 </div>
 </body>
 </html>
