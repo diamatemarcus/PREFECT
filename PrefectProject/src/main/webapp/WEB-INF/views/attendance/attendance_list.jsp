@@ -215,19 +215,39 @@ document.addEventListener("DOMContentLoaded",function(){
 
 <style>
     /* 테이블과 관련된 스타일 */
-    .table th, .table td {
-        padding: 0.5rem; /* 셀 내부의 padding을 조절합니다 */
-    }
+.table th, .table td {
+  padding: 0.5rem; /* 셀 내부의 padding을 조절합니다 */ 
+}
 
-    /* 선택적으로 테이블의 너비를 조절합니다 */
+ /* 선택적으로 테이블 행의 높이를 조절합니다 */
+.table tr {
+  height: auto; /* 필요에 따라 조절 */
+}
+
+.table-responsive {
+    max-width: 960px; 
+    margin: 0 auto; 
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+}
+
+@media (max-width: 768px) {
     .table-responsive {
-        margin: 0 auto; /* 상하 마진은 0, 좌우 마진은 자동으로 설정 */
+        max-width: 100%;
     }
+}
 
-    /* 선택적으로 테이블 행의 높이를 조절합니다 */
-    .table tr {
-        height: auto; /* 필요에 따라 조절 */
-    }
+.button-container {
+    display: flex;
+    justify-content: flex-end; 
+    margin-right: 20px;
+}
+    
 </style>
 </head>
 <body> 
@@ -342,7 +362,7 @@ document.addEventListener("DOMContentLoaded",function(){
 	    <!-- button --------------------------------------------------------------->
 	    <c:choose>
 		    <c:when test="${empty attendances }">
-		        <div class="row g-1 justify-content-end">
+		        <div class="row g-1 justify-content-end button-container">
 		            <div class="col-auto"> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
 		                <input type="button" value="전체 저장" class="button"  id="doSave" onclick="window.doSave();">
 		            </div>  

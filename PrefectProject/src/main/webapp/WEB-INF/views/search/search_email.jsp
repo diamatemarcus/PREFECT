@@ -21,7 +21,10 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <title>이메일 찾기</title>
 <style>
+
+
 body {
+	margin : -100px;
     background-color: #f7f8fa;
     color: #495057;
 }
@@ -35,7 +38,7 @@ body {
 .uf-form-signin h1 {
     text-align: right;
     margin-bottom: 30px;
-    margin-top: -11px;
+    margin-top: 4px;
     font-size : 23px
 }
 .form-label {
@@ -61,7 +64,7 @@ body {
 </style>
 </head>
 <body>
-    <div class="uf-form-signin">E
+    <div class="uf-form-signin">
    		 <a href="/ehr/index.jsp" class="navbar-brand">
             <div class="arms-container d-flex align-items-center">
              <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="150" height="75">

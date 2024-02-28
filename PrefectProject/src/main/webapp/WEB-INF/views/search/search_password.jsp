@@ -9,74 +9,79 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/bootstrap.min.css" type="text/css">
-    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/fontawesome-all.min.css" type="text/css">
-    <link rel="stylesheet" href="${CP}/resources/template/login/assets/css/uf-style.css" type="text/css">
-    <script src="http://code.jquery.com/jquery-latest.js"></script>
-    <title>비밀번호 찾기</title>
-    <style>
-        body {
-            background-color: #f7f8fa;
-            color: #495057;
-        }
-        .uf-form-signin {
-            max-width: 400px;
-            padding: 15px;
-            margin: 100px auto;
-            background-color: white;
-            border-radius: 5px;
-        }
-        .uf-form-signin h1 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-label {
-            font-weight: bold;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .btn-secondary {
-            background-color: #6c757d;
-            border: none;
-            margin-top: 1.05rem
-        }
-        .btn-secondary:hover {
-            background-color: #545b62;
-        }
-        .form-control {
-            margin-bottom: 15px;
-        }
-        .select-wrapper select {
-            width: 100%;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #fff;
-            font-size: 16px;
-            color: #333;
-            appearance: none;
-        }
-        .select-wrapper::after {
-            content: '▼';
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            pointer-events: none;
-            color: #333;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/fontawesome-all.min.css" type="text/css">
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/uf-style.css" type="text/css">
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<title>비밀번호 찾기</title>
+<style>
+body {
+    background-color: #f7f8fa;
+    color: #495057;
+}
+.uf-form-signin {
+    max-width: 400px;
+    padding: 15px;
+    margin: 100px auto;
+    background-color: white;
+    border-radius: 5px;
+}
+.uf-form-signin h1 {
+    text-align: end;
+    margin-bottom: 30px;
+}
+.form-label {
+    font-weight: bold;
+}
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    margin-top: 1.05rem
+}
+.btn-secondary:hover {
+    background-color: #545b62;
+}
+.form-control {
+    margin-bottom: 15px;
+}
+.select-wrapper select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+    appearance: none;
+}
+.select-wrapper::after {
+    content: '▼';
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #333;
+}
+.find-email-link {
+	magint-top : 10px
+    color: #007bff;
+    text-decoration: underline;
+}
+</style>
 </head>
 <body>
     <div class="uf-form-signin">
@@ -113,6 +118,17 @@
             <button class="btn btn-lgg btn-primary btn-block mt-3" type="submit" id="searchPasswordResult">비밀번호 찾기</button>
             <button class="btn btn-lgg btn-secondary btn-block" onclick="history.go(-1);">취소</button>
         </form>
+        	<div class="d-flex mb-3 justify-content-between">
+				<div class="form-check">
+					<!-- 빈공간을 만들기 위함-->
+				</div>
+				<div class="search_email">
+					<br>
+					<div class="email-reminder">
+					    이메일이 기억나지 않는다면?<a href="${CP}/search/searchEmailView.do">  이메일 찾기</a>
+					</div>		
+				</div>
+			</div>
     </div>
      <script type="text/javascript">
      $(document).ready(function(){
