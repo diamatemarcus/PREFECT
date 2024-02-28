@@ -117,10 +117,8 @@
 
 		<!-- 회원 등록영역 -->
 		<!-- 삼항연산자 사용해봄 -->
-	<c:choose>
-	<c:when test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
 	  <div class = "row">
-		<div class="container col-md-6">
+		<div class = "container col-md-6">
 			<form action="#" name="userRegFrm">
 				<div class="mb-3">
 					<label for="email" class="form-label">이메일</label> <input
@@ -128,17 +126,6 @@
 						name="email" id="email" value="${outVO != null ? outVO.email : userSession.email}" size="20"
 						maxlength="30">
 				</div>
-				
-				<c:if test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
-				<div>
-                    <label for="password" class="form-label">비밀번호</label>
-                </div>
-                
-                <div class="mb-3">
-                    <input type="button" value="변경하기" class="btn btn-primary" id="passwordReset" style="margin-top: 2px">
-                </div>
-                </c:if>                
-				
 				<div class="mb-3">
 					<!--  아래쪽으로  여백 -->
 					<label for="name" class="form-label">이름</label> <input type="text"
@@ -146,7 +133,12 @@
 						placeholder="이름을 입력 하세요." size="20" value="${outVO != null ? outVO.name : userSession.name}"
 						maxlength="21">
 				</div>
-				
+				<div class="mb-3">
+                    <label for="password" class="form-label">비밀번호</label> 
+                        <input type="password" class="form-control" name="password" id="password"
+                        placeholder="비밀번호를 입력 하세요." value="${outVO != null ? outVO.password : userSession.password}" readonly="readonly" size="20"
+                        maxlength="30">
+				</div>
 				<div class="mb-3">
 					<label for="tel" class="form-label">전화번호</label> <input type="text"
 						class="form-control" name="tel" id="tel" placeholder="전화번호 수정"
@@ -183,24 +175,22 @@
 					</div>
 				</div>
 				
-				<c:if test="${sessionScope.user.role == 10}">
-				    <div class="mb-3">
-				        <label for="role" class="form-label">역할</label>
-				        <div class="col-auto">
-				            <select id="role" name="role" class="basicselect">
-				                <!-- 검색 조건 옵션을 동적으로 생성 -->
-				                <c:forEach items="${role1}" var="vo"> 
-				                    <option value="<c:out value='${vo.detCode}'/>"
-				                        ${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
-				                        <c:out value="${vo.detName}" />
-				                    </option>
-				                </c:forEach>
-				            </select>
-				        </div>
-				    </div>
-				</c:if>
+				<div class="mb-3">
+					<label for="role" class="form-label">역할</label>
+					<div class="col-auto">
+						<select id="role" name="role" class="basicselect">
+							<!-- 검색 조건 옵션을 동적으로 생성 -->
+							<c:forEach items="${role1}" var="vo"> 
+					            <option value="<c:out value='${vo.detCode}'/>"
+					                ${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
+					                <c:out value="${vo.detName}" />
+					            </option>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
 				
-                <c:if test="${sessionScope.user.role == 30}">
+                
 				<div class="row">
 				    <!-- 라이센스 부분 -->
 				    <div class="col-md-6">
@@ -250,182 +240,23 @@
                         </c:choose>
                     </tbody>
                 </table>
-		      </c:if>
 			</form>
 		</div>
 		<!--// 회원 등록영역 ------------------------------------------------------>
 		<!-- chart -->
-		<c:if test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
 		<div class="container col-md-6 mt-4">
              <div class = "col-sm">
        				 <!-- Area Chart -->
             		 <div id="chartdiv1"></div>
    			 </div>   
         </div>
-        </c:if>
 	</div>
-	</c:when>
-    <c:when test="${sessionScope.user.role == 10}">
-      <div class = "row">
-        <div class="container">
-            <form action="#" name="userRegFrm">
-                <div class="mb-3">
-                    <label for="email" class="form-label">이메일</label> <input
-                        type="text" class="form-control ppl_input" readonly="readonly"
-                        name="email" id="email" value="${outVO != null ? outVO.email : userSession.email}" size="20"
-                        maxlength="30">
-                </div>
-                
-                <c:if test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
-                <div>
-                    <label for="password" class="form-label">비밀번호</label>
-                </div>
-                
-                <div class="mb-3">
-                    <input type="button" value="변경하기" class="btn btn-primary" id="passwordReset" style="margin-top: 2px">
-                </div>
-                </c:if>                
-                
-                <div class="mb-3">
-                    <!--  아래쪽으로  여백 -->
-                    <label for="name" class="form-label">이름</label> <input type="text"
-                        class="form-control" name="name" id="name"
-                        placeholder="이름을 입력 하세요." size="20" value="${outVO != null ? outVO.name : userSession.name}"
-                        maxlength="21">
-                </div>
-                
-                <div class="mb-3">
-                    <label for="tel" class="form-label">전화번호</label> <input type="text"
-                        class="form-control" name="tel" id="tel" placeholder="전화번호 수정"
-                        value="${outVO != null ? outVO.tel : userSession.tel}" size="20" maxlength="11">
-                </div>
-                
-                <div class="mb-3">
-                    <label for="gender" class="form-label">성별</label>
-                    <div class="col-auto">
-                        <select id="gender" name="gender" class="basicselect">
-                            <!-- 검색 조건 옵션을 동적으로 생성 -->
-                            <c:forEach items="${gender}" var="vo">
-                                <option value="<c:out value='${vo.detCode}'/>"
-                                    ${outVO != null ? (vo.detCode eq outVO.gender ? 'selected' : '') : (userSession.gender eq vo.detCode ? 'selected' : '')}>
-                                    <c:out value="${vo.detName}" />
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="edu" class="form-label">학력</label>
-                    <div class="col-auto">
-                        <select id="education" name="education" class="basicselect">
-                            <!-- 검색 조건 옵션을 동적으로 생성 -->
-                            <c:forEach items="${education}" var="vo">
-                                <option value="<c:out value='${vo.detCode}'/>"
-                                    ${outVO != null ? (vo.detCode eq outVO.edu ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
-                                    <c:out value="${vo.detName}" />
-                                </option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                
-                <c:if test="${sessionScope.user.role == 10}">
-                    <div class="mb-3">
-                        <label for="role" class="form-label">역할</label>
-                        <div class="col-auto">
-                            <select id="role" name="role" class="basicselect">
-                                <!-- 검색 조건 옵션을 동적으로 생성 -->
-                                <c:forEach items="${role1}" var="vo"> 
-                                    <option value="<c:out value='${vo.detCode}'/>"
-                                        ${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
-                                        <c:out value="${vo.detName}" />
-                                    </option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                    </div>
-                </c:if>
-                
-                <c:if test="${sessionScope.user.role == 30}">
-                <div class="row">
-                    <!-- 라이센스 부분 -->
-                    <div class="col-md-6">
-                        <label for="licenses" class="form-label">자격증</label>
-                        <select id="licenses" name="licenses" class="form-select">
-                            <!-- 검색 조건 옵션을 동적으로 생성 -->
-                            <c:forEach items="${licenses}" var="vo">
-                                <option value="${vo.licensesSeq}">${vo.licensesName}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                
-                    <!-- 등록일 텍스트 상자 -->
-                    <div class="col-md-6">
-                        <label for="regDt" class="form-label">등록일</label>
-                        <input type="date" id="regDt" name="regDt" class="form-control">
-                    </div>
-                </div>
-                
-                <!-- 자격증 저장 버튼 -->
-                <div class="mb-4">
-                    <input type="button" value="선택" class="btn btn-primary" id="doSaveLicenses" style="margin-top: 10px">
-                </div>
-<!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
-                <table id="licensesList" class="table table-responsive">
-                    <thead>
-                        <tr>
-                            <th>자격증명</th>
-                            <th>등록일</th> 
-                            <th>취소</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tableTbody">
-                        <c:choose>
-                            <c:when test="${userLicenses.size()>0}">
-                                <c:forEach var="vo" items="${userLicenses}" >
-                                    <tr>
-                                        <td class="hidden">${vo.licensesSeq}</td>
-                                        <td>${vo.licensesName}</td>
-                                        <td>${vo.regDt}</td>
-                                        <td><button class="deleteRowBtn btn" style="margin-bottom: 5px">
-                                        <img src="${CP}/resources/template/img/x.png" alt="삭제" style="width: 20px; height: 20px;">
-                                        </button>
-                                    </tr>
-                                </c:forEach>
-                            </c:when>
-                        </c:choose>
-                    </tbody>
-                </table>
-              </c:if>
-            </form>
-        </div>
-        <!--// 회원 등록영역 ------------------------------------------------------>
-        <!-- chart -->
-        <c:if test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
-        <div class="container col-md-6 mt-4">
-             <div class = "col-sm">
-                     <!-- Area Chart -->
-                     <div id="chartdiv1"></div>
-             </div>   
-        </div>
-        </c:if>
-    </div>
-    </c:when>
-</c:choose>		
  </div>
 </div>
+		
      
 	
 	<script>
-    document.getElementById("passwordReset").addEventListener("click", function() {
-        // 여기에 이동할 URL을 설정합니다.
-        var setPasswordUrl = "/ehr/search/searchPasswordView.do";
-
-        // 새 창에서 URL을 엽니다.
-        window.location.href = setPasswordUrl;
-    });
-    
 	function doDelete() {
 		console.log("----------------------");
 		console.log("-doDelete()-");
@@ -628,9 +459,9 @@
 	                console.log("complete:" + data);
 	            }
 	        });
-
-
-			  //chart ajax
+	        
+	        
+	        //chart ajax
 	        $.ajax({
 	        	type : "POST",           
 	        	dataType: 'json',
@@ -648,6 +479,10 @@
                     alert("통신 실패.")
                 }
 	        })
+	        
+	        
+	        
+	        
 
 	        // 표에 추가
 	        var newRow = '<tr><td data-license-seq="' + licensesSeq + '">' + licenseName + '</td><td>' + regDt + '</td><td><button class="deleteRowBtn">삭제</button></td></tr>';
