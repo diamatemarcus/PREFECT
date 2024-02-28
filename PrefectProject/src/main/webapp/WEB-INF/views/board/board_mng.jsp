@@ -47,12 +47,28 @@
 
 .dynamicReply {
     margin-bottom: 10px;
-    border: 1px solid #ccc;
     padding: 10px;
 }
 
 .button {
     margin-left: 5px;
+}
+
+.container-main {
+    background-color: #ffffff; /* 흰색 배경 */
+    border: 1px solid #dcdcdc; /* 연한 회색 테두리 */
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.divider {
+    border-bottom: 1px solid #dcdcdc; /* 연한 회색 실선 */
+    margin-bottom: 20px;
+}
+
+.button-area {
+    margin: 20px; /* 메인 컨테이너의 상단 마진과 동일하게 설정 */
 }
 </style>
 
@@ -416,137 +432,131 @@ document.addEventListener("DOMContentLoaded",function(){
 <body>
 
 <div class="container" style="margin-top: 150px;">
-    <!-- 제목 --><%-- 
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">${title}</h1>
-        </div>
-    </div> --%>    
-    <!--// 제목 ----------------------------------------------------------------->
+    <div class="container-main">
     
-    <!-- 버튼 -->
-    <div class="row justify-content-end" style="margin-bottom: 20px; margin-top:40px;">
-        <div class="col-auto">
-            <input type="button" value="목록" class="button" id="moveToList">
-            <input type="button" value="수정" class="button" id="moveToMod" >
-            <input type="button" value="삭제" class="button" id="doDelete" >
-        </div>
-    </div>
-    <!--// 버튼 ----------------------------------------------------------------->
-    
-    <!-- 
-	    seq : sequence별도 조회
-	    div : 10(공지사항)고정
-	    read_cnt : 0 
-	    title,contents : 화면에서 전달
-	    reg_id,mod_id  : session에서 처리
-    -->
-    <!-- form -->
-    
-    
-    <form action="#" name="regFrm" id="regFrm">
-        
-        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
-            <label for="seq" class="col-sm-2 col-form-label">구분</label>
-            <div class="col-sm-10">
-                <select class="form-select" aria-label="Default select example" id="div" name="div" disabled="disabled">
-                  <c:forEach var="codeVO" items="${divCode}">
-                     <option   value="<c:out value='${codeVO.detCode}'/>"  
-                        <c:if test="${codeVO.detCode == vo.getDiv() }">selected</c:if>  
-                     ><c:out value="${codeVO.detName}"/></option>
-                  </c:forEach>
-                  
-                </select>
-            </div>  
-        </div>
-        
-        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
-            <label for="seq" class="col-sm-2 col-form-label">순번</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control readonly-input" id="seq" name="seq" maxlength="100"
-                 value="${vo.seq }"
-                 readonly>
-            </div>
-        </div>
-
-        <div class="mb-3 row"> <!--  아래쪽으로  여백 -->
-            <label for="readCnt" class="col-sm-2 col-form-label">조회수</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control readonly-input" id="readCnt" name="readCnt" maxlength="100"
-                 value="${vo.readCnt }" readonly>
-            </div>
-        </div>
-
-        <div class="mb-3 row">
-            <label for="regId" class="col-sm-2 col-form-label">등록자</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control readonly-input" id="regId" name="regId"  readonly="readonly"
-                 value=${vo.regId }>
-            </div>        
-        </div>
-        <div class="mb-3 row">
-            <label for="regId" class="col-sm-2 col-form-label">등록일</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control readonly-input" id="regDt" name="regDt" 
-                value="${vo.regDt }"  readonly="readonly" >
-            </div>        
-        </div>        
-        <div class="mb-3 row" style="display:none;">
-            <label for="regId" class="col-sm-2 col-form-label">수정자</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control readonly-input" id="modId" name="modId" 
-                value="${vo.modId }"  readonly="readonly"  >
-            </div>        
-        </div>
-        <div class="mb-3"> <!--  아래쪽으로  여백 -->
-            <label for="title" class="form-label">제목</label>
-            <input type="text" class="form-control readonly-input" id="title" name="title" maxlength="100" 
-             value='${vo.title }' readonly="readonly">
-        </div>      
-        <div class="mb-3">
-            <label for="contents" class="form-label">내용</label>
-            <textarea rows="7" class="form-control readonly-input"  id="contents" name="contents" readonly="readonly">${vo.contents }</textarea>
-        </div>
-        
-        
-        <!-- 파일 목록 -->        
-        <div class="container">
-		    <table id="fileList" class="table" style="width: auto;">
-		        <thead>
-		            <tr>
-		                <th>번호</th>
-		                <th>파일 이름</th>
-		                <th style="display:none;">저장파일명</th>
-		                <th style="display:none;">파일크기</th>
-		                <th style="display:none;">확장자</th>
-		                <th style="display:none;">저장경로</th>
-		            </tr>
-		        </thead>
-		        <tbody>
-		            <c:if test="${not empty fileList}">
-		                <c:forEach var="file" items="${fileList}" varStatus="status">
-		                    <tr data-org-file-name="${file.orgFileName}" data-save-file-name="${file.saveFileName}" data-save-path="${file.savePath}">
-		                        <td class="text-center">${status.index + 1}</td>
-		                        <td>${file.orgFileName}</td>
-		                        <td style="display:none;">${file.saveFileName}</td>
-		                        <td style="display:none;">${file.fileSize}</td>
-		                        <td style="display:none;">${file.extension}</td>
-		                        <td style="display:none;">${file.savePath}</td>
-		                    </tr>
-		                </c:forEach>
-		            </c:if>
-		            <c:if test="${empty fileList}">
-		                <tr>
-		                    <td colspan="6">첨부된 파일이 없습니다.</td>
-		                </tr>
-		            </c:if>
-		        </tbody>
-		    </table>
-		</div>
+	    <!-- 버튼 --> 
+	    <div class="row button-area">
+            <div class="col d-flex justify-content-between">
+		        <div class="col-auto">
+		            <input type="button" value="목록" class="button" id="moveToList">
+		        </div>
 		        
-    </form> 
-    <!--// form --------------------------------------------------------------->
-    
+		        <div class="col-auto">
+		            <input type="button" value="수정" class="button" id="moveToMod">
+		            <input type="button" value="삭제" class="button" id="doDelete">
+		        </div>
+		    </div>
+		</div>
+
+	    <!--// 버튼 ----------------------------------------------------------------->
+	    <div class="divider"></div> <!-- 연한 회색 실선 -->
+	    <!-- 
+		    seq : sequence별도 조회
+		    div : 10(공지사항)고정
+		    read_cnt : 0 
+		    title,contents : 화면에서 전달
+		    reg_id,mod_id  : session에서 처리
+	    -->
+	    <!-- form -->
+	    
+	    
+	    <form action="#" name="regFrm" id="regFrm">
+	                        
+	        <div class="mb-2"> <!--  아래쪽으로  여백 -->
+	            <h3 id="title" class="form-label">${vo.title}</h3>
+	        </div>  
+	
+			<div class="mb-3 row" style="display: flex; align-items: center;">
+			    <label id="regId" style="margin-right: 10px;">${vo.regId}</label>
+			    <div style="flex-grow: 1; text-align: left; color: gray;">
+			            조회 ${vo.readCnt} | ${vo.regDt}
+			    </div>   
+			</div>
+	        
+	        <div class="mb-3">
+	            <label for="contents" class="form-label"></label>
+	            <textarea rows="7" class="form-control readonly-input"  id="contents" name="contents" readonly="readonly">${vo.contents}</textarea>
+	        </div>        
+	                
+	        <!-- VIEW에 나오지 않음 --------------------------------------------------->
+	        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
+	            <label for="seq" class="col-sm-2 col-form-label">순번</label>
+	            <div class="col-sm-10">
+	                <input type="text" class="form-control readonly-input" id="seq" name="seq" maxlength="100"
+	                 value="${vo.seq }"
+	                 readonly>
+	            </div>
+	        </div>
+	        
+	        <div class="mb-3 row" style="display:none;"> <!--  아래쪽으로  여백 -->
+	            <label for="seq" class="col-sm-2 col-form-label">구분</label>
+	            <div class="col-sm-10">
+	                <select class="form-select" aria-label="Default select example" id="div" name="div" disabled="disabled">
+	                  <c:forEach var="codeVO" items="${divCode}">
+	                     <option   value="<c:out value='${codeVO.detCode}'/>"  
+	                        <c:if test="${codeVO.detCode == vo.getDiv() }">selected</c:if>  
+	                     ><c:out value="${codeVO.detName}"/></option>
+	                  </c:forEach>
+	                  
+	                </select>
+	            </div>  
+	        </div>
+	
+	        <div class="mb-3 row" style="display:none;">
+	            <label for="regId" class="col-sm-2 col-form-label">수정자</label>
+	            <div class="col-sm-10">
+	                <input type="text" class="form-control readonly-input" id="modId" name="modId" 
+	                value="${vo.modId }"  readonly="readonly"  >
+	            </div>        
+	        </div>            
+	        <!-- // --------------------------------------------------------------->
+	        
+	        <!-- 파일 목록 -->        
+	        <div class="container">
+			    <table id="fileList" class="table" style="width: auto;">
+			        <thead>
+			            <tr>
+			                <th>번호</th>
+			                <th>파일 이름</th>
+			                <th style="display:none;">저장파일명</th>
+			                <th style="display:none;">파일크기</th>
+			                <th style="display:none;">확장자</th>
+			                <th style="display:none;">저장경로</th>
+			            </tr>
+			        </thead>
+			        <tbody>
+			            <c:if test="${not empty fileList}">
+			                <c:forEach var="file" items="${fileList}" varStatus="status">
+			                    <tr data-org-file-name="${file.orgFileName}" data-save-file-name="${file.saveFileName}" data-save-path="${file.savePath}">
+			                        <td class="text-center">${status.index + 1}</td>
+			                        <td>${file.orgFileName}</td>
+			                        <td style="display:none;">${file.saveFileName}</td>
+			                        <td style="display:none;">${file.fileSize}</td>
+			                        <td style="display:none;">${file.extension}</td>
+			                        <td style="display:none;">${file.savePath}</td>
+			                    </tr>
+			                </c:forEach>
+			            </c:if>
+			            <c:if test="${empty fileList}">
+			                <tr>
+			                    <td colspan="6">첨부된 파일이 없습니다.</td>
+			                </tr>
+			            </c:if>
+			        </tbody>
+			    </table>
+			</div>
+			        
+	    </form> 
+	    <!--// form --------------------------------------------------------------->
+	    
+		<!-- 파일 다운로드 -->
+		<form action="${CP}/file/download.do" method="POST" name="fileDownloadForm">
+	       <input type="hidden" name="orgFileName" id="orgFileName">
+	       <input type="hidden" name="saveFileName" id="saveFileName">
+	       <input type="hidden" name="savePath" id="savePath">
+	    </form>
+	</div>
+	
     <!-- reply -->  
     <!-- 댓글 영역 전체를 감싸는 컨테이너 -->
     <div id="commentsSection" class="comments-container">
@@ -565,49 +575,12 @@ document.addEventListener("DOMContentLoaded",function(){
 	            <textarea rows="3" class="form-control" id="replyContents" name="replyContents"></textarea>
 	        </div>        
 	    </div>
-    
-    <!-- 
-	    <div id="replyDoSaveArea">
-	        버튼
-	        <div class="dynamicReply">
-	            <div class="row justify-content-end" style="margin-bottom: 5px;">
-	                <div class="col-auto">
-	                    <input type="button" value="댓글수정" class="button replyDoUpdate">
-	                    <input type="button" value="댓글삭제" class="button replyDoDelete">
-	                </div>
-	            </div>
-	            // 버튼 ---------------------------------------------------------------
-	            <div class="mb-3">
-	                <input type="hidden" name="replySeq" value="">
-	                <textarea rows="3" class="form-control dyReplyContents"   name="dyReplyContents"></textarea>
-	            </div>
-	        </div>        
-	    </div>
-	    
-	    
-	    <div id="replyDoSaveArea">
-	        버튼
-	        <div class="row justify-content-end" style="margin-bottom: 5px;">
-	            <div class="col-auto">
-	                <input type="button" value="댓글 등록" class="button" id="replyDoSave" >
-	            </div>
-	        </div>
-	        // 버튼 ---------------------------------------------------------------
-	        <div class="mb-3">
-	            <textarea rows="3" class="form-control"  id="replyContents" name="replyContents"></textarea>
-	        </div>        
-	    </div> -->
+	</div>
     <!--// reply --------------------------------------------------------------> 
-    
-	<!-- 파일 다운로드 -->
-	<form action="${CP}/file/download.do" method="POST" name="fileDownloadForm">
-       <input type="hidden" name="orgFileName" id="orgFileName">
-       <input type="hidden" name="saveFileName" id="saveFileName">
-       <input type="hidden" name="savePath" id="savePath">
-    </form>
-	
-	<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
-   
+	   
 </div>
+
+	<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+	
 </body>
 </html>
