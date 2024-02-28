@@ -467,7 +467,7 @@ document.addEventListener("DOMContentLoaded",function(){
 	        </div>  
 	
 			<div class="mb-3 row" style="display: flex; align-items: center;">
-			    <label id="regId" style="margin-right: 10px;">${vo.regId}</label>
+			    <label id="regId" style="margin-right: 10px;">${user.name} ${vo.regId}</label>
 			    <div style="flex-grow: 1; text-align: left; color: gray;">
 			            조회 ${vo.readCnt} | ${vo.regDt}
 			    </div>   
