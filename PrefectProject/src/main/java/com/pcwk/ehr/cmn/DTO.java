@@ -6,6 +6,8 @@ public class DTO {
 	private long totalCnt;//총글수
 	private long pageSize;//페이지 사이즈:10,20,30,50,100
 	private long pageNo;  //페이지 번호:1,2,3...
+	private long replyCnt;
+	
 	
 	private String searchDiv;//검색구분
 	private String searchWord;//검색어
@@ -69,19 +71,22 @@ public class DTO {
 	public void setTotalCnt(long totalCnt) {
 		this.totalCnt = totalCnt;
 	}
+	
+	public long getreplyCnt() {
+		return replyCnt;
+	}
+
+	public void setreplyCnt(long replyCnt) {
+		this.replyCnt = replyCnt;
+	}
 
 
 
 	@Override
 	public String toString() {
 		return "DTO [no=" + no + ", totalCnt=" + totalCnt + ", pageSize=" + pageSize + ", pageNo=" + pageNo
-				+ ", searchDiv=" + searchDiv + ", searchWord=" + searchWord + "]";
+				+ ", replyCnt=" + replyCnt + ", searchDiv=" + searchDiv + ", searchWord=" + searchWord + "]";
 	}
 
-
-
-
-	
-	
 	
 }

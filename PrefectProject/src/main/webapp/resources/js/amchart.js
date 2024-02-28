@@ -28,9 +28,49 @@ function generateData() {
 function generateDatas(count) {
   cat = -1;
   var data = [];
-  for (var i = 0; i < count; ++i) {
-    data.push(generateData());
-  }
+   $.ajax({
+    type : "POST",            // HTTP method type(GET, POST) 형식이다.
+        url : "/ehr/user/aaa.do",      // 컨트롤러에서 대기중인 URL 주소이다.
+        data : {
+          email : $("#email").val()
+        },
+        async: false,
+        success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+            // 응답코드 > 0000
+            for(var i = 0; i < res.resultList.length; i++) {
+              var data2 = {};
+              data2.category = res.resultList[i]['subjectCode'];
+              switch (data2.category) {
+                case '10':
+                  data2.category = 'JAVA';
+                  break;
+                case '20':
+                  data2.category = 'Spring';
+                  break;
+                case '30':
+                  data2.category = 'SQL';
+                  break;
+                case '40':
+                  data2.category = 'Python';
+                  break;
+                case '50':
+                  data2.category = 'C++';
+                  break;
+                case '60':
+                  data2.category = 'SpringBoot';
+                  break;                    
+              }
+              data2.value = res.resultList[i]['score'];
+              data.push(data2);
+            }
+           
+            
+            
+        },
+        error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+            alert("통신 실패.")
+        }
+  })
   return data;
 }
 
