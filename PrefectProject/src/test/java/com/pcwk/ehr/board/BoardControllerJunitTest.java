@@ -71,9 +71,9 @@ public class BoardControllerJunitTest implements PcwkLogger {
 		
 		mockMvc  = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		boardList = Arrays.asList(
-				 new BoardVO(dao.getBoardSeq(), div, title+"-01 제목", contents+"1", readCnt,regDt,regId, modDt, modId, uuid.getPK())
-				,new BoardVO(dao.getBoardSeq(), div, title+"-02 제목", contents+"2", readCnt+1,regDt,regId, modDt, modId, uuid.getPK())
-				,new BoardVO(dao.getBoardSeq(), div, title+"-03 제목", contents+"3", readCnt+2,regDt,regId, modDt, modId, uuid.getPK())
+				 new BoardVO(dao.getBoardSeq(), div, title+"-01 제목", contents+"1", readCnt,regDt,regId, modDt, modId, uuid.getPK(),0)
+				,new BoardVO(dao.getBoardSeq(), div, title+"-02 제목", contents+"2", readCnt+1,regDt,regId, modDt, modId, uuid.getPK(),0)
+				,new BoardVO(dao.getBoardSeq(), div, title+"-03 제목", contents+"3", readCnt+2,regDt,regId, modDt, modId, uuid.getPK(),0)
 		);
 		
 		searchVO = new BoardVO();

@@ -48,7 +48,7 @@ public class ReplyDaoJunitTest implements PcwkLogger {
 		LOG.debug("│ setUp                             │");
 		LOG.debug("└───────────────────────────────────┘");		
 		
-		board01 = new BoardVO(boardDao.getBoardSeq(), "10", "제목99", "내용99", 0, "사용X", "pcwk99", "사용X", "pcwk99","");
+		board01 = new BoardVO(boardDao.getBoardSeq(), "10", "제목99", "내용99", 0, "사용X", "pcwk99", "사용X", "pcwk99","", 0);
 		//게시순번
 		long boardSeq = board01.getSeq();
 		
