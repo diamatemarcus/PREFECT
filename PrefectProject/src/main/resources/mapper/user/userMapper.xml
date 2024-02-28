@@ -171,8 +171,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		    edu,           
 		    role,
 		    salt,
-		    gender,
-		    status     		                 
+		    gender       		                 
 		) VALUES (           
 		    #{email},               
 		    #{name},               
@@ -181,8 +180,7 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		    #{edu},               
 		    #{role},
 		    #{salt},
-		    #{gender},
-		    '1'                       
+		    #{gender}                        
 		)                        
     </insert> <!-- 회원 등록 쿼리 -->
 
