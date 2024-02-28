@@ -258,13 +258,14 @@ public class UserController implements PcwkLogger {
 	// 수정
 	@RequestMapping(value = "/doUpdate.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody // HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-	public String doUpdate(UserVO inVO) throws SQLException {
+	public String doUpdate(UserVO inVO,Model model,HttpSession httpsession) throws SQLException {
 		String jsonString = "";
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doUpdate()                                  │inVO:" + inVO);
 		LOG.debug("└───────────────────────────────────────────┘");
-
-
+		
+		
+		 
 		int flag = userService.doUpdate(inVO);
 		String message = "";
 		if (1 == flag) {
@@ -272,6 +273,11 @@ public class UserController implements PcwkLogger {
 		} else {
 			message = inVO.getEmail() + "수정 실패";
 		}
+		
+		String role = (String) httpsession.getAttribute("role");
+		model.addAttribute("role", role); 
+		LOG.debug("role:" + role);
+		
 		MessageVO messageVO = new MessageVO(flag + "", message);
 		jsonString = new Gson().toJson(messageVO);
 		LOG.debug("jsonString:" + jsonString);
