@@ -120,11 +120,10 @@ $(document).ready(function(){
 
 <body>
 	<div class="uf-form-signin">
- 		 <a href="/ehr/index.jsp" class="navbar-brand">
-             	<div class="arms-container d-flex align-items-center">
-                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
-                    <h1 class="text-primary display-6">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
-                </div>
+ 		 <a href="/ehr/index.jsp" class="navbar-login">
+           <div class="arms-container d-flex align-items-center">
+              <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="200" height="100">
+           </div>
         </a>
 		<form class="login-form" action="/ehr/login/doLogin.do" method="post">
 			<div class="input-group uf-input-group input-group-lg mb-3">
@@ -150,7 +149,7 @@ $(document).ready(function(){
 				<a href="/ehr/search/searchPasswordView.do">비밀번호 찾기</a>
 			</div>
 			<div class="d-grid mb-4">
-				<button type="submit" class="btn uf-btn-primary btn-lg" id="doLogin">로그인</button>
+				<button type="submit" class="btn uf-btn-primary btn-lg" id="doLogin">  로   그   인  </button>
 			</div>
 			<div class="d-flex mb-3">
 				<div class="dropdown-divider m-auto w-25"></div>

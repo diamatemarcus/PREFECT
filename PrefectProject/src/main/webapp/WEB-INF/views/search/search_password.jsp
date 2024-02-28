@@ -31,7 +31,6 @@
             margin: 100px auto;
             background-color: white;
             border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0,0,0,.1);
         }
         .uf-form-signin h1 {
             text-align: center;
@@ -81,7 +80,12 @@
 </head>
 <body>
     <div class="uf-form-signin">
-        <h1 class="h3 mb-3 font-weight-normal text-center">비밀번호 찾기</h1>
+ 		 <a href="/ehr/index.jsp" class="navbar-brand">
+            <div class="arms-container d-flex align-items-center">
+             <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="150" height="75">
+           </div>    
+        </a>
+        <h1 class="h3 mb-3 font-weight-normal">비밀번호 찾기</h1>
         <!-- 비밀번호 찾기 양식 -->
         <form>
             <div class="mb-3">
@@ -106,8 +110,8 @@
                 <input class="form-control mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
             </div>
             <span id="mail-check-warn"></span>
-            <button class="btn btn-lg btn-primary btn-block mt-3" type="submit" id="searchPasswordResult">비밀번호 찾기</button>
-            <button class="btn btn-lg btn-secondary btn-block" onclick="history.go(-1);">취소</button>
+            <button class="btn btn-lgg btn-primary btn-block mt-3" type="submit" id="searchPasswordResult">비밀번호 찾기</button>
+            <button class="btn btn-lgg btn-secondary btn-block" onclick="history.go(-1);">취소</button>
         </form>
     </div>
      <script type="text/javascript">

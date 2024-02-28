@@ -126,8 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
                 <a href="/ehr/index.jsp" class="navbar-brand">
              	<div class="arms-container d-flex align-items-center">
-                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
-                    <h1 class="text-primary display-6 ms-3">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
+                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="200" height="100">
                 </div>
             	</a>
 	            <button class="navbar-toggler py-2 px-3" type="button"
