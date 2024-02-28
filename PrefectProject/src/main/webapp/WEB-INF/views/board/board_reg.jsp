@@ -134,7 +134,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
                         if ('1' == data.msgId) {
                             //alert(data.msgContents);
-                            Swal.fire(data.msgContents, "","succes");
+                            Swal.fire(data.msgContents, "","success");
                             moveToListFun();
                         } else {
                             //alert(data.msgContents);
@@ -264,14 +264,14 @@ document.addEventListener("DOMContentLoaded",function(){
                     success: function(response) {
                         console.log('파일 삭제 성공');
                         //alert('파일이 삭제되었습니다.');
-                        Swal.fire('파일이 삭제되었습니다.', "","succes");
+                        Swal.fire("파일이 삭제되었습니다.", "","success");
                         // 파일 삭제 후 파일 리스트 업데이트
                         updateFileList();
                     },
                     error: function(xhr, status, error) {
                         console.log('파일 삭제 실패');
                         //alert('파일 삭제 중 오류가 발생했습니다.');
-                        Swal.fire('파일 삭제 중 오류가 발생했습니다.', "","error");
+                        Swal.fire("파일 삭제 중 오류가 발생했습니다.", "","error");
                     }
                 });
             }

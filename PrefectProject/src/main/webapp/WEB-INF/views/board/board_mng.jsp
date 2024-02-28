@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -84,7 +85,6 @@ document.addEventListener("DOMContentLoaded",function(){
     const regId = document.querySelector("#regId").value;
     const modId = '${sessionScope.user.email}';
     const userRole = '${sessionScope.user.role}';
-    
     const moveToModBTN   = document.querySelector("#moveToMod");
     const doDeleteBTN   = document.querySelector("#doDelete");
     const moveToListBTN = document.querySelector("#moveToList");
@@ -333,10 +333,57 @@ document.addEventListener("DOMContentLoaded",function(){
                         
                         console.log('reply:'+reply.value);
                         
-                        if(window.confirm('수정 하시겠습니까?')==false){
-                            return ;
+                        Swal.fire({
+                            title: '수정 하시겠습니까?',
+                            icon: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#6fa1ff',
+                            cancelButtonColor: '#cccccc',
+                            confirmButtonText: '예',
+                            cancelButtonText: '아니오'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                            	if (!(userRole === "10") && modId !== regId) {
+                                    Swal.fire('수정 권한이 없습니다.', "","error");
+                                    return; // 시스템 관리자나 학원 관리자가 아니고, 수정자와 등록자가 다를 경우에만 경고 메시지 출력 후 리턴
+                                }
+                            	$.ajax({
+                                    type: "POST",
+                                    url:"/ehr/reply/doUpdate.do",
+                                    asyn:"true",
+                                    dataType:"json",
+                                    data:{
+                                        "replySeq": replySeq.value,
+                                        "reply":reply.value
+                                    },
+                                    success:function(data){//통신 성공
+                                        console.log("success data:"+data.msgId);
+                                        console.log("success data:"+data.msgContents);
+                                        
+                                        if("1" == data.msgId){
+                                        	Swal.fire(data.msgContents, "","success");
+                                            replyRetrieve();
+                                        }else{
+                                        	Swal.fire(data.msgContents, "","error");
+                                        }
+                                    },
+                                    error:function(data){//실패시 처리
+                                        console.log("error:"+data);
+                                    },
+                                    complete:function(data){//성공/실패와 관계없이 수행!
+                                        console.log("complete:"+data);
+                                    }
+                                });
+                            }
+                        });   
+                        /* if (window.confirm('수정 하시겠습니까?')) {
+                            if (!(userRole === "10") && modId !== regId) {
+                                alert('수정 권한이 없습니다.');
+                                return; // 시스템 관리자나 학원 관리자가 아니고, 수정자와 등록자가 다를 경우에만 경고 메시지 출력 후 리턴
+                            }
+                        } else {
+                            return;
                         }
-                        
                         $.ajax({
                             type: "POST",
                             url:"/ehr/reply/doUpdate.do",
@@ -363,7 +410,7 @@ document.addEventListener("DOMContentLoaded",function(){
                             complete:function(data){//성공/실패와 관계없이 수행!
                                 console.log("complete:"+data);
                             }
-                        });
+                        }); */
                         
                         
                     });
@@ -377,36 +424,49 @@ document.addEventListener("DOMContentLoaded",function(){
                     const replySeq = $(this).closest('.dynamicReply').find('input[name="replySeq"]').val();
                     console.log('replySeq:'+replySeq);
                     
-                    if(window.confirm("삭제 하시겠습니까?")==false){
-                        return;
-                    }
-                    
-                    $.ajax({
-                        type: "GET",
-                        url:"/ehr/reply/doDelete.do",
-                        asyn:"true",
-                        dataType:"json",
-                        data:{
-                            "replySeq": replySeq
-                        },
-                        success:function(data){//통신 성공
-                            console.log("success data:"+data.msgId);
-                            console.log("success data:"+data.msgContents);
-                            
-                            if("1" == data.msgId){
-                                alert(data.msgContents);
-                                replyRetrieve();
-                            }else{
-                                alert(data.msgContents);
+                    Swal.fire({
+                        title: '삭제 하시겠습니까?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#6fa1ff',
+                        cancelButtonColor: '#cccccc',
+                        confirmButtonText: '예',
+                        cancelButtonText: '아니오'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (!(userRole === "10") && modId !== regId) {
+                                Swal.fire('삭제 권한이 없습니다.', "","error");
+                                return; // 시스템 관리자나 학원 관리자가 아니고, 수정자와 등록자가 다를 경우에만 경고 메시지 출력 후 리턴
                             }
-                        },
-                        error:function(data){//실패시 처리
-                            console.log("error:"+data);
-                        },
-                        complete:function(data){//성공/실패와 관계없이 수행!
-                            console.log("complete:"+data);
+                            $.ajax({
+                                type: "GET",
+                                url:"/ehr/reply/doDelete.do",
+                                asyn:"true",
+                                dataType:"json",
+                                data:{
+                                	"replySeq": replySeq
+                                 
+                                },
+                                success:function(data){//통신 성공
+                                    console.log("success data:"+data.msgId);
+                                    console.log("success data:"+data.msgContents);
+                                    
+                                    if("1" == data.msgId){
+                                        Swal.fire(data.msgContents, "","success");
+                                        replyRetrieve();
+                                    }else{
+                                        Swal.fire(data.msgContents, "","error");
+                                    }
+                                },
+                                error:function(data){//실패시 처리
+                                    console.log("error:"+data);
+                                },
+                                complete:function(data){//성공/실패와 관계없이 수행!
+                                    console.log("complete:"+data);
+                                }
+                            });
                         }
-                    });                 
+                    });    
                 });
                 
                 
