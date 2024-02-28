@@ -355,4 +355,28 @@ public class SubjectController implements PcwkLogger {
 
 		return jsonString;
 	}
+	
+	@RequestMapping(value = "/doDeleteSubject.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+	@ResponseBody
+	public String doDeleteSubject(String detCode) throws SQLException {
+		String jsonString = "";
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doDeleteSubject()                                │detCode:" + detCode);
+		LOG.debug("└───────────────────────────────────────────┘");
+
+		int flag = subjectService.doDeleteSubject(detCode);
+		String message = "";
+
+		if (1 == flag) {
+			message = detCode + "가 삭제 되었습니다.";
+		} else {
+			message = detCode + " 삭제 실패.";
+		}
+
+		MessageVO messageVO = new MessageVO(String.valueOf(flag), message);
+		jsonString = new Gson().toJson(messageVO);
+
+		LOG.debug("jsonString:" + jsonString);
+		return jsonString;
+	}
 }

@@ -50,4 +50,9 @@ public class SubjectServiceImpl implements SubjectService, PcwkLogger {
 	public int doSaveSubject(CodeVO inVO) throws SQLException {
 		return dao.doSaveSubject(inVO);
 	}
+
+	@Override
+	public int doDeleteSubject(String detCode) throws SQLException {
+		return dao.doDeleteSubject(detCode);
+	}
 }

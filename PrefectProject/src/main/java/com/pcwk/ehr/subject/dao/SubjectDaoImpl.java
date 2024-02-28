@@ -121,4 +121,17 @@ public class SubjectDaoImpl implements SubjectDao, PcwkLogger {
 		return flag;
 	}
 
+	@Override
+	public int doDeleteSubject(String detCode) throws SQLException {
+		int flag = 0;
+
+		LOG.debug("1.param \n" + detCode);
+		String statement = NAMESPACE+DOT+"doDeleteSubject";
+		LOG.debug("2.statement \n" + statement);
+		flag=this.sqlSessionTemplate.update(statement, detCode);
+		
+		LOG.debug("3.flag \n" + flag);
+		return flag;
+	}
+
 }

@@ -21,4 +21,6 @@ public interface SubjectService {
     public List<SubjectVO> doRetrieveBySubjectCode(SubjectVO inVO) throws SQLException;
     
     public int doSaveSubject(CodeVO inVO) throws SQLException;
+    
+    public int doDeleteSubject(String detCode) throws SQLException;
 }

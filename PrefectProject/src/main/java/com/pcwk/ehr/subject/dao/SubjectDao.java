@@ -14,4 +14,6 @@ public interface SubjectDao extends WorkDiv<SubjectVO>  {
 	
 	int doSaveSubject(CodeVO inVO) throws SQLException;
 	
+	int doDeleteSubject (String detCode) throws SQLException;
+	
 }

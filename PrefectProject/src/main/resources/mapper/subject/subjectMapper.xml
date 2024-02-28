@@ -119,5 +119,11 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		)
     </insert>
     
+    <delete id="doDeleteSubject" parameterType="String">
+	    DELETE FROM cmn_code 
+	    WHERE  mst_code = 'SUBJECT' 
+	    AND det_code = #{detCode}
+    </delete> <!--  회원 삭제 쿼리  -->
+    
 
 </mapper>  
