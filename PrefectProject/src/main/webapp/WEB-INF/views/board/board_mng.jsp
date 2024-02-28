@@ -320,10 +320,12 @@ document.addEventListener("DOMContentLoaded",function(){
                     replyDiv += '<span>(' + data[i].modDt + ')</span> \n';
                     replyDiv += '</div> \n';
                     // 오른쪽 부분: 수정 및 삭제 버튼
+                    replyDiv += '<c:if test="${role eq '10' && modId eq regId}"> \n';
                     replyDiv += '<div> \n';
                     replyDiv += '<input type="button" value="댓글수정" class="button replyDoUpdate"> \n';
                     replyDiv += '<input type="button" value="댓글삭제" class="button replyDoDelete"> \n';
                     replyDiv += '</div> \n';
+                    replyDiv += '</c:if> \n';
                     // Flex 컨테이너 종료
                     replyDiv += '</div> \n';
 
@@ -542,10 +544,12 @@ document.addEventListener("DOMContentLoaded",function(){
 							<input type="button" value="목록" class="button" id="moveToList">
 						</div>
 
-						<div class="col-auto">
-							<input type="button" value="수정" class="button" id="moveToMod">
-							<input type="button" value="삭제" class="button" id="doDelete">
-						</div>
+						<c:if test="${role eq '10' && modId eq regId}">
+                          <div class="col-auto">
+                            <input type="button" value="수정" class="button" id="moveToMod">
+                            <input type="button" value="삭제" class="button" id="doDelete">
+                          </div>
+                        </c:if>
 					</div>
 				</div>
 
