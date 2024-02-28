@@ -21,13 +21,6 @@ public class UserVO extends DTO {
 	private String salt;
 	private String gender;
 	private int totalUsers;
-	
-	@Override
-	public String toString() {
-		return "UserVO [email=" + email + ", name=" + name + ", password=" + password + ", tel=" + tel + ", edu=" + edu
-				+ ", role=" + role + ", salt=" + salt + ", gender=" + gender + ", toString()=" + super.toString() + "]";
-	}
-
 
 
 	public UserVO(String email, String name, String password, String tel, String edu, String role, String salt) {
@@ -39,6 +32,34 @@ public class UserVO extends DTO {
 		this.edu = edu;
 		this.role = role;
 		this.salt = salt;
+	}
+
+
+
+
+
+	@Override
+	public String toString() {
+		return "UserVO [email=" + email + ", name=" + name + ", password=" + password + ", tel=" + tel + ", edu=" + edu
+				+ ", role=" + role + ", salt=" + salt + ", gender=" + gender + ", totalUsers=" + totalUsers
+				+ ", toString()=" + super.toString() + "]";
+	}
+
+
+
+
+
+	public UserVO(String email, String name, String password, String tel, String edu, String role, String salt,
+			String gender) {
+		super();
+		this.email = email;
+		this.name = name;
+		this.password = password;
+		this.tel = tel;
+		this.edu = edu;
+		this.role = role;
+		this.salt = salt;
+		this.gender = gender;
 	}
 
 }

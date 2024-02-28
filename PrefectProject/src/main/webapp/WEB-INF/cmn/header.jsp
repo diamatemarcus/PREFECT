@@ -171,6 +171,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 ${sessionScope.user.name}님 환영합니다.
                             </span>
                             <button class="button" type="button" onclick="location.href='/ehr/login/doLogout.do'">로그아웃</button>
+                              <a href="/ehr/dm/doContentsList.do" class="my-auto a-dm-header"> 
+                              <i class="fas fa-envelope fa-2x"></i> <!-- 메시지 아이콘 -->
+                              </a>
                         <% } %>
                     </div>
                     <div class="d-flex m-3 me-0">
@@ -183,11 +186,7 @@ document.addEventListener('DOMContentLoaded', function() {
     			   			</c:when>
 						</c:choose>
                     </div>
-                    <div class="d-flex m-3 me-0">
-                        <a href="/ehr/dm/doContentsList.do" class="my-auto a-dm-header"> 
-                        <i class="fas fa-envelope fa-2x"></i> <!-- 메시지 아이콘 -->
-                        </a>
-                    </div>
+                    
                 </div>
             </nav>
         </div>

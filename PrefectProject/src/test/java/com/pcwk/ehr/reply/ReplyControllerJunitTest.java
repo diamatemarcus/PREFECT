@@ -79,7 +79,7 @@ public class ReplyControllerJunitTest implements PcwkLogger {
 		
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
-		board01 = new BoardVO(boardDao.getBoardSeq(), "10", "제목55", "내용55", 0, "사용X", "pcwk99", "사용X", "pcwk99","");
+		board01 = new BoardVO(boardDao.getBoardSeq(), "10", "제목55", "내용55", 0, "사용X", "pcwk99", "사용X", "pcwk99","", 0);
 		//게시순번
 		long boardSeq = (long)board01.getSeq();
 		

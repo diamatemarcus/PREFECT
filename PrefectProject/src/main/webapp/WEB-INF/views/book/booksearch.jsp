@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function() {
             dataType: "json",
             data: {
                 "pageNo": "1",
-                "pageSize": document.querySelector("#pageSize").value,
                 "searchDiv": document.querySelector("#searchDiv").value,
                 "searchWord": document.querySelector("#searchWord").value
             },
@@ -124,32 +123,14 @@ document.addEventListener("DOMContentLoaded", function() {
     <br>
     <br>      
     <!--// 제목 ----------------------------------------------------------------->    
-    <form action="#" method="get" id="boardFrm" name="boardFrm">
-        <input type="hidden" name="pageNo" id="pageNo" />
-        <div class="row g-1 justify-content-end ">
-          <div class="col-auto">
-              <select class="form-select pcwk_select" id="searchDiv" name="searchDiv">
-                     <c:forEach var="vo" items="${bookSearch }">
-                        <option value="<c:out value='${vo.detCode}'/>"  ><c:out value="${vo.detName}"/></option>
-                     </c:forEach>
-              </select>
-          </div>  
-          <div class="col-auto">
-               <input type="text" class="form-control" id="searchWord" name="searchWord" maxlength="100" placeholder="검색어를 입력 하세요">
-          </div> 
-          <div class="col-auto"> 
-               <select class="form-select" id="pageSize" name="pageSize">
-                  <c:forEach var="vo" items="${pageSize }">
-                    <option value="<c:out value='${vo.detCode }' />"   ><c:out value='${vo.detName}' /></option>
-                  </c:forEach>
-               </select>  
-          </div>          
-          <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-               <input type="button" value="검색" class="btn btn-primary"  id="doRetrieve">  
-          </div>        
-        </div>
-    </form>
-
+	<div class="col-auto"> 
+	    <select class="form-select form-select-sm" id="pageSize" name="pageSize" style="width: auto;"> <!-- 너비 조정 및 크기 축소를 위한 form-select-sm 클래스 추가 -->
+	        <c:forEach var="vo" items="${pageSize }">
+	            <option value="<c:out value='${vo.detCode }' />"><c:out value='${vo.detName}' /></option>
+	        </c:forEach>
+	    </select>  
+	</div>
+   <br>
     <!-- book -->
     <table class="table table-bordered border-primary table-hover table-striped" id="bookTable">
       <thead>
@@ -166,10 +147,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
     
     <!--// book --------------------------------------------------------------->
-    
-    
-            
-    </div>
+    <form action="#" method="get" id="boardFrm" name="boardFrm">
+        <input type="hidden" name="pageNo" id="pageNo" />
+        <div class="row g-1 justify-content-end ">
+          <div class="col-auto">
+              <select class="form-select pcwk_select" id="searchDiv" name="searchDiv">
+                     <c:forEach var="vo" items="${bookSearch }">
+                        <option value="<c:out value='${vo.detCode}'/>"  ><c:out value="${vo.detName}"/></option>
+                     </c:forEach>
+              </select>
+          </div>  
+          <div class="col-auto">
+               <input type="text" class="form-control" id="searchWord" name="searchWord" maxlength="100" placeholder="검색어를 입력 하세요">
+          </div> 
+         
+          <div class="col-auto "> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
+               <input type="button" value="검색" class="btn btn-primary"  id="doRetrieve">  
+          </div>        
+        </div>
+    </form>
+
     
      <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>

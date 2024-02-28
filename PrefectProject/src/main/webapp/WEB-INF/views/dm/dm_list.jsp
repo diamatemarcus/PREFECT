@@ -160,6 +160,12 @@
             border-radius: 4px;
             cursor: pointer;
         }
+        .swal2-popup {
+        font-size: 10px !important;
+        }
+
+        
+
     </style>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -241,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
                dataType:"json",
                data:{
                    "pageNo": "1",
-                   "pageSize": "10" 
+                   "pageSize": "30" 
                },
                success:function(data){//통신 성공
                    console.log("success data:"+data);
@@ -269,7 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    console.log(tableHeader);
                    console.log(tableBody);
                    
-                   let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover table-striped">'+tableHeader+tableBody+'</table>';
+                   let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover">'+tableHeader+tableBody+'</table>';
                    //
                    $(".modal-body").html(dynamicTable);
                    $('#staticBackdrop1').modal('show');
@@ -484,7 +490,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 
                 
                 if(0==data.length){
-                    alert("처음 보내는 상대입니다");
+                	Swal.fire("처음 보내는 상대 입니다", "","info");
                     return;
                 }
                     
@@ -581,7 +587,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 <input type="button" class="btn btn-primary" value="조회"   id="doRetrieve" >
             </div>
           </form> 
-          <div class="modal-body">
+          <div class="modal-body"  style="height: 300px; overflow-y: auto;">
             <!-- 회원정보 table -->
           </div>
           <div class="modal-footer">

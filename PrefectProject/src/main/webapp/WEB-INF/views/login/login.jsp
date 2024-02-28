@@ -37,13 +37,16 @@
     display: flex; /* 항목들을 가로로 정렬 */
     align-items: center; /* 항목들을 세로 중앙에 위치 */
 }
-element.style {
-    overflow-y: hidden;
+body.swal2-height-auto {
+  height: 100% !important
 }
+
 </style>
 <script>
 $(document).ready(function(){
     console.log("ready!");
+    
+    
     
     $("#doLogin").on("click", function(e){
         e.preventDefault(); // Prevent form submission

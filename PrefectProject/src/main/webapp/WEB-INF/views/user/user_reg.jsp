@@ -46,7 +46,9 @@
     }
 }
 
-
+    .hidden-option {
+        display: none;
+    }
 
 </style>
 
@@ -147,14 +149,18 @@
 		</div>
 		
 		<!-- 역할 셀렉트 박스 -->
-		<div class="select-wrapper">
-		    <select id="role" name="role">
-		        <!-- 동적으로 생성된 옵션 -->
-		        <c:forEach items="${role}" var="vo">
-		            <option value="${vo.detCode}">${vo.detName}</option>
-		        </c:forEach>
-		    </select>
-		</div>
+<div class="hidden-option">
+    <select id="role" name="role">
+        <!-- 동적으로 생성된 옵션 -->
+        <c:forEach items="${role}" var="vo">
+            <c:choose>
+                <c:when test="${vo.detCode == 30}">
+                    <option value="${vo.detCode}" selected style="display: none;">${vo.detName}</option>
+                </c:when>
+            </c:choose>
+        </c:forEach>
+    </select>
+</div>
 
 	     <!--// 회원 등록영역 ------------------------------------------------------>
 

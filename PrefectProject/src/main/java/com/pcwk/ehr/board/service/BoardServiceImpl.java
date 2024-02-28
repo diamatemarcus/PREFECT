@@ -61,4 +61,10 @@ public class BoardServiceImpl implements BoardService,PcwkLogger {
 		return dao.getBoardSeq();
 	}
 
+	@Override
+	public int totalBoard() throws SQLException {
+		// TODO Auto-generated method stub
+		return dao.totalBoard();
+	}
+
 }
