@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded",function(){
 				        </tr>
 			        </c:forEach>
 		        </c:when>
-		        <%-- 조회데이터가 없는 경우:jsp comment(html에 노출 않됨) --%>
+		        <%-- 조회데이터가 없는 경우:jsp comment(html에 노출 안됨) --%>
 		        <c:otherwise>
 		           <tr>
 		               <td colspan="99" class="text-center">훈련 과정이 현재 진행 중이 아닙니다. </td>

@@ -22,6 +22,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	    </where>
 	</sql>
 
+	
+
 
 
     <select id="doRetrieve" parameterType="SubjectVO" resultType="SubjectVO">
@@ -34,6 +36,15 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	    </where>
    
     </select>
+    
+	<select id="doRetrieveBySubjectCode" parameterType="SubjectVO" resultType="SubjectVO">
+		 SELECT subject_code, courses_code, professor, trainee, score
+   			FROM subject
+	       WHERE professor = #{professor} AND subject_code = #{subjectCode}
+    </select>
+
+
+    
 
 
 	
@@ -57,15 +68,11 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	<update id="doUpdate" parameterType="SubjectVO">
 	    UPDATE subject
 	    SET
-	        subject_code = #{subjectCode},
-	        courses_code = #{courseCode},
-	        professor = #{professor},
-	        trainee = #{trainee},
 	        score = #{score}
 	    WHERE
 	        subject_code = #{subjectCode} AND
 	        courses_code = #{coursesCode} AND
-	        trainee = #{trainee};
+	        trainee = #{trainee}
 	</update>
 	
 

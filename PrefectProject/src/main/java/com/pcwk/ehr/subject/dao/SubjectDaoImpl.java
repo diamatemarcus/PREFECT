@@ -89,4 +89,21 @@ public class SubjectDaoImpl implements SubjectDao, PcwkLogger {
 		return outList;
 	}
 
+	@Override
+	public List<SubjectVO> doRetrieveBySubjectCode(SubjectVO inVO) throws SQLException {
+		List<SubjectVO> outList=new ArrayList<SubjectVO>();
+		LOG.debug("1.param \n" + inVO.toString());
+		String statement = NAMESPACE+DOT +"doRetrieveBySubjectCode";
+		LOG.debug("2.statement \n" + statement);
+		
+		outList=this.sqlSessionTemplate.selectList(statement, inVO);
+		
+		for(SubjectVO vo :outList) {
+			LOG.debug(vo);
+		}		
+		
+				
+		return outList;
+	}
+
 }

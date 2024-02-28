@@ -16,4 +16,6 @@ public interface SubjectService {
     public int doSave(SubjectVO inVO) throws SQLException;
     
     public List<SubjectVO> doRetrieve(SubjectVO inVO) throws SQLException;
+    
+    public List<SubjectVO> doRetrieveBySubjectCode(SubjectVO inVO) throws SQLException;
 }

@@ -40,4 +40,9 @@ public class SubjectServiceImpl implements SubjectService, PcwkLogger {
     public List<SubjectVO> doRetrieve(SubjectVO inVO) throws SQLException {
         return dao.doRetrieve(inVO);
     }
+
+	@Override
+	public List<SubjectVO> doRetrieveBySubjectCode(SubjectVO inVO) throws SQLException {
+		return dao.doRetrieveBySubjectCode(inVO);
+	}
 }
