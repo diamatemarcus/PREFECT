@@ -53,7 +53,7 @@
 		<div class="row justify-content-end">
 			<div class="col-auto">
 				<input type="button" class="btn btn-primary" value="등록"
-					id="doUpdate" onclick="doSave()"> <input type="button"
+					id="doUpdate" onclick="moveToReg()"> <input type="button"
 					class="btn btn-primary" value="목록" id="moveToList"
 					onclick="moveToList()">
 			</div>
@@ -172,6 +172,15 @@
 			console.log("----------------------");
 
 			window.location.href = "/ehr/subject/moveToSubjectList.do";
+
+		}
+		
+		function moveToReg() {
+			console.log("----------------------");
+			console.log("-moveToReg()-");
+			console.log("----------------------");
+
+			window.location.href = "/ehr/subject/moveToSubjectReg.do";
 
 		}
 		
