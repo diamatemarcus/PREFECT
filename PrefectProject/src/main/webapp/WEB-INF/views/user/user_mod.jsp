@@ -629,6 +629,26 @@
 	            }
 	        });
 
+
+			  //chart ajax
+	        $.ajax({
+	        	type : "POST",           
+	        	dataType: 'json',
+	        	contentType: 'application/json',
+                url : "/ehr/user/doSelectOne.do/myScore.do",      // 컨트롤러에서 대기중인 URL 주소이다.
+                data : {
+                	email : $("#email").val()
+                },
+                success : function(res){ // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                    // 응답코드 > 0000
+                    debugger;
+                    alert(res.code);
+                },
+                error : function(XMLHttpRequest, textStatus, errorThrown){ // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                    alert("통신 실패.")
+                }
+	        })
+
 	        // 표에 추가
 	        var newRow = '<tr><td data-license-seq="' + licensesSeq + '">' + licenseName + '</td><td>' + regDt + '</td><td><button class="deleteRowBtn">삭제</button></td></tr>';
 	        $('#licensesList tbody').append(newRow);
