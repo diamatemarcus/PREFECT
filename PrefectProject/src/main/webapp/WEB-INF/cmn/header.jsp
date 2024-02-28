@@ -82,6 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
     background-color: #3986ff;
     color: white;
 }
+.swal2-popup {
+        font-size: 10px !important;
+        }
 </style>
 
 <!-- html head ------------------------------------------------------------------->

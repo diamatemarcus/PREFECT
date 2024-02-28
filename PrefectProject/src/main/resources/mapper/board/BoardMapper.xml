@@ -87,7 +87,7 @@
 	        WHERE 1=1
 	        <include refid="divCondition"/>
 	        <include refid="searchCondition"/>
-	    ) B
+	    ) B order by no
 	</select>
 
   <delete id="doDeleteAll" parameterType="BoardVO" >
