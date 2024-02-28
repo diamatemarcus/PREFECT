@@ -93,5 +93,31 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	)
     </insert>
     
+    <insert id="doSaveSubject" parameterType="CodeVO">
+	    INSERT INTO cmn_code (
+	    	mst_code,
+		    det_code,
+		    mst_name,
+		    det_name,
+		    seq,
+		    use_yn,
+		    reg_dt,
+		    reg_id,
+		    mod_dt,
+		    mod_id
+		) VALUES (
+		    'SUBJECT',
+		    code_seq.NEXTVAL,
+		    '과목',
+		    #{detName},
+		    code_seq.NEXTVAL,
+		   	1,
+		   	SYSDATE,
+		   	#{regDd},
+		   	SYSDATE,
+		   	#{regDd}	
+		)
+    </insert>
+    
 
 </mapper>  

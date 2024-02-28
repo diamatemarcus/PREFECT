@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 
+import com.pcwk.ehr.code.domain.CodeVO;
 import com.pcwk.ehr.subject.domain.SubjectVO;
 
 public interface SubjectService {
@@ -18,4 +19,6 @@ public interface SubjectService {
     public List<SubjectVO> doRetrieve(SubjectVO inVO) throws SQLException;
     
     public List<SubjectVO> doRetrieveBySubjectCode(SubjectVO inVO) throws SQLException;
+    
+    public int doSaveSubject(CodeVO inVO) throws SQLException;
 }

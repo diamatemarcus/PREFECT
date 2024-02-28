@@ -26,14 +26,8 @@
 					break;
 				}
 			}
-		}else {
-	        // URL 파라미터가 없는 경우에만 기본값을 설정합니다.
-
-	        window.location.href = "${CP}/subject/moveToSubjectReg.do?subjectCode="
-				+ selectBox.value;
-	    }
-
-	    console.log(selectBox.value); // 선택된 옵션의 값을 출력합니다.
+		}
+		console.log(selectBox.value); // 선택된 옵션의 값을 출력합니다.
 
 	});//--DOMContentLoaded
 
@@ -41,7 +35,7 @@
 		var searchDiv = document.getElementById("searchDiv").value;
 
 		// 새 URL로 이동
-		window.location.href = "${CP}/subject/moveToSubjectReg.do?subjectCode="
+		window.location.href = "${CP}/subject/moveToScoreReg.do?subjectCode="
 				+ searchDiv;
 
 	}
@@ -148,7 +142,6 @@
 		console.log("traineeEmail:", traineeEmail);
 		console.log("score:", score);
 
-
 		// 여기에 수정 로직을 추가하세요.
 		// AJAX 요청을 통해 서버에 수정 요청을 보낼 수 있습니다.
 
@@ -180,8 +173,6 @@
 			}
 		});
 	}
-	
-	
 </script>
 
 <style>
@@ -243,15 +234,14 @@
 
 	<!-- 검색구분 -->
 	<div class="text-center">
-		<div class="col-auto">
-			<select name="searchDiv" id="searchDiv"
-				class="form-select pcwk_select" onchange="doRetrieve();">
-				<c:forEach var="subject" items="${subjectCodeList}">
-					<option value="${subject.detCode}"
-						<c:if test="${subject.detCode == param.searchDiv}">selected</c:if>>${subject.detName}</option>
-				</c:forEach>
-			</select>
-		</div>
+		<label for="searchDiv">과목선택:</label> <select name="searchDiv"
+			id="searchDiv" class="pcwk_select"
+			onchange="doRetrieve();">
+			<c:forEach var="subject" items="${subjectCodeList}">
+				<option value="${subject.detCode}"
+					<c:if test="${subject.detCode == param.searchDiv}">selected</c:if>>${subject.detName}</option>
+			</c:forEach>
+		</select>
 	</div>
 
 	<div class="container-fluid testimonial py-2">
@@ -305,7 +295,7 @@
 									<td class="text-center">
 										<div class="col-auto">
 											<input type="number" value="0" id="score" name="score"
-												min="0" max="100"/>
+												min="0" max="100" />
 										</div>
 									</td>
 								</c:if>
@@ -313,8 +303,8 @@
 								<c:choose>
 									<c:when test="${not empty subjectScores }">
 										<td class="text-center"><input type="button" value="수정"
-											class="btn btn-primary" id="doUpdate" onclick="doUpdate(this);">
-										</td>
+											class="btn btn-primary" id="doUpdate"
+											onclick="doUpdate(this);"></td>
 									</c:when>
 								</c:choose>
 							</tr>

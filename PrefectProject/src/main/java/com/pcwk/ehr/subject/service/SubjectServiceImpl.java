@@ -10,39 +10,44 @@ import org.springframework.stereotype.Service;
 import com.pcwk.ehr.subject.dao.SubjectDao;
 import com.pcwk.ehr.subject.domain.SubjectVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
+import com.pcwk.ehr.code.domain.CodeVO;
 
 @Service
 public class SubjectServiceImpl implements SubjectService, PcwkLogger {
 
-    @Autowired
-    SubjectDao dao;
+	@Autowired
+	SubjectDao dao;
 
-    public SubjectServiceImpl() {
-    }
+	public SubjectServiceImpl() {
+	}
 
-    @Override
-    public int doUpdate(SubjectVO inVO) throws SQLException {
-        return dao.doUpdate(inVO);
-    }
+	@Override
+	public int doUpdate(SubjectVO inVO) throws SQLException {
+		return dao.doUpdate(inVO);
+	}
 
+	@Override
+	public SubjectVO doSelectOne(SubjectVO inVO) throws SQLException, EmptyResultDataAccessException {
+		return dao.doSelectOne(inVO);
+	}
 
-    @Override
-    public SubjectVO doSelectOne(SubjectVO inVO) throws SQLException, EmptyResultDataAccessException {
-        return dao.doSelectOne(inVO);
-    }
+	@Override
+	public int doSave(SubjectVO inVO) throws SQLException {
+		return dao.doSave(inVO);
+	}
 
-    @Override
-    public int doSave(SubjectVO inVO) throws SQLException {
-        return dao.doSave(inVO);
-    }
-
-    @Override
-    public List<SubjectVO> doRetrieve(SubjectVO inVO) throws SQLException {
-        return dao.doRetrieve(inVO);
-    }
+	@Override
+	public List<SubjectVO> doRetrieve(SubjectVO inVO) throws SQLException {
+		return dao.doRetrieve(inVO);
+	}
 
 	@Override
 	public List<SubjectVO> doRetrieveBySubjectCode(SubjectVO inVO) throws SQLException {
 		return dao.doRetrieveBySubjectCode(inVO);
+	}
+
+	@Override
+	public int doSaveSubject(CodeVO inVO) throws SQLException {
+		return dao.doSaveSubject(inVO);
 	}
 }

@@ -152,13 +152,23 @@ document.addEventListener('DOMContentLoaded', function() {
 						</c:if>  
                         <c:if test="${role eq '20' || role eq '30'}">
                         	<a href="/ehr/attendance/moveToCourseInfo.do" class="nav-item nav-link">과정정보</a>   
-    						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적관리</a>
 						</c:if>
-						<c:if test="${role eq '20'}">   
+						<c:if test="${role eq '20'}">  
+							<li class="nav-item dropdown">
+	                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+	                                                  과목관리
+	                          </a>
+	                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+	                         	<li><a class="dropdown-item" href="/ehr/subject/moveToScoreReg.do?subjectCode=10">성적등록</a></li>
+	                          	<li><hr class="dropdown-divider"></li>
+	                            <li><a class="dropdown-item" href="/ehr/subject/moveToSubjectReg.do">과목등록</a></li>
+	                          </ul>
+	                        </li> 
     						 <a href="/ehr/attendance/moveToAttendance.do" class="nav-item nav-link">출석체크</a>
 						</c:if>
 						<c:if test="${role eq '30'}">   
     						 <a href="/ehr/attendance/moveToAttendStatus.do" class="nav-item nav-link">출석현황</a>
+     						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적관리</a>
 						</c:if>
 						<a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
                         <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서검색</a>
