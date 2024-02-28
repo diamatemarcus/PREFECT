@@ -511,12 +511,6 @@
 			return;
 		}
 
-		if (eUtil.isEmpty(document.querySelector("#password").value) == true) {
-			alert('비밀번호를 입력 하세요.');
-			//$("#email").focus();//사용자 email에 포커스
-			document.querySelector("#password").focus();
-			return;
-		}
 
 		if (eUtil.isEmpty(document.querySelector("#tel").value) == true) {
 			alert('전화번호을 입력 하세요.');
@@ -532,13 +526,6 @@
 			return;
 		}
 
-		if (eUtil.isEmpty(document.querySelector("#role").value) == true) {
-			alert('역할을 입력 하세요.');
-			//$("#email").focus();//사용자 email에 포커스
-			document.querySelector("#role").focus();
-			return;
-		}
-
 		//confirm
 		if (confirm("수정 하시겠습니까?") == false)
 			return;
@@ -551,10 +538,9 @@
 			data : {
 				email : document.querySelector("#email").value,
 				name : document.querySelector("#name").value,
-				password : document.querySelector("#password").value,
 				tel : document.querySelector("#tel").value,
 				edu : document.querySelector("#education").value,
-				role : document.querySelector("#role").value,
+				role : '1',
 				gender : document.querySelector("#gender").value,
 			},
 			success : function(data) {//통신 성공     

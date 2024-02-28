@@ -124,11 +124,9 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	     UPDATE users             
 		 SET email      = #{email}       
 		     ,name      = #{name}       
-		     ,password  = #{password}       
 		     ,tel       = #{tel}       
 		     ,edu       = #{edu}       
 		     ,role      = #{role}
-		     ,salt      = #{salt}
 		     ,gender    = #{gender}       
 		 WHERE                    
 		     email      = #{email}          
@@ -171,7 +169,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		    edu,           
 		    role,
 		    salt,
-		    gender       		                 
+		    gender,
+		    status       		                 
 		) VALUES (           
 		    #{email},               
 		    #{name},               
@@ -180,7 +179,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		    #{edu},               
 		    #{role},
 		    #{salt},
-		    #{gender}                        
+		    #{gender},
+		    '1'                        
 		)                        
     </insert> <!-- 회원 등록 쿼리 -->
 
