@@ -87,10 +87,10 @@ public class ReplyController implements PcwkLogger {
 			
 			//String tranMessage = "수정";
 			//message = MessageFormat.format(message, tranMessage);
-			message = "수정성공";
+			message = "수정되셨습니다.";
 			LOG.debug("│ message                           │"+message);
 		}else {
-			message = "수정 실패!";
+			message = "수정이 실패하였습니다.";
 		}		
 		
 		messageVO = new MessageVO(flag+"", message);
