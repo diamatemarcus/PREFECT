@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Dao: query찾는 분류 기준  namespace+id -> com.pcwk.ehr.user.doSelectOne -->  
+<mapper namespace="com.pcwk.ehr.chart">
+	<select id="getWorkChartInfo" parameterType="ScoreVO" resultType="ScoreVO">
+		SELECT subject_code,score
+		FROM subject
+		WHERE trainee = #{email}
+		Order By subject_code 
+	</select>
+	
+
+</mapper>  
