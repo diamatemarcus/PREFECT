@@ -282,7 +282,7 @@ public class AttendanceController implements PcwkLogger {
 		@GetMapping(value = "/moveToCourseInfo.do")
 		public String moveToCourseInfo(AttendanceVO inVO, Model model, HttpSession httpSession)
 				throws SQLException, EmptyResultDataAccessException, ParseException {
-			String view = "course/course";
+			String view = "course/course_info";
 
 			LOG.debug("┌───────────────────────────────────┐");
 			LOG.debug("│ moveToAttendStatus                │");
