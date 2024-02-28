@@ -16,7 +16,7 @@
         <typeAlias type="com.pcwk.ehr.file.domain.FileVO"   alias="FileVO"/>
         <typeAlias type="com.pcwk.ehr.user.domain.UserVO"   alias="UserVO"/>
         <typeAlias type="com.pcwk.ehr.board.domain.BoardVO" alias="BoardVO"/>
-        
+        <typeAlias type="com.pcwk.ehr.chart.domain.ScoreVO" alias="ScoreVO"/>
         <typeAlias type="com.pcwk.ehr.dm.domain.DmVO" alias="DmVO"/>
         <typeAlias type="com.pcwk.ehr.subject.domain.SubjectVO" alias="SubjectVO"/>
         <typeAlias type="com.pcwk.ehr.schedule.domain.ScheduleVO" alias="ScheduleVO"/>
