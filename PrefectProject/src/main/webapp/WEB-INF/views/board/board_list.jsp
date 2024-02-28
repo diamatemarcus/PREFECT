@@ -46,12 +46,12 @@
 			const div = document.querySelector("#div").value;
 
 			if (eUtil.isEmpty(regId) == true) {
-				alert("로그인 후 작성 가능합니다.")
+				Swal.fire("로그인 후 작성 가능합니다.", "","info");
 				return;
 			}
 			
 			if (userRole == "30" && div == "10") {
-				alert("관리자만 글쓰기 가능합니다.")
+				Swal.fire("관리자만 글쓰기 가능합니다.", "","info");
 				return;
 			}
 
