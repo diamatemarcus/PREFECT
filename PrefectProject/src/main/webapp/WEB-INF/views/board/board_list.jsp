@@ -120,6 +120,8 @@
 	}
 </script>
 <style>
+
+
 /* 테이블과 관련된 스타일 */
 .table th, .table td {
 	padding: 0.5rem; /* 셀 내부의 padding을 조절합니다 */
@@ -138,6 +140,21 @@
 .button-container {
 	margin-bottom: 10px; /* 글쓰기 버튼과 페이징 사이의 간격을 줄입니다. */
 }
+
+.button {
+    width: auto;
+    padding: 7px 20px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 17px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #3986ff;
+    color: white;
+}
+
 
 .pagination-container {
 	margin-top: 0; /* 페이징의 상단 간격을 줄입니다. */

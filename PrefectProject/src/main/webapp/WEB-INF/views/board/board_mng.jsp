@@ -71,6 +71,13 @@
 .button-area {
     margin: 20px; /* 메인 컨테이너의 상단 마진과 동일하게 설정 */
 }
+
+.content {
+    padding-top: 70px; /* 헤더 높이만큼 상단 여백 */
+    padding-bottom: 70px; /* 푸터 높이만큼 하단 여백 */
+    min-height: 100vh; /* 뷰포트 높이를 최소 높이로 설정 */
+}
+
 </style>
 
  <script>
@@ -492,6 +499,7 @@ document.addEventListener("DOMContentLoaded",function(){
 <body>
 
 <div class="container" style="margin-top: 150px;">
+   <div class="content"> 
     <div class="container-main">
     
 	    <!-- 버튼 --> 
@@ -626,18 +634,18 @@ document.addEventListener("DOMContentLoaded",function(){
 	
 	    <!-- 댓글 등록 영역 -->
 	    <div class="reply-input-area">
+	        <div class="mb-3">
+	            <textarea rows="3" class="form-control" id="replyContents" name="replyContents"></textarea>
+	        </div>
 	        <div class="row justify-content-end" style="margin-bottom: 5px;">
 	            <div class="col-auto">
 	                <input type="button" value="댓글 등록" class="button" id="replyDoSave" >
 	            </div>
-	        </div>
-	        <div class="mb-3">
-	            <textarea rows="3" class="form-control" id="replyContents" name="replyContents"></textarea>
-	        </div>        
+	        </div>	                
 	    </div>
 	</div>
     <!--// reply --------------------------------------------------------------> 
-	   
+  </div>  
 </div>
 
 	<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>

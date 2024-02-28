@@ -40,7 +40,92 @@
     color: aliceblue;
 }
 
+#calendarTable th {
+    background-color: #FFFFFF;
+    color: black;*/
+    padding: 8px;
+    text-align: center;
+}
+
+
+
+#calendarTable th {
+    background-color: #79cb7c;
+    color: white;
+    padding: 8px;
+    text-align: center;
+}
+
+#calendarTable td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+#calendarTable .day-cell {
+	text-align: left;
+    cursor: pointer; 
+    transition: background-color 0.3s;
+    padding-left: 10px;
+}
+
+#calendarTable .day-cell:hover {
+    background-color: #e8f4e8;
+}
+
+#calendarTable .weekend {
+    color: #ef3b3b;
+}
+
+#calendarTable .today {
+    background-color: #a7d8a7;
+}
+
+
+
+#calendarTable {
+  width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  width: 100%;
+
+}
+
+#calendarTable th, #calendarTable td {
+ padding: 8px; 
+ text-align: center; 
+ border: 3px solid #79cb7c; 
+ word-break: break-word; 
+ max-width: 200px;
+}
+
+.modal-content {
+    background-color: #f8f9fa; /* 모달 배경색 */
+    border-radius: 10px; /* 모달의 모서리를 둥글게 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 모달에 그림자 효과 추가 */
+}
+
+.modal-header {
+    border-bottom: 1px solid #dee2e6; /* 헤더 하단에 선 추가 */
+    background-color: #e9ecef; /* 헤더 배경색 */
+    border-top-left-radius: 10px; /* 왼쪽 위 모서리 둥글게 */
+    border-top-right-radius: 10px; /* 오른쪽 위 모서리 둥글게 */
+}
+
+.modal-body {
+    padding: 20px; /* 내부 패딩 */
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6; /* 푸터 상단에 선 추가 */
+    background-color: #e9ecef; /* 푸터 배경색 */
+    border-bottom-left-radius: 10px; /* 왼쪽 아래 모서리 둥글게 */
+    border-bottom-right-radius: 10px; /* 오른쪽 아래 모서리 둥글게 */
+}
+
+
 </style>
+
 <script>
 	document
 			.addEventListener(
@@ -176,11 +261,11 @@
 												//동적인 테이블 헤더 생성
 												let tableHeader = '<thead>\
 										                    <tr>\
-										                    	<th scope="col" class="text-center col-lg-1 col-sm-1"></th>\
-											                    <th scope="col" class="text-center col-lg-1  col-sm-1">calID</th>\
-											                    <th scope="col" class="text-center col-lg-2  col-sm-2" >scheduleID</th>\
-											                    <th scope="col" class="text-center col-lg-2  col-sm-2" >일정 제목</th>\
-											                    <th scope="col" class="text-center col-lg-2  col-sm-2" >일정 설명</th>\
+										                    	<th scope="col" class="text-center"></th>\
+											                    <th scope="col" class="text-center">calID</th>\
+											                    <th scope="col" class="text-center" >scheduleID</th>\
+											                    <th scope="col" class="text-center" >일정</th>\
+											                    <th scope="col" class="text-center" >설명</th>\
 										                    </tr>\
 										                </thead>';
 												//동적 테이블 body		                
@@ -608,13 +693,13 @@
             id="calendarTable" style="margin-top: 10px; margin-bottom: 10px" >
             <thead>
                 <tr>
-                    <th scope="col" class="text-center col-lg-1  col-sm-1">일</th>
-                    <th scope="col" class="text-center col-lg-1  col-sm-1">월</th>
-                    <th scope="col" class="text-center col-lg-1  col-sm-1">화</th>
-                    <th scope="col" class="text-center col-lg-1  col-sm-1">수</th>
-                    <th scope="col" class="text-center col-lg-1  col-sm-1">목</th>
-                    <th scope="col" class="text-center col-lg-1  col-sm-1">금</th>
-                    <th scope="col" class="text-center col-lg-1  col-sm-1">토</th>
+                    <th scope="col" class="text-center weekend">SUN</th>
+                    <th scope="col" class="text-center ">MON</th>
+                    <th scope="col" class="text-center ">TUE</th>
+                    <th scope="col" class="text-center ">WED</th>
+                    <th scope="col" class="text-center ">THU</th>
+                    <th scope="col" class="text-center ">FRI</th>
+                    <th scope="col" class="text-center weekend">SAT</th>
                 </tr>
             </thead>
             <tbody>
@@ -624,7 +709,7 @@
                         <c:forEach var="vo" items="${calendarList}" varStatus="status">
                             <tr>
                                 <!-- 일요일 -->
-                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.sun}">
+                                <td class="day-cell" data-day="${vo.sun}">
                                     ${vo.sun.substring(6)}
                                     <ul>
                                         <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
@@ -638,7 +723,7 @@
                                     </ul>
                                 </td>
                                 <!-- 월요일 -->
-                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.mon}">
+                                <td class="day-cell" data-day="${vo.mon}">
                                     ${vo.mon.substring(6)}
                                     <ul>
                                         <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
@@ -653,7 +738,7 @@
                                     </ul>
                                 </td>
                                 <!-- 화요일 -->
-                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.tue}">
+                                <td class="day-cell" data-day="${vo.tue}">
                                     ${vo.tue.substring(6)}
                                     <ul>
                                         <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
@@ -668,7 +753,7 @@
                                     </ul>
                                 </td>
                                 <!-- 수요일 -->
-                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.wed}">
+                                <td class="day-cell" data-day="${vo.wed}">
                                     ${vo.wed.substring(6)}
                                     <ul>
                                         <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
@@ -683,7 +768,7 @@
                                     </ul>
                                 </td>
                                 <!-- 목요일 -->
-                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.thu}">
+                                <td class="day-cell" data-day="${vo.thu}">
                                     ${vo.thu.substring(6)}
                                     <ul>
                                         <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
@@ -698,7 +783,7 @@
                                     </ul>
                                 </td>
                                 <!-- 금요일 -->
-                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.fri}">
+                                <td class="day-cell" data-day="${vo.fri}">
                                     ${vo.fri.substring(6)}
                                     <ul>
                                         <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
@@ -713,7 +798,7 @@
                                     </ul>
                                 </td>
                                 <!-- 토요일 -->
-                                <td class="text-center col-lg-1 col-sm-1 day-cell" data-day="${vo.sat}">
+                                <td class="day-cell" data-day="${vo.sat}">
                                     ${vo.sat.substring(6)}
                                     <ul>
                                         <!-- scheduleList와 비교하여 동일한 calID가 있는지 확인 -->
