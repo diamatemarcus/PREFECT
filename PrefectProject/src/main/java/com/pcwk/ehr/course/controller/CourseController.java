@@ -1,9 +1,8 @@
 package com.pcwk.ehr.course.controller;
 
 import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.course.domain.CourseVO;
@@ -31,13 +31,50 @@ public class CourseController implements PcwkLogger{
 		LOG.debug("│ CourseController                        │");
 		LOG.debug("└───────────────────────────────────────────┘");
 	}
+	
+//	// 학원관리자 : 학원에 등록된 모든 과정 조회
+//	@GetMapping(value="/doRetrieveAllCourses.do")
+//	public String doRetrieveAllCourses(CourseVO inVO, HttpSession session, Model model) throws SQLException, EmptyResultDataAccessException{
+//		String view = "course/course_list";
+//		LOG.debug("┌───────────────────────────────────┐");
+//		LOG.debug("│ doRetrieveAllCourses              │");
+//		LOG.debug("│ CourseVO                          │"+inVO);
+//		LOG.debug("└───────────────────────────────────┘");		
+//		
+//		// 로그인한 학원 관리자의 학원 SEQ 가져오기
+//        inVO.setAcademySeq((int) session.getAttribute("academySeq"));
+//        LOG.debug("현재 세션 academySeq:" + inVO.getAcademySeq());
+//	
+//		//목록조회
+//		List<CourseVO> list = courseService.doRetrieveAllCourses(inVO);
+//		LOG.debug("list:" + list);
+//		
+//		//Model
+//		model.addAttribute("list", list);
+//		
+//		return view;	
+//	}
+	
+	@GetMapping(value = "/doRetrieve.do")
+	public List<CourseVO> doRetrieve(CourseVO inVO) throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ doRetrieve                        │");
+		LOG.debug("│ CourseVO                          │"+inVO);
+		LOG.debug("└───────────────────────────────────┘");
+		
+		List<CourseVO> list = new ArrayList<CourseVO>();
+		
+		list = courseService.doRetrieve(inVO);
+		
+		return list;
+	}
 
-	@GetMapping(value="/moveToTraineeList.do")
-	public String moveToTraineeList(CourseVO inVO, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException{
+	@GetMapping(value="/doRetrieveAllTrainees.do")
+	public String doRetrieveAllTrainees(CourseVO inVO, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException{
 		String view = "course/course_list";
 		
 		LOG.debug("┌───────────────────────────────────┐");
-		LOG.debug("│ moveToCourseList                  │");
+		LOG.debug("│ doRetrieveAllTrainees             │");
 		LOG.debug("│ CourseVO                          │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");		
 	

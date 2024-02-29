@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded",function(){
 	<br>
 	<br>
 	<br>
-	<div class="row">
+	<div>
 		<div class="container col-md-6">
 			<table class="table">
 				<tbody>

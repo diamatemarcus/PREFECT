@@ -269,8 +269,14 @@
                     </tbody>
                 </table>
 		      </c:if>
-			</form>
+			</form>		
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
 		</div>
+	
 		<!--// 회원 등록영역 ------------------------------------------------------>
 		<!-- chart -->
 		<c:if test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
