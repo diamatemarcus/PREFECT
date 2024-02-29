@@ -135,7 +135,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	            </button>
                 <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                     <div class="navbar-nav mx-auto" style="padding-top: 8px;">
-                        <a href="/ehr/board/doRetrieve.do?div=10" class="nav-item nav-link">공지사항</a>
                         <li class="nav-item dropdown">
                           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                   게시판
@@ -153,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         	<a href="/ehr/attendance/moveToCourseInfo.do" class="nav-item nav-link">과정정보</a>   
 						</c:if>
 						<c:if test="${role eq '20'}">  
-						    <a href="/ehr/course/doRetrieveAllTrainees.do" class="nav-item nav-link">과정</a>
+						    <a href="/ehr/course/doRetrieveAllTrainees.do" class="nav-item nav-link">학생조회</a>
 							<li class="nav-item dropdown">
 	                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 	                                                  과목관리

@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.course.domain.CourseVO;
 import com.pcwk.ehr.course.service.CourseService;
 import com.pcwk.ehr.user.domain.UserVO;
+import com.pcwk.ehr.user.service.UserService;
 
 @Controller
 @RequestMapping("course")
@@ -25,6 +27,9 @@ public class CourseController implements PcwkLogger{
 	
 	@Autowired
 	CourseService  courseService;
+	
+	@Autowired
+	UserService  userService;
 	
 	public CourseController () {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -90,13 +95,32 @@ public class CourseController implements PcwkLogger{
 		course = courseService.doSelectOne(course);
 		LOG.debug("course:"+course);
 		
+		// 목록 조회
 		List<CourseVO> trainees = courseService.doRetrieve(course);
 		
 		for(CourseVO trainee  :trainees) {
 			LOG.debug("trainee:"+trainee.getEmail());
 		}
 		
+		// 유저 조회
+		List<UserVO>  users = new ArrayList<UserVO>();
+		for (CourseVO courseVO : trainees) {
+			LOG.debug("courseVO:" + courseVO);
+			UserVO userVO = new UserVO();
+			userVO.setEmail(courseVO.getEmail());
+			LOG.debug("userVO:" + userVO);
+			
+			userVO = userService.doSelectOne(userVO);
+			users.add(userVO);
+			
+			LOG.debug("users:" + users);
+		}
+		
+		
 		model.addAttribute("trainees", trainees);
+		
+		//유저 정보
+		model.addAttribute("users",users);		
 		
 		return view;
 		

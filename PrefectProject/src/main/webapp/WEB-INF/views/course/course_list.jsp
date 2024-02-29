@@ -58,8 +58,27 @@ document.addEventListener("DOMContentLoaded", function() {
                             <!-- 반복문 -->
                             <c:forEach var="vo" items="${ trainees }" varStatus="status">
                                 <tr>
-                                    <td class="text-center col-lg-1  col-sm-1"><c:out value="${ vo.courseCode }" escapeXml="true"/>
-                                    <td class="text-center col-lg-1  col-sm-1">${ vo.email }</td>
+                                    <td class="text-center col-lg-1  col-sm-1">${ status.count }</td>
+                                                             
+                                    <!-- 학생 : 이름으로 조회 ------------------------------------------------------->           
+                                    <!-- 등록자 이름을 한 번만 출력하기 위한 변수 선언 -->
+                                    <c:set var="printedName" value="false" />
+                                                                        
+                                    <!-- 사용자 목록을 순회하면서 조건을 확인 -->
+	                                <c:forEach items="${users}" var="user">
+	                                    <c:if test="${vo.email eq user.email and not printedName}">	                                        
+	                                        <!-- 조건을 만족하는 경우에만 사용자 이름을 출력하고, printedName을 true로 설정 -->
+	                                        <td class="text-center col-lg-2">${user.name}</td>
+	                                        <c:set var="printedName" value="true" />
+	                                    </c:if>
+	                                </c:forEach>
+	                                
+	                                <!-- 사용자 이름이 출력되지 않은 경우 빈 칸 출력 -->
+		                            <c:if test="${not printedName}">
+		                                <td class="text-center col-lg-2">-</td>
+		                            </c:if>
+		                            <!-- // 학생 : 이름으로 조회 ----------------------------------------------------->
+	                                
                                     <td class="text-center col-lg-1  col-sm-1">${ vo.courseName } ${ vo.numberOfTimes }회차</td>
                                 </tr>
                             </c:forEach>
