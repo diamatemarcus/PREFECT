@@ -70,11 +70,11 @@
       <div class="text-left">
 		 <a href="/ehr/index.jsp" class="navbar-brand">
             <div class="arms-container d-flex align-items-center">
-             <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
-            <h1 class="text-primary display-6">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
+             <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="150" height="75">
            </div>
+            
         </a>
-      <h1 class="text-white h3">회원가입</h1>
+     <div class="text-white hreg">회원가입</div>
       </div>
       <form class="mt-4">
         <div class="form-group email-form">
@@ -167,7 +167,7 @@
 
         
         <div class="d-grid mb-4">
-          <input type="button" class="btn uf-btn-primary btn-lg" id="doSave" value ="회원가입 "onclick="window.doSave();">
+          <input type="button" class="btn uf-btn-primary btn-lgg" id="doSave" value =" 회 원 가 입   "onclick="window.doSave();">
         </div>
         <div class="mt-4 text-center">
           <span class="text-white">이미 회원이신가요?</span>

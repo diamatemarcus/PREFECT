@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.pcwk.ehr.cmn.PcwkLogger;
+import com.pcwk.ehr.code.domain.CodeVO;
 import com.pcwk.ehr.subject.domain.SubjectVO;
 import com.pcwk.ehr.user.domain.UserVO;
 
@@ -87,6 +88,50 @@ public class SubjectDaoImpl implements SubjectDao, PcwkLogger {
 		
 				
 		return outList;
+	}
+
+	@Override
+	public List<SubjectVO> doRetrieveBySubjectCode(SubjectVO inVO) throws SQLException {
+		List<SubjectVO> outList=new ArrayList<SubjectVO>();
+		LOG.debug("1.param \n" + inVO.toString());
+		String statement = NAMESPACE+DOT +"doRetrieveBySubjectCode";
+		LOG.debug("2.statement \n" + statement);
+		
+		outList=this.sqlSessionTemplate.selectList(statement, inVO);
+		
+		for(SubjectVO vo :outList) {
+			LOG.debug(vo);
+		}		
+		
+				
+		return outList;
+	}
+
+	@Override
+	public int doSaveSubject(CodeVO inVO) throws SQLException {
+		int flag = 0;
+		LOG.debug("1.param \n" + inVO.toString());
+		//----------------------------------------------------------------------
+
+		String statement = this.NAMESPACE+DOT+"doSaveSubject";
+		LOG.debug("2.statement \n" + statement);
+		flag = this.sqlSessionTemplate.insert(statement, inVO);
+		LOG.debug("3.flag \n" + flag);
+		
+		return flag;
+	}
+
+	@Override
+	public int doDeleteSubject(String detCode) throws SQLException {
+		int flag = 0;
+
+		LOG.debug("1.param \n" + detCode);
+		String statement = NAMESPACE+DOT+"doDeleteSubject";
+		LOG.debug("2.statement \n" + statement);
+		flag=this.sqlSessionTemplate.update(statement, detCode);
+		
+		LOG.debug("3.flag \n" + flag);
+		return flag;
 	}
 
 }

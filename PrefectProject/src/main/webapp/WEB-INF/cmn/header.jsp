@@ -82,6 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
     background-color: #3986ff;
     color: white;
 }
+.swal2-popup {
+        font-size: 10px !important;
+        }
 </style>
 
 <!-- html head ------------------------------------------------------------------->
@@ -123,8 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
                 <a href="/ehr/index.jsp" class="navbar-brand">
              	<div class="arms-container d-flex align-items-center">
-                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="50" height="50">
-                    <h1 class="text-primary display-6 ms-3">ARMS</h1> <!-- ms-3은 왼쪽 여백을 추가합니다 -->
+                    <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="200" height="100">
                 </div>
             	</a>
 	            <button class="navbar-toggler py-2 px-3" type="button"
@@ -149,13 +151,23 @@ document.addEventListener('DOMContentLoaded', function() {
 						</c:if>  
                         <c:if test="${role eq '20' || role eq '30'}">
                         	<a href="/ehr/attendance/moveToCourseInfo.do" class="nav-item nav-link">과정정보</a>   
-    						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적관리</a>
 						</c:if>
-						<c:if test="${role eq '20'}">   
+						<c:if test="${role eq '20'}">  
+							<li class="nav-item dropdown">
+	                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+	                                                  과목관리
+	                          </a>
+	                          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+	                         	<li><a class="dropdown-item" href="/ehr/subject/moveToScoreReg.do?subjectCode=10">성적등록</a></li>
+	                          	<li><hr class="dropdown-divider"></li>
+	                            <li><a class="dropdown-item" href="/ehr/subject/moveToSubjectReg.do">과목등록</a></li>
+	                          </ul>
+	                        </li> 
     						 <a href="/ehr/attendance/moveToAttendance.do" class="nav-item nav-link">출석체크</a>
 						</c:if>
 						<c:if test="${role eq '30'}">   
     						 <a href="/ehr/attendance/moveToAttendStatus.do" class="nav-item nav-link">출석현황</a>
+     						 <a href="/ehr/subject/doRetrieve.do" class="nav-item nav-link">성적관리</a>
 						</c:if>
 						<a href="/ehr/calendar/doRetrieveCalendar.do" class="nav-item nav-link">캘린더</a>
                         <a href="/ehr/book/bookApiView.do" class="nav-item nav-link">도서검색</a>

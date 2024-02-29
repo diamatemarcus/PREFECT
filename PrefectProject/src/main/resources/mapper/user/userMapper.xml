@@ -129,10 +129,17 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 		     ,edu       = #{edu}       
 		     ,role      = #{role}
 		     ,salt      = #{salt}
-		     ,gender    = #{gender}       
+		     ,gender    = #{gender}
 		 WHERE                    
 		     email      = #{email}          
     </update> <!-- 회원정보 변경 쿼리 -->
+    
+    <update id="doPauseUser" parameterType="UserVO">
+         UPDATE users             
+         SET status      = #{status}    
+         WHERE                    
+             email      = #{email}          
+    </update> <!-- 회원정보 변경 쿼리 -->    
 
 
  	<!-- update password (비밀번호 찾기 부분)-->

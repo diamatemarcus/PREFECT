@@ -14,8 +14,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/bootstrap.min.css" type="text/css">
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/fontawesome-all.min.css" type="text/css">
+<link rel="stylesheet" href="${CP}/resources/template/login/assets/css/uf-style.css" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="http://code.jquery.com/jquery-latest.js"></script>
+<script>
+    $(document).ready(function() {
+        // '로그인 화면으로 돌아가기' 버튼에 클릭 이벤트 리스너 추가
+        $('#goToLogin').click(function() {
+            // 지정된 URL로 페이지 이동
+            window.location.href = '/ehr/login/loginView.do';
+        });
+    });
+</script>
 
 <head>
 <meta charset="UTF-8">
@@ -33,7 +45,6 @@
             background: white;
             border-radius: 20px;
             padding: 20px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
             text-align: center;
         }
     </style>
@@ -49,11 +60,11 @@
             if(user != null && user.getEmail() != null && !user.getEmail().isEmpty()) {
         %>
        
-                <p>이메일: <strong><%= user.getEmail() %></strong></p>
+                <p><strong><%= user.getEmail() %></strong></p>
         <%  } else { %>
                 <p>검색된 이메일 정보가 없습니다.</p>
         <%  } %>
-       <a href="/ehr/login/loginView.do" class="w3-button w3-black">로그인 화면으로 돌아가기</a>
+		<button class="btn btn-lg btn-primary btn-block" type="button" id="goToLogin">로그인 화면으로 돌아가기</button>
     </div>
 </div>
 

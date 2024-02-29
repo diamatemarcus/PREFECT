@@ -29,6 +29,7 @@ import com.pcwk.ehr.code.service.CodeService;
 import com.pcwk.ehr.file.domain.FileVO;
 import com.pcwk.ehr.file.service.AttachFileService;
 import com.pcwk.ehr.user.domain.UserVO;
+import com.pcwk.ehr.user.service.UserService;
 
 @Controller
 @RequestMapping("board")
@@ -39,6 +40,9 @@ public class BoardController implements PcwkLogger{
 	
 	@Autowired
 	CodeService  codeService;
+	
+	@Autowired
+	UserService  userService;
 	
 	@Autowired
 	AttachFileService fileService;
@@ -181,6 +185,20 @@ public class BoardController implements PcwkLogger{
 		//목록조회
 		List<BoardVO>  list = service.doRetrieve(inVO);
 		
+		List<UserVO>  users = new ArrayList<UserVO>();
+		
+		for (BoardVO boardVO : list) {
+			LOG.debug("boardVO:" + boardVO);
+			UserVO userVO = new UserVO();
+			userVO.setEmail(boardVO.getModId());
+			LOG.debug("userVO:" + userVO);
+			
+			userVO = userService.doSelectOne(userVO);
+			users.add(userVO);
+			
+			LOG.debug("users:" + users);
+		}
+		
 		long totalCnt = 0;
 		//총글수 
 		for(BoardVO vo  :list) {
@@ -230,6 +248,8 @@ public class BoardController implements PcwkLogger{
 		}
 		modelAndView.addObject("title", title);	
 		
+		//유저 정보
+		modelAndView.addObject("users",users);		
 		
 		return modelAndView;   
 	}
@@ -248,7 +268,7 @@ public class BoardController implements PcwkLogger{
 		if(1==flag) {
 			message = "수정 되었습니다.";
 		}else {
-			message = "수정 실패.";
+			message = "수정이 실패되었습니다.";
 		}
 		
 		MessageVO messageVO=new MessageVO(flag+"",message);
@@ -284,6 +304,16 @@ public class BoardController implements PcwkLogger{
 		
 		BoardVO  outVO = service.doSelectOne(inVO);
 		model.addAttribute("vo", outVO);
+		
+		// 유저 정보 조회
+		UserVO user = new UserVO();
+		
+		user.setEmail(outVO.getRegId());
+		user = userService.doSelectOne(user);
+		LOG.debug("userName:" + user);
+		
+		//유저 정보
+		model.addAttribute("user", user);
 		
 		// 파일 정보 조회
 		List<FileVO> fileList = fileService.getFileUuid(outVO.getUuid());
@@ -329,7 +359,7 @@ public class BoardController implements PcwkLogger{
 		if(1 == flag) {
 			message = "등록 되었습니다.";
 		}else {
-			message = "등록 실패.";
+			message = "등록이 실패되었습니다.";
 		}
 		
 		MessageVO  messageVO=new MessageVO(String.valueOf(flag), message);

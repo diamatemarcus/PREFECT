@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded",function(){
     const modId = '${sessionScope.user.email}';
     
     console.log('uuid:' + uuid);
-    
+    const goBackBTN =  document.querySelector("#goBack");
     const doUpdateBTN   = document.querySelector("#doUpdate");
     const doDeleteBTN   = document.querySelector("#doDelete");
     const moveToListBTN = document.querySelector("#moveToList");
@@ -59,12 +59,14 @@ document.addEventListener("DOMContentLoaded",function(){
             contentType: false, 
             success: function(data) {
                 console.log('Upload success: ', data);
-                alert('파일이 성공적으로 업로드되었습니다.');
+                //alert('파일이 성공적으로 업로드되었습니다.');
+                Swal.fire('파일이 성공적으로 업로드되었습니다.', "","success");
                 location.reload();
             },
             error: function(xhr, status, error) {
                 console.error('Upload failed: ', error);
-                alert('파일 업로드 중 오류가 발생했습니다.');
+                //alert('파일 업로드 중 오류가 발생했습니다.');
+                Swal.fire('파일 업로드 중 오류가 발생했습니다.', "","error");
             }
         });
         
@@ -80,7 +82,17 @@ document.addEventListener("DOMContentLoaded",function(){
             console.log('uuid :'+uuid);
             console.log('seq :'+seq);
             
-            if(confirm('해당 파일을 삭제하시겠습니까?')) {
+            //if(confirm('해당 파일을 삭제하시겠습니까?')) {
+            Swal.fire({
+            title: '삭제 하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+                }).then((result) => {
+            if (result.isConfirmed) {
                 $.ajax({
                     url: '${CP}/file/doDelete.do',
                     type: 'GET',
@@ -90,18 +102,20 @@ document.addEventListener("DOMContentLoaded",function(){
                     },
                     success: function(response) {
                         console.log('파일 삭제 성공');
-                        alert('파일이 삭제되었습니다.');
-                        
+                        //alert('파일이 삭제되었습니다.');
+                        Swal.fire('파일이 삭제되었습니다.', "","success");
                         // 성공 시 페이지 새로고침 등의 추가 동작
                         location.reload();
                     },
                     error: function(xhr, status, error) {
                         console.log('파일 삭제 실패');
-                        alert('파일 삭제 중 오류가 발생했습니다.');
+                        //alert('파일 삭제 중 오류가 발생했습니다.');
+                        Swal.fire('파일 삭제 중 오류가 발생했습니다.', "","error");
                     }
                 });
             }
         });
+       });      
     });
     
     // 수정 이벤트 감지 및 처리
@@ -127,10 +141,19 @@ document.addEventListener("DOMContentLoaded",function(){
             return;
         }
         
-        if(confirm('수정 하시겠습니까?')==false){
+        /* if(confirm('수정 하시겠습니까?')==false){
             return;
-        }
-        
+        } */
+        Swal.fire({
+            title: '수정 하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
         $.ajax({
             type: "POST",
             url:"/ehr/board/doUpdate.do",
@@ -148,10 +171,13 @@ document.addEventListener("DOMContentLoaded",function(){
                 console.log("success data.msgContents:"+data.msgContents);
                 
                 if(1==data.msgId){
-                    alert(data.msgContents);
-                    moveToList();
+                    //alert(data.msgContents);
+                    Swal.fire(data.msgContents, "","success");
+                    window.location.href = "${CP}/board/doSelectOne.do?seq=" + seq
+                    + "&div=" + div;
                 }else{
-                    alert(data.msgContents);
+                    //alert(data.msgContents);
+                    Swal.fire(data.msgContents, "","error");
                 }
                 
             },
@@ -162,11 +188,12 @@ document.addEventListener("DOMContentLoaded",function(){
                 console.log("complete:"+data);
             }
         });
-        
+       }
+     });
     });
     
     //삭제 이벤트 감지 및 처리
-    doDeleteBTN.addEventListener("click",function(e){
+    /* doDeleteBTN.addEventListener("click",function(e){
         console.log('doDeleteBTN click');
         
         console.log('seq :'+seq);
@@ -175,8 +202,8 @@ document.addEventListener("DOMContentLoaded",function(){
             alert('순번을 확인 하세요.');
             return;
         }
-
-        if(window.confirm('삭제 하시겠습니까?')==false){
+ */
+        /* if(window.confirm('삭제 하시겠습니까?')==false){
             return;
         }
 
@@ -201,24 +228,85 @@ document.addEventListener("DOMContentLoaded",function(){
             error:function(data){//실패시 처리
                 console.log("error:"+data);
             }
-        });
-        
-    }); 
+        }); */
+        /* Swal.fire({
+            title: '삭제 하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                
+                $.ajax({
+                    type: "GET",
+                    url:"/ehr/board/doDelete.do",
+                    asyn:"true",
+                    dataType:"json",
+                    data:{
+                    	"seq": seq
+                     
+                    },
+                    success:function(data){//통신 성공
+                        console.log("success data:"+data.msgId);
+                        console.log("success data:"+data.msgContents);
+                        
+                        if("1" == data.msgId){
+                            Swal.fire(data.msgContents, "","success");
+                            moveToList();
+                        }else{
+                            Swal.fire(data.msgContents, "","error");
+                        }
+                    },
+                    error:function(data){//실패시 처리
+                        console.log("error:"+data);
+                    },
+                    complete:function(data){//성공/실패와 관계없이 수행!
+                        console.log("complete:"+data);
+                    }
+                });
+            }
+        });    
+    }); */
     
     //목록 이벤트 감지 및 처리
-    moveToListBTN.addEventListener("click",function(e){
+    /* moveToListBTN.addEventListener("click",function(e){
         console.log('moveToListBTN click');
         if(confirm('목록 화면으로 이동 하시겠습니까?')==false){
             return;
         }           
         moveToList();
         
-    })
+    }) */
     
-    function moveToList(){
+    /* moveToListBTN.addEventListener("click",function(e){
+        console.log('moveToListBTN click');
+        
+        Swal.fire({
+            title: '목록으로 돌아가시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {         
+                moveToList();
+            }
+        });   
+    }) */
+    /* function moveToList(){
         window.location.href = "${CP}/board/doRetrieve.do?div="+div;
-    }
+    } */
     
+    goBackBTN.addEventListener("click", function() {
+    	window.location.href = "${CP}/board/doSelectOne.do?seq=" + seq
+        + "&div=" + div;
+    	//window.history.back(); // 브라우저의 이전 페이지로 이동
+    });
 });
 
 </script>
@@ -374,16 +462,17 @@ document.addEventListener("DOMContentLoaded",function(){
     <!-- 버튼 -->
     <div class="row justify-content-end" style="margin-bottom: 20px;">
         <div class="col-auto">
-            <input type="button" value="취소" class="button" id="moveToList">
+            <input type="button" value="취소" class="button" id="goBack">
             <input type="button" value="수정" class="button" id="doUpdate" >
-            <input type="button" value="삭제" class="button" id="doDelete" >
+            <!-- <input type="button" value="삭제" class="button" id="doDelete" > -->
         </div>
     </div>
     <!--// 버튼 ----------------------------------------------------------------->
     
     
-    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+    
 </div>
 
 </body>
+<%-- <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include> --%>
 </html>

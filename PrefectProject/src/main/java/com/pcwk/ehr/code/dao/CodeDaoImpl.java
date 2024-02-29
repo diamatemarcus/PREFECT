@@ -48,7 +48,7 @@ public class CodeDaoImpl implements CodeDao,PcwkLogger {
 		//com.pcwk.ehr.code.doRetrieve
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doRetrieve                        │");
-		LOG.debug("│ BoardVO                           │"+map);
+		LOG.debug("│ 		                           │"+map);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doRetrieve");//
 		LOG.debug("└───────────────────────────────────┘");				
 		

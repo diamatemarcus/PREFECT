@@ -21,7 +21,10 @@
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <title>이메일 찾기</title>
 <style>
+
+
 body {
+	margin : -100px;
     background-color: #f7f8fa;
     color: #495057;
 }
@@ -31,11 +34,12 @@ body {
     margin: 100px auto;
     background-color: white;
     border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0,0,0,.1);
 }
 .uf-form-signin h1 {
-    text-align: center;
+    text-align: right;
     margin-bottom: 30px;
+    margin-top: 4px;
+    font-size : 23px
 }
 .form-label {
     font-weight: bold;
@@ -61,7 +65,12 @@ body {
 </head>
 <body>
     <div class="uf-form-signin">
-        <h1 class="h3 mb-3 font-weight-normal text-center">이메일 찾기</h1>
+   		 <a href="/ehr/index.jsp" class="navbar-brand">
+            <div class="arms-container d-flex align-items-center">
+             <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="150" height="75">
+           </div>    
+        </a>
+        <h1 class="h3 mb-3 font-weight-normal">이메일 찾기</h1>
         <form>
             <div class="mb-3">
                 <label for="name" class="form-label">이름</label>
@@ -71,8 +80,8 @@ body {
                 <label for="tel" class="form-label">전화번호</label>
                 <input type="text" id="tel" class="form-control" placeholder="전화번호를 입력하세요" required>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit" id="searchEmailResult">이메일 확인</button>
-            <button class="btn btn-lg btn-secondary btn-block" onclick="history.go(-1);">취소</button>
+            <button class="btn btn-lgg btn-primary btn-block" type="submit" id="searchEmailResult">이메일 확인</button>
+            <button class="btn btn-lgg btn-secondary btn-block" onclick="history.go(-1);">취소</button>
         </form>
     </div>
      <script type="text/javascript">

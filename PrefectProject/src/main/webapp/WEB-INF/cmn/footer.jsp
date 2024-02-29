@@ -33,6 +33,8 @@
     position: fixed;
     bottom: 0;
     width: 100%;
+	z-index: 9999; /* 확실하게 맨 앞에 위치하도록 높은 값을 설정 */
+   
 	}	
 	</style>
     

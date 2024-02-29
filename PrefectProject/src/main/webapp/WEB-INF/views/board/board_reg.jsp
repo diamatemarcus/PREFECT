@@ -32,12 +32,22 @@ document.addEventListener("DOMContentLoaded",function(){
         let div = document.querySelector("#div").value;
         console.log("div:" + div);
         
-        if (window.confirm("등록하지 않고 목록으로 가시겠습니까?") === false) {
+        /* if (window.confirm("등록하지 않고 목록으로 가시겠습니까?") === false) {
             return;
-        }
-        
-        moveToListFun();
-        
+        } */
+        Swal.fire({
+            title: '등록하지 않고 목록으로 가시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                moveToListFun();
+            }
+        });   
     });
 
     function generateUUID() {
@@ -91,42 +101,56 @@ document.addEventListener("DOMContentLoaded",function(){
             return;
         }
 
-        if (window.confirm("등록하시겠습니까?") === false) {
+        /* if (window.confirm("등록하시겠습니까?") === false) {
             return;
-        }
+        } */
+        Swal.fire({
+            title: '등록하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            	$.ajax({
+                    type: "POST",
+                    url: "/ehr/board/doSave.do",
+                    async: true,
+                    dataType: "json",
+                    data: {
+                        "div": div,
+                        "title": title,
+                        "contents": contents,
+                        "readCnt": 0,
+                        "regId": regId,
+                        "uuid": uuid
+                    },
+                    success: function (data) {// 통신 성공 시의 처리
+                        console.log("data.msgId:" + data.msgId);
+                        console.log("data.msgContents:" + data.msgContents);
+                        console.log("uuid:" + uuid);
 
-        $.ajax({
-            type: "POST",
-            url: "/ehr/board/doSave.do",
-            async: true,
-            dataType: "json",
-            data: {
-                "div": div,
-                "title": title,
-                "contents": contents,
-                "readCnt": 0,
-                "regId": regId,
-                "uuid": uuid
-            },
-            success: function (data) {// 통신 성공 시의 처리
-                console.log("data.msgId:" + data.msgId);
-                console.log("data.msgContents:" + data.msgContents);
-                console.log("uuid:" + uuid);
-
-                if ('1' == data.msgId) {
-                    alert(data.msgContents);
-                    moveToListFun();
-                } else {
-                    alert(data.msgContents);
-                }
-            },
-            error: function (data) {// 통신 실패 시의 처리
-                console.log("error:" + data);
-            },
-            complete: function (data) {// 성공/실패와 관계없이 수행되는 처리
-                console.log("complete:" + data);
+                        if ('1' == data.msgId) {
+                            //alert(data.msgContents);
+                            Swal.fire(data.msgContents, "","success");
+                            moveToListFun();
+                        } else {
+                            //alert(data.msgContents);
+                            Swal.fire(data.msgContents, "","error");
+                        }
+                    },
+                    error: function (data) {// 통신 실패 시의 처리
+                        console.log("error:" + data);
+                    },
+                    complete: function (data) {// 성공/실패와 관계없이 수행되는 처리
+                        console.log("complete:" + data);
+                    }
+            	 });    
             }
-        });
+        });   
+        
     });
     
     // 파일 리스트 업데이트 함수
@@ -220,27 +244,41 @@ document.addEventListener("DOMContentLoaded",function(){
         const seq = $(this).data('seq'); // 삭제할 파일의 seq 가져오기
         console.log('seq:', seq);
         
-        if(confirm('해당 파일을 삭제하시겠습니까?')) {
-            $.ajax({
-                url: '${CP}/file/doDelete.do',
-                type: 'GET',
-                data: {
-                    "uuid": uuid,
-                    "seq": seq
-                },
-                success: function(response) {
-                    console.log('파일 삭제 성공');
-                    alert('파일이 삭제되었습니다.');
-                    
-                    // 파일 삭제 후 파일 리스트 업데이트
-                    updateFileList();
-                },
-                error: function(xhr, status, error) {
-                    console.log('파일 삭제 실패');
-                    alert('파일 삭제 중 오류가 발생했습니다.');
-                }
-            });
-        }
+        Swal.fire({
+            title: '해당 파일을 삭제하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
+            	$.ajax({
+                    url: '${CP}/file/doDelete.do',
+                    type: 'GET',
+                    data: {
+                        "uuid": uuid,
+                        "seq": seq
+                    },
+                    success: function(response) {
+                        console.log('파일 삭제 성공');
+                        //alert('파일이 삭제되었습니다.');
+                        Swal.fire("파일이 삭제되었습니다.", "","success");
+                        // 파일 삭제 후 파일 리스트 업데이트
+                        updateFileList();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('파일 삭제 실패');
+                        //alert('파일 삭제 중 오류가 발생했습니다.');
+                        Swal.fire("파일 삭제 중 오류가 발생했습니다.", "","error");
+                    }
+                });
+            }
+        });   
+        
+        
+        
     });
     
     // 파일 재업로드
@@ -285,6 +323,8 @@ document.addEventListener("DOMContentLoaded",function(){
 }); //--DOMContentLoaded
 </script>
 <style>
+
+
     input[type=file]::file-selector-button {
     width: auto;
     /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
@@ -306,11 +346,16 @@ document.addEventListener("DOMContentLoaded",function(){
 	  margin: 0 auto; /* 페이지 중앙에 위치하도록 마진 설정 */
 	  text-align: right;
 }
-    .fileinfo{
-     width: 65%; /* 넓이를 페이지의 80%로 설정 */
-     margin: 0 auto; /* 페이지 중앙에 위치하도록 마진 설정 */
-     text-align: center;
-    }
+	.fileinfo {
+    width: 77%;
+    margin: 0px auto;
+    text-align: center;
+    margin-bottom: 34px;
+    padding: 72px 100px 100px 100px;
+}
+
+
+
 </style>
 </head>
 <body>
@@ -445,7 +490,8 @@ document.addEventListener("DOMContentLoaded",function(){
     </div>
 	<!-- 파일 업로드 ------------------------------------------------------------->
     
-    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+
 </div>
 </body>
+    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </html>

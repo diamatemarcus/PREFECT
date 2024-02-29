@@ -22,6 +22,8 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	    </where>
 	</sql>
 
+	
+
 
 
     <select id="doRetrieve" parameterType="SubjectVO" resultType="SubjectVO">
@@ -34,6 +36,15 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	    </where>
    
     </select>
+    
+	<select id="doRetrieveBySubjectCode" parameterType="SubjectVO" resultType="SubjectVO">
+		 SELECT subject_code, courses_code, professor, trainee, score
+   			FROM subject
+	       WHERE professor = #{professor} AND subject_code = #{subjectCode}
+    </select>
+
+
+    
 
 
 	
@@ -57,15 +68,11 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	<update id="doUpdate" parameterType="SubjectVO">
 	    UPDATE subject
 	    SET
-	        subject_code = #{subjectCode},
-	        courses_code = #{courseCode},
-	        professor = #{professor},
-	        trainee = #{trainee},
 	        score = #{score}
 	    WHERE
 	        subject_code = #{subjectCode} AND
 	        courses_code = #{coursesCode} AND
-	        trainee = #{trainee};
+	        trainee = #{trainee}
 	</update>
 	
 
@@ -85,6 +92,38 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	    #{score}
 	)
     </insert>
+    
+    <insert id="doSaveSubject" parameterType="CodeVO">
+	    INSERT INTO cmn_code (
+	    	mst_code,
+		    det_code,
+		    mst_name,
+		    det_name,
+		    seq,
+		    use_yn,
+		    reg_dt,
+		    reg_id,
+		    mod_dt,
+		    mod_id
+		) VALUES (
+		    'SUBJECT',
+		    code_seq.NEXTVAL,
+		    '과목',
+		    #{detName},
+		    code_seq.NEXTVAL,
+		   	1,
+		   	SYSDATE,
+		   	#{regDd},
+		   	SYSDATE,
+		   	#{regDd}	
+		)
+    </insert>
+    
+    <delete id="doDeleteSubject" parameterType="String">
+	    DELETE FROM cmn_code 
+	    WHERE  mst_code = 'SUBJECT' 
+	    AND det_code = #{detCode}
+    </delete> <!--  회원 삭제 쿼리  -->
     
 
 </mapper>  
