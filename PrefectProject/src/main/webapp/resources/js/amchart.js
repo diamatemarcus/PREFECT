@@ -105,6 +105,8 @@ var xAxis = chart.xAxes.push(
 
 var yAxis = chart.yAxes.push(
   am5xy.ValueAxis.new(root, {
+    min: 0,
+    max: 100,
     renderer: am5radar.AxisRendererRadial.new(root, {})
   })
 );

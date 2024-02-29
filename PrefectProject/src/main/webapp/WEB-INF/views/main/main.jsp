@@ -9,7 +9,10 @@
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 
 <style>
-
+#mainchartdiv {
+  width: 100%;
+  height: 300px;
+}
 </style>
 </head>
 
@@ -117,23 +120,19 @@
     </div>
  -->    
     <!-- Middle -->
-    <div class="container py-4 col-md-3">
-        <div class="row bg-light p-4 rounded">
-            <div class="counter bg-white rounded p-4">
-                <div class="wrap">
-                    <p>
-                        커뮤니티 이용을 위해 <span class="login-text" style="color: red">로그인</span>이
-                        필요합니다!
-                    </p>
-                    <button class="button" type="button" onclick="location.href='/ehr/login/loginView.do'"
-                        style="background-color: FFA500; width: 200px; height: 38px; margin-bottom: 10px; color: white; font-size: 13px;">로그인</button>
-                    <button class="button" type="button" onclick="location.href='/ehr/user/moveToReg.do'"
-                        style="background-color: FFA500; width: 200px; height: 38px; color: white; font-size: 13px">ARMS
-                        회원가입</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <br>
+    <br>
+    <br>
+   <div class="container mt-10">
+        <div class="row ">
+   			<div class="col-5 g-4 mt-10 justify-content-center;">
+   				<div id = mainchartdiv></div>
+   			</div>
+   			<div class="col-3 g-4 mt-10 justify-content-center;">
+   				<div id = mainchartdiv2></div>
+   			</div>
+   		</div>
+   </div>
 
     <!-- Middle End -->
     <!-- Fact Start -->
@@ -282,6 +281,16 @@
     </a>
 
 <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
+
+<!--  chart Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+<script src="${CP}/resources/js/piechart.js" type="text/javascript"></script>
 </body>
+
+<script>
+
+</script>
 
 </html>
