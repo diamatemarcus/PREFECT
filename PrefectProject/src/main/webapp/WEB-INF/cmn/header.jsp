@@ -153,6 +153,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         	<a href="/ehr/attendance/moveToCourseInfo.do" class="nav-item nav-link">과정정보</a>   
 						</c:if>
 						<c:if test="${role eq '20'}">  
+						    <a href="/ehr/course/doRetrieveAllTrainees.do" class="nav-item nav-link">과정</a>
 							<li class="nav-item dropdown">
 	                          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 	                                                  과목관리
