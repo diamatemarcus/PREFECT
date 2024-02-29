@@ -312,23 +312,21 @@ document.addEventListener("DOMContentLoaded",function(){
                 
                 for(let i=0; i<data.length; i++){
                     replyDiv += '<div class="dynamicReply"> \n';
-                    // Flex 컨테이너 시작
                     replyDiv += '<div class="flex-container" style="justify-content: space-between; margin-bottom: 5px;"> \n'; 
-                    // 왼쪽 부분: 등록자와 등록일
                     replyDiv += '<div> \n'; 
                     replyDiv += '<span>' + data[i].regId + '</span> \n';
                     replyDiv += '<span>(' + data[i].modDt + ')</span> \n';
                     replyDiv += '</div> \n';
-                    // 오른쪽 부분: 수정 및 삭제 버튼
-                    replyDiv += '<c:if test="${role eq '10' && modId eq regId}"> \n';
-                    replyDiv += '<div> \n';
-                    replyDiv += '<input type="button" value="댓글수정" class="button replyDoUpdate"> \n';
-                    replyDiv += '<input type="button" value="댓글삭제" class="button replyDoDelete"> \n';
-                    replyDiv += '</div> \n';
-                    replyDiv += '</c:if> \n';
-                    // Flex 컨테이너 종료
-                    replyDiv += '</div> \n';
 
+                    // 사용자 역할과 이메일을 비교하여 수정 및 삭제 버튼을 동적으로 추가
+                    if ((userRole === '10'||userRole === '20') || modId === data[i].regId) {
+                        replyDiv += '<div> \n';
+                        replyDiv += '<input type="button" value="댓글수정" class="button replyDoUpdate"> \n';
+                        replyDiv += '<input type="button" value="댓글삭제" class="button replyDoDelete"> \n';
+                        replyDiv += '</div> \n';
+                    }
+
+                    replyDiv += '</div> \n';
                     replyDiv += '<div class="mb-3"> \n';
                     replyDiv += '<input type="hidden" name="replySeq" value="' + data[i].replySeq + '"> \n';
                     replyDiv += '<textarea rows="3" class="form-control dyReplyContents" name="dyReplyContents">' + data[i].reply + '</textarea> \n';
@@ -544,7 +542,7 @@ document.addEventListener("DOMContentLoaded",function(){
 							<input type="button" value="목록" class="button" id="moveToList">
 						</div>
 
-						<c:if test="${role eq '10' && modId eq regId}">
+						<c:if test="${sessionScope.user.role eq '10' or sessionScope.user.role eq '20' or sessionScope.user.email eq vo.regId}">
                           <div class="col-auto">
                             <input type="button" value="수정" class="button" id="moveToMod">
                             <input type="button" value="삭제" class="button" id="doDelete">
