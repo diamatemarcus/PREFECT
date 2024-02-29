@@ -486,6 +486,7 @@ public class UserController implements PcwkLogger {
 		String rawAndSalt = raw + salt;
 		String hex = ShaUtil.hash(rawAndSalt);
 		inVO.setPassword(hex);
+		LOG.debug("아오 제발"+inVO);
 		//
 
 		int flag = userService.doSave(inVO);
