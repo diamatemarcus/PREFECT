@@ -4,9 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="CP" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
+<jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <html>
 <head>
-<jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
 <meta charset="utf-8">
 <title>게시판 상세 조회</title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -533,7 +533,7 @@ document.addEventListener("DOMContentLoaded",function(){
 </head>
 <body>
 
-	<div class="container" style="margin-top: 150px;">
+	<div class="container" style="margin-top: 70px;">
 		<div class="content">
 			<div class="container-main">
 
@@ -694,8 +694,10 @@ document.addEventListener("DOMContentLoaded",function(){
 			<!--// reply -------------------------------------------------------------->
 		</div>
 	</div>
-
-	<%-- <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include> --%>
+	<br>
+	<br>
 
 </body>
+
+	<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </html>
