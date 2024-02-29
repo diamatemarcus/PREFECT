@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.pcwk.ehr.chart.domain.EduVO;
 import com.pcwk.ehr.chart.domain.ScoreVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.subject.domain.SubjectVO;
@@ -21,7 +22,7 @@ public class ChartDaoImpl implements ChartDao, PcwkLogger {
 	SqlSessionTemplate sqlSessionTemplate;
 
 
-	@Override
+	@Override //myPageChart
 	public List<ScoreVO> getWorkChartInfo(ScoreVO scoreVO) {
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ mpChart                           │");
@@ -31,6 +32,18 @@ public class ChartDaoImpl implements ChartDao, PcwkLogger {
 		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"getWorkChartInfo", scoreVO);
 	
 	}
+	
+	@Override //mainPageChart
+	public List<EduVO> mainChartInfo(EduVO eduVO) {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ mainChartInfo                     │");
+		LOG.debug("│ EduVO                             │"+eduVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doRetrieve");
+		LOG.debug("└───────────────────────────────────┘");			
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"mainChartInfo", eduVO);
+	
+	}
+
 
 
 	@Override
