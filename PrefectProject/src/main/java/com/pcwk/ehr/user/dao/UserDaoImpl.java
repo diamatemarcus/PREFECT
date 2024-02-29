@@ -179,6 +179,17 @@ public class UserDaoImpl implements UserDao {
 		return totalCount;
 	}
 
+	@Override
+	public int doPauseUser(UserVO inVO) throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ doUpdate                          │");
+		LOG.debug("│ LicensesVO                        │"+inVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doPauseUser");
+		LOG.debug("└───────────────────────────────────┘");
+		
+		return sqlSessionTemplate.update(NAMESPACE+DOT+"doPauseUser", inVO);
+	}
+
 }
 
 

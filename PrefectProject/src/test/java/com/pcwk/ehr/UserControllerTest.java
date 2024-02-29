@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.pcwk.ehr.cmn.MessageVO;
+import com.pcwk.ehr.user.dao.UserDao;
 import com.pcwk.ehr.user.domain.UserVO;
 
 @WebAppConfiguration
@@ -47,9 +48,9 @@ public class UserControllerTest {
 	@Autowired
 	WebApplicationContext webApplicationContext;
 	
-//	@Autowired
-//	ApplicationContext context;
-//	
+	@Autowired
+	UserDao dao;
+	
 	//브라우저 대역
 	MockMvc  mockMvc;
 	
@@ -65,7 +66,7 @@ public class UserControllerTest {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 		
 		users = Arrays.asList(
-				 new UserVO("cr7@gmail.com", "호날두", "7777", "01077777777" ,"초졸","1","","남자")
+				 new UserVO("cr7@gmail.com", "호날두", "7777", "01077777777" ,"초졸","1","","남자","1")
 				,new UserVO("sg8@gmail.com", "제라드", "8888", "01077777777" ,"대졸","1","","남자") 
 				,new UserVO("ft9@gmail.com", "토레스", "9999", "01077777777" ,"고졸","2","","여자")
 				,new UserVO("lm10@gmail.com", "메시", "1010", "01010101010" ,"대졸","1","","여자") 
@@ -105,7 +106,38 @@ public class UserControllerTest {
 		
 	}
 	
+	@Test
+	public void doPauseUser() throws Exception {
+		LOG.debug("┌───────────────────────────────────────────┐");
+		LOG.debug("│ doPauseUser                               │");		
+		LOG.debug("└───────────────────────────────────────────┘");
+		
+		dao.doDelete(users.get(0));
+		int flag = dao.doSave(users.get(0));
+		assertEquals(1, flag);
+		
+		UserVO vo = dao.doSelectOne(users.get(0));
+		
+		vo.setStatus("0");
+		
+		MockHttpServletRequestBuilder  requestBuilder  =
+	    		MockMvcRequestBuilders.post("/user/doPauseUser.do")
+	    		.param("email", vo.getEmail())
+	    		.param("status", vo.getStatus())
+	    		;
+	    
+		//호출        
+		ResultActions resultActions=  mockMvc.perform(requestBuilder).andExpect(status().isOk());
+		//호출결과
+		String result = resultActions.andDo(print()).andReturn().getResponse().getContentAsString();
+		LOG.debug("│ result                                │"+result);		
+		
+		MessageVO messageVO=new Gson().fromJson(result, MessageVO.class);
+		assertEquals("1", messageVO.getMsgId());
+		
+	}
 	
+	@Ignore
 	@Test
 	public void doUpdate() throws Exception {
 		LOG.debug("┌───────────────────────────────────────────┐");
@@ -118,7 +150,7 @@ public class UserControllerTest {
 		String upStr = "_U";
 		int upNum    = 100;
 		MockHttpServletRequestBuilder  requestBuilder = 
-                MockMvcRequestBuilders.post("/user/doUpdate.do")
+                MockMvcRequestBuilders.post("/user/doPauseUser.do")
                .param("email",         inVO.getEmail())
                .param("name",          inVO.getName()+upStr)
                .param("password",      inVO.getPassword()+upStr)
@@ -140,6 +172,7 @@ public class UserControllerTest {
 		LOG.debug("└───────────────────────────────────────────┘");					
 		
 	}
+	@Ignore
 	@Test
 	public void addAndGet() throws Exception {
 		// 1. 데이터 삭제

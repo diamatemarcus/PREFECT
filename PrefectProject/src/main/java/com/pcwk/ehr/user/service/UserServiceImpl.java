@@ -90,6 +90,12 @@ public class UserServiceImpl implements UserService {
 		return userDao.totalUsers();
 	}
 
+	@Override
+	public int doPauseUser(UserVO inVO) throws SQLException {
+		
+		return userDao.doPauseUser(inVO);
+	}
+
 }
 
 

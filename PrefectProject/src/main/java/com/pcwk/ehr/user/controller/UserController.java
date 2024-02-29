@@ -51,6 +51,10 @@ public class UserController implements PcwkLogger {
 
 	@Autowired
 	LicensesService service;
+	
+	public UserController() {
+		
+	}
 
 	// 이메일 인증
 	@RequestMapping(value = "/mailCheck.do", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
@@ -254,14 +258,35 @@ public class UserController implements PcwkLogger {
 
 		return view;
 	}
+	@RequestMapping(value = "/doPauseUser.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+	@ResponseBody // HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
+	public MessageVO doPauseUser(UserVO inVO,Model model) throws SQLException{
+		MessageVO messageVO = null;
+		
+		int flag = userService.doPauseUser(inVO);
 
+		String message = "";
+		
+		if (1 == flag) {
+			message = "수정완료";
+		} else {
+			message = "수정실패";
+		}
+
+		messageVO = new MessageVO(flag + "", message);
+
+		LOG.debug("│ messageVO                           │" + messageVO);
+		
+		return messageVO;
+	}
+	
 	// 수정
 	@RequestMapping(value = "/doUpdate.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody // HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
 	public String doUpdate(UserVO inVO,Model model,HttpSession httpsession) throws SQLException {
 		String jsonString = "";
 		LOG.debug("┌───────────────────────────────────────────┐");
-		LOG.debug("│ doUpdate()                                  │inVO:" + inVO);
+		LOG.debug("│ doUpdate()                                │inVO:" + inVO);
 		LOG.debug("└───────────────────────────────────────────┘");
 		
 		
