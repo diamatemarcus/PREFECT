@@ -79,4 +79,6 @@ public interface UserService {
 	public int doUpdatePassword(UserVO inVO) throws SQLException;
 	
 	public int totalUsers() throws SQLException;
+	
+	public int doPauseUser(UserVO inVO) throws SQLException;
 }

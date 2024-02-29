@@ -17,4 +17,6 @@ public interface UserDao extends WorkDiv<UserVO> {
 	int doUpdatePassword(UserVO inVO) throws SQLException;
     
 	int totalUsers() throws SQLException;
+
+	int doPauseUser(UserVO inVO) throws SQLException;
 }
