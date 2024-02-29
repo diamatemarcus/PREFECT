@@ -323,6 +323,8 @@ document.addEventListener("DOMContentLoaded",function(){
 }); //--DOMContentLoaded
 </script>
 <style>
+
+
     input[type=file]::file-selector-button {
     width: auto;
     /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
@@ -344,11 +346,16 @@ document.addEventListener("DOMContentLoaded",function(){
 	  margin: 0 auto; /* 페이지 중앙에 위치하도록 마진 설정 */
 	  text-align: right;
 }
-    .fileinfo{
-     width: 65%; /* 넓이를 페이지의 80%로 설정 */
-     margin: 0 auto; /* 페이지 중앙에 위치하도록 마진 설정 */
-     text-align: center;
-    }
+	.fileinfo {
+    width: 77%;
+    margin: 0px auto;
+    text-align: center;
+    margin-bottom: 34px;
+    padding: 72px 100px 100px 100px;
+}
+
+
+
 </style>
 </head>
 <body>
@@ -483,7 +490,8 @@ document.addEventListener("DOMContentLoaded",function(){
     </div>
 	<!-- 파일 업로드 ------------------------------------------------------------->
     
-    <%-- <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include> --%>
+
 </div>
 </body>
+    <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </html>
