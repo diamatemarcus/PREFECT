@@ -81,7 +81,7 @@
 	    <input type="date" id="calID" name="calID" value="<%=java.time.LocalDate.now()%>" onchange="reloadPage(this)">
 	</div> --%>
 
-	<div class="row">
+	<div>
 		<div class="container col-md-6">
 			<table class="table">
 				<tbody>
@@ -107,7 +107,6 @@
 			</table>
 		</div>
 	</div>
-
 
 	<div class="container-fluid testimonial py-2">
 		<!-- table -->
