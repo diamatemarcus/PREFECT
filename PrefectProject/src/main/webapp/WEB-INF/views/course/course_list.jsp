@@ -39,8 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		    
 		    <!-- Title -->
 		    <div class="col-lg-12">
-		      ${ trainees }
-		        <h2 class="title" style="text-align: left;"> 학생 조회 </h2>
+		        <h2 class="title" style="text-align: left;"> <%-- ${ ㅕㄴㄷㄱ.academyName } --%> 과정 조회 </h2>
 		    </div>
 		    
 		    <!-- Trainees List -->

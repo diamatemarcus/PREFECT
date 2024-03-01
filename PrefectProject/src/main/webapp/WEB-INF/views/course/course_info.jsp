@@ -15,6 +15,14 @@
 <script>
 	document.addEventListener("DOMContentLoaded", function() {
 		console.log("DOMContentLoaded");
+		
+		const moveToListBTN = document.querySelector("#moveToList"); // 과정 조회 버튼
+		
+		moveToListBTN.addEventListener("click", function(e) {
+			console.log("moveToListBTN click");
+			
+			window.location.href = "${CP}/course/moveToList.do";
+		});
 
 	});//--DOMContentLoaded
 </script>
@@ -82,6 +90,10 @@
 
 				</tbody>
 			</table>
+			
+			<div class="button-container">
+	            <input type="button" value="과정 조회" class="button" id="moveToList">
+	        </div>
 		</div>
 	</div>
 

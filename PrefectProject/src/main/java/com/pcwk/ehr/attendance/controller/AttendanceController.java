@@ -2,16 +2,13 @@ package com.pcwk.ehr.attendance.controller;
 
 import java.sql.SQLException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +53,7 @@ public class AttendanceController implements PcwkLogger {
 		LOG.debug("│ CourseController                        │");
 		LOG.debug("└───────────────────────────────────────────┘");
 	}
-
+	
 	// 출석 리스트
 	@GetMapping(value = "/moveToAttendance.do")
 	public String moveToTraineeList(AttendanceVO inVO, Model model, HttpSession httpSession)

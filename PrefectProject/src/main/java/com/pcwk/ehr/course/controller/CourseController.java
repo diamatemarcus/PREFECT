@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.pcwk.ehr.attendance.domain.AttendanceVO;
 import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.course.domain.CourseVO;
@@ -104,6 +105,7 @@ public class CourseController implements PcwkLogger{
 		
 		// 유저 조회
 		List<UserVO>  users = new ArrayList<UserVO>();
+		
 		for (CourseVO courseVO : trainees) {
 			LOG.debug("courseVO:" + courseVO);
 			UserVO userVO = new UserVO();
@@ -124,5 +126,56 @@ public class CourseController implements PcwkLogger{
 		
 		return view;
 		
+	}
+	
+	// 코스 리스트
+	@GetMapping(value = "/moveToList.do")
+	public String moveToList(CourseVO inVO, Model model, HttpSession httpSession) throws SQLException {
+		String viewName = "";
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ moveToList                        │");
+		LOG.debug("└───────────────────────────────────┘");		
+		
+		
+		CourseVO course = new CourseVO();
+		
+		if(null != httpSession.getAttribute("user")) {
+			UserVO user = (UserVO) httpSession.getAttribute("user");
+			LOG.debug("email:"+user.getEmail());
+			course.setEmail(user.getEmail());
+		}
+		
+		course = courseService.doSelectOne(course);
+		LOG.debug("course:"+course);
+		
+		// 목록 조회
+		List<CourseVO> trainees = courseService.doRetrieve(course);
+		
+		for(CourseVO trainee  :trainees) {
+			LOG.debug("trainee:"+trainee.getEmail());
+		}
+		
+		// 유저 조회
+		List<UserVO>  users = new ArrayList<UserVO>();
+		
+		for (CourseVO courseVO : trainees) {
+			LOG.debug("courseVO:" + courseVO);
+			UserVO userVO = new UserVO();
+			userVO.setEmail(courseVO.getEmail());
+			LOG.debug("userVO:" + userVO);
+			
+			userVO = userService.doSelectOne(userVO);
+			users.add(userVO);
+			
+			LOG.debug("users:" + users);
+		}
+		
+		
+		model.addAttribute("trainees", trainees);
+		model.addAttribute("users",users);		
+		
+		
+		viewName = "course/course_list";		
+		return viewName;
 	}
 }

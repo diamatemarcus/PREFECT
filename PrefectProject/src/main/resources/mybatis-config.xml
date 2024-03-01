@@ -18,6 +18,8 @@
         <typeAlias type="com.pcwk.ehr.board.domain.BoardVO" alias="BoardVO"/>
         <typeAlias type="com.pcwk.ehr.chart.domain.ScoreVO" alias="ScoreVO"/>
 		<typeAlias type="com.pcwk.ehr.chart.domain.EduVO" alias="EduVO"/>
+		<typeAlias type="com.pcwk.ehr.chart.domain.AtdVO" alias="AtdVO"/>
+		
         
         <typeAlias type="com.pcwk.ehr.dm.domain.DmVO" alias="DmVO"/>
         <typeAlias type="com.pcwk.ehr.subject.domain.SubjectVO" alias="SubjectVO"/>
