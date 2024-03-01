@@ -230,5 +230,24 @@ public class CourseDaoImpl implements CourseDao {
 		return flag;
 	}
 
+	//사용자 이메일로 코스 정보 조회
+	@Override
+	public int  findAcademySeqByUserEmail(String userEmail) throws SQLException {
+		// 사용자 이메일로 USERS_COURSES에서 COURSES_CODE를 조회
+	    String statement = NAMESPACE + DOT + "findCourseCodesByUserEmail";
+	    List<Integer> courseCodes = sqlSessionTemplate.selectList(statement, userEmail);
+	    
+	    // 등록된 코스가 없으면 -1 또는 예외 처리
+	    if(courseCodes.isEmpty()) {
+	        return -1;
+	    }
+
+	    // COURSES_CODE로 COURSES에서 ACADEMYS_SEQ를 찾음
+	    statement = NAMESPACE + DOT + "findAcademySeqByCourseCode";
+	    Integer academySeq = sqlSessionTemplate.selectOne(statement, courseCodes.get(0));
+
+	    return academySeq;
+	}
+
 }
 

@@ -104,7 +104,7 @@
   
   <!-- 학원관리자가 학원의 모든 코스들 조회 --> 
   <select id="doRetrieveAllCourses" resultType="CourseVO">
-	 SELECT
+	SELECT
         code AS courseCode,
         C.name AS courseName,
         number_of_times,
@@ -117,56 +117,73 @@
     ORDER BY C.code, C.number_of_times
   </select>
   
-  <!-- 시스템관리자가 모든 학원의 모든 코스들 조회 -->
-  <select id="doRetrieveAllAcademys" resultType="CourseVO">
-	 SELECT
-        code AS courseCode,
-        C.name AS courseName,
-        number_of_times,
-        info AS courseInfo,
-        seq AS acdemySeq,
-        A.name AS academyName
-    FROM courses C JOIN academys A
-    ON C.academys_seq = A.seq
-    ORDER BY C.code, C.number_of_times
-  </select>
+    <!-- 시스템관리자가 모든 학원의 모든 코스들 조회 -->
+    <select id="doRetrieveAllAcademys" resultType="CourseVO">
+		SELECT
+			code AS courseCode,
+			C.name AS courseName,
+			number_of_times,
+			info AS courseInfo,
+			seq AS acdemySeq,
+			A.name AS academyName
+		FROM courses C JOIN academys A
+		ON C.academys_seq = A.seq
+		ORDER BY C.code, C.number_of_times
+    </select>
   
-  <!-- 학원관리자, 시스템관리자가 코스 정보 수정  -->
-  <update id="doUpdateCourse" parameterType="CourseVO">
-	UPDATE courses
-	SET  
-	    name = #{courseName},
-	    number_of_times = #{numberOfTimes},
-	    info = #{courseInfo},
-	    academy_seq = #{academySeq}
-	WHERE code = #{courseCode}
-  </update>
+	<!-- 학원관리자, 시스템관리자가 코스 정보 수정  -->
+	<update id="doUpdateCourse" parameterType="CourseVO">
+		UPDATE courses
+		SET  
+		    name = #{courseName},
+		    number_of_times = #{numberOfTimes},
+		    info = #{courseInfo},
+		    academy_seq = #{academySeq}
+		WHERE code = #{courseCode}
+	</update>
+ 
+	<!-- 시스템관리자가 학원 정보 수정 -->
+	<update id="doUpdateAcademy" parameterType="CourseVO">
+		UPDATE academys
+		SET  
+		    name = #{academyName}
+		WHERE seq = #{academySeq}
+	</update>
   
-  <!-- 시스템관리자가 학원 정보 수정 -->
-  <update id="doUpdateAcademy" parameterType="CourseVO">
-	UPDATE academys
-	SET  
-	    name = #{academyName}
-	WHERE seq = #{academySeq}
-  </update>
-  
-  <!-- 학원관리자, 시스템관리자가 코스 정보 삭제 -->
-  <delete id="doDeleteCourse" parameterType="CourseVO">
+    <!-- 학원관리자, 시스템관리자가 코스 정보 삭제 -->
+    <delete id="doDeleteCourse" parameterType="CourseVO">
 	    DELETE FROM courses 
 	    WHERE  code = #{courseCode}
-   </delete>
+    </delete>
     
-   <!-- 시스템관리자가 학원 정보 삭제 -->
-   <delete id="doDeleteAcademy" parameterType="CourseVO">
-    DELETE FROM academy 
-    WHERE  seq = #{academySeq}
-   </delete>
+	<!-- 시스템관리자가 학원 정보 삭제 -->
+	<delete id="doDeleteAcademy" parameterType="CourseVO">
+	 DELETE FROM academy 
+	 WHERE  seq = #{academySeq}
+	</delete>
+	
+	<!-- 학생이 수강 포기할 때 -->
+	<delete id="doDelete" parameterType="CourseVO">
+	 DELETE FROM users_courses 
+	 WHERE  email = #{email}
+	 AND courses_code = #{coursesCode}
+	</delete>
    
-   <!-- 학생이 수강 포기할 때 -->
-   <delete id="doDelete" parameterType="CourseVO">
-    DELETE FROM users_courses 
-    WHERE  email = #{email}
-    AND courses_code = #{coursesCode}
-   </delete>
- 
+    <!-- 사용자 이메일을 기반으로 courses_code 조회 -->
+	<select id="findCourseCodesByUserEmail" resultType="java.lang.Integer" parameterType="java.lang.String">
+        SELECT DISTINCT courses_code
+        FROM users_courses
+        WHERE email = #{email}
+    </select>
+	
+	<!-- courses_code를 기반으로 academys_seq 조회 -->
+	<select id="findAcademySeqByCourseCode" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT academys_seq
+		FROM (
+		    SELECT academys_seq 
+		    FROM courses 
+		    WHERE code = #{courseCode} 
+		      <![CDATA[AND ROWNUM <= 1]]>)
+    </select>
+		
 </mapper>
