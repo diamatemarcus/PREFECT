@@ -51,11 +51,11 @@ public class SubjectDaoJunitTest implements PcwkLogger {
 		LOG.debug("│ setUp                             │");
 		LOG.debug("└───────────────────────────────────┘");
 
-		int subjectCode = 10;
-		int coursesCode = 200;// 과정코드
+		int subjectCode = 20;
+		int coursesCode = 12;// 과정코드
 		String professor = "cristiano@gmail.com";// 교수님
 		String trainee = "ronaldoo1@gmail.com";// 훈련생
-		int score = 10;// 점수
+		int score = 90;// 점수
 
 		subjectVO = new SubjectVO(subjectCode, coursesCode, professor, trainee, score);
 		searchVO = new SubjectVO();
@@ -72,6 +72,9 @@ public class SubjectDaoJunitTest implements PcwkLogger {
 	//@Ignore
 	@Test
 	public void doRetrieve() throws SQLException {
+		
+		searchVO.setPageNo(1);
+		searchVO.setPageSize(10);
 
 		// 1.
 		int flag = dao.doDelete(searchVO);
@@ -82,7 +85,9 @@ public class SubjectDaoJunitTest implements PcwkLogger {
 
 		List<SubjectVO> list = dao.doRetrieve(searchVO);
 
-		dao.doRetrieve(subjectVO);
+		for(SubjectVO vo : list) {
+			LOG.debug(vo);
+		}
 
 	}
 
