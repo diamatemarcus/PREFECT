@@ -51,6 +51,13 @@
 }
 </style>
 
+<style>
+#stepcountchartdiv {
+  width: 100%;
+  height: 350px;
+}
+</style>
+
 
 <title>마이페이지</title>
 
@@ -282,13 +289,25 @@
         </div>
         <!--// 회원 등록영역 ------------------------------------------------------>
         <!-- chart -->
-        <c:if test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
+        <c:if test="${sessionScope.user.role == 30}">
         <div class="container col-md-6 mt-4">
              <div class = "col-sm">
                      <!-- Area Chart -->
+                    <h5 align="center">과목 점수</h5> 
                      <div id="chartdiv1"></div>
              </div>   
         </div>
+        </c:if>
+        
+        <c:if test="${sessionScope.user.role == 20}">
+         <input type="hidden" value ="${sessionScope.user.email}" id ="emailval">
+         <div class="container col-md-6 mt-4">
+             <div class = "col-sm">
+                     <!-- Area Chart -->
+                     <h5 align="center">출석 현황</h5>
+                     <div id="stepcountchartdiv"></div>
+             </div>   
+         </div>
         </c:if>
     </div>
  </div>
@@ -586,6 +605,8 @@
 <script src="https://cdn.amcharts.com/lib/5/radar.js"></script>
 <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
 <script src="${CP}/resources/js/amchart.js" type="text/javascript"></script>
+<script src="${CP}/resources/js/countchart.js" type="text/javascript"></script>
+
 
 <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>  
 </body>

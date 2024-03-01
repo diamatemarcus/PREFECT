@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.pcwk.ehr.chart.dao.ChartDao;
 import com.pcwk.ehr.chart.domain.AtdVO;
 import com.pcwk.ehr.chart.domain.EduVO;
+import com.pcwk.ehr.chart.domain.RatioVO;
 import com.pcwk.ehr.chart.domain.ScoreVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 
@@ -35,11 +36,19 @@ public class ChartServiceImpl implements PcwkLogger, ChartService {
 	}
 	
 	@Override
-	public List<AtdVO> donutChartInfo(AtdVO atdVO) throws SQLException {
+	public List<RatioVO> donutChartInfo(RatioVO ratioVO) throws SQLException {
 		
-		List<AtdVO> Ratio = chartDao.donutChartInfo(atdVO);
+		List<RatioVO> Ratio = chartDao.donutChartInfo(ratioVO);
 		
 		return Ratio;
+	}
+	
+	@Override
+	public List<AtdVO> countChartInfo(AtdVO atdVO) throws SQLException {
+		
+		List<AtdVO> attend = chartDao.countChartInfo(atdVO);
+		
+		return attend;
 	}
 
 

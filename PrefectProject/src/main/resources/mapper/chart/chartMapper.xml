@@ -18,11 +18,21 @@
 		GROUP BY edu
 	</select>
 	
-	<select id="donutChartInfo" parameterType="AtdVO" resultType="AtdVO">  <!-- 데이터만 보여주면 되기 때문에 resultType만 ,,모르겟음 아직 ㄱㄷ -->
+	<select id="donutChartInfo" parameterType="RatioVO" resultType="RatioVO">  <!-- 데이터만 보여주면 되기 때문에 resultType만 ,,모르겟음 아직 ㄱㄷ -->
 		SELECT gender,
         COUNT(*) AS gender_count
 		FROM users
 		GROUP BY gender
+	</select>
+	
+	<select id="countChartInfo" parameterType="AtdVO" resultType="AtdVO">  <!-- 데이터만 보여주면 되기 때문에 resultType만 ,,모르겟음 아직 ㄱㄷ -->
+	SELECT TO_CHAR(TO_DATE(cal_id, 'YYYYMMDD'), 'YYYY-MM-DD') AS date_cal_id,
+           TO_NUMBER(count(trainee)) AS cnt_trainee
+	FROM attendance
+	WHERE professor = #{email}
+	AND attend_status = '10'
+	GROUP BY TO_CHAR(TO_DATE(cal_id, 'YYYYMMDD'), 'YYYY-MM-DD')
+	ORDER BY TO_CHAR(TO_DATE(cal_id, 'YYYYMMDD'), 'YYYY-MM-DD')
 	</select>
 	
 

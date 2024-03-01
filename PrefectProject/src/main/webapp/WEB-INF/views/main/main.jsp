@@ -21,8 +21,17 @@
   height: 350px;
 }
 </style>
+
 <style>
 #maindonutchartdiv { 
+  width: 100%;
+  height: 350px;
+}
+</style>
+
+
+<style>
+#hardchartdiv {
   width: 100%;
   height: 350px;
 }
@@ -144,7 +153,7 @@
             <div class="row">
                  <div class = "col-sm">
     	                <br>
-                        <h5 align="center">학력 비율</h5>
+                        <h5 align="center">학력 현황</h5>
                            <div id="mainchartdiv"></div> <!-- 삼막대 그래프-->
                  </div>
 
@@ -159,14 +168,14 @@
             <div class="row">
                  <div class = "col-sm">
     	                <br>
-                        <h5 align="center">남녀 비율</h5>
+                        <h5 align="center">남녀 현황</h5>
                            <div id="maindonutchartdiv"></div> <!-- 삼막대 그래프-->
                  </div>
 
                   <div class = "col-sm">
                           <br>
-                          <h5 align="center">IT계열 취업률</h5>
-                          <div id=""></div> <!--막대글프 -->
+                          <h5 align="center">훈련 과정 현황</h5>
+                          <div id="hardchartdiv"></div> <!--막대글프 -->
                   </div>
             </div>
     </div>
@@ -327,6 +336,8 @@
 <script src="${CP}/resources/js/piechart.js" type="text/javascript"></script>
 <script src="${CP}/resources/js/barchart.js" type="text/javascript"></script>
 <script src="${CP}/resources/js/donutchart.js" type="text/javascript"></script>
+<script src="${CP}/resources/js/haedchart.js" type="text/javascript"></script>
+
 
 </body>
 

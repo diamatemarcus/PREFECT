@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.pcwk.ehr.chart.domain.AtdVO;
 import com.pcwk.ehr.chart.domain.EduVO;
+import com.pcwk.ehr.chart.domain.RatioVO;
 import com.pcwk.ehr.chart.domain.ScoreVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.subject.domain.SubjectVO;
@@ -44,15 +45,25 @@ public class ChartDaoImpl implements ChartDao, PcwkLogger {
 		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"mainChartInfo", eduVO);
 	
 	}
-	
-	@Override //mainPageBarChart
-	public List<AtdVO> donutChartInfo(AtdVO atdVO) {
+	@Override //mainPageCountChart
+	public List<AtdVO> countChartInfo(AtdVO atdVO) {
 		LOG.debug("┌───────────────────────────────────┐");
-		LOG.debug("│ donutChartInfo                    │");
-		LOG.debug("│ AtdVO                             │"+atdVO);
+		LOG.debug("│ countChartInfo                    │");
+		LOG.debug("│ AtdVO                             │"+ atdVO);
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doRetrieve");
 		LOG.debug("└───────────────────────────────────┘");			
-		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"donutChartInfo", atdVO);
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"countChartInfo", atdVO);
+	
+	}
+	
+	@Override //mainPagedonutChart
+	public List<RatioVO> donutChartInfo(RatioVO ratioVO) {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ donutChartInfo                    │");
+		LOG.debug("│ RatioVO                           │"+ratioVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doRetrieve");
+		LOG.debug("└───────────────────────────────────┘");			
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"donutChartInfo", ratioVO);
 	
 	}
 
