@@ -105,8 +105,9 @@
         <!-- 제목 -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header" style="margin-bottom: 10px; color: #e44646; font-family: Montserrat; font-style: italic;">My Page</h1>
+				<h2 class="page-header" style="text-align: left;">마이페이지</h2>
             </div>
+  		</div>
         
         <!--// 제목 ----------------------------------------------------------------->
         <!-- 버튼 -->
@@ -310,7 +311,6 @@
          </div>
         </c:if>
     </div>
- </div>
 </div>
      
     

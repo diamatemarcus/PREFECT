@@ -15,14 +15,19 @@
 <title>과목 등록 및 목록</title>
 </head>
 <body>
+	<div id="spinner"
+		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+		<div class="spinner-grow text-primary" role="status"></div>
+	</div>
+
 	<div class="container" id="subjectReg" style="display: none;">
 		<!-- 과목 등록 부분 -->
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">과목 등록</h1>
+				<h2 class="page-header" style="text-align: left;">과목 등록</h2>
 			</div>
 		</div>
-		<div class="row justify-content-end">
+		<div class="row justify-content-end" style="margin-right: 500px;">
 			<div class="col-auto">
 				<input type="button" class="btn btn-primary" value="등록"
 					id="doUpdate" onclick="doSave()"> <input type="button"
@@ -33,10 +38,8 @@
 		<div>
 			<form action="#" name="subjectRegFrm">
 				<div class="mb-3">
-					<label for="subject" class="form-label">새 과목 이름</label> <input
-						type="text" class="form-control" name="subject" id="subject"
-						value="" placeholder="추가 할 과목 이름을 입력해 주세요." size="20"
-						maxlength="11">
+					<label for="subject" class="form-label">새 과목 이름</label>
+					<input type="text" class="form-control" name="subject" id="subject" value="" placeholder="추가 할 과목 이름을 입력해 주세요." style="width: 50%;" maxlength="11">
 				</div>
 			</form>
 		</div>

@@ -28,6 +28,13 @@
 </script>
 
 <style>
+
+.my-custom-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -85px -87px 0px -212px;
+}
+
 /* 테이블과 관련된 스타일 */
 .table th, .table td {
 	padding: 0.5rem; /* 셀 내부의 padding을 조절합니다 */
@@ -46,57 +53,71 @@
 </head>
 <body>
 
-	<input type="hidden" id="sessionEmail"
-		value="${sessionScope.user.email}" />
+	<!-- Spinner Start -->
+	<div id="spinner"
+		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+		<div class="spinner-grow text-primary" role="status"></div>
+	</div>
+	<!-- Spinner End -->
 
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<%-- <div class="text-center">
-	    <label for="calID">날짜 선택:</label>
-	    <input type="date" id="calID" name="calID" value="<%=java.time.LocalDate.now()%>" onchange="reloadPage(this)">
-	</div> --%>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<h2 class="page-header" style="text-align: left;">과정정보</h2>
+			</div>
+		</div>
 
-	<div class="row">
-		<div class="container col-md-6">
-			<table class="table">
-				<tbody>
-					<tr>
-						<td class="form-label">훈련과정명</td>
-						<td><input type="text" class="form-control ppl_input"
-							readonly="readonly" name="courseName" id="courseName"
-							value="${course.courseName}_${course.numberOfTimes}회차" size="20" maxlength="30"></td>
-					</tr>
-					<tr>
-						<td class="form-label">훈련 기관명</td>
-						<td><input type="text" class="form-control"
-							name="academyName" id="academyName" size="20"
-							value="${course.academyName}" maxlength="21" readonly></td>
-					</tr>
-					<tr>
-						<td class="form-label">훈련기간</td>
-						<td><input type="text" class="form-control" name="period"
-							id="period" value="${course.startDate} ~ ${course.endDate}"
-							readonly="readonly" size="20" maxlength="30"></td>
-					</tr>
-					<tr>
-						<td class="form-label">훈련과정 안내</td>
-						<td><textarea class="form-control" name="courseInfo"
-								id="courseInfo" readonly="readonly" rows="11" cols="50"
-								maxlength="500">${course.courseInfo}</textarea></td>
-					</tr>
-
-				</tbody>
-			</table>
-			
-			<div class="button-container">
-	            <input type="button" value="과정 조회" class="button" id="moveToList">
-	        </div>
+		<input type="hidden" id="sessionEmail"
+			value="${sessionScope.user.email}" />
+	
+		<br>
+		<br>
+		<br>
+		<br>
+		<br>
+		<%-- <div class="text-center">
+		    <label for="calID">날짜 선택:</label>
+		    <input type="date" id="calID" name="calID" value="<%=java.time.LocalDate.now()%>" onchange="reloadPage(this)">
+		</div> --%>
+	
+		<div class="my-custom-row">
+			<div class="container col-md-6" >
+				<table class="table">
+					<tbody>
+						<tr>
+							<td class="form-label">훈련과정명</td>
+							<td><input type="text" class="form-control ppl_input"
+								readonly="readonly" name="courseName" id="courseName"
+								value="${course.courseName}_${course.numberOfTimes}회차" size="20" maxlength="30"></td>
+						</tr>
+						<tr>
+							<td class="form-label">훈련 기관명</td>
+							<td><input type="text" class="form-control"
+								name="academyName" id="academyName" size="20"
+								value="${course.academyName}" maxlength="21" readonly></td>
+						</tr>
+						<tr>
+							<td class="form-label">훈련기간</td>
+							<td><input type="text" class="form-control" name="period"
+								id="period" value="${course.startDate} ~ ${course.endDate}"
+								readonly="readonly" size="20" maxlength="30"></td>
+						</tr>
+						<tr>
+							<td class="form-label">훈련과정 안내</td>
+							<td><textarea class="form-control" name="courseInfo"
+									id="courseInfo" readonly="readonly" rows="11" cols="50"
+									maxlength="500">${course.courseInfo}</textarea></td>
+						</tr>
+	
+					</tbody>
+				</table>
+				
+				<div class="button-container">
+		            <input type="button" value="과정 조회" class="button" id="moveToList">
+		        </div>
+			</div>
 		</div>
 	</div>
-
 	<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 
 </body>

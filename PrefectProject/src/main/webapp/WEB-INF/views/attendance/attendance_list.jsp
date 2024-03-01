@@ -251,125 +251,133 @@ document.addEventListener("DOMContentLoaded",function(){
 </style>
 </head>
 <body> 
+	<div id="spinner"
+		class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+		<div class="spinner-grow text-primary" role="status"></div>
+	</div>
+	<div class="container">
 
 	<input type="hidden" id="sessionEmail" value="${sessionScope.user.email}"/>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<div>
-		<div class="container col-md-6">
-			<table class="table">
-				<tbody>
-					<tr>
-						<td class="form-label">훈련과정명</td>
-						<td><input type="text" class="form-control ppl_input"
-							readonly="readonly" name="courseName" id="courseName"
-							value="${course.courseName}_${course.numberOfTimes}회차" size="20" maxlength="30"></td>
-					</tr>
-					<tr>
-						<td class="form-label">훈련 기관명</td>
-						<td><input type="text" class="form-control"
-							name="academyName" id="academyName" size="20"
-							value="${course.academyName}" maxlength="21" readonly></td>
-					</tr>
-					<tr>
-						<td class="form-label">훈련기간</td>
-						<td><input type="text" class="form-control" name="period"
-							id="period" value="${course.startDate} ~ ${course.endDate}"
-							readonly="readonly" size="20" maxlength="30"></td>
-					</tr>
-				</tbody>
-			</table>
+			<!-- 제목 -->
+		<div class="row">
+			<div class="col-lg-12">
+				<h2 class="page-header" style="text-align: left;">출석</h2>
+			</div>
 		</div>
-	</div>
+		<br> <br>
 
-    <div class="text-center">
-	    <label for="calID">날짜 선택:</label>
-	    <input type="date" id="calID" name="calID" onchange="reloadPage(this)"
-	           min="${course.startDate}" max="${course.endDate}" value="<%=java.time.LocalDate.now()%>">
-	</div>
-
-
-	 <div class="container-fluid testimonial py-2">
-	    <!-- table -->
-	    <table id="attendanceTable"  class="table table-responsive">    
-	        <thead>
-	        <tr>
-	        	<th scope="col" class="text-center col-lg-2  col-sm-2">순번</th>
-	            <th scope="col" class="text-center col-lg-2  col-sm-2">이름</th>
-	            <th scope="col" class="text-center col-lg-2  col-sm-2" >출석여부</th>
-	            <c:choose>
-		            <c:when test="${not empty attendances }">
-	    	            <th scope="col" class="text-center col-lg-2  col-sm-2" ></th>
-				    </c:when>
-			    </c:choose>
-	        </tr>
-	        </thead>
-	        <tbody>
-	        <c:choose>
-	            <%-- 조회데이터가 있는 경우:jsp comment(html에 노출 안됨) --%>
-	            <c:when test="${not empty trainees }">
-			        <c:forEach var="vo" items="${trainees}" varStatus="loop">
-				        <tr>
-				        	<td class="text-center">${loop.index + 1}</td>
-				            <td class="text-center" id="traineeName">
-					            ${vo.name}
-					            <input type="hidden" id="traineeEmail" value="${vo.email }">
-				            </td>
-				            <td class="text-center">
-			                    <div class="col-auto">
-			                        <select id="attendStatus" name="attendStatus">
-			                            <!-- 검색 조건 옵션을 동적으로 생성 -->
-			                            <c:forEach items="${attendStatusList}" var="status">
-			                                <c:set var="found" value="false"/> <%-- 일치하는 데이터를 찾았는지 여부를 저장하는 변수 --%>
-			                                <c:forEach var="attendance" items="${attendances}">
-			                                    <c:if test="${attendance.trainee eq vo.email}">
-			                                        <option value="${status.detCode}" <c:if test="${attendance.attendStatus eq status.detCode}">selected</c:if>>${status.detName}</option>
-			                                        <c:set var="found" value="true"/>
-			                                    </c:if>
-			                                </c:forEach>
-			                                <c:if test="${found eq false}">
-			                                    <option value="${status.detCode}">${status.detName}</option>
-			                                </c:if>
-			                            </c:forEach>
-			                        </select>
-			                    </div>
-			                </td>
-			                <c:choose>
-							    <c:when test="${not empty attendances }">
-		        	                <td class="text-center">
-					                	<input type="button" value="수정" class="button"  id="doUpdate" onclick="doUpdate(this);">
-					                </td>
-							    </c:when>
-							</c:choose>
-				        </tr>
-			        </c:forEach>
-		        </c:when>
-		        <%-- 조회데이터가 없는 경우:jsp comment(html에 노출 안됨) --%>
-		        <c:otherwise>
-		           <tr>
-		               <td colspan="99" class="text-center">훈련 과정이 현재 진행 중이 아닙니다. </td>
-		           </tr>
-		        </c:otherwise>
-	        </c:choose>
-	        </tbody>
-	    </table>
-	    <!--// table -------------------------------------------------------------->
-	    <br><br>
-	    <!-- button --------------------------------------------------------------->
-	    <c:choose>
-		    <c:when test="${empty attendances }">
-		        <div class="row g-1 justify-content-end button-container">
-		            <div class="col-auto"> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-		                <input type="button" value="전체 저장" class="button"  id="doSave" onclick="window.doSave();">
-		            </div>  
-		        </div>
-		    </c:when>
-		</c:choose>
-    </div>
+		<div class="container">
+			<div class="container col-md-6" style="margin-right: 800px;">
+				<table class="table">
+					<tbody>
+						<tr>
+							<td class="form-label">훈련과정명</td>
+							<td><input type="text" class="form-control ppl_input"
+								readonly="readonly" name="courseName" id="courseName"
+								value="${course.courseName}_${course.numberOfTimes}회차" style="width: 110%;" maxlength="30"></td>
+						</tr>
+						<tr>
+							<td class="form-label">훈련 기관명</td>
+							<td><input type="text" class="form-control"
+								name="academyName" id="academyName" size="20"
+								value="${course.academyName}" style="width: 110%;" maxlength="21" readonly></td>
+						</tr>
+						<tr>
+							<td class="form-label">훈련기간</td>
+							<td><input type="text" class="form-control" name="period"
+								id="period" value="${course.startDate} ~ ${course.endDate}"
+								readonly="readonly" style="width: 110%;" maxlength="30"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<br>
+	    <div class="text-center" style="margin-right: 500px;">
+		    <label for="calID">날짜 선택:</label>
+		    <input type="date" id="calID" name="calID" onchange="reloadPage(this)"
+		           min="${course.startDate}" max="${course.endDate}" value="<%=java.time.LocalDate.now()%>">
+		</div>
+		<br>
+	
+		 <div class="container-fluid testimonial py-2" style="margin-left: -150px;">
+		    <!-- table -->
+		    <table id="attendanceTable"  class="table table-responsive">    
+		        <thead>
+		        <tr>
+		        	<th scope="col" class="text-center col-lg-2  col-sm-2">순번</th>
+		            <th scope="col" class="text-center col-lg-2  col-sm-2">이름</th>
+		            <th scope="col" class="text-center col-lg-2  col-sm-2" >출석여부</th>
+		            <c:choose>
+			            <c:when test="${not empty attendances }">
+		    	            <th scope="col" class="text-center col-lg-2  col-sm-2" ></th>
+					    </c:when>
+				    </c:choose>
+		        </tr>
+		        </thead>
+		        <tbody>
+		        <c:choose>
+		            <%-- 조회데이터가 있는 경우:jsp comment(html에 노출 안됨) --%>
+		            <c:when test="${not empty trainees }">
+				        <c:forEach var="vo" items="${trainees}" varStatus="loop">
+					        <tr>
+					        	<td class="text-center">${loop.index + 1}</td>
+					            <td class="text-center" id="traineeName">
+						            ${vo.name}
+						            <input type="hidden" id="traineeEmail" value="${vo.email }">
+					            </td>
+					            <td class="text-center">
+				                    <div class="col-auto">
+				                        <select id="attendStatus" name="attendStatus">
+				                            <!-- 검색 조건 옵션을 동적으로 생성 -->
+				                            <c:forEach items="${attendStatusList}" var="status">
+				                                <c:set var="found" value="false"/> <%-- 일치하는 데이터를 찾았는지 여부를 저장하는 변수 --%>
+				                                <c:forEach var="attendance" items="${attendances}">
+				                                    <c:if test="${attendance.trainee eq vo.email}">
+				                                        <option value="${status.detCode}" <c:if test="${attendance.attendStatus eq status.detCode}">selected</c:if>>${status.detName}</option>
+				                                        <c:set var="found" value="true"/>
+				                                    </c:if>
+				                                </c:forEach>
+				                                <c:if test="${found eq false}">
+				                                    <option value="${status.detCode}">${status.detName}</option>
+				                                </c:if>
+				                            </c:forEach>
+				                        </select>
+				                    </div>
+				                </td>
+				                <c:choose>
+								    <c:when test="${not empty attendances }">
+			        	                <td class="text-center">
+						                	<input type="button" value="수정" class="button"  id="doUpdate" onclick="doUpdate(this);">
+						                </td>
+								    </c:when>
+								</c:choose>
+					        </tr>
+				        </c:forEach>
+			        </c:when>
+			        <%-- 조회데이터가 없는 경우:jsp comment(html에 노출 안됨) --%>
+			        <c:otherwise>
+			           <tr>
+			               <td colspan="99" class="text-center">훈련 과정이 현재 진행 중이 아닙니다. </td>
+			           </tr>
+			        </c:otherwise>
+		        </c:choose>
+		        </tbody>
+		    </table>
+		    <!--// table -------------------------------------------------------------->
+		    <br><br>
+		    <!-- button --------------------------------------------------------------->
+		    <c:choose>
+			    <c:when test="${empty attendances }">
+			        <div class="row g-1 justify-content-end button-container">
+			            <div class="col-auto"> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
+			                <input type="button" value="전체 저장" class="button"  id="doSave" onclick="window.doSave();">
+			            </div>  
+			        </div>
+			    </c:when>
+			</c:choose>
+    	</div>
+	</div>    
 <jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 
 </body>

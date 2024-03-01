@@ -368,18 +368,10 @@ document.addEventListener("DOMContentLoaded",function(){
             <h1 class="page-header">게시글 등록</h1>
         </div>
     </div>    
+     <br>
     <!--// 제목 ----------------------------------------------------------------->
     
-    <!-- 버튼 -->    
-    <div class="row justify-content-end">
-        <div class="col-auto">
-            <button class="button" id="moveToList">목록</button>
-            <button class="button" id="doSave">등록</button>
-        </div>
-    </div>
-    <br>
-    <br>
-    <!--// 버튼 ----------------------------------------------------------------->
+
     
      <!-- 
 	    seq : sequence별도 조회
@@ -488,8 +480,17 @@ document.addEventListener("DOMContentLoaded",function(){
 		    </tbody>
 	    </table>
     </div>
+
 	<!-- 파일 업로드 ------------------------------------------------------------->
-    
+    <!-- 버튼 -->    
+    <div class="row justify-content-end">
+        <div class="col-auto">
+            <button class="button" id="moveToList">목록</button>
+            <button class="button" id="doSave">등록</button>
+        </div>
+    </div>
+  	<br>
+    <!--// 버튼 ----------------------------------------------------------------->    
 
 </div>
 </body>
