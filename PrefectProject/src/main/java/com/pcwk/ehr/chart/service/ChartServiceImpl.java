@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.pcwk.ehr.chart.dao.ChartDao;
+import com.pcwk.ehr.chart.domain.AtdVO;
 import com.pcwk.ehr.chart.domain.EduVO;
 import com.pcwk.ehr.chart.domain.ScoreVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
@@ -32,5 +33,14 @@ public class ChartServiceImpl implements PcwkLogger, ChartService {
 		
 		return eduRatio;
 	}
+	
+	@Override
+	public List<AtdVO> donutChartInfo(AtdVO atdVO) throws SQLException {
+		
+		List<AtdVO> Ratio = chartDao.donutChartInfo(atdVO);
+		
+		return Ratio;
+	}
+
 
 }

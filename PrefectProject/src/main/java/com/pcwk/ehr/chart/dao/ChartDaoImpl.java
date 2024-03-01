@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
+import com.pcwk.ehr.chart.domain.AtdVO;
 import com.pcwk.ehr.chart.domain.EduVO;
 import com.pcwk.ehr.chart.domain.ScoreVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
@@ -41,6 +42,17 @@ public class ChartDaoImpl implements ChartDao, PcwkLogger {
 		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doRetrieve");
 		LOG.debug("└───────────────────────────────────┘");			
 		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"mainChartInfo", eduVO);
+	
+	}
+	
+	@Override //mainPageBarChart
+	public List<AtdVO> donutChartInfo(AtdVO atdVO) {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ donutChartInfo                    │");
+		LOG.debug("│ AtdVO                             │"+atdVO);
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"doRetrieve");
+		LOG.debug("└───────────────────────────────────┘");			
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"donutChartInfo", atdVO);
 	
 	}
 
