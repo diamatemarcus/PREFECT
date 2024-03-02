@@ -45,6 +45,14 @@ function generateDatas(count) {
               for(var i = 0; i < res.resultList.length; i++) {
                 var data2 = {};
                 data2.category = res.resultList[i]['gender'];
+                 switch (data2.category) {
+                case '10':
+                  data2.category = '남자';
+                  break;
+                case '20':
+                  data2.category = '여자';
+                  break;                    
+              }
                 data2.value = res.resultList[i]['genderCount'];
                 data.push(data2);
               }

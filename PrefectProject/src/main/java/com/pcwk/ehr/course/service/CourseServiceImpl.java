@@ -83,4 +83,9 @@ public class CourseServiceImpl implements CourseService{
 		return courseDao.doUpdate(inVO);
 	}
 
+	@Override
+	public int findAcademySeqByUserEmail(String userEmail) throws SQLException {
+		return courseDao.findAcademySeqByUserEmail(userEmail);
+	}
+
 }

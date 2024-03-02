@@ -24,4 +24,6 @@ public interface CourseDao extends WorkDiv<CourseVO> {
 
 	int doDeleteAcademy(CourseVO inVO) throws SQLException;
 
+	int findAcademySeqByUserEmail(String userEmail) throws SQLException;
+
 }

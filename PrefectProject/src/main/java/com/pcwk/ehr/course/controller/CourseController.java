@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.pcwk.ehr.attendance.domain.AttendanceVO;
-import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
 import com.pcwk.ehr.course.domain.CourseVO;
 import com.pcwk.ehr.course.service.CourseService;
@@ -37,29 +34,6 @@ public class CourseController implements PcwkLogger{
 		LOG.debug("│ CourseController                        │");
 		LOG.debug("└───────────────────────────────────────────┘");
 	}
-	
-//	// 학원관리자 : 학원에 등록된 모든 과정 조회
-//	@GetMapping(value="/doRetrieveAllCourses.do")
-//	public String doRetrieveAllCourses(CourseVO inVO, HttpSession session, Model model) throws SQLException, EmptyResultDataAccessException{
-//		String view = "course/course_list";
-//		LOG.debug("┌───────────────────────────────────┐");
-//		LOG.debug("│ doRetrieveAllCourses              │");
-//		LOG.debug("│ CourseVO                          │"+inVO);
-//		LOG.debug("└───────────────────────────────────┘");		
-//		
-//		// 로그인한 학원 관리자의 학원 SEQ 가져오기
-//        inVO.setAcademySeq((int) session.getAttribute("academySeq"));
-//        LOG.debug("현재 세션 academySeq:" + inVO.getAcademySeq());
-//	
-//		//목록조회
-//		List<CourseVO> list = courseService.doRetrieveAllCourses(inVO);
-//		LOG.debug("list:" + list);
-//		
-//		//Model
-//		model.addAttribute("list", list);
-//		
-//		return view;	
-//	}
 	
 	@GetMapping(value = "/doRetrieve.do")
 	public List<CourseVO> doRetrieve(CourseVO inVO) throws SQLException {
@@ -130,52 +104,35 @@ public class CourseController implements PcwkLogger{
 	
 	// 코스 리스트
 	@GetMapping(value = "/moveToList.do")
-	public String moveToList(CourseVO inVO, Model model, HttpSession httpSession) throws SQLException {
-		String viewName = "";
+	public String moveToList(Model model, HttpSession httpSession) throws SQLException {
+		String viewName = "course/course_list";
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ moveToList                        │");
 		LOG.debug("└───────────────────────────────────┘");		
 		
+		// 세션에서 로그인한 사용자 정보를 가져옵니다.
+		UserVO user = (UserVO) httpSession.getAttribute("user");
 		
-		CourseVO course = new CourseVO();
+		try {
+	        // 사용자 이메일로 학원 시퀀스를 조회
+	        int academySeq = courseService.findAcademySeqByUserEmail(user.getEmail());
+
+	        // 학원 시퀀스가 유효한 경우에만 코스 목록 조회
+	        if(academySeq != -1) {
+	            CourseVO inVO = new CourseVO();
+	            inVO.setAcademySeq(academySeq);
+	            List<CourseVO> courseList = courseService.doRetrieveAllCourses(inVO);
+	            model.addAttribute("courseList", courseList);
+	        } else {
+	            // 유효한 학원 시퀀스가 없는 경우 (사용자가 어떤 코스에도 등록되지 않았을 때)
+	            model.addAttribute("message", "등록된 학원이 없습니다.");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        model.addAttribute("message", "과정 정보를 조회하는 중 오류가 발생했습니다.");
+	        return "common/error";
+	    }
 		
-		if(null != httpSession.getAttribute("user")) {
-			UserVO user = (UserVO) httpSession.getAttribute("user");
-			LOG.debug("email:"+user.getEmail());
-			course.setEmail(user.getEmail());
-		}
-		
-		course = courseService.doSelectOne(course);
-		LOG.debug("course:"+course);
-		
-		// 목록 조회
-		List<CourseVO> trainees = courseService.doRetrieve(course);
-		
-		for(CourseVO trainee  :trainees) {
-			LOG.debug("trainee:"+trainee.getEmail());
-		}
-		
-		// 유저 조회
-		List<UserVO>  users = new ArrayList<UserVO>();
-		
-		for (CourseVO courseVO : trainees) {
-			LOG.debug("courseVO:" + courseVO);
-			UserVO userVO = new UserVO();
-			userVO.setEmail(courseVO.getEmail());
-			LOG.debug("userVO:" + userVO);
-			
-			userVO = userService.doSelectOne(userVO);
-			users.add(userVO);
-			
-			LOG.debug("users:" + users);
-		}
-		
-		
-		model.addAttribute("trainees", trainees);
-		model.addAttribute("users",users);		
-		
-		
-		viewName = "course/course_list";		
 		return viewName;
 	}
 }

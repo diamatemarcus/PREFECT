@@ -13,11 +13,14 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 	    <where>
 	        <choose>
 	            <when test="searchDiv != null and searchDiv == '10'">
-	                subject_code = #{searchWord}
+	                trainee = #{searchWord} || '%'
 	            </when>
 	            <when test="searchDiv != null and searchDiv == '20'">
 	                subject_code = #{searchWord}
 	            </when>
+	            <when test="searchDiv != null and searchDiv == '30'">
+                    score = #{score}
+                </when>
 	        </choose>
 	    </where>
 	</sql>
@@ -27,13 +30,33 @@ namespace+id -> com.pcwk.ehr.user.doSelectOne
 
 
     <select id="doRetrieve" parameterType="SubjectVO" resultType="SubjectVO">
-		SELECT DISTINCT subject_code, courses_code, professor, trainee, score
-   			FROM subject
-    	JOIN users ON professor = users.email OR trainee = users.email
-	    <where>
-	       (users.email = #{professor} OR users.email = #{trainee})
-	       <include refid="searchCondition"></include>
-	    </where>
+	
+	SELECT A.*, B.*
+	FROM (
+	    SELECT TT1.rnum AS no,
+	           TT1.subject_code,
+	           TT1.courses_code,
+	           TT1.professor,
+	           TT1.trainee,
+	           TT1.score
+	    FROM (
+	        SELECT ROWNUM AS rnum, T1.*
+	        FROM (
+	            SELECT *
+	            FROM subject
+	            <include refid="searchCondition"></include>
+	            ORDER BY trainee DESC
+	        ) T1
+	      <![CDATA[  WHERE ROWNUM <= ( #{pageSize} * (#{pageNo} - 1) + #{pageSize} )
+	    ) TT1
+	    WHERE TT1.rnum >= ( #{pageSize} * (#{pageNo} - 1) + 1 )]]>
+	) A
+	CROSS JOIN (
+	    SELECT COUNT(*) total_cnt
+	    FROM subject
+	) B
+	
+
    
     </select>
     

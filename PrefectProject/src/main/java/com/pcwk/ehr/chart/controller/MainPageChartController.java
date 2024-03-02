@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pcwk.ehr.chart.domain.AtdVO;
 import com.pcwk.ehr.chart.domain.EduVO;
-import com.pcwk.ehr.chart.domain.ScoreVO;
+import com.pcwk.ehr.chart.domain.RatioVO;
 import com.pcwk.ehr.chart.service.ChartService;
 
 @Controller
@@ -51,7 +51,7 @@ public class MainPageChartController {
 	
 	@RequestMapping(value="main/GetDonutData.do", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
 	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-	public Map<String, Object> donutChart(AtdVO atdVO,Model model,HttpSession httpsession) throws Exception {
+	public Map<String, Object> donutChart(RatioVO atdVO,Model model,HttpSession httpsession) throws Exception {
 		//Map으로 보내서 Json으로 받는다
 		
 		String email = (String) httpsession.getAttribute("email"); //세션에서 email 받아오기
@@ -60,7 +60,26 @@ public class MainPageChartController {
 	
 		Map<String, Object> resultMap = new HashMap<>();
 		
-		List<AtdVO> resultList = chartService.donutChartInfo(atdVO);	
+		List<RatioVO> resultList = chartService.donutChartInfo(atdVO);	
+		resultMap.put("resultList", resultList);
+		
+		
+		return resultMap;
+		
+	}
+	
+	@RequestMapping(value="main/GetCountData.do", method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
+	public Map<String, Object> atdChart(AtdVO atdVO,Model model,HttpSession httpsession) throws Exception {
+		//Map으로 보내서 Json으로 받는다
+		
+		String email = (String) httpsession.getAttribute("email"); //세션에서 email 받아오기 , role은 다른데서 받아서 뷰에뿌림
+		model.addAttribute("email",email);
+		LOG.debug("email :"+ email);
+	
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		List<AtdVO> resultList = chartService.countChartInfo(atdVO);	
 		resultMap.put("resultList", resultList);
 		
 		

@@ -34,5 +34,7 @@ public interface CourseService {
 	public CourseVO doSelectOne(CourseVO inVO) throws SQLException, EmptyResultDataAccessException;
 	
 	public int doUpdate(CourseVO inVO) throws SQLException ;
+	
+	public int findAcademySeqByUserEmail(String userEmail) throws SQLException;
 
 }
