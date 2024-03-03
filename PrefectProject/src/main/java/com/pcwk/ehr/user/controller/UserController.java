@@ -258,7 +258,6 @@ public class UserController implements PcwkLogger {
 
 		return view;
 	}
-	
 	@RequestMapping(value = "/doPauseUser.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody // HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
 	public MessageVO doPauseUser(UserVO inVO,Model model) throws SQLException{
