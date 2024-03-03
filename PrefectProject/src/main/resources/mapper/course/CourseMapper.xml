@@ -2,6 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcwk.ehr.course">
+
+	<sql id="courseSearchCondition">
+	    <choose>
+	        <when test="searchDiv == '10'">
+	            AND C.name LIKE '%' || #{searchWord} || '%'
+	        </when>
+	        <when test="searchDiv == '20'">
+	            AND TO_CHAR(number_of_times) LIKE '%' || #{searchWord} || '%'
+	        </when>
+	    </choose>
+	</sql>
   
   <!-- 학원 관리자랑 시스템 관리자가 코스 등록하기 -->
   <insert id="doSaveCourse" parameterType="CourseVO">
@@ -18,7 +29,7 @@
 		    #{courseName},
 		    #{numberOfTimes},
 		    #{courserInfo},
-		    courses_seq.NEXTVAL,
+		    #{academysSeq},
 		    #{startDate},
 		    #{endDate}
 		)
@@ -114,6 +125,7 @@
     FROM courses C JOIN academys A
     ON C.academys_seq = A.seq
     WHERE seq = #{academySeq}
+    <include refid="courseSearchCondition"/>
     ORDER BY C.code, C.number_of_times
   </select>
   

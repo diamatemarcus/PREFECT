@@ -1,5 +1,7 @@
 package com.pcwk.ehr.course.domain;
 
+import com.pcwk.ehr.cmn.DTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseVO{
+public class CourseVO extends DTO {
 
 	private int courseCode; //과정코드
 	private String courseName; //과정이름
@@ -25,7 +27,8 @@ public class CourseVO{
 	public String toString() {
 		return "CourseVO [courseCode=" + courseCode + ", courseName=" + courseName + ", numberOfTimes=" + numberOfTimes
 				+ ", courseInfo=" + courseInfo + ", academySeq=" + academySeq + ", academyName=" + academyName
-				+ ", email=" + email + ", startDate=" + startDate + ", endDate=" + endDate + "]";
+				+ ", email=" + email + ", startDate=" + startDate + ", endDate=" + endDate + ", toString()="
+				+ super.toString() + "]";
 	}
 	
 }
