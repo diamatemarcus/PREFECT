@@ -261,13 +261,13 @@ document.addEventListener("DOMContentLoaded",function(){
 			<!-- 제목 -->
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="page-header" style="text-align: left;">출석</h2>
+				<h3 class="page-header" style="text-align: left;">출석</h3>
 			</div>
 		</div>
 		<br> <br>
 
 		<div class="container">
-			<div class="container col-md-6" style="margin-right: 800px;">
+			<div class="container col-md-6">
 				<table class="table">
 					<tbody>
 						<tr>
@@ -300,7 +300,7 @@ document.addEventListener("DOMContentLoaded",function(){
 		</div>
 		<br>
 	
-		 <div class="container-fluid testimonial py-2" style="margin-left: -150px;">
+		 <div class="container-fluid testimonial py-2">
 		    <!-- table -->
 		    <table id="attendanceTable"  class="table table-responsive">    
 		        <thead>

@@ -248,7 +248,7 @@
 			</div>
 			<br> <br>
 		
-			<div class="container col-md-6" style="margin-right: 800px;">
+			<div class="container col-md-6">
 				<table class="table">
 					<tbody>
 						<tr>
@@ -278,7 +278,7 @@
 	<br>
 
 	<!-- 검색구분 -->
-	<div class="text-center" style="margin-right: 500px;">
+	<div class="text-center" ">
 		<label for="searchDiv">과목선택:</label> <select name="searchDiv"
 			id="searchDiv" class="pcwk_select"
 			onchange="doRetrieve();">
@@ -289,7 +289,7 @@
 		</select>
 	</div>
 	<br>
-	<div class="container-fluid testimonial py-2" style="margin-left: -150px;" >
+	<div class="container-fluid testimonial py-2" >
 		<!-- table -->
 		<table id="subjectScoreTable" class="table table-responsive">
 			<thead>

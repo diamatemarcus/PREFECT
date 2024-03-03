@@ -63,7 +63,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="page-header" style="text-align: left;">과정정보</h2>
+				<h3 class="page-header" style="text-align: left;">과정정보</h3>
 			</div>
 		</div>
 

@@ -129,7 +129,7 @@
 
 /* 선택적으로 테이블의 너비를 조절합니다 */
 .table-responsive {
-	margin: 0 auto; /* 상하 마진은 0, 좌우 마진은 자동으로 설정 */
+	margin: -46px auto; /* 상하 마진은 0, 좌우 마진은 자동으로 설정 */
 }
 
 /* 선택적으로 테이블 행의 높이를 조절합니다 */
@@ -157,7 +157,7 @@
 
 
 .pagination-container {
-	margin-top: 0; /* 페이징의 상단 간격을 줄입니다. */
+	margin-top: -5px; /* 페이징의 상단 간격을 줄입니다. */
 }
 </style>
 </head>
@@ -174,7 +174,7 @@
 		<!-- 제목 -->
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="page-header" style="text-align: left;">${title}</h2>
+				<h3 class="page-header" style="text-align: left;">${title}</h3>
 			</div>
 		</div>
 		<br> <br>
@@ -258,7 +258,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-12">
-							<div class="pagination d-flex justify-content-center mt-5">
+							<div class="pagination d-flex justify-content-center">
 								<nav>${pageHtml}</nav>
 							</div>
 						</div>

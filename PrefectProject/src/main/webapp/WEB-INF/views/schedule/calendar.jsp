@@ -14,6 +14,10 @@
 	display: none;
 }
 
+.col-lg-10 {
+    max-width: 60%;
+}
+
 .button {
 	width: auto;
 	/* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
@@ -731,11 +735,10 @@
 			value="${sessionScope.user.email}">
 		<!-- 제목 -->
 		<div class="row">
-			<div class="col-lg-10"
-				style="margin-top: 10px; margin-left: auto; margin-right: auto;">
-				<h2 class="page-header"
+			<div class="col-lg-10">
+				<h3 class="page-header"
 					style="text-align: left; font-family: Montserrat;">캘린더 -
-					${year}년 ${month}월</h2>
+					${year}년 ${month}월</h3>
 				<div class="col-auto d-flex flex-column ">
 					<!-- 연도 표시 -->
 					<input type="hidden" name="year" id="year" value="${year}" readonly
@@ -964,13 +967,7 @@
 	</div>
 	<!-- Tastimonial End -->
 	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+
 
 	<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 </body>

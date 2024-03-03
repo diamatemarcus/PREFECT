@@ -24,7 +24,7 @@
 		<!-- 과목 등록 부분 -->
 		<div class="row">
 			<div class="col-lg-12">
-				<h2 class="page-header" style="text-align: left;">과목 등록</h2>
+				<h3 class="page-header" style="text-align: left;">과목 등록</h3>
 			</div>
 		</div>
 		<div class="row justify-content-end" style="margin-right: 500px;">
