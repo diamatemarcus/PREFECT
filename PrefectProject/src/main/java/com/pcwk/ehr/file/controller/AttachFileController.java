@@ -168,36 +168,26 @@ public class AttachFileController implements PcwkLogger {
 		
 		List<FileVO>  list=new ArrayList<FileVO>();
 		
-		//SEQ
-		int seq = 1;
+		
+		int seq = 1; //SEQ
 		
 		for(MultipartFile multipartFile   :uploadFiles) {
 			
 			LOG.debug("│ multipartFile                          │"+multipartFile);
 			
 			FileVO fileVO=new FileVO();
-			//UUID설정
-			fileVO.setUuid(uuid);
 			
-			//SEQ
-			fileVO.setSeq(seq++);
-					
-			//원본파일명
-			fileVO.setOrgFileName(multipartFile.getOriginalFilename());
+			fileVO.setUuid(uuid);//UUID설정				
+			fileVO.setSeq(seq++);//SEQ							
+			fileVO.setOrgFileName(multipartFile.getOriginalFilename());//원본파일명
 			
-			//확장자
-			String ext = StringUtil.getExt(fileVO.getOrgFileName());
-			fileVO.setExtension(ext);			
 			
-			//저장파일명 :getPK()+확장자
-			//getPK(): yyyyMMdd+UUID
-			fileVO.setSaveFileName(uuid+ fileVO.getSeq() +"."+ext);
+			String ext = StringUtil.getExt(fileVO.getOrgFileName());//확장자
+			fileVO.setExtension(ext);								
+			fileVO.setSaveFileName(uuid+ fileVO.getSeq() +"."+ext);//저장파일명					
+			fileVO.setFileSize(multipartFile.getSize()); //파일크기:byte
 			
-			//파일크기:byte
-			fileVO.setFileSize(multipartFile.getSize());
-
-			//저장경로 : 
-			String contentType = multipartFile.getContentType();
+			String contentType = multipartFile.getContentType();//저장경로
 			String savePath    = "";
 			
 			if(contentType.startsWith("image")==true) {//image파일
@@ -205,6 +195,7 @@ public class AttachFileController implements PcwkLogger {
 			}else {
 				savePath = FILE_PATH+ yyyyMMPath;
 			}
+			
 			fileVO.setSavePath(savePath);
 			
 			//session이 있는 경우
@@ -253,7 +244,7 @@ public class AttachFileController implements PcwkLogger {
 	    int lastSeq = attachFileService.getLastSeq(uuid);
 	    LOG.debug("lastSeq : " + lastSeq);
 	    
-	  //session이 있는 경우
+	    //session이 있는 경우
 	    if(null != session.getAttribute("user")) {
 	        UserVO user = (UserVO) session.getAttribute("user");
 	        // 파일 리스트를 만들기 위한 시퀀스 할당
