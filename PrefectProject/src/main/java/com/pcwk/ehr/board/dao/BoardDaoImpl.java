@@ -108,4 +108,14 @@ public class BoardDaoImpl implements BoardDao {
 		return sqlSessionTemplate.selectOne(NAMESPACE+DOT+"totalBoard");
 	}
 
+	@Override
+	public List<BoardVO> doRetrieveByReadCnt() throws SQLException {
+		LOG.debug("┌───────────────────────────────────┐");
+		LOG.debug("│ doRetrieve                        │");
+		LOG.debug("│ BoardVO                           │");
+		LOG.debug("│ statement                         │"+NAMESPACE+DOT+"totalBoardByReadCnt");
+		LOG.debug("└───────────────────────────────────┘");			
+		return sqlSessionTemplate.selectList(NAMESPACE+DOT+"totalBoardByReadCnt");
+	}
+
 }

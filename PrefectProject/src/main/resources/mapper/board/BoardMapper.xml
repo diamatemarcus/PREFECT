@@ -2,165 +2,211 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcwk.ehr.board">
-    
-    <!-- 조회수 -->
+
+	<!-- 조회수 -->
 	<update id="updateReadCnt" parameterType="BoardVO">
 	  <![CDATA[
 	  UPDATE board
 	     SET read_cnt = NVL(read_cnt,0)+1
 	   WHERE seq  = #{seq}
-	     AND reg_id <> #{regId} ]]>  
+	     AND reg_id <> #{regId} ]]>
 	</update>
-  
+
 	<!-- 게시물 총 개수 -->
-	<select id="totalBoard" resultType="int">
-	  SELECT count(seq) as totalBoard FROM board
+	<select id="totalBoardByReadCnt" resultType="BoardVO">
+		SELECT seq,
+                div,
+                title,
+                contents,
+                read_cnt,
+                reg_dt,
+                reg_id,
+                mod_dt,
+                mod_id,
+                uuid
+		FROM (
+			SELECT
+				seq,
+				div,
+				title,
+				contents,
+				read_cnt,
+				reg_dt,
+				reg_id,
+				mod_dt,
+				mod_id,
+				uuid
+			FROM
+			 board
+			ORDER BY
+			 read_cnt DESC
+		)
+    <![CDATA[WHERE ROWNUM <= 5]]>
+    AND div = 20
 	</select>
-	
+
+
+	<!-- 게시물 리스트 조회수 순서 -->
+	<select id="totalBoard" resultType="int">
+		SELECT count(seq) as
+		totalBoard FROM board
+	</select>
+
 	<!-- div -->
 	<sql id="divCondition">
-	  <choose>
-	      <when test=" ''!=div and '20' == div "><!-- 20 -->
-	          AND div = '20'
-	      </when>
-	      <otherwise> <!-- 10 -->
-	          AND div = '10'
-	      </otherwise>
-	  </choose>
+		<choose>
+			<when test=" ''!=div and '20' == div "><!-- 20 -->
+				AND div = '20'
+			</when>
+			<otherwise> <!-- 10 -->
+				AND div = '10'
+			</otherwise>
+		</choose>
 	</sql>
-  
+
 	<!-- 검색조건 -->
 	<sql id="searchCondition">
-	  <choose>
-	      <when test=" ''!= searchDiv and '10' == searchDiv ">
-	          AND title LIKE #{searchWord} || '%'
-	      </when>
-	      <when test=" ''!= searchDiv and '20' == searchDiv ">
-	          AND contents LIKE #{searchWord} || '%'
-	      </when>
-	      <when test=" ''!= searchDiv and '30' == searchDiv ">
-	          AND mod_id LIKE #{searchWord} || '%'
-	      </when>
-	      <otherwise>
-	          <!-- '전체' 검색을 위해 모든 데이터를 조회해야 하므로, 조건을 적용하지 않습니다. -->
-	      </otherwise>
-	  </choose>
-	</sql>  
-    
-    <!-- 게시글 리스트 조회 -->
-	<select id="doRetrieve" parameterType="BoardVO" resultType="BoardVO">
-	    SELECT A.*, B.totalCnt, R.replyCnt
-	    FROM (
-	        SELECT tt1.seq,
-	               tt1.rnum as no,
-	               tt1.div,
-	               tt1.title,
-	               tt1.read_cnt as readCnt,
-	               tt1.modDt,
-	               tt1.mod_Id as modId,
-	               tt1.uuid
-	        FROM (
-	            SELECT ROWNUM as rnum, T1.*
-	            FROM (
-	                SELECT b.seq,
-	                       b.div,
-	                       b.title,
-	                       b.read_cnt,
-	                       DECODE(TO_CHAR(b.mod_dt, 'YYYYMMDD'), TO_CHAR(SYSDATE, 'YYYYMMDD'),
-	                              TO_CHAR(b.mod_dt, 'HH24:MI'),
-	                              TO_CHAR(b.mod_dt, 'YYYY-MM-DD')) as modDt,
-	                       b.mod_id,
-	                       b.uuid
-	                FROM board b
-	                WHERE 1=1
-	                <include refid="divCondition"/>
-	                <include refid="searchCondition"/>
-	                ORDER BY b.mod_dt DESC
-	            ) T1
+		<choose>
+			<when test=" ''!= searchDiv and '10' == searchDiv ">
+				AND title LIKE #{searchWord} || '%'
+			</when>
+			<when test=" ''!= searchDiv and '20' == searchDiv ">
+				AND contents LIKE #{searchWord} || '%'
+			</when>
+			<when test=" ''!= searchDiv and '30' == searchDiv ">
+				AND mod_id LIKE #{searchWord} || '%'
+			</when>
+			<otherwise>
+				<!-- '전체' 검색을 위해 모든 데이터를 조회해야 하므로, 조건을 적용하지 않습니다. -->
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 게시글 리스트 조회 -->
+	<select id="doRetrieve" parameterType="BoardVO"
+		resultType="BoardVO">
+		SELECT A.*, B.totalCnt, R.replyCnt
+		FROM (
+		SELECT tt1.seq,
+		tt1.rnum as no,
+		tt1.div,
+		tt1.title,
+		tt1.read_cnt as readCnt,
+		tt1.modDt,
+		tt1.mod_Id as
+		modId,
+		tt1.uuid
+		FROM (
+		SELECT ROWNUM as rnum, T1.*
+		FROM (
+		SELECT b.seq,
+		b.div,
+		b.title,
+		b.read_cnt,
+		DECODE(TO_CHAR(b.mod_dt, 'YYYYMMDD'),
+		TO_CHAR(SYSDATE, 'YYYYMMDD'),
+		TO_CHAR(b.mod_dt, 'HH24:MI'),
+		TO_CHAR(b.mod_dt, 'YYYY-MM-DD')) as modDt,
+		b.mod_id,
+		b.uuid
+		FROM board b
+		WHERE 1=1
+		<include refid="divCondition" />
+		<include refid="searchCondition" />
+		ORDER BY b.mod_dt DESC
+		) T1
 	            <![CDATA[   WHERE ROWNUM <= #{pageSize} * (#{pageNo}-1) + #{pageSize} ]]>
-	        ) tt1
+		) tt1
 	        <![CDATA[ WHERE rnum >= #{pageSize} * (#{pageNo}-1) + 1 ]]>
-	    ) A
-	    LEFT JOIN (
-	        SELECT board_seq, COUNT(*) as replyCnt
-	        FROM reply
-	        GROUP BY board_seq
-	    ) R ON A.seq = R.board_seq
-	    CROSS JOIN (
-	        SELECT COUNT(*) as totalCnt
-	        FROM board
-	        WHERE 1=1
-	        <include refid="divCondition"/>
-	        <include refid="searchCondition"/>
-	    ) B order by no
+		) A
+		LEFT JOIN (
+		SELECT board_seq, COUNT(*) as replyCnt
+		FROM reply
+		GROUP BY
+		board_seq
+		) R ON A.seq = R.board_seq
+		CROSS JOIN (
+		SELECT COUNT(*) as
+		totalCnt
+		FROM board
+		WHERE 1=1
+		<include refid="divCondition" />
+		<include refid="searchCondition" />
+		) B order by no
 	</select>
-    
-    <!-- 전체 게시글 삭제 -->
-	<delete id="doDeleteAll" parameterType="BoardVO" >
-		DELETE FROM board
-		WHERE title LIKE #{title}||'%'
+
+	<!-- 전체 게시글 삭제 -->
+	<delete id="doDeleteAll" parameterType="BoardVO">
+		DELETE FROM
+		board
+		WHERE
+		title LIKE #{title}||'%'
 	</delete>
 
-    <update id="doUpdate" parameterType="BoardVO">
+	<update id="doUpdate" parameterType="BoardVO">
 		UPDATE board
-		SET  
-		    div = #{div},
-		    title = #{title},
-		    contents = #{contents},
-		    mod_dt = SYSDATE,
-		    mod_id = #{modId}
+		SET
+		div = #{div},
+		title = #{title},
+		contents = #{contents},
+		mod_dt = SYSDATE,
+		mod_id =
+		#{modId}
 		WHERE seq = #{seq}
-    </update> 
+	</update>
 
 	<select id="getBoardSeq" resultType="int">
-	   SELECT BOARD_SEQ.NEXTVAL FROM DUAL
+		SELECT BOARD_SEQ.NEXTVAL
+		FROM DUAL
 	</select>
-  
-	<select id="doSelectOne" parameterType="BoardVO" resultType="BoardVO">
+
+	<select id="doSelectOne" parameterType="BoardVO"
+		resultType="BoardVO">
 		SELECT
-		    seq,
-		    div,
-		    title,
-		    contents,
-		    read_cnt,
-		    TO_CHAR(reg_dt,'YYYY-MM-DD HH24:MI:SS') reg_dt,
-		    reg_id,
-		    TO_CHAR(mod_dt,'YYYY-MM-DD HH24:MI:SS') mod_dt,
-		    mod_id,
-		    uuid
-		FROM    board
-		WHERE seq = #{seq}     
+		seq,
+		div,
+		title,
+		contents,
+		read_cnt,
+		TO_CHAR(reg_dt,'YYYY-MM-DD HH24:MI:SS') reg_dt,
+		reg_id,
+		TO_CHAR(mod_dt,'YYYY-MM-DD HH24:MI:SS') mod_dt,
+		mod_id,
+		uuid
+		FROM board
+		WHERE seq = #{seq}
 	</select>
 
 	<delete id="doDelete" parameterType="BoardVO">
 		DELETE FROM board
-		WHERE seq = #{seq}  
-	</delete>  
-  
-    <insert id="doSave" parameterType="BoardVO">
+		WHERE seq =
+		#{seq}
+	</delete>
+
+	<insert id="doSave" parameterType="BoardVO">
 		INSERT INTO board (
-		    seq,
-		    div,
-		    title,
-		    contents,
-		    read_cnt,
-		    reg_dt,
-		    reg_id,
-		    mod_dt,
-		    mod_id,
-		    uuid
+		seq,
+		div,
+		title,
+		contents,
+		read_cnt,
+		reg_dt,
+		reg_id,
+		mod_dt,
+		mod_id,
+		uuid
 		) VALUES (
-		    #{seq},
-		    #{div},
-		    #{title},
-		    #{contents},
-		    #{readCnt},
-		    SYSDATE,
-		    #{regId},
-		    SYSDATE,
-		    #{regId},
-		    #{uuid}
+		#{seq},
+		#{div},
+		#{title},
+		#{contents},
+		#{readCnt},
+		SYSDATE,
+		#{regId},
+		SYSDATE,
+		#{regId},
+		#{uuid}
 		)
-    </insert>
-  
+	</insert>
+
 </mapper>

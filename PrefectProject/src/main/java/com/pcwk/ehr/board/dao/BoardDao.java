@@ -1,6 +1,7 @@
 package com.pcwk.ehr.board.dao;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
@@ -37,4 +38,12 @@ public interface BoardDao extends WorkDiv<BoardVO>,PcwkLogger {
 	 * @throws SQLException
 	 */
 	int totalBoard() throws SQLException;
+	
+	/**
+	 * 목록조회 조회수 순서
+	 * @param inVO
+	 * @return List<T>
+	 * @throws SQLException
+	 */
+	List<BoardVO> doRetrieveByReadCnt() throws SQLException;
 }

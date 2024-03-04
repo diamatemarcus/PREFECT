@@ -1,6 +1,7 @@
 package com.pcwk.ehr.main.controller;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.pcwk.ehr.board.domain.BoardVO;
 import com.pcwk.ehr.board.service.BoardService;
 import com.pcwk.ehr.user.service.UserService;
 
@@ -49,6 +51,8 @@ public class MainController {
 		LOG.debug("│ mainView                				   │");
 		LOG.debug("└───────────────────────────────────────────┘");	
 		
+		List<BoardVO> topBoards = boardService.doRetrieveByReadCnt();
+		model.addAttribute("topBoards", topBoards);
 		
 		return view;
 	}

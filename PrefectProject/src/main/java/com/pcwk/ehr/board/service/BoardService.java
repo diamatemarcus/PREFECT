@@ -22,4 +22,6 @@ public interface BoardService {
 	public List<BoardVO> doRetrieve(BoardVO inVO) throws SQLException;
 	
 	public int totalBoard() throws SQLException;
+	
+	public List<BoardVO> doRetrieveByReadCnt() throws SQLException;
 }
