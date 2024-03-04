@@ -292,7 +292,7 @@
 		</div>
 	</div>
 	<br>
-	<div class="text-center" style="margin-right: 500px;">
+	<div class="text-center">
 		<label for="calID">날짜 선택:</label> <input type="date" id="calID"
 			name="calID" onchange="reloadPage(this)" min="${course.startDate}"
 			max="${course.endDate}" value="<%=java.time.LocalDate.now()%>">

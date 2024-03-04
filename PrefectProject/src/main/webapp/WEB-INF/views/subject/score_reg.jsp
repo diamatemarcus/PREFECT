@@ -243,7 +243,7 @@
 			<!-- 제목 -->
 			<div class="row">
 				<div class="col-lg-12">
-					<h2 class="page-header" style="text-align: left;">성적등록</h2>
+					<h2 class="page-header" style="text-align: center;">성적등록</h2>
 				</div>
 			</div>
 			<br> <br>
@@ -278,7 +278,7 @@
 	<br>
 
 	<!-- 검색구분 -->
-	<div class="text-center" ">
+	<div class="text-center" >
 		<label for="searchDiv">과목선택:</label> <select name="searchDiv"
 			id="searchDiv" class="pcwk_select"
 			onchange="doRetrieve();">
