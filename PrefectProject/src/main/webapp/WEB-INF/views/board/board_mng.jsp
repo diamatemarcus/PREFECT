@@ -85,37 +85,36 @@
 
 <script>
 document.addEventListener("DOMContentLoaded",function(){
+	console.log('ready');
 	
 	//댓글 조회 
     replyRetrieve();
-	 
-	console.log('ready');
+	
 	const div = document.querySelector("#div").value;
     const seq = document.querySelector("#seq").value;
     const regId = document.querySelector("#regId").value;
-    const modId = '${sessionScope.user.email}';
+    const modId = '${sessionScope.user.email}'; //로그인한 사람 아이디 : 수정자
     const userRole = '${sessionScope.user.role}';
+    
     const moveToModBTN   = document.querySelector("#moveToMod");
     const doDeleteBTN   = document.querySelector("#doDelete");
-    const moveToListBTN = document.querySelector("#moveToList");
+    const moveToListBTN = document.querySelector("#moveToList");    
+    const doUpdateBTN   = document.querySelector("#doUpdate");//수정버튼
+    const replyDoSaveBTN = document.querySelector("#replyDoSave"); //댓글 등록버튼
     
-    //댓글 등록버튼 : replyDoSave
-    const replyDoSaveBTN = document.querySelector("#replyDoSave");
-    //수정버튼
-    const doUpdateBTN   = document.querySelector("#doUpdate");
-    
+    //댓글 등록 이벤트
     replyDoSaveBTN.addEventListener("click",function(e){
         console.log('replyDoSaveBTN click');
-        //board_seq,reply,reg_id
         
-        const boardSeq = document.querySelector('#seq').value;
+        // 보드 seq
+        const boardSeq = document.querySelector('#seq').value;        
         if(eUtil.isEmpty(boardSeq) == true){
             alert('게시글 순번을 확인 하세요.');
             return;
         }
         console.log('boardSeq:'+boardSeq);
         
-        
+        // 댓글 내용
         const replyContents = document.querySelector('#replyContents').value;
         if(eUtil.isEmpty(replyContents) == true){
             //alert('댓글을 확인 하세요.');
@@ -160,10 +159,11 @@ document.addEventListener("DOMContentLoaded",function(){
         });        
     }); 
     
-    // file download
+    // file download : 더블클릭 시 파일 다운로드
 	$('#fileList tbody').on("dblclick", 'tr', function() {
 		console.log('fileList dbclick');
 		
+		// 파일 변수 선언
 	    const orgFileName = $(this).data('org-file-name');
 	    const saveFileName = $(this).data('save-file-name');
 	    const savePath = $(this).data('save-path');
@@ -179,74 +179,63 @@ document.addEventListener("DOMContentLoaded",function(){
    
     
     // 수정 이벤트 감지 및 처리
+     if (moveToModBTN) {
     moveToModBTN.addEventListener("click", function(e){
-    	//if(modId == regId){
-            // 수정 페이지로 이동
-            window.location.href = "/ehr/board/moveToMod.do?seq="+seq+"&div="+div;
-        //} else {
-            // 일치하지 않는 경우, 경고 메시지 출력
-         //   alert('수정 권한이 없습니다.');
-        //}
+        window.location.href = "/ehr/board/moveToMod.do?seq="+seq+"&div="+div;
     });
-    
+     }
     //삭제 이벤트 감지 및 처리
+    if (moveToModBTN) {
     doDeleteBTN.addEventListener("click",function(e){        
-    	     console.log('doDeleteBTN click'); 
+        console.log('doDeleteBTN click'); 
     	     
-             console.log('seq :'+seq);
-             
-             if(eUtil.isEmpty(seq) == true){
-                 //alert('순번을 확인 하세요.');
-                 Swal.fire('순번를 확인 하세요', "","info");
-                 return;
-             }
-             
-             /* if (window.confirm('삭제 하시겠습니까?')) {
-                 if (!(userRole === "10" || userRole === "20") && modId !== regId) {
-                     alert('삭제 권한이 없습니다.');
-                     return; // 시스템 관리자나 학원 관리자가 아니고, 수정자와 등록자가 다를 경우에만 경고 메시지 출력 후 리턴
-                 }
-             } else {
-                 return;
-             } */
-             Swal.fire({
-                 title: '삭제 하시겠습니까?',
-                 icon: 'question',
-                 showCancelButton: true,
-                 confirmButtonColor: '#6fa1ff',
-                 cancelButtonColor: '#cccccc',
-                 confirmButtonText: '예',
-                 cancelButtonText: '아니오'
-             }).then((result) => {
-                 if (result.isConfirmed) {
-             $.ajax({
-                 type: "GET",
-                 url:"/ehr/board/doDelete.do",
-                 asyn:"true",
-                 dataType:"json",
-                 data:{
-                     "seq": seq
-                 },
-                 success:function(data){//통신 성공
-                     console.log("success data.msgId:"+data.msgId);
-                     console.log("success data.msgContents:"+data.msgContents);
-                     if("1" == data.msgId){
-                        alert(data.msgContents);
-                        Swal.fire(data.msgContents, "","success");
-                        moveToList();
-                     }else{
-                         alert(data.msgContents);
-                         Swal.fire(data.msgContents, "","error");
-                     }
-                 },
-                 error:function(data){//실패시 처리
-                     console.log("error:"+data);
-                 }
-             });
-            }
-           }); 
+        console.log('seq :'+seq);
+        
+        if(eUtil.isEmpty(seq) == true){
+            //alert('순번을 확인 하세요.');
+            Swal.fire('순번를 확인 하세요', "","info");
+            return;
+        }
+        
+        Swal.fire({
+            title: '삭제 하시겠습니까?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#6fa1ff',
+            cancelButtonColor: '#cccccc',
+            confirmButtonText: '예',
+            cancelButtonText: '아니오'
+        }).then((result) => {
+            if (result.isConfirmed) {
+		        $.ajax({
+		            type: "GET",
+		            url:"/ehr/board/doDelete.do",
+		            asyn:"true",
+		            dataType:"json",
+		            data:{
+		                "seq": seq
+		            },
+		            success:function(data){//통신 성공
+		                console.log("success data.msgId:"+data.msgId);
+		                console.log("success data.msgContents:"+data.msgContents);
+		                if("1" == data.msgId){
+		                   alert(data.msgContents);
+		                   Swal.fire(data.msgContents, "","success");
+		                   moveToList();
+		                }else{
+		                    alert(data.msgContents);
+		                    Swal.fire(data.msgContents, "","error");
+		                }
+		            },
+		            error:function(data){//실패시 처리
+		                console.log("error:"+data);
+		            }
+		        }); //--ajax end
+		    }
+        }); 
+        
     }); 
-    
+    }
     //목록 이벤트 감지 및 처리
     moveToListBTN.addEventListener("click",function(e){
         console.log('moveToListBTN click');
@@ -264,15 +253,15 @@ document.addEventListener("DOMContentLoaded",function(){
                 moveToList();
             }
         });   
+        
     })
     
     function moveToList(){
         window.location.href = "${CP}/board/doRetrieve.do?div="+div;
     }
     
-//------Reply---------------------------------------------------------------
-    
-    function replyRetrieve(){
+    //------Reply---------------------------------------------------------------    
+    function replyRetrieve(){ /* 댓글 조회 기능 */
         const boardSeq = document.querySelector("#seq").value
         console.log('boardSeq:'+boardSeq)
        
@@ -297,18 +286,16 @@ document.addEventListener("DOMContentLoaded",function(){
                 
                 let replyDiv = '';
                 
-                //기존 댓글 모두 삭제
-               
+                //기존 댓글 모두 삭제               
                 //#요소의 내용을 모두 지웁니다.
                 //$("#replyDoSaveArea").html('');
                 document.getElementById("replyDoSaveArea").innerHTML = "";
                 
                 
                 if(0==data.length){
-                    console.log("댓글이 없어요1");
+                    console.log("댓글이 없습니다.");
                     return;
-                }
-                    
+                }                    
                 
                 for(let i=0; i<data.length; i++){
                     replyDiv += '<div class="dynamicReply"> \n';
@@ -333,21 +320,12 @@ document.addEventListener("DOMContentLoaded",function(){
                     replyDiv += '</div> \n';
                     replyDiv += '</div> \n';
                 }
-
-                
-                //console.log(replyDiv);
                 
                 //조회 댓글 출력
-                document.getElementById("replyDoSaveArea").innerHTML = replyDiv;
-                //$("#replyDoSaveArea").html(replyDiv);
-                
+                document.getElementById("replyDoSaveArea").innerHTML = replyDiv;                
                 
                 //-댓글:삭제,수정-------------------------------------------------------------
                 //댓글 수정
-/*                 $(".replyDoUpdate").on("click", function(e){
-                    console.log('replyDoUpdate click');
-                }); */
-
                 //javascript
                 replyDoUpdateBTNS = document.querySelectorAll(".replyDoUpdate");
                 replyDoUpdateBTNS.forEach(function(e){
@@ -358,14 +336,12 @@ document.addEventListener("DOMContentLoaded",function(){
                         const replySeq =this.closest('.dynamicReply').querySelector('input[name="replySeq"]')
                         console.log('replySeq:'+replySeq.value);
                         if(eUtil.isEmpty(replySeq.value)==true){
-                            //alert('댓글 순번을 확인하세요.');
                             Swal.fire('댓글 순번을 확인하세요.', "","info");
                             return;
                         }
                         
                         const reply =this.closest('.dynamicReply').querySelector('textarea[name="dyReplyContents"]')
                         if(eUtil.isEmpty(reply.value)==true){
-                            //alert('댓글을 확인하세요.');
                             Swal.fire('댓글을 확인하세요.', "","info");
                             reply.focus();
                             return;
@@ -383,10 +359,6 @@ document.addEventListener("DOMContentLoaded",function(){
                             cancelButtonText: '아니오'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                            	/* if (!(userRole === "10") && modId !== regId) {
-                                    Swal.fire('수정 권한이 없습니다.', "","error");
-                                    return; // 시스템 관리자나 학원 관리자가 아니고, 수정자와 등록자가 다를 경우에만 경고 메시지 출력 후 리턴
-                                } */
                             	$.ajax({
                                     type: "POST",
                                     url:"/ehr/reply/doUpdate.do",
@@ -416,46 +388,11 @@ document.addEventListener("DOMContentLoaded",function(){
                                 });
                             }
                         });   
-                        /* if (window.confirm('수정 하시겠습니까?')) {
-                            if (!(userRole === "10") && modId !== regId) {
-                                alert('수정 권한이 없습니다.');
-                                return; // 시스템 관리자나 학원 관리자가 아니고, 수정자와 등록자가 다를 경우에만 경고 메시지 출력 후 리턴
-                            }
-                        } else {
-                            return;
-                        }
-                        $.ajax({
-                            type: "POST",
-                            url:"/ehr/reply/doUpdate.do",
-                            asyn:"true",
-                            dataType:"json",
-                            data:{
-                                "replySeq": replySeq.value,
-                                "reply":reply.value
-                            },
-                            success:function(data){//통신 성공
-                                console.log("success data:"+data.msgId);
-                                console.log("success data:"+data.msgContents);
-                                
-                                if("1" == data.msgId){
-                                    alert(data.msgContents);
-                                    replyRetrieve();
-                                }else{
-                                    alert(data.msgContents);
-                                }
-                            },
-                            error:function(data){//실패시 처리
-                                console.log("error:"+data);
-                            },
-                            complete:function(data){//성공/실패와 관계없이 수행!
-                                console.log("complete:"+data);
-                            }
-                        }); */
-                        
-                        
+                       
                     });
                     
-                });//-----replyDoUpdateBTNS-------------------------------------
+                });
+                //----- replyDoUpdateBTNS end-----------------------------------
                 
                 //댓글삭제
                 $(".replyDoDelete").on("click", function(e){
@@ -474,18 +411,13 @@ document.addEventListener("DOMContentLoaded",function(){
                         cancelButtonText: '아니오'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            /* if (!(userRole === "10") && modId !== regId) {
-                                Swal.fire('삭제 권한이 없습니다.', "","error");
-                                return; // 시스템 관리자나 학원 관리자가 아니고, 수정자와 등록자가 다를 경우에만 경고 메시지 출력 후 리턴
-                            } */
                             $.ajax({
                                 type: "GET",
                                 url:"/ehr/reply/doDelete.do",
                                 asyn:"true",
                                 dataType:"json",
                                 data:{
-                                	"replySeq": replySeq
-                                 
+                                	"replySeq": replySeq                                 
                                 },
                                 success:function(data){//통신 성공
                                     console.log("success data:"+data.msgId);
@@ -510,7 +442,7 @@ document.addEventListener("DOMContentLoaded",function(){
                 });
                 
                 
-                //--------------------------------------------------------------
+                //-- 댓글 삭제 end -------------------------------------------------
             },
             error:function(data){//실패시 처리
                 console.log("error:"+data);
@@ -520,10 +452,7 @@ document.addEventListener("DOMContentLoaded",function(){
             }
         });     
         
-    }
-    
-    
-    
+    }    
     //------Reply---------------------------------------------------------------
 	
 });
@@ -542,42 +471,39 @@ document.addEventListener("DOMContentLoaded",function(){
 							<input type="button" value="목록" class="button" id="moveToList">
 						</div>
 
+                        <!-- 권한 부여 : 시스템관리자, 학원관리자, 등록자 본인 -->
 						<c:if test="${sessionScope.user.role eq '10' or sessionScope.user.role eq '20' or sessionScope.user.email eq vo.regId}">
-                          <div class="col-auto">
-                            <input type="button" value="수정" class="button" id="moveToMod">
-                            <input type="button" value="삭제" class="button" id="doDelete">
-                          </div>
+							<div class="col-auto">
+								<input type="button" value="수정" class="button" id="moveToMod">
+								<input type="button" value="삭제" class="button" id="doDelete">
+							</div>
                         </c:if>
+                        
 					</div>
 				</div>
-
 				<!--// 버튼 ----------------------------------------------------------------->
+				
 				<div class="divider"></div>
+				
 				<!-- 연한 회색 실선 -->
-				<!-- 
-		    seq : sequence별도 조회
-		    div : 10(공지사항)고정
-		    read_cnt : 0 
-		    title,contents : 화면에서 전달
-		    reg_id,mod_id  : session에서 처리
-	    -->
 				<!-- form -->
-
-
 				<form action="#" name="regFrm" id="regFrm">
-
+                    
+                    <!-- 제목 -->
 					<div class="mb-2">
 						<!--  아래쪽으로  여백 -->
 						<h3 id="title" class="form-label">${vo.title}</h3>
 					</div>
-
+                    
+                    <!-- 등록자, 조회수, 등록일 -->
 					<div class="mb-3 row" style="display: flex; align-items: center;">
 						<label id="regId" style="margin-right: 10px;">${user.name}
 							${vo.regId}</label>
 						<div style="flex-grow: 1; text-align: left; color: gray;">
 							조회 ${vo.readCnt} | ${vo.regDt}</div>
 					</div>
-
+                    
+                    <!-- 내용 -->
 					<div class="mb-3">
 						<label for="contents" class="form-label"></label>
 						<textarea rows="7" class="form-control readonly-input"
@@ -666,6 +592,7 @@ document.addEventListener("DOMContentLoaded",function(){
 						type="hidden" name="saveFileName" id="saveFileName"> <input
 						type="hidden" name="savePath" id="savePath">
 				</form>
+				<!-- // 파일 다운로드 end ------------------------------------------------------->
 			</div>
 
 			<!-- reply -->

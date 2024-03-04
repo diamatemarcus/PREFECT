@@ -40,8 +40,7 @@ public class BoardServiceImpl implements BoardService,PcwkLogger {
 			LOG.debug("┌───────────────────────────────────┐");
 			LOG.debug("│ updateReadCnt                     │"+updateReadCnt);
 			LOG.debug("└───────────────────────────────────┘");				
-		}
-		
+		}	
 		
 		return outVO;
 	}

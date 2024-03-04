@@ -29,7 +29,6 @@ import com.google.gson.Gson;
 import com.pcwk.ehr.attendance.domain.AttendanceVO;
 import com.pcwk.ehr.cmn.MessageVO;
 import com.pcwk.ehr.cmn.PcwkLogger;
-import com.pcwk.ehr.cmn.StringUtil;
 import com.pcwk.ehr.code.domain.CodeVO;
 import com.pcwk.ehr.code.service.CodeService;
 import com.pcwk.ehr.course.domain.CourseVO;
@@ -60,9 +59,9 @@ public class SubjectController implements PcwkLogger {
 	public SubjectController() {
 	}
 
-	// 목록조회 searchDiv를 요청을 받음. String의 seqrchDiv로 변환
+	// 목록조회
 	@RequestMapping(value = "/doRetrieve.do", method = RequestMethod.GET)
-	public String doRetrieve(SubjectVO searchVO, @RequestParam(value = "searchDiv", required = false) String searchDiv,
+	public String doRetrieve(@RequestParam(value = "searchDiv", required = false) String searchDiv,
 			HttpServletRequest req, Model model, HttpSession httpSession) throws SQLException {
 
 		// 로그인한 유저의 이메일을 서브젝트 테이블에서 찾는 코드
@@ -91,54 +90,8 @@ public class SubjectController implements PcwkLogger {
 				LOG.error("Invalid SUBJECT_CODE: " + searchDiv, e);
 			}
 		}
-		String searchWord = StringUtil.nvl(req.getParameter("searchWord"));
-		searchVO.setSearchDiv(searchDiv);
-		searchVO.setSearchWord(searchWord);
-		
-		// 브라우저에서 숫자 : 문자로 들어 온다.
-		// 페이지 사이즈: null -> 10
-		// 페이지 번호: null -> 1
-		String pageSize = StringUtil.nvl(req.getParameter("pageSize"), "10");
-		String pageNo = StringUtil.nvl(req.getParameter("pageNo"), "1");
 
-		long tPageNo = Long.parseLong(pageNo);
-		long tPageSize = Long.parseLong(pageSize);
-
-		long pageValue = (0 == tPageNo) ? 1 : tPageNo;
-		searchVO.setPageNo(pageValue);
-
-		long tPageSizeValue = (0 == tPageSize) ? 10 : tPageSize;
-		searchVO.setPageSize(tPageSizeValue);
-
-		LOG.debug("pageSize:" + searchVO.getPageSize());
-		LOG.debug("pageNo:" + searchVO.getPageNo());
-
-		LOG.debug("searchDiv:" + searchDiv);
-		LOG.debug("searchWord:" + searchWord);
-
-		LOG.debug("searchVO:" + searchVO);		
-
-		List<SubjectVO> list = this.subjectService.doRetrieve(searchVO);
-		
-		// 화면에 데이터 전달
-		model.addAttribute("list", list);
-		// 검색조건
-		model.addAttribute("searchVO", searchVO);
-
-		// paging
-		long bottomCount = 10;// 바닥글
-		long totalCnt = 0;
-		for (SubjectVO vo : list) {
-			if (totalCnt == 0) {
-				totalCnt = vo.getTotalCnt();
-				break;
-			}
-		}
-
-		String html = StringUtil.renderingPager(totalCnt, searchVO.getPageNo(), searchVO.getPageSize(), bottomCount,
-				"/ehr/subject/doRetrieve.do", "pageDoRerive");
-		model.addAttribute("pageHtml", html);		
-
+		List<SubjectVO> list = subjectService.doRetrieve(subjectVO);
 
 		// user정보에서 일치하는 trainee 찾아서 이름으로 보여주기 위한 코드
 		List<UserVO> userList = new ArrayList<>();
@@ -160,28 +113,18 @@ public class SubjectController implements PcwkLogger {
 
 		// CMN_CODE_SUBJECT 찾아서 뷰어에서 subject_code 이름으로 사용하려고
 		Map<String, Object> codes = new HashMap<String, Object>();
-		String[] codeStr = {"PAGE_SIZE", "SUBJECT_SEARCH", "SUBJECT" };
+		String[] codeStr = { "SUBJECT" };
 		codes.put("code", codeStr);
 
 		List<CodeVO> codeList = codeService.doRetrieve(codes);
 		List<CodeVO> subjectCodeList = new ArrayList<CodeVO>();
-		List<CodeVO> pageSizeList = new ArrayList<CodeVO>();
-		List<CodeVO> subjectsearchList = new ArrayList<CodeVO>();
 
 		for (CodeVO vo : codeList) {
-			if (vo.getMstCode().equals("PAGE_SIZE")) {
-				pageSizeList.add(vo);
-			}
 			if (vo.getMstCode().equals("SUBJECT")) {
 				subjectCodeList.add(vo);
 			}
-			if (vo.getMstCode().equals("SUBJECT_SEARCH")) {
-				subjectsearchList.add(vo);
-			}
 			LOG.debug(vo);
 		}
-		// 검색조건 : SUBJECT_SEARCH
-		model.addAttribute("subjectSearch", subjectsearchList);
 
 		// CMN_CODE
 		model.addAttribute("subjectCode", subjectCodeList);
@@ -189,8 +132,6 @@ public class SubjectController implements PcwkLogger {
 		model.addAttribute("userList", userList);
 		// 로그인한 유저 subject테이블에서 찾은 결과
 		model.addAttribute("list", list);
-		
-		model.addAttribute("pageSize", pageSizeList);
 
 		return view;
 	}

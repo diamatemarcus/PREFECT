@@ -50,28 +50,7 @@ public class LoginController implements PcwkLogger {
 		return view;
 	}
 
-	//@RequestMapping(value = "/doLogin.do")
-//	public String login(String email, String password, HttpSession httpSession) throws SQLException {
-//		String id = loginService.login(email, password);
-//		UserVO user = loginDao.getUserEmail(email);
-//		UserVO outVO = loginService.doSelectOne(user);
-//	
-//		LOG.debug(id);
-//		LOG.debug("┌───────────────────────────────────────────┐");
-//		LOG.debug("│ doLogin                                   │user:" + id);
-//		LOG.debug("└───────────────────────────────────────────┘");
-//
-//		if (id == null) {
-//			LOG.debug("로그인 실패");
-//			return "login/login";
-//		} else {
-//			httpSession.setAttribute("user", outVO);
-//			LOG.debug(outVO);
-//			LOG.debug("로그인 성공");
-//			return "main/main";
-//		}
-//		
-//	}
+	
 	@RequestMapping(value="/doLogin.do", method = RequestMethod.POST
 			,produces = "application/json;charset=UTF-8"
 			)
@@ -121,18 +100,18 @@ public class LoginController implements PcwkLogger {
 	    	String role = outVO.getRole();
 	    	
 			LOG.debug("role:"+role);
-
-	    	
-	    	message.setMsgId("30");
-			message.setMsgContents(outVO.getName()+"님 반갑습니다.");	   
+			LOG.debug("outVO.getStatus():"+outVO.getStatus());
 			
-			
-			
-			if(null != outVO) {
+	    	if(outVO.getStatus().equals("1")) {
+	    		message.setMsgId("30");
+				message.setMsgContents(outVO.getName()+"님 반갑습니다.");	
 				httpSession.setAttribute("user", outVO);
 				httpSession.setAttribute("role", role);
-
-			}			
+	    	}
+	    	else {
+	    		message.setMsgId("40");
+	    		message.setMsgContents(outVO.getName()+"님은 활동정지되었습니다.");	
+	    	}
 	    }else {
 	    	message.setMsgId("99");
 			message.setMsgContents("오류가 발생 했습니다.");	   	    	
@@ -144,8 +123,9 @@ public class LoginController implements PcwkLogger {
 	}
 	@RequestMapping(value = "/doLogout.do")
 	public String logout(HttpSession session) {
+		//logout의 메인기능 - session 정리해주고 로그아웃처리가 되었을때 return 부분에서 다시 로그인페이지로 처리
 		session.invalidate();
-		//String view = "login/login";
+		
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ loginView                                 │");
 		LOG.debug("└───────────────────────────────────────────┘");

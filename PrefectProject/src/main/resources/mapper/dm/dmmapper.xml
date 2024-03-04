@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcwk.ehr.dm">
+<!-- Dao: query찾는 분류 기준 
+namespace+id -> com.pcwk.ehr.user.doSelectOne
+--> 
 <insert id="doSend" parameterType="DmVO" >
     <choose>
         <when test="room !=0">
@@ -100,6 +103,7 @@
         ]]>  
     
 </select>
+<!-- 내가 보낸 receiver들은 receiverName으로,나에게 보낸 sender들은 senderName으로 두 그룹을 유니온으로 묶고 중복제거 -->
 <select id="receiverList" parameterType="DmVO" resultType="DmVO">
     <![CDATA[
        SELECT DISTINCT

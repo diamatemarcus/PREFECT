@@ -46,9 +46,13 @@ function generateDatas(count) {
                   break;
                 case '20':
                   data2.category = 'Spring';
+                case '21':
+                  data2.category = 'Flask';
                   break;
                 case '30':
                   data2.category = 'SQL';
+                case '31':
+                  data2.category = 'Django';
                   break;
                 case '40':
                   data2.category = 'Python';
@@ -58,7 +62,10 @@ function generateDatas(count) {
                   break;
                 case '60':
                   data2.category = 'SpringBoot';
-                  break;                    
+                  break;
+                case '61':
+                  data2.category = '유투브검색기사';
+                  break;                                    
               }
               data2.value = res.resultList[i]['score'];
               data.push(data2);
@@ -111,6 +118,8 @@ var yAxis = chart.yAxes.push(
   })
 );
 
+
+
 // Create series
 // https://www.amcharts.com/docs/v5/charts/radar-chart/#Adding_series
 for (var i = 0; i < 1; i++) {  
@@ -130,6 +139,7 @@ for (var i = 0; i < 1; i++) {
   });
 
   series.data.setAll(generateDatas(6));
+  series.set("fill", am5.color(0xfea443)); // set Series color to red
   series.appear(1000);
 }
 

@@ -7,7 +7,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/cmn/header.jsp"></jsp:include>
-<title>게시판 등록</title> <!-- http://localhost:8080/ehr/board/moveToReg.do -->
+<title>게시판 등록</title>
 <script>
 document.addEventListener("DOMContentLoaded",function(){
     console.log("DOMContentLoaded");
@@ -32,9 +32,6 @@ document.addEventListener("DOMContentLoaded",function(){
         let div = document.querySelector("#div").value;
         console.log("div:" + div);
         
-        /* if (window.confirm("등록하지 않고 목록으로 가시겠습니까?") === false) {
-            return;
-        } */
         Swal.fire({
             title: '등록하지 않고 목록으로 가시겠습니까?',
             icon: 'question',
@@ -49,16 +46,17 @@ document.addEventListener("DOMContentLoaded",function(){
             }
         });   
     });
-
+    
+    /* 랜덤으로 uuid 받기 */
     function generateUUID() {
-        var d = new Date().getTime();//Timestamp
-        var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
+        var d = new Date().getTime();//Timestamp(현재시간)
+        var d2 = (performance && performance.now && (performance.now()*1000)) || 0;//페이지 로드 이후 마이크로초 단위 시간 또는 지원되지 않을 경우 0
         return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random() * 16;//random number between 0 and 16
-            if(d > 0){//Use timestamp until depleted
+            var r = Math.random() * 16;//0과 16 사이의 랜덤 숫자
+            if(d > 0){//타임스탬프 사용 가능할 때까지 사용
                 r = (d + r)%16 | 0;
                 d = Math.floor(d/16);
-            } else {//Use microseconds since page-load if supported
+            } else {//지원되면 페이지 로드 이후 마이크로초 단위 시간 사용
                 r = (d2 + r)%16 | 0;
                 d2 = Math.floor(d2/16);
             }
@@ -66,7 +64,7 @@ document.addEventListener("DOMContentLoaded",function(){
         });
     }
 
-    // 사용 예:
+    // 랜덤 uuid 변수 선언
     var uuid = generateUUID();
     
     // doSave event 감지 및 처리
@@ -101,9 +99,6 @@ document.addEventListener("DOMContentLoaded",function(){
             return;
         }
 
-        /* if (window.confirm("등록하시겠습니까?") === false) {
-            return;
-        } */
         Swal.fire({
             title: '등록하시겠습니까?',
             icon: 'question',
@@ -133,11 +128,9 @@ document.addEventListener("DOMContentLoaded",function(){
                         console.log("uuid:" + uuid);
 
                         if ('1' == data.msgId) {
-                            //alert(data.msgContents);
                             Swal.fire(data.msgContents, "","success");
                             moveToListFun();
                         } else {
-                            //alert(data.msgContents);
                             Swal.fire(data.msgContents, "","error");
                         }
                     },
@@ -195,7 +188,6 @@ document.addEventListener("DOMContentLoaded",function(){
         });
     }
     
-    /* 파일 등록 */
     //fileUpload
     $("#fileUpload").on("click",function(e){
         console.log('fileUpload click');
@@ -221,14 +213,15 @@ document.addEventListener("DOMContentLoaded",function(){
 				console.log("data:"+data); // 응답 구조 확인
 				
                 // 파일 리스트 업데이트
-                updateFileList();			    
+                updateFileList();
 			},
 			error:function(data){//실패시 처리
 			   console.log("error:"+data);
 			},
 			complete:function(data){//성공/실패와 관계없이 수행!
 			   console.log("complete:"+data);
-			}           
+			}
+			
         });//-- $.ajax
         
         // 파일 재등록 버튼으로 변경
@@ -263,25 +256,22 @@ document.addEventListener("DOMContentLoaded",function(){
                     },
                     success: function(response) {
                         console.log('파일 삭제 성공');
-                        //alert('파일이 삭제되었습니다.');
                         Swal.fire("파일이 삭제되었습니다.", "","success");
+                        
                         // 파일 삭제 후 파일 리스트 업데이트
                         updateFileList();
                     },
                     error: function(xhr, status, error) {
                         console.log('파일 삭제 실패');
-                        //alert('파일 삭제 중 오류가 발생했습니다.');
                         Swal.fire("파일 삭제 중 오류가 발생했습니다.", "","error");
                     }
-                });
-            }
-        });   
-        
-        
+                }); //-- ajax end
+             }
+        });
         
     });
     
-    // 파일 재업로드
+    // 파일 재업로드 (두번째 업로드)
      $("#reUpload").on("click",function(e){
         console.log("reUpload click");
         console.log('uuid:' + uuid);
@@ -323,9 +313,7 @@ document.addEventListener("DOMContentLoaded",function(){
 }); //--DOMContentLoaded
 </script>
 <style>
-
-
-    input[type=file]::file-selector-button {
+input[type=file]::file-selector-button {
     width: auto;
     /* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
     /* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
@@ -341,20 +329,20 @@ document.addEventListener("DOMContentLoaded",function(){
     background-color: #3986ff;
     color: white;
 }
-    .filebox {
+
+.filebox {
 	  width: 80%; /* 넓이를 페이지의 80%로 설정 */
 	  margin: 0 auto; /* 페이지 중앙에 위치하도록 마진 설정 */
 	  text-align: right;
 }
-	.fileinfo {
+
+.fileinfo {
     width: 77%;
     margin: 0px auto;
     text-align: center;
     margin-bottom: 34px;
     padding: 72px 100px 100px 100px;
 }
-
-
 
 </style>
 </head>
@@ -368,61 +356,51 @@ document.addEventListener("DOMContentLoaded",function(){
             <h1 class="page-header">게시글 등록</h1>
         </div>
     </div>    
-     <br>
+    <br>
     <!--// 제목 ----------------------------------------------------------------->
     
-
-    
-     <!-- 
-	    seq : sequence별도 조회
-	    div : 10(공지사항)고정
-	    read_cnt : 0
-	    title, contents : 화면에서 전달
-	    reg_id, mod_id  : session에서 처리
-     -->
-      <form action="#" name="regFrm" id="regFrm">
+    <form action="#" name="regFrm" id="regFrm">
         <input type="hidden" name="uuid" id="uuid">
-        </form>
-     <table style="margin: auto;width: 80%;"> 
-		
-		  <tr>
-		    <td style="padding:10px;width: 15%;">   
-		        <div class="mb-3">
-		        		        
-		        <select class="form-select" aria-label="Default select example" id="div" name="div" style="width:auto;">
-				    <c:forEach var="codeVO" items="${divCode}">
-				        <option value="${codeVO.detCode}"  
-				            <c:if test="${codeVO.detCode == selectedDiv}">selected</c:if>  
-				        >${codeVO.detName}</option>
-				    </c:forEach>
-				</select>
-				
-            </td>
-          <td style="padding:10px; width: 70%;">
-		    <div class="mb-3"> <!--  아래쪽으로  여백 -->
-                <input type="text" class="form-control" id="title" name="title" maxlength="100" placeholder="제목을 입력 하세요.">
-            </div>
-          </td>
-		    <td style="width: 10%;"><div class="mb-3">
-        
-            <input type="hidden" class="form-control" id="regId" name="regId" value="${sessionScope.user.email}" 
-                  readonly="readonly" style="text-align: center;">        
-            <input type="text" class="form-control" id="regIdName" name="regIdName" value="${sessionScope.user.name}" 
-            readonly="readonly" style="text-align: center;">        
-        </div>
-        </td>
-		  </tr>
-		  <tr>
-		    <td colspan="3">
-		      <div class="mb-3">
-	             <textarea rows="14" class="form-control"  id="contents" name="contents" placeholder="내용을 입력해 주세요"></textarea>
-	          </div>
-           </td>
-		  </tr>
-	  </table>
-    <!-- form -->
+    </form>    
     
-    <!--// form --------------------------------------------------------------->
+     <table style="margin: auto;width: 80%;"> 		
+        <tr>
+			<td style="padding:10px;width: 15%;">   
+                <div class="mb-3">			   		        
+					<select class="form-select" aria-label="Default select example" id="div" name="div" style="width:auto;">
+						<c:forEach var="codeVO" items="${divCode}">
+							 <option value="${codeVO.detCode}"  
+							     <c:if test="${codeVO.detCode == selectedDiv}">selected</c:if>  
+							 >${codeVO.detName}</option>
+						</c:forEach>
+					</select>
+			     </div>
+			</td>
+			
+			<td style="padding:10px; width: 70%;">
+			    <div class="mb-3"> 
+				    <input type="text" class="form-control" id="title" name="title" maxlength="100" placeholder="제목을 입력 하세요.">
+				</div>
+			</td>
+			
+		    <td style="width: 10%;">
+                <div class="mb-3">        
+		            <input type="hidden" class="form-control" id="regId" name="regId" value="${sessionScope.user.email}" 
+		                  readonly="readonly" style="text-align: center;">        
+		            <input type="text" class="form-control" id="regIdName" name="regIdName" value="${sessionScope.user.name}" 
+		               readonly="readonly" style="text-align: center;">        
+                </div>
+            </td>
+        </tr>
+        
+		<tr>
+			<td colspan="3">
+				<div class="mb-3">
+				      <textarea rows="14" class="form-control"  id="contents" name="contents" placeholder="내용을 입력해 주세요"></textarea>
+				</div>
+			</td>
+		</tr>
+    </table>
     
     <!-- 파일 업로드 -->
     <br>
@@ -452,16 +430,6 @@ document.addEventListener("DOMContentLoaded",function(){
 			    <c:choose>
 			        <c:when test="${list.size()>0 }">
 			            <c:forEach var="vo" items="${list}"  varStatus="status">
-					        <!-- 순번출력: status 
-					        items: collection
-					        var: collection데이터 추출
-					        varStatus:status
-					         index: 현재 반복순서(0번부터 시작)
-					         first: 첫 번째 반복인 경여 true
-					         last: 마지막 반복인 경우 true
-					         being: 반복의 시작인덱스
-					         end: 반복의 끝 인덱스
-					        -->
 							<tr>
 							    <td>${ status.index+1 }</td>
 							    <td>${ vo.orgFileName}</td>
@@ -480,8 +448,8 @@ document.addEventListener("DOMContentLoaded",function(){
 		    </tbody>
 	    </table>
     </div>
-
-	<!-- 파일 업로드 ------------------------------------------------------------->
+	<!-- 파일 업로드 ---------------------------------------------------------------->
+	
     <!-- 버튼 -->    
     <div class="row justify-content-end">
         <div class="col-auto">

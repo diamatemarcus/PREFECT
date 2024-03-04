@@ -51,9 +51,9 @@ public class UserController implements PcwkLogger {
 
 	@Autowired
 	LicensesService service;
-	
+
 	public UserController() {
-		
+
 	}
 
 	// 이메일 인증
@@ -258,16 +258,16 @@ public class UserController implements PcwkLogger {
 
 		return view;
 	}
-	
+
 	@RequestMapping(value = "/doPauseUser.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody // HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-	public MessageVO doPauseUser(UserVO inVO,Model model) throws SQLException{
+	public MessageVO doPauseUser(UserVO inVO, Model model) throws SQLException {
 		MessageVO messageVO = null;
-		
+
 		int flag = userService.doPauseUser(inVO);
 
 		String message = "";
-		
+
 		if (1 == flag) {
 			message = "수정완료";
 		} else {
@@ -277,21 +277,19 @@ public class UserController implements PcwkLogger {
 		messageVO = new MessageVO(flag + "", message);
 
 		LOG.debug("│ messageVO                           │" + messageVO);
-		
+
 		return messageVO;
 	}
-	
+
 	// 수정
 	@RequestMapping(value = "/doUpdate.do", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
 	@ResponseBody // HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
-	public String doUpdate(UserVO inVO,Model model,HttpSession httpsession) throws SQLException {
+	public String doUpdate(UserVO inVO, Model model, HttpSession httpsession) throws SQLException {
 		String jsonString = "";
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doUpdate()                                │inVO:" + inVO);
 		LOG.debug("└───────────────────────────────────────────┘");
-		
-		
-		 
+
 		int flag = userService.doUpdate(inVO);
 		String message = "";
 		if (1 == flag) {
@@ -299,11 +297,11 @@ public class UserController implements PcwkLogger {
 		} else {
 			message = inVO.getEmail() + "수정 실패";
 		}
-		
+
 		String role = (String) httpsession.getAttribute("role");
-		model.addAttribute("role", role); 
+		model.addAttribute("role", role);
 		LOG.debug("role:" + role);
-		
+
 		MessageVO messageVO = new MessageVO(flag + "", message);
 		jsonString = new Gson().toJson(messageVO);
 		LOG.debug("jsonString:" + jsonString);
@@ -440,7 +438,7 @@ public class UserController implements PcwkLogger {
 		LOG.debug("role :" + role);
 
 		return view;
-		
+
 	}
 
 	// 삭제
@@ -481,16 +479,15 @@ public class UserController implements PcwkLogger {
 		LOG.debug("└───────────────────────────────────────────┘");
 
 		// SHA-256 + salt를 사용한 비밀번호 암호화 (2024-02-13)
-		String salt = ShaUtil.generateSalt();
-		inVO.setSalt(salt);
-		String raw = inVO.getPassword();
-		String rawAndSalt = raw + salt;
-		String hex = ShaUtil.hash(rawAndSalt);
-		inVO.setPassword(hex);
-		LOG.debug("아오 제발"+inVO);
-		//
+		String salt = ShaUtil.generateSalt();     // salt 생성
+		inVO.setSalt(salt);  					  // 새로운 계정에 대한 salt 설정
+		String raw = inVO.getPassword(); 		  // 계정의 비밀번호를 raw 문자열에 저장
+		String rawAndSalt = raw + salt;           // 계정 비밀번호와 salt 를 합쳐 rawAndSalt 라는 새로운 문자열에 저장
+		String hex = ShaUtil.hash(rawAndSalt);    // rawAndSalt를 해시
+		inVO.setPassword(hex);  				  // 해시된 비밀번호를 저장
+		LOG.debug("inVO :" + inVO);
 
-		int flag = userService.doSave(inVO);
+		int flag = userService.doSave(inVO); 
 		String message = "";
 
 		if (1 == flag) {
@@ -551,5 +548,6 @@ public class UserController implements PcwkLogger {
 
 		return list;
 	}
+
 
 }

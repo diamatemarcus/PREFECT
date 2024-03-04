@@ -77,7 +77,7 @@
             height: 100%;
         }
 
-
+        /* user와 bot으로 나눈 이유는 수신자,답신자를 구별해서 좌우정렬을 넣고 가시성을 위해서 색구별 */
         .user-message {
             background-color: #6fa1ff;
             color: #fff;
@@ -169,7 +169,8 @@
     </style>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    
+	doContentsList();
+	
     const doSendBTN = document.querySelector("#doSend");
     const contents = document.querySelector("#contents");
     
@@ -180,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         //enter event:
     });
-    
+    //최신 채팅이오면 자동으로 스크롤이 내려가는 기능
     function scrollToBottom() {
         setTimeout(function() {
             let messageContainer = document.querySelector("#message");
@@ -216,8 +217,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     alert(data.msgContents);
                 }
-                
+                //내용을 치고나면 빈칸 처리
                 $('#contents').val('');
+                //내용이 올라갔을때 스크롤 최하단 처리
                 scrollToBottom()
             },
             error: function (data) { // 실패시 처리
@@ -276,7 +278,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    console.log(tableBody);
                    
                    let dynamicTable = '<table id="userTable"  class="table table-bordered border-primary table-hover">'+tableHeader+tableBody+'</table>';
-                   //
+                   //tableBody부분에 담았던 정보들을 모달창으로 전송
                    $(".modal-body").html(dynamicTable);
                    $('#staticBackdrop1').modal('show');
                    
@@ -290,7 +292,7 @@ document.addEventListener("DOMContentLoaded", function () {
                        
                        console.log('email:'+email);
                        
-                       
+                       //해당 이메일을 더블클릭했을때 receiver값에 이메일 전송
                        $("#receiver").val(email);
                        doContentsList()
                        scrollToBottom()
@@ -300,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    });
                    
                    
-                   
+                   // 바로 밑에 둔 이유는 위에 값그대로 사용하기위에서 모달창 밑에 모달창 소환
                    $("#doRetrieve").on("click", function(e){
                        
                        
@@ -463,6 +465,7 @@ document.addEventListener("DOMContentLoaded", function () {
            
 
     });
+    // 채팅내용은 동기처리로 바로바로 내용 확인할수 있게 처리
     function doContentsList(){
         let sender = document.querySelector("#sender").value;
         let receiver = document.querySelector("#receiver").value;
@@ -550,6 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div  class="chat-history">
     <div id="message" class= "chat-history" >
         <c:choose>
+                
               <c:when test="${ not empty list }">
                 <li class="chat-messages" >
             

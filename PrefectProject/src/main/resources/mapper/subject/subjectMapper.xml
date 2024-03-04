@@ -6,146 +6,123 @@
 namespace+id -> com.pcwk.ehr.user.doSelectOne
 -->  
 <mapper namespace="com.pcwk.ehr.subject">
-	
-	
-	
-	<sql id="searchCondition">
-	    <where>
-	        <choose>
-	            <when test="searchDiv != null and searchDiv == '10'">
-	                trainee = #{searchWord} || '%'
-	            </when>
-	            <when test="searchDiv != null and searchDiv == '20'">
-	                subject_code = #{searchWord}
-	            </when>
-	            <when test="searchDiv != null and searchDiv == '30'">
-                    score = #{score}
+    
+    
+    
+    <sql id="searchCondition">
+        <where>
+            <choose>
+                <when test="searchDiv != null and searchDiv == '10'">
+                    subject_code = #{searchWord}
                 </when>
-	        </choose>
-	    </where>
-	</sql>
+                <when test="searchDiv != null and searchDiv == '20'">
+                    subject_code = #{searchWord}
+                </when>
+            </choose>
+        </where>
+    </sql>
 
-	
+    
 
 
 
     <select id="doRetrieve" parameterType="SubjectVO" resultType="SubjectVO">
-	
-	SELECT A.*, B.*
-	FROM (
-	    SELECT TT1.rnum AS no,
-	           TT1.subject_code,
-	           TT1.courses_code,
-	           TT1.professor,
-	           TT1.trainee,
-	           TT1.score
-	    FROM (
-	        SELECT ROWNUM AS rnum, T1.*
-	        FROM (
-	            SELECT *
-	            FROM subject
-	            <include refid="searchCondition"></include>
-	            ORDER BY trainee DESC
-	        ) T1
-	      <![CDATA[  WHERE ROWNUM <= ( #{pageSize} * (#{pageNo} - 1) + #{pageSize} )
-	    ) TT1
-	    WHERE TT1.rnum >= ( #{pageSize} * (#{pageNo} - 1) + 1 )]]>
-	) A
-	CROSS JOIN (
-	    SELECT COUNT(*) total_cnt
-	    FROM subject
-	) B
-	
-
+        SELECT DISTINCT subject_code, courses_code, professor, trainee, score
+            FROM subject
+        JOIN users ON professor = users.email OR trainee = users.email
+        <where>
+           (users.email = #{professor} OR users.email = #{trainee})
+           <include refid="searchCondition"></include>
+        </where>
    
     </select>
     
-	<select id="doRetrieveBySubjectCode" parameterType="SubjectVO" resultType="SubjectVO">
-		 SELECT subject_code, courses_code, professor, trainee, score
-   			FROM subject
-	       WHERE professor = #{professor} AND subject_code = #{subjectCode}
+    <select id="doRetrieveBySubjectCode" parameterType="SubjectVO" resultType="SubjectVO">
+         SELECT subject_code, courses_code, professor, trainee, score
+            FROM subject
+           WHERE professor = #{professor} AND subject_code = #{subjectCode}
     </select>
 
 
     
 
 
-	
+    
 
-	<select id="doSelectOne" parameterType="SubjectVO" resultType="SubjectVO">
-		SELECT
-		    subject_code,
-		    courses_code,
-		    professor,
-		    trainee,
-		    score
-		FROM
-		    subject
-		WHERE
-			subject_code = #{subjectCode} AND
-			courses_code = #{coursesCode} AND
-	        trainee = #{trainee}
-	</select>
-	
-	
-	<update id="doUpdate" parameterType="SubjectVO">
-	    UPDATE subject
-	    SET
-	        score = #{score}
-	    WHERE
-	        subject_code = #{subjectCode} AND
-	        courses_code = #{coursesCode} AND
-	        trainee = #{trainee}
-	</update>
-	
+    <select id="doSelectOne" parameterType="SubjectVO" resultType="SubjectVO">
+        SELECT
+            subject_code,
+            courses_code,
+            professor,
+            trainee,
+            score
+        FROM
+            subject
+        WHERE
+            subject_code = #{subjectCode} AND
+            courses_code = #{coursesCode} AND
+            trainee = #{trainee}
+    </select>
+    
+    
+    <update id="doUpdate" parameterType="SubjectVO">
+        UPDATE subject
+        SET
+            score = #{score}
+        WHERE
+            subject_code = #{subjectCode} AND
+            courses_code = #{coursesCode} AND
+            trainee = #{trainee}
+    </update>
+    
 
     
     <insert id="doSave" parameterType="SubjectVO">
-	    INSERT INTO subject (
-	    subject_code,
-	    courses_code,
-	    professor,
-	    trainee,
-	    score
-	) VALUES (
-	    #{subjectCode},
-	    #{coursesCode},
-	    #{professor},
-	    #{trainee},
-	    #{score}
-	)
+        INSERT INTO subject (
+        subject_code,
+        courses_code,
+        professor,
+        trainee,
+        score
+    ) VALUES (
+        #{subjectCode},
+        #{coursesCode},
+        #{professor},
+        #{trainee},
+        #{score}
+    )
     </insert>
     
     <insert id="doSaveSubject" parameterType="CodeVO">
-	    INSERT INTO cmn_code (
-	    	mst_code,
-		    det_code,
-		    mst_name,
-		    det_name,
-		    seq,
-		    use_yn,
-		    reg_dt,
-		    reg_id,
-		    mod_dt,
-		    mod_id
-		) VALUES (
-		    'SUBJECT',
-		    code_seq.NEXTVAL,
-		    '과목',
-		    #{detName},
-		    code_seq.NEXTVAL,
-		   	1,
-		   	SYSDATE,
-		   	#{regDd},
-		   	SYSDATE,
-		   	#{regDd}	
-		)
+        INSERT INTO cmn_code (
+            mst_code,
+            det_code,
+            mst_name,
+            det_name,
+            seq,
+            use_yn,
+            reg_dt,
+            reg_id,
+            mod_dt,
+            mod_id
+        ) VALUES (
+            'SUBJECT',
+            code_seq.NEXTVAL,
+            '과목',
+            #{detName},
+            code_seq.NEXTVAL,
+            1,
+            SYSDATE,
+            #{regDd},
+            SYSDATE,
+            #{regDd}    
+        )
     </insert>
     
     <delete id="doDeleteSubject" parameterType="String">
-	    DELETE FROM cmn_code 
-	    WHERE  mst_code = 'SUBJECT' 
-	    AND det_code = #{detCode}
+        DELETE FROM cmn_code 
+        WHERE  mst_code = 'SUBJECT' 
+        AND det_code = #{detCode}
     </delete> <!--  회원 삭제 쿼리  -->
     
 
