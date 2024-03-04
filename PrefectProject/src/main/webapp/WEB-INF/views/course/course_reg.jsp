@@ -104,6 +104,24 @@ document.addEventListener("DOMContentLoaded", function() {
     margin: -85px -87px 0px -212px;
 }
 
+.button-container {
+    margin-bottom: 10px; /* 글쓰기 버튼과 페이징 사이의 간격을 줄입니다. */
+}
+
+.button {
+    width: auto;
+    padding: 7px 20px;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 17px;
+    cursor: pointer;
+    border-radius: 8px;
+    background-color: #3986ff;
+    color: white;
+}
+
 </style>
 </head>
 <body>
@@ -119,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="page-header">코스 추가</h2>
+                <h2 class="page-header" style="text-align: center;">코스 추가</h2>
             </div>
         </div>
         <!-- Course Save Form Start -->
@@ -151,8 +169,8 @@ document.addEventListener("DOMContentLoaded", function() {
                 <label for="endDate" class="form-label">종료 날짜</label>
                 <input type="date" class="form-control" id="endDate" name="endDate" required>
             </div>
-            <button type="submit" class="btn btn-primary" id="doSave">저장</button>
-            <button class="btn btn-primary" id="moveToList">목록</button>
+            <button type="submit" class="button" id="doSave">저장</button>
+            <button class="button" id="moveToList">목록</button>
         </form>
         <!-- Course Save Form End -->
         

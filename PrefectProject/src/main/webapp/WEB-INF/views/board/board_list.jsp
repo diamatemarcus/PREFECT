@@ -174,7 +174,7 @@
 		<!-- 제목 -->
 		<div class="row">
 			<div class="col-lg-12">
-				<h3 class="page-header" style="text-align: left;">${title}</h3>
+				<h2 class="page-header" style="text-align: center;">${title}</h2>
 			</div>
 		</div>
 		<br> <br>
