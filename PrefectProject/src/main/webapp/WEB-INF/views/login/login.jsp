@@ -102,6 +102,12 @@ $(document).ready(function(){
                                 window.location.href = "/ehr/index.jsp";
                             });
                         }
+                        else if("40" == data.msgId){
+                            Swal.fire(data.msgContents, "","success").then((value) => {
+                                window.location.href = "/ehr/index.jsp";
+                            });
+                        }
+                        
                     },
                     error: function(data){
                         console.log("error:" + data);

@@ -38,7 +38,8 @@
              password,      
              tel,       
              edu,         
-             role  
+             role,
+             status 
          FROM               
              users          
          WHERE email = #{email}     

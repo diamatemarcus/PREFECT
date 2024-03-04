@@ -100,18 +100,18 @@ public class LoginController implements PcwkLogger {
 	    	String role = outVO.getRole();
 	    	
 			LOG.debug("role:"+role);
-
-	    	
-	    	message.setMsgId("30");
-			message.setMsgContents(outVO.getName()+"님 반갑습니다.");	   
+			LOG.debug("outVO.getStatus():"+outVO.getStatus());
 			
-			
-			
-			if(null != outVO) {
+	    	if(outVO.getStatus().equals("1")) {
+	    		message.setMsgId("30");
+				message.setMsgContents(outVO.getName()+"님 반갑습니다.");	
 				httpSession.setAttribute("user", outVO);
 				httpSession.setAttribute("role", role);
-
-			}			
+	    	}
+	    	else {
+	    		message.setMsgId("40");
+	    		message.setMsgContents(outVO.getName()+"님은 활동정지되었습니다.");	
+	    	}
 	    }else {
 	    	message.setMsgId("99");
 			message.setMsgContents("오류가 발생 했습니다.");	   	    	
