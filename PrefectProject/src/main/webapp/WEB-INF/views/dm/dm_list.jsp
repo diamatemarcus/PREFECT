@@ -169,7 +169,8 @@
     </style>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    
+	doContentsList();
+	
     const doSendBTN = document.querySelector("#doSend");
     const contents = document.querySelector("#contents");
     

@@ -179,11 +179,13 @@ document.addEventListener("DOMContentLoaded",function(){
    
     
     // 수정 이벤트 감지 및 처리
+     if (moveToModBTN) {
     moveToModBTN.addEventListener("click", function(e){
         window.location.href = "/ehr/board/moveToMod.do?seq="+seq+"&div="+div;
     });
-    
+     }
     //삭제 이벤트 감지 및 처리
+    if (moveToModBTN) {
     doDeleteBTN.addEventListener("click",function(e){        
         console.log('doDeleteBTN click'); 
     	     
@@ -233,7 +235,7 @@ document.addEventListener("DOMContentLoaded",function(){
         }); 
         
     }); 
-    
+    }
     //목록 이벤트 감지 및 처리
     moveToListBTN.addEventListener("click",function(e){
         console.log('moveToListBTN click');
@@ -476,6 +478,7 @@ document.addEventListener("DOMContentLoaded",function(){
 								<input type="button" value="삭제" class="button" id="doDelete">
 							</div>
                         </c:if>
+                        
 					</div>
 				</div>
 				<!--// 버튼 ----------------------------------------------------------------->
