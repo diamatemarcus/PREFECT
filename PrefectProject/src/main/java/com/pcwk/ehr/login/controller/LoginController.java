@@ -50,28 +50,7 @@ public class LoginController implements PcwkLogger {
 		return view;
 	}
 
-	//@RequestMapping(value = "/doLogin.do")
-//	public String login(String email, String password, HttpSession httpSession) throws SQLException {
-//		String id = loginService.login(email, password);
-//		UserVO user = loginDao.getUserEmail(email);
-//		UserVO outVO = loginService.doSelectOne(user);
-//	
-//		LOG.debug(id);
-//		LOG.debug("┌───────────────────────────────────────────┐");
-//		LOG.debug("│ doLogin                                   │user:" + id);
-//		LOG.debug("└───────────────────────────────────────────┘");
-//
-//		if (id == null) {
-//			LOG.debug("로그인 실패");
-//			return "login/login";
-//		} else {
-//			httpSession.setAttribute("user", outVO);
-//			LOG.debug(outVO);
-//			LOG.debug("로그인 성공");
-//			return "main/main";
-//		}
-//		
-//	}
+	
 	@RequestMapping(value="/doLogin.do", method = RequestMethod.POST
 			,produces = "application/json;charset=UTF-8"
 			)
@@ -144,8 +123,9 @@ public class LoginController implements PcwkLogger {
 	}
 	@RequestMapping(value = "/doLogout.do")
 	public String logout(HttpSession session) {
+		//logout의 메인기능 - session 정리해주고 로그아웃처리가 되었을때 return 부분에서 다시 로그인페이지로 처리
 		session.invalidate();
-		//String view = "login/login";
+		
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ loginView                                 │");
 		LOG.debug("└───────────────────────────────────────────┘");

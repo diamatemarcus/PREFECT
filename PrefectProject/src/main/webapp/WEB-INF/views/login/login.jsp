@@ -67,7 +67,7 @@ $(document).ready(function(){
             return;
         }
         console.log("password:" + password);
-        
+        //window.confirm 
         Swal.fire({
             title: '로그인 하시겠습니까?',
             icon: 'question',
