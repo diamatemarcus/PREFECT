@@ -38,8 +38,10 @@
 		<div>
 			<form action="#" name="subjectRegFrm">
 				<div class="mb-3">
-					<label for="subject" class="form-label">새 과목 이름</label>
-					<input type="text" class="form-control" name="subject" id="subject" value="" placeholder="추가 할 과목 이름을 입력해 주세요." style="width: 50%;" maxlength="11">
+					<label for="subject" class="form-label">새 과목 이름</label> <input
+						type="text" class="form-control" name="subject" id="subject"
+						value="" placeholder="추가 할 과목 이름을 입력해 주세요." style="width: 50%;"
+						maxlength="11">
 				</div>
 			</form>
 		</div>
@@ -50,9 +52,11 @@
 		<!-- 과목 목록 부분 -->
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">과목 목록</h1>
+				<br> <br>
+				<h2 class="page-header" style="text-align: center;">과목 목록</h2>
 			</div>
 		</div>
+		<br> <br>
 		<div class="row justify-content-end">
 			<div class="col-auto">
 				<input type="button" class="btn btn-primary" value="등록"
@@ -177,7 +181,7 @@
 			window.location.href = "/ehr/subject/moveToSubjectList.do";
 
 		}
-		
+
 		function moveToReg() {
 			console.log("----------------------");
 			console.log("-moveToReg()-");
@@ -186,7 +190,7 @@
 			window.location.href = "/ehr/subject/moveToSubjectReg.do";
 
 		}
-		
+
 		function doDelete(button) {
 			// 클릭한 버튼의 부모 요소를 통해 해당 행(tr)을 찾습니다.
 			var row = button.parentNode.parentNode;
@@ -210,7 +214,7 @@
 				asyn : "true",
 				dataType : "json",
 				data : {
-					detCode: detCode
+					detCode : detCode
 				},
 				success : function(data) {//통신 성공     
 					console.log("success data:" + data);

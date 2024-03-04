@@ -15,23 +15,7 @@
 }
 
 .col-lg-10 {
-    max-width: 60%;
-}
-
-.button {
-	width: auto;
-	/* 버튼의 크기를 내용에 맞게 자동으로 조절합니다. */
-	/* 다른 스타일을 원하는 대로 추가할 수 있습니다. */
-	padding: 10px 20px;
-	/* 내용과 버튼의 테두리 간격을 조정합니다. */
-	border: none;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	cursor: pointer;
-	border-radius: 8px;
-	background-color: #3986ff
+	max-width: 60%;
 }
 
 .day-cell:hover {
@@ -51,7 +35,7 @@
 }
 
 #calendarTable th {
-	background-color: #79cb7c;
+	background-color: #3986FF;
 	color: white;
 	padding: 8px;
 	text-align: center;
@@ -71,7 +55,7 @@
 }
 
 #calendarTable .day-cell:hover {
-	background-color: #e8f4e8;
+	background-color: #D2E6FA;
 }
 
 #calendarTable .weekend {
@@ -92,7 +76,7 @@
 #calendarTable th, #calendarTable td {
 	padding: 8px;
 	text-align: center;
-	border: 3px solid #79cb7c;
+	border: 3px solid #3986FF;
 	word-break: break-word;
 	max-width: 200px;
 }
@@ -100,7 +84,7 @@
 #calendarTable td {
 	padding: 8px;
 	text-align: center;
-	border: 3px solid #79cb7c;
+	border: 3px solid #3986FF;
 	word-break: break-word;
 	max-width: 200px;
 	height: 100px;
@@ -734,41 +718,43 @@
 		<input type="text" id="email" name="email"
 			value="${sessionScope.user.email}">
 		<!-- 제목 -->
-		<div class="row">
-			<div class="col-lg-10">
-				<h3 class="page-header"
-					style="text-align: left; font-family: Montserrat;">캘린더 -
-					${year}년 ${month}월</h3>
-				<div class="col-auto d-flex flex-column ">
-					<!-- 연도 표시 -->
-					<input type="hidden" name="year" id="year" value="${year}" readonly
-						class="form-control" style="width: 80px;">
-					<!-- 월 표시 -->
-					<input type="hidden" name="month" id="month" value="${month}"
-						readonly class="form-control" style="width: 60px;">
-					<!-- 버튼 그룹 -->
-					<div class="d-flex" style="margin-bottom: 30px;">
-						<!-- 이전 버튼 -->
-						<input type="button" value="이전" class="btn btn-primary me-2"
-							id="lastMonth" style="color: aliceblue;">
-						<!-- 다음 버튼 -->
-						<input type="button" value="다음" class="btn btn-primary ms-2"
-							id="nextMonth" style="color: aliceblue;">
-					</div>
-					<!-- 텍스트 -->
-					<div>
-						<span style="color: #81c408;">*날짜를 더블클릭하여 일정을 추가하세요.</span>
-					</div>
-				</div>
+
+
+		<div class="row page-header">
+			<div class="col-lg-12" style="text-align: center;">
+				<h2>캘린더</h2>
+				<br>
 			</div>
 		</div>
 
+		<div class="row">
+			<div
+				class="col-lg-12 d-flex justify-content-center align-items-center">
+				<input type="button" value="이전" class="btn btn-primary me-2"
+					id="lastMonth">
+				<h2>${year}년${month}월</h2>
+				<input type="button" value="다음" class="btn btn-primary ms-2"
+					id="nextMonth">
+			</div>
+		</div>
 
-
-
+		<div class="row">
+			<div class="col-lg-12" style="text-align: center;">
+				<!-- 연도 표시 -->
+				<input type="hidden" name="year" id="year" value="${year}" readonly
+					class="form-control" style="width: 80px;">
+				<!-- 월 표시 -->
+				<input type="hidden" name="month" id="month" value="${month}"
+					readonly class="form-control" style="width: 60px;">
+			</div>
+			<!-- 텍스트 -->
+			<div>
+				<span style="color: #ef3b3b;">*날짜를 더블클릭하여 일정을 추가하세요.</span>
+			</div>
+		</div>
 
 		<!-- 캘린더 table -->
-		<div class="col-lg-10 "
+		<div class="col-lg-12 "
 			style="margin-top: 10px; margin-left: auto; margin-right: auto;">
 			<table class="table table-bordered border-primary table-hover"
 				id="calendarTable" style="margin-top: 10px; margin-bottom: 10px">

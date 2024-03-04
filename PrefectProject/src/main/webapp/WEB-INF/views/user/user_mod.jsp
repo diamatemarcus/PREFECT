@@ -110,10 +110,10 @@
 				<c:choose>
 					<c:when
 						test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
-						<h2 class="page-header" style="text-align: left;">마이페이지</h2>
+						<h2 class="page-header" style="text-align: center;">마이페이지</h2>
 					</c:when>
 					<c:otherwise>
-						<h2 class="page-header" style="text-align: left;">회원 정보</h2>
+						<h2 class="page-header" style="text-align: center;">회원 정보</h2>
 					</c:otherwise>
 				</c:choose>
 
@@ -147,26 +147,21 @@
 							size="20" maxlength="30">
 					</div>
 
-					<div>
+					<div class="mb-3">
 						<label for="password" class="form-label">비밀번호</label> <input
 							type="password" class="hidden" readonly="readonly"
 							name="password" id="password"
 							value="${outVO != null ? outVO.password : userSession.password}"
-							size="20" maxlength="30">
-					</div>
-
-					<div class="mb-3">
-
-
+							size="20" maxlength="30"><br>
 						<c:choose>
 							<c:when
 								test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
 								<input type="button" value="변경하기" class="btn btn-primary"
-									id="passwordReset" style="margin-top: 2px">
+									id="passwordReset">
 							</c:when>
 							<c:otherwise>
 								<input type="button" value="변경하기" class="btn btn-primary"
-									id="passwordReset" style="margin-top: 2px" disabled>
+									id="passwordReset" disabled>
 							</c:otherwise>
 						</c:choose>
 
@@ -188,85 +183,69 @@
 							value="${outVO != null ? outVO.tel : userSession.tel}" size="20"
 							maxlength="11">
 					</div>
-
+					<br>
 					<div class="mb-3">
-						<label for="gender" class="form-label">성별</label>
-						<div class="col-auto">
-							<select id="gender" name="gender" class="basicselect">
-								<!-- 검색 조건 옵션을 동적으로 생성 -->
-								<c:forEach items="${gender}" var="vo">
-									<option value="<c:out value='${vo.detCode}'/>"
-										${outVO != null ? (vo.detCode eq outVO.gender ? 'selected' : '') : (userSession.gender eq vo.detCode ? 'selected' : '')}>
-										<c:out value="${vo.detName}" />
-									</option>
-								</c:forEach>
-							</select>
-						</div>
+						<label for="gender" class="form-label">성별</label> <select
+							id="gender" name="gender" class="basicselect">
+							<!-- 검색 조건 옵션을 동적으로 생성 -->
+							<c:forEach items="${gender}" var="vo">
+								<option value="<c:out value='${vo.detCode}'/>"
+									${outVO != null ? (vo.detCode eq outVO.gender ? 'selected' : '') : (userSession.gender eq vo.detCode ? 'selected' : '')}>
+									<c:out value="${vo.detName}" />
+								</option>
+							</c:forEach>
+						</select> <label for="edu" class="form-label">학력</label> <select
+							id="education" name="education" class="basicselect">
+							<!-- 검색 조건 옵션을 동적으로 생성 -->
+							<c:forEach items="${education}" var="vo">
+								<option value="<c:out value='${vo.detCode}'/>"
+									${outVO != null ? (vo.detCode eq outVO.edu ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
+									<c:out value="${vo.detName}" />
+								</option>
+							</c:forEach>
+						</select>
 					</div>
-
-					<div class="mb-3">
-						<label for="edu" class="form-label">학력</label>
-						<div class="col-auto">
-							<select id="education" name="education" class="basicselect">
-								<!-- 검색 조건 옵션을 동적으로 생성 -->
-								<c:forEach items="${education}" var="vo">
-									<option value="<c:out value='${vo.detCode}'/>"
-										${outVO != null ? (vo.detCode eq outVO.edu ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
-										<c:out value="${vo.detName}" />
-									</option>
-								</c:forEach>
-							</select>
-						</div>
-					</div>
-
+					<br>
 					<c:choose>
 						<c:when
 							test="${sessionScope.user.role == 20 || sessionScope.user.role == 30}">
 							<div class="mb-3 hidden">
-								<label for="role" class="form-label">역할</label>
-								<div class="col-auto">
-									<select id="role" name="role" class="basicselect">
-										<!-- 검색 조건 옵션을 동적으로 생성 -->
-										<c:forEach items="${role1}" var="vo">
-											<option value="<c:out value='${vo.detCode}'/>"
-												${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
-												<c:out value="${vo.detName}" />
-											</option>
-										</c:forEach>
-									</select>
-								</div>
+								<label for="role" class="form-label">역할</label> <select
+									id="role" name="role" class="basicselect">
+									<!-- 검색 조건 옵션을 동적으로 생성 -->
+									<c:forEach items="${role1}" var="vo">
+										<option value="<c:out value='${vo.detCode}'/>"
+											${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
+											<c:out value="${vo.detName}" />
+										</option>
+									</c:forEach>
+								</select>
 							</div>
 						</c:when>
 						<c:otherwise>
 							<div class="mb-3">
-								<label for="role" class="form-label">역할</label>
-								<div class="col-auto">
-									<select id="role" name="role" class="basicselect">
-										<!-- 검색 조건 옵션을 동적으로 생성 -->
-										<c:forEach items="${role1}" var="vo">
-											<option value="<c:out value='${vo.detCode}'/>"
-												${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
-												<c:out value="${vo.detName}" />
-											</option>
-										</c:forEach>
-									</select>`
-								</div>
+								<label for="role" class="form-label">역할</label> <select
+									id="role" name="role" class="basicselect">
+									<!-- 검색 조건 옵션을 동적으로 생성 -->
+									<c:forEach items="${role1}" var="vo">
+										<option value="<c:out value='${vo.detCode}'/>"
+											${outVO != null ? (vo.detCode eq outVO.role ? 'selected' : '') : (userSession.edu eq vo.detCode ? 'selected' : '')}>
+											<c:out value="${vo.detName}" />
+										</option>
+									</c:forEach>
+								</select>`
 							</div>
+							<br>
+							<input type="hidden" class="form-control" id="status"
+								name="status"
+								value="${outVO != null ? outVO.status : userSession.status}"
+								size="20" maxlength="11">
 
 							<div class="mb-3">
-								<label for="status" class="form-label">활동상태</label> <input
-									type="text" class="form-control" id="status" name="status"
-									value="${outVO != null ? outVO.status : userSession.status}"
-									size="20" maxlength="11">
-							</div>
-
-							<div class="row">
-								<div class="col-md-2 mb-3">
-									<input type="button"
-										value="${outVO.status == '0' ? '정지해제' : '활동정지'}"
-										class="btn btn-primary" id="doPauseUser"
-										onclick="window.doPauseUser();">
-								</div>
+								<input type="button"
+									value="${outVO.status == '0' ? '정지해제' : '활동정지'}"
+									class="btn btn-primary" id="doPauseUser"
+									onclick="window.doPauseUser();">
 							</div>
 
 						</c:otherwise>
@@ -286,18 +265,18 @@
 								</select>
 							</div>
 
-							<!-- 등록일 텍스트 상자 -->
-							<div class="col-md-6">
-								<label for="regDt" class="form-label">등록일</label> <input
-									type="date" id="regDt" name="regDt" class="form-control">
-							</div>
+								<div class="col-md-6">
+									<label for="regDt" class="form-label">등록일</label>
+									<div class="input-group">
+										<input type="date" id="regDt" name="regDt"
+											class="form-control">
+										<button type="button" class="btn btn-primary"
+											id="doSaveLicenses">선택</button>
+									</div>
+								</div>
+
 						</div>
 
-						<!-- 자격증 저장 버튼 -->
-						<div class="mb-4">
-							<input type="button" value="선택" class="btn btn-primary"
-								id="doSaveLicenses" style="margin-top: 10px">
-						</div>
 						<!-- 선택한 자격증에 대한 목록을 표시할 테이블 -->
 						<table id="licensesList" class="table table-responsive">
 							<thead>

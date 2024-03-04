@@ -71,94 +71,83 @@
 	<input type="hidden" id="sessionEmail"
 		value="${sessionScope.user.email}" />
 
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<%-- <div class="text-center">
-	    <label for="calID">날짜 선택:</label>
-	    <input type="date" id="calID" name="calID" value="<%=java.time.LocalDate.now()%>" onchange="reloadPage(this)">
-	</div> --%>
-
-	<div>
-		<div class="container col-md-6">
-			<table class="table">
-				<tbody>
-					<tr>
-						<td class="form-label">훈련과정명</td>
-						<td><input type="text" class="form-control ppl_input"
-							readonly="readonly" name="courseName" id="courseName"
-							value="${course.courseName}_${course.numberOfTimes}회차" size="20" maxlength="30"></td>
-					</tr>
-					<tr>
-						<td class="form-label">훈련 기관명</td>
-						<td><input type="text" class="form-control"
-							name="academyName" id="academyName" size="20"
-							value="${course.academyName}" maxlength="21" readonly></td>
-					</tr>
-					<tr>
-						<td class="form-label">훈련기간</td>
-						<td><input type="text" class="form-control" name="period"
-							id="period" value="${course.startDate} ~ ${course.endDate}"
-							readonly="readonly" size="20" maxlength="30"></td>
-					</tr>
-				</tbody>
-			</table>
+	<div class="container">
+		<!-- 제목 -->
+		<div class="row">
+			<div class="col-lg-12">
+				<h2 class="page-header" style="text-align: center;">출석 현황</h2>
+			</div>
 		</div>
-	</div>
+		<br> <br>
+		<div>
+			<div class="container col-md-6">
+				<table class="table">
+					<tbody>
+						<tr>
+							<td class="form-label">훈련과정명</td>
+							<td><input type="text" class="form-control ppl_input"
+								readonly="readonly" name="courseName" id="courseName"
+								value="${course.courseName}_${course.numberOfTimes}회차" size="20"
+								maxlength="30"></td>
+						</tr>
+						<tr>
+							<td class="form-label">훈련 기관명</td>
+							<td><input type="text" class="form-control"
+								name="academyName" id="academyName" size="20"
+								value="${course.academyName}" maxlength="21" readonly></td>
+						</tr>
+						<tr>
+							<td class="form-label">훈련기간</td>
+							<td><input type="text" class="form-control" name="period"
+								id="period" value="${course.startDate} ~ ${course.endDate}"
+								readonly="readonly" size="20" maxlength="30"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 
-	<div class="container-fluid testimonial py-2">
-		<!-- table -->
-		<table id="attendanceTable" class="table table-responsive">
-			<thead>
-				<tr>
-					<th scope="col" class="text-center col-lg-2  col-sm-2">순번</th>
-					<th scope="col" class="text-center col-lg-2  col-sm-2">날짜</th>
-					<th scope="col" class="text-center col-lg-2  col-sm-2">출석여부</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:choose>
-					<%-- 조회데이터가 있는 경우:jsp comment(html에 노출 안됨) --%>
-					<c:when test="${not empty attendances }">
-						<c:forEach var="vo" items="${attendances}" varStatus="loop">
-							<tr>
-								<td class="text-center">${loop.index + 1}</td>
-								<td class="text-center"><input type="text" id="calID"
-									value="${vo.calID }" /></td>
-								<td class="text-center"><c:forEach var="attendStatus"
-										items="${attendStatusList}">
-										<c:if test="${attendStatus.detCode eq vo.attendStatus}">
+		<div class="container-fluid testimonial py-2">
+			<!-- table -->
+			<table id="attendanceTable" class="table table-responsive">
+				<thead>
+					<tr>
+						<th scope="col" class="text-center col-lg-2  col-sm-2">순번</th>
+						<th scope="col" class="text-center col-lg-2  col-sm-2">날짜</th>
+						<th scope="col" class="text-center col-lg-2  col-sm-2">출석여부</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:choose>
+						<%-- 조회데이터가 있는 경우:jsp comment(html에 노출 안됨) --%>
+						<c:when test="${not empty attendances }">
+							<c:forEach var="vo" items="${attendances}" varStatus="loop">
+								<tr>
+									<td class="text-center">${loop.index + 1}</td>
+									<td class="text-center"><input type="text" id="calID"
+										value="${vo.calID }" /></td>
+									<td class="text-center"><c:forEach var="attendStatus"
+											items="${attendStatusList}">
+											<c:if test="${attendStatus.detCode eq vo.attendStatus}">
 			                            ${attendStatus.detName}
 			                        </c:if>
-									</c:forEach></td>
+										</c:forEach></td>
+								</tr>
+							</c:forEach>
+						</c:when>
+						<%-- 조회데이터가 없는 경우:jsp comment(html에 노출 않됨) --%>
+						<c:otherwise>
+							<tr>
+								<td colspan="99" class="text-center">훈련 과정이 현재 진행 중이 아닙니다.</td>
 							</tr>
-						</c:forEach>
-					</c:when>
-					<%-- 조회데이터가 없는 경우:jsp comment(html에 노출 않됨) --%>
-					<c:otherwise>
-			           <tr>
-			               <td colspan="99" class="text-center">훈련 과정이 현재 진행 중이 아닙니다. </td>
-			           </tr>
-			        </c:otherwise>
-				</c:choose>
-			</tbody>
-		</table>
-		<!--// table -------------------------------------------------------------->
-		<br> <br>
-		<%-- 	    <!-- button --------------------------------------------------------------->
-	    <c:choose>
-		    <c:when test="${empty attendances }">
-		        <div class="row g-1 justify-content-end">
-		            <div class="col-auto"> <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-		                <input type="button" value="전체 저장" class="button"  id="doSave" onclick="window.doSave();">
-		            </div>  
-		        </div>
-		    </c:when>
-		</c:choose> --%>
+						</c:otherwise>
+					</c:choose>
+				</tbody>
+			</table>
+			<!--// table -------------------------------------------------------------->
+			<br> <br>
+		</div>
 	</div>
 	<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
-
 </body>
 </html>
