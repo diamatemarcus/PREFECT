@@ -47,6 +47,20 @@
 			}
 		}
 	};
+
+	// 주어진 정수형 calID를 "YYYY-MM-DD" 형식인 "2024-03-04"로 변환하는 함수
+	function formatDate(calID) {
+		// 정수형 calID를 문자열로 변환하고, 길이가 8이 되도록 0으로 채웁니다.
+		var calIDString = calID.toString().padStart(8, '0');
+
+		// 연도, 월, 일을 추출합니다.
+		var year = calIDString.substr(0, 4);
+		var month = calIDString.substr(4, 2);
+		var day = calIDString.substr(6, 2);
+
+		// 변환된 날짜 문자열을 반환합니다.
+		return year + '-' + month + '-' + day;
+	}
 </script>
 
 <style>
@@ -124,8 +138,16 @@
 							<c:forEach var="vo" items="${attendances}" varStatus="loop">
 								<tr>
 									<td class="text-center">${loop.index + 1}</td>
-									<td class="text-center"><input type="text" id="calID"
-										value="${vo.calID }" /></td>
+									<td class="text-center"><input type="hidden"
+										id="calID${loop.index}" value="${vo.calID}"> <script>
+											// JavaScript를 사용하여 calID 값을 원하는 형식으로 변환
+											var calID = document
+													.getElementById('calID${loop.index}').value;
+											var formattedDate = calID.replace(
+													/(\d{4})(\d{2})(\d{2})/,
+													'$1-$2-$3');
+											document.write(formattedDate);
+										</script></td>
 									<td class="text-center"><c:forEach var="attendStatus"
 											items="${attendStatusList}">
 											<c:if test="${attendStatus.detCode eq vo.attendStatus}">

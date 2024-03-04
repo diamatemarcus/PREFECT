@@ -56,7 +56,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="page-header" style="text-align: center;">과정정보</h2>
+                <h2 class="page-header" style="text-align: center;">내 과정 정보</h2>
             </div>
         </div>
         <br><br>
