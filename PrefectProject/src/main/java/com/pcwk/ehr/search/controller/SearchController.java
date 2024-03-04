@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -118,18 +119,15 @@ public class SearchController implements PcwkLogger {
 	
 	//비밀번호 변경 창 띄우기
 	@RequestMapping(value = "/changePassword.do")
-	public String searchPasswordResult(HttpSession httpSession, Model model) {
+	public String searchPasswordResult(UserVO inVO, HttpSession httpSession, Model model) throws EmptyResultDataAccessException, SQLException {
 		String view = "search/change_password";
-		UserVO user = new UserVO();
-		
-		if(null != httpSession.getAttribute("user")) {
-			user = (UserVO) httpSession.getAttribute("user");	
-		}
+		UserVO user = userService.doSelectOne(inVO);
 		
 		model.addAttribute("user", user);	
 		
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ changePasswordView                        │");
+		LOG.debug("│ user                                      │" + user);
 		LOG.debug("└───────────────────────────────────────────┘");
 
 		return view;
@@ -191,10 +189,6 @@ public class SearchController implements PcwkLogger {
 			UserVO outVO = userService.doSelectOne(user);
 			message.setMsgId("30");
 			message.setMsgContents("찾으시는 이메일은:" + outVO.getEmail() + "입니다.");
-
-			if (null != outVO) {
-				httpSession.setAttribute("user", outVO);
-			}
 			
 			LOG.debug("outVO:" + outVO);
 		} else {

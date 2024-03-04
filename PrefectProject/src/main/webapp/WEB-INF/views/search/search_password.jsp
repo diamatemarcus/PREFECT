@@ -90,7 +90,7 @@ body {
              <img src="${CP}/resources/template/img/acorn.png" alt="ARMS Logo" width="150" height="75">
            </div>    
         </a>
-        <h1 class="h3 mb-3 font-weight-normal">비밀번호 찾기</h1>
+        <h1 class="h3 mb-3 font-weight-normal">비밀번호 인증</h1>
         <!-- 비밀번호 찾기 양식 -->
         <form>
             <div class="mb-3">
@@ -114,10 +114,10 @@ body {
             <div class="mb-3 mail-check-box">
                 <input class="form-control mail-check-input" placeholder="인증번호 6자리를 입력해주세요!" disabled="disabled" maxlength="6">
             </div>
-            <span id="mail-check-warn"></span>
-            <button class="btn btn-lgg btn-primary btn-block mt-3" type="submit" id="searchPasswordResult">비밀번호 찾기</button>
+            </form>
+            <span id="mail-check-warn"></span><br>
+            <button class="btn btn-lgg btn-primary btn-block mt-3" id="searchPasswordResult" onclick="moveToChangePassword()" disabled>비밀번호 변경</button>
             <button class="btn btn-lgg btn-secondary btn-block" onclick="history.go(-1);">취소</button>
-        </form>
         	<div class="d-flex mb-3 justify-content-between">
 				<div class="form-check">
 					<!-- 빈공간을 만들기 위함-->
@@ -224,10 +224,10 @@ body {
          $("#searchPasswordResult").on("click",function(e){
              console.log("searchPasswordResult click!");
              const email = $('#userEmail1').val() + $('#userEmail2').val(); // 이메일 주소값 얻어오기!
-             window.location.href ="/ehr/search/changePassword.do";
+             window.location.href ="/ehr/search/changePassword.do?email=" +email;
          });
      });
-             
+
      </script>
 </body>
 </html>
