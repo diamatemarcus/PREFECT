@@ -552,7 +552,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div  class="chat-history">
     <div id="message" class= "chat-history" >
         <c:choose>
-                <!-- 채팅내용을 들오자마자 Ajax가 작동하는데 값이 안들어오면 오류가 되니 if처리 -->
+                
               <c:when test="${ not empty list }">
                 <li class="chat-messages" >
             
