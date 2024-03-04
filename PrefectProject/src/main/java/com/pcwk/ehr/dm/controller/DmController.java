@@ -231,7 +231,7 @@ public class DmController implements PcwkLogger{
 		LOG.debug("┌───────────────────────────────────────────┐");
 		LOG.debug("│ doMemberPopup                             │DTO:"+searchVO);
 		LOG.debug("└───────────────────────────────────────────┘");				
-		
+		//로그인 했을때 Sender가 로그인한 유저정보가 들어올수있도록 session 처리
 		if(null != httpSession.getAttribute("user")) {
 			UserVO user = (UserVO) httpSession.getAttribute("user");
 			searchVO.setSender(user.getEmail());
