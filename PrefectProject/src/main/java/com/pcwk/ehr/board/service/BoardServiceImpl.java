@@ -66,4 +66,9 @@ public class BoardServiceImpl implements BoardService,PcwkLogger {
 		return dao.totalBoard();
 	}
 
+	@Override
+	public List<BoardVO> doRetrieveByReadCnt() throws SQLException {
+		return dao.doRetrieveByReadCnt();
+	}
+
 }
