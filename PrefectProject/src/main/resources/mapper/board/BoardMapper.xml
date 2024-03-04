@@ -2,47 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pcwk.ehr.board">
-  <update id="updateReadCnt" parameterType="BoardVO">
-    <![CDATA[
-    UPDATE board
-       SET read_cnt = NVL(read_cnt,0)+1
-     WHERE seq  = #{seq}
-       AND reg_id <> #{regId} ]]>  
-  </update>
+    
+    <!-- 조회수 -->
+	<update id="updateReadCnt" parameterType="BoardVO">
+	  <![CDATA[
+	  UPDATE board
+	     SET read_cnt = NVL(read_cnt,0)+1
+	   WHERE seq  = #{seq}
+	     AND reg_id <> #{regId} ]]>  
+	</update>
   
-  <select id="totalBoard" resultType="int">
-    SELECT count(seq) as totalBoard FROM board
-  </select>
+	<!-- 게시물 총 개수 -->
+	<select id="totalBoard" resultType="int">
+	  SELECT count(seq) as totalBoard FROM board
+	</select>
+	
+	<!-- div -->
+	<sql id="divCondition">
+	  <choose>
+	      <when test=" ''!=div and '20' == div "><!-- 20 -->
+	          AND div = '20'
+	      </when>
+	      <otherwise> <!-- 10 -->
+	          AND div = '10'
+	      </otherwise>
+	  </choose>
+	</sql>
   
-  <!-- div -->
-  <sql id="divCondition">
-    <choose>
-        <when test=" ''!=div and '20' == div "><!-- 20 -->
-            AND div = '20'
-        </when>
-        <otherwise> <!-- 10 -->
-            AND div = '10'
-        </otherwise>
-    </choose>
-  </sql>
-  
-  <sql id="searchCondition">
-    <choose>
-        <when test=" ''!= searchDiv and '10' == searchDiv ">
-            AND title LIKE #{searchWord} || '%'
-        </when>
-        <when test=" ''!= searchDiv and '20' == searchDiv ">
-            AND contents LIKE #{searchWord} || '%'
-        </when>
-        <when test=" ''!= searchDiv and '30' == searchDiv ">
-            AND mod_id LIKE #{searchWord} || '%'
-        </when>
-        <otherwise>
-            <!-- '전체' 검색을 위해 모든 데이터를 조회해야 하므로, 조건을 적용하지 않습니다. -->
-        </otherwise>
-    </choose>
-  </sql>  
-  
+	<!-- 검색조건 -->
+	<sql id="searchCondition">
+	  <choose>
+	      <when test=" ''!= searchDiv and '10' == searchDiv ">
+	          AND title LIKE #{searchWord} || '%'
+	      </when>
+	      <when test=" ''!= searchDiv and '20' == searchDiv ">
+	          AND contents LIKE #{searchWord} || '%'
+	      </when>
+	      <when test=" ''!= searchDiv and '30' == searchDiv ">
+	          AND mod_id LIKE #{searchWord} || '%'
+	      </when>
+	      <otherwise>
+	          <!-- '전체' 검색을 위해 모든 데이터를 조회해야 하므로, 조건을 적용하지 않습니다. -->
+	      </otherwise>
+	  </choose>
+	</sql>  
+    
+    <!-- 게시글 리스트 조회 -->
 	<select id="doRetrieve" parameterType="BoardVO" resultType="BoardVO">
 	    SELECT A.*, B.totalCnt, R.replyCnt
 	    FROM (
@@ -89,73 +94,73 @@
 	        <include refid="searchCondition"/>
 	    ) B order by no
 	</select>
-
-  <delete id="doDeleteAll" parameterType="BoardVO" >
-    DELETE FROM board
-    WHERE title LIKE #{title}||'%'
-  </delete>
-
-  <update id="doUpdate" parameterType="BoardVO">
-	UPDATE board
-	SET  
-	    div = #{div},
-	    title = #{title},
-	    contents = #{contents},
-	    mod_dt = SYSDATE,
-	    mod_id = #{modId}
-	WHERE seq = #{seq}
-  </update>
-  
-  
-  <select id="getBoardSeq" resultType="int">
-     SELECT BOARD_SEQ.NEXTVAL FROM DUAL
-  </select>
-  
-  <select id="doSelectOne" parameterType="BoardVO" resultType="BoardVO">
-	SELECT
-	    seq,
-	    div,
-	    title,
-	    contents,
-	    read_cnt,
-	    TO_CHAR(reg_dt,'YYYY-MM-DD HH24:MI:SS') reg_dt,
-	    reg_id,
-	    TO_CHAR(mod_dt,'YYYY-MM-DD HH24:MI:SS') mod_dt,
-	    mod_id,
-	    uuid
-	FROM    board
-	WHERE seq = #{seq}     
-  </select>
-
-  <delete id="doDelete" parameterType="BoardVO">
+    
+    <!-- 전체 게시글 삭제 -->
+	<delete id="doDeleteAll" parameterType="BoardVO" >
 		DELETE FROM board
-	    WHERE seq = #{seq}  
-  </delete>  
+		WHERE title LIKE #{title}||'%'
+	</delete>
+
+    <update id="doUpdate" parameterType="BoardVO">
+		UPDATE board
+		SET  
+		    div = #{div},
+		    title = #{title},
+		    contents = #{contents},
+		    mod_dt = SYSDATE,
+		    mod_id = #{modId}
+		WHERE seq = #{seq}
+    </update> 
+
+	<select id="getBoardSeq" resultType="int">
+	   SELECT BOARD_SEQ.NEXTVAL FROM DUAL
+	</select>
   
-  <insert id="doSave" parameterType="BoardVO">
-	INSERT INTO board (
-	    seq,
-	    div,
-	    title,
-	    contents,
-	    read_cnt,
-	    reg_dt,
-	    reg_id,
-	    mod_dt,
-	    mod_id,
-	    uuid
-	) VALUES (
-	    #{seq},
-	    #{div},
-	    #{title},
-	    #{contents},
-	    #{readCnt},
-	    SYSDATE,
-	    #{regId},
-	    SYSDATE,
-	    #{regId},
-	    #{uuid}
-	)
-  </insert>
+	<select id="doSelectOne" parameterType="BoardVO" resultType="BoardVO">
+		SELECT
+		    seq,
+		    div,
+		    title,
+		    contents,
+		    read_cnt,
+		    TO_CHAR(reg_dt,'YYYY-MM-DD HH24:MI:SS') reg_dt,
+		    reg_id,
+		    TO_CHAR(mod_dt,'YYYY-MM-DD HH24:MI:SS') mod_dt,
+		    mod_id,
+		    uuid
+		FROM    board
+		WHERE seq = #{seq}     
+	</select>
+
+	<delete id="doDelete" parameterType="BoardVO">
+		DELETE FROM board
+		WHERE seq = #{seq}  
+	</delete>  
+  
+    <insert id="doSave" parameterType="BoardVO">
+		INSERT INTO board (
+		    seq,
+		    div,
+		    title,
+		    contents,
+		    read_cnt,
+		    reg_dt,
+		    reg_id,
+		    mod_dt,
+		    mod_id,
+		    uuid
+		) VALUES (
+		    #{seq},
+		    #{div},
+		    #{title},
+		    #{contents},
+		    #{readCnt},
+		    SYSDATE,
+		    #{regId},
+		    SYSDATE,
+		    #{regId},
+		    #{uuid}
+		)
+    </insert>
   
 </mapper>

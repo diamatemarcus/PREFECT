@@ -49,6 +49,7 @@ public class BoardController implements PcwkLogger{
 	
 	public BoardController() {}
 	
+	//수정 페이지로 이동
 	@GetMapping(value="/moveToMod.do")
 	public String moveToMod(BoardVO inVO, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException{
 		String view = "";
@@ -63,10 +64,8 @@ public class BoardController implements PcwkLogger{
 		
 		BoardVO  outVO = service.doSelectOne(inVO);
 			
-		model.addAttribute("vo", outVO);
-		
-		// uuid 값을 모델에 추가
-	    model.addAttribute("uuid", outVO.getUuid());
+		model.addAttribute("vo", outVO);			
+	    model.addAttribute("uuid", outVO.getUuid()); // uuid 값을 모델에 추가
 		
 		// 파일 정보 조회
 		List<FileVO> fileList = fileService.getFileUuid(outVO.getUuid());
@@ -95,6 +94,7 @@ public class BoardController implements PcwkLogger{
 		
 	}
 	
+	//등록 페이지로 이동
 	@GetMapping(value="/moveToReg.do")//저 url로 get매핑함
 	public String moveToReg(Model model, BoardVO inVO, HttpSession session) throws SQLException {
 		String viewName = "";
@@ -115,9 +115,6 @@ public class BoardController implements PcwkLogger{
 		model.addAttribute("paramVO", inVO);
 		model.addAttribute("selectedDiv", selectedDiv);
 		
-		/**
-		 * error noUse
-		 */
 		//공지사항:10, 자유게시판:20
 		String title = "";
 		if(inVO.getDiv().equals("10")) {
@@ -131,6 +128,7 @@ public class BoardController implements PcwkLogger{
 		return viewName;
 	}
 	
+	//게시글 조회
 	@GetMapping(value = "/doRetrieve.do")
 	public ModelAndView doRetrieve(BoardVO inVO, ModelAndView modelAndView) throws SQLException{
 		LOG.debug("┌───────────────────────────────────┐");
@@ -179,7 +177,7 @@ public class BoardController implements PcwkLogger{
 			if(vo.getMstCode().equals("PAGE_SIZE")) {
 				pageSizeList.add(vo);
 			}	
-			//LOG.debug(vo);
+			
 		}
 		
 		//목록조회
@@ -200,6 +198,7 @@ public class BoardController implements PcwkLogger{
 		}
 		
 		long totalCnt = 0;
+		
 		//총글수 
 		for(BoardVO vo  :list) {
 			if(totalCnt == 0) {
@@ -207,9 +206,7 @@ public class BoardController implements PcwkLogger{
 				break;
 			}
 		}
-		
-		modelAndView.addObject("totalCnt", totalCnt);
-		
+				
 		long replyCnt = 0;
 		//총댓글 수
 		for(BoardVO vo  :list) {
@@ -218,26 +215,11 @@ public class BoardController implements PcwkLogger{
 				break;
 			}
 		}
-		modelAndView.addObject("replyCnt", replyCnt);
-		
-		//뷰
-		modelAndView.setViewName("board/board_list");//  /WEB-INF/views/board/board_list.jsp
-		//Model
-		modelAndView.addObject("list", list);
-		//검색데이터
-		modelAndView.addObject("paramVO", inVO);  
-		
-		//검색조건
-		modelAndView.addObject("boardSearch", boardSearchList);
-		
-		//페이지 사이즈
-		modelAndView.addObject("pageSize",pageSizeList);
 		
 		//페이징
 		long bottomCount = StringUtil.BOTTOM_COUNT;//바닥글
 		String html = StringUtil.renderingPager(totalCnt, inVO.getPageNo(), inVO.getPageSize(), bottomCount,
 				"/ehr/board/doRetrieve.do", "pageDoRerive");
-		modelAndView.addObject("pageHtml", html);
 		
 		//공지사항:10, 자유게시판:20
 		String title = "";
@@ -246,14 +228,22 @@ public class BoardController implements PcwkLogger{
 		}else {
 			title = "자유게시판";
 		}
-		modelAndView.addObject("title", title);	
 		
-		//유저 정보
-		modelAndView.addObject("users",users);		
+		modelAndView.addObject("totalCnt", totalCnt); //조회수
+		modelAndView.addObject("replyCnt", replyCnt); //댓글수
+		modelAndView.setViewName("board/board_list"); //뷰   /WEB-INF/views/board/board_list.jsp		
+		modelAndView.addObject("list", list); //Model		
+		modelAndView.addObject("paramVO", inVO); //검색데이터		
+		modelAndView.addObject("boardSearch", boardSearchList); //검색조건		
+		modelAndView.addObject("pageSize",pageSizeList); //페이지 사이즈		
+		modelAndView.addObject("pageHtml", html); //페이징		
+		modelAndView.addObject("title", title);	//div 제목		
+		modelAndView.addObject("users",users); //유저 정보
 		
 		return modelAndView;   
 	}
 	
+	// 게시글 수정
 	@PostMapping(value = "/doUpdate.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public MessageVO doUpdate(BoardVO inVO, Model model) throws SQLException{
@@ -277,13 +267,15 @@ public class BoardController implements PcwkLogger{
 		
 	}
 	
+	//게시글 상세 조회(단건)
 	@GetMapping(value = "/doSelectOne.do")
 	public String doSelectOne(BoardVO inVO, Model model, HttpSession httpSession) throws SQLException, EmptyResultDataAccessException{
 		String view = "board/board_mng";///WEB-INF/views/+board/board_mng+.jsp ->/WEB-INF/views/board/board_mng.jsp
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSelectOne                       │");
 		LOG.debug("│ BoardVO                           │"+inVO);
-		LOG.debug("└───────────────────────────────────┘");			
+		LOG.debug("└───────────────────────────────────┘");	
+		
 		if(0 == inVO.getSeq() ) {
 			LOG.debug("============================");
 			LOG.debug("==nullPointerException===");
@@ -296,28 +288,23 @@ public class BoardController implements PcwkLogger{
 			inVO.setRegId(StringUtil.nvl(inVO.getRegId(),"Guest"));
 		}
 		
-		//session이 있는 경우
+		//session 이메일 : 등록자로 받기
 		if(null != httpSession.getAttribute("user")) {
 			UserVO user = (UserVO) httpSession.getAttribute("user");
 			inVO.setRegId(user.getEmail());
 		}
 		
 		BoardVO  outVO = service.doSelectOne(inVO);
-		model.addAttribute("vo", outVO);
 		
 		// 유저 정보 조회
 		UserVO user = new UserVO();
 		
 		user.setEmail(outVO.getRegId());
 		user = userService.doSelectOne(user);
-		LOG.debug("userName:" + user);
-		
-		//유저 정보
-		model.addAttribute("user", user);
+		LOG.debug("userName:" + user);		
 		
 		// 파일 정보 조회
 		List<FileVO> fileList = fileService.getFileUuid(outVO.getUuid());
-		model.addAttribute("fileList", fileList);
 		
 		//DIV코드 조회
 		Map<String, Object> codes=new HashMap<String, Object>();
@@ -325,7 +312,6 @@ public class BoardController implements PcwkLogger{
 		codes.put("code", codeStr);
 		
 		List<CodeVO> codeList = this.codeService.doRetrieve(codes);
-		model.addAttribute("divCode", codeList);
 		
 		//공지사항:10, 자유게시판:20
 		String title = "";
@@ -334,22 +320,30 @@ public class BoardController implements PcwkLogger{
 		}else {
 			title = "자유게시판-상세 조회";
 		}
-		model.addAttribute("title", title);	
+		
+		model.addAttribute("vo", outVO);
+		model.addAttribute("user", user); //유저 정보
+		model.addAttribute("fileList", fileList); //파일 정보
+		model.addAttribute("divCode", codeList); //div
+		model.addAttribute("title", title);	//div 제목
 		
 		return view;
 	}
 	
+	// 게시글 저장
 	@PostMapping(value = "/doSave.do", produces = "application/json;charset=UTF-8")
 	@ResponseBody
 	public MessageVO doSave(BoardVO inVO, @RequestParam(value = "uuid", required = false) String uuid) throws SQLException{
 		LOG.debug("┌───────────────────────────────────┐");
 		LOG.debug("│ doSave                            │");
 		LOG.debug("│ BoardVO                           │"+inVO);
-		LOG.debug("└───────────────────────────────────┘");				
+		LOG.debug("└───────────────────────────────────┘");			
+		
 		//seq조회
 		int seq = service.getBoardSeq();
 		inVO.setSeq(seq);
 		
+		// 파람 uuid 설정
 		inVO.setUuid(uuid);
 		
 		LOG.debug("│ BoardVO seq                       │"+inVO);
@@ -364,10 +358,11 @@ public class BoardController implements PcwkLogger{
 		
 		MessageVO  messageVO=new MessageVO(String.valueOf(flag), message);
 		LOG.debug("│ messageVO                           │"+messageVO);
+		
 		return messageVO;
 	}
 	
-
+	// 게시글 삭제
 	@GetMapping(value ="/doDelete.do",produces = "application/json;charset=UTF-8" )//@RequestMapping(value = "/doDelete.do",method = RequestMethod.GET)
 	@ResponseBody// HTTP 요청 부분의 body부분이 그대로 브라우저에 전달된다.
 	public MessageVO doDelete(BoardVO inVO, HttpSession session) throws SQLException{
@@ -375,6 +370,7 @@ public class BoardController implements PcwkLogger{
 		LOG.debug("│ doDelete                          │");
 		LOG.debug("│ BoardVO                           │"+inVO);
 		LOG.debug("└───────────────────────────────────┘");		
+		
 		if(0 == inVO.getSeq() ) {
 			LOG.debug("============================");
 			LOG.debug("==nullPointerException===");

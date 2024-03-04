@@ -16,22 +16,25 @@
 	document.addEventListener("DOMContentLoaded", function() {
 		console.log("DOMContentLoaded");
 
-		const moveToRegBTN = document.querySelector("#moveToReg");
+		const moveToRegBTN = document.querySelector("#moveToReg");//등록 버튼
 		const doRetrieveBTN = document.querySelector("#doRetrieve");//목록 버튼
-		const searchDivSelect = document.querySelector("#searchDiv");//id 등록 버튼
-		const boardForm = document.querySelector("#boardForm");
+		const searchDivSelect = document.querySelector("#searchDiv");//검색 div 버튼
 		const searchWordTxt = document.querySelector("#searchWord");
+		const boardForm = document.querySelector("#boardForm");
 		const rows = document.querySelectorAll("#boardTable>tbody>tr");
-
+	    
+		// boardTable 이벤트
 		rows.forEach(function(row) {
 			row.addEventListener('click', function(e) {
 				let cells = row.getElementsByTagName("td");
-				const seq = cells[5].innerText;
+				
+				const seq = cells[5].innerText; //게시글 seq 받기
 				console.log('seq:' + seq);
 
-				const div = document.querySelector("#div").value;
+				const div = document.querySelector("#div").value; //게시글 div 받기
 				console.log('div:' + div);
-
+			    
+				// 게시글 상세 조회
 				window.location.href = "${CP}/board/doSelectOne.do?seq=" + seq
 						+ "&div=" + div;
 			});
@@ -40,9 +43,9 @@
 		// 등록 이동 이벤트
 		moveToRegBTN.addEventListener("click", function(e) {
 			console.log("moveToRegBTN click");
-
-			const regId = '${sessionScope.user.email}';
-			const userRole = '${sessionScope.user.role}';
+		    
+			const regId = '${sessionScope.user.email}'; //로그인 사용자 이메일 -> 등록자
+			const userRole = '${sessionScope.user.role}'; //로그인 사용자 역할 확인
 			const div = document.querySelector("#div").value;
 
 			if (eUtil.isEmpty(regId) == true) {
@@ -50,15 +53,17 @@
 				return;
 			}
 			
+			/* 공지사항 : 시스템관리자, 학원관리자만 글 작성 권한 부여 */
 			if (userRole == "30" && div == "10") {
 				Swal.fire("관리자만 글쓰기 가능합니다.", "","info");
 				return;
 			}
-
+		    
 			window.location.href = "${CP}/board/moveToReg.do?div=" + div;
 
 		});
-
+	    
+		// 검색 시, enter 이벤트 처리
 		searchWordTxt.addEventListener("keyup", function(e) {
 			console.log("keyup:" + e.keyCode);
 			if (13 == e.keyCode) {//
@@ -79,7 +84,7 @@
 			console.log("doRetrieve click");
 			doRetrieve(1);
 		});
-
+	    
 		function doRetrieve(pageNo) {
 			console.log("doRetrieve pageNO:" + pageNo);
 
@@ -155,7 +160,6 @@
     color: white;
 }
 
-
 .pagination-container {
 	margin-top: -5px; /* 페이징의 상단 간격을 줄입니다. */
 }
@@ -171,6 +175,7 @@
 
 
 	<div class="container">
+	
 		<!-- 제목 -->
 		<div class="row">
 			<div class="col-lg-12">
@@ -180,8 +185,47 @@
 		<br> <br>
 		<!--// 제목 ----------------------------------------------------------------->
 
+        <!-- 검색 -->
+        <form action="#" method="get" id="boardForm" name="boardForm">
+            <input type="hidden" name="div" id="div" value="${paramVO.getDiv() }" />
+            <input type="hidden" name="pageNo" id="pageNo" />
+            <div class="row g-1 justify-content-end ">
+                <label for="searchDiv" class="col-auto col-form-label">검색조건</label>
+                <div class="col-auto">
+                    <select class="form-select pcwk_select" id="searchDiv"
+                        name="searchDiv">
+                        <option value="">전체</option>
+                        <c:forEach var="vo" items="${boardSearch }">
+                            <option value="<c:out value='${vo.detCode}'/>"
+                                <c:if test="${vo.detCode == paramVO.searchDiv }">selected</c:if>><c:out
+                                    value="${vo.detName}" /></option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="searchWord"
+                        name="searchWord" maxlength="100" placeholder="검색어를 입력 하세요"
+                        value="${paramVO.searchWord}">
+                </div>
+                <div class="col-auto">
+                    <select class="form-select" id="pageSize" name="pageSize">
+                        <c:forEach var="vo" items="${pageSize }">
+                            <option value="<c:out value='${vo.detCode }' />"
+                                <c:if test="${vo.detCode == paramVO.pageSize }">selected</c:if>><c:out
+                                    value='${vo.detName}' /></option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="col-auto ">
+                    <!-- 열의 너비를 내용에 따라 자동으로 설정 -->
+                    <input type="button" value="검색" class="button" id="doRetrieve">
+                </div>
+            </div>
 
-
+        </form>
+        <br> <br>
+        <!--// 검색 ----------------------------------------------------------------->
+        
 		<!-- table -->
 		<table class="table table-responsive" id="boardTable">
 			<thead>
@@ -246,13 +290,14 @@
 		</table>
 		<!--// table -------------------------------------------------------------->
 
+        <!-- 버튼 -->
 		<div class="button-container">
 			<input type="button" value="글쓰기" class="button" id="moveToReg">
 		</div>
 
 		<!-- 페이징 : 함수로 페이징 처리 
-         총글수, 페이지 번호, 페이지 사이즈, bottomCount, url,자바스크립트 함수
-    -->
+	         총글수, 페이지 번호, 페이지 사이즈, bottomCount, url,자바스크립트 함수
+	    -->
 	   <div class="pagination-container">
 			<div class="container-fluid">
 				<div class="container">
@@ -267,50 +312,10 @@
 			</div>
 		</div>
 		<!--// 페이징 ---------------------------------------------------------------->
-
-		<!-- 검색 -->
-		<form action="#" method="get" id="boardForm" name="boardForm">
-			<input type="hidden" name="div" id="div" value="${paramVO.getDiv() }" />
-			<input type="hidden" name="pageNo" id="pageNo" />
-			<div class="row g-1 justify-content-end ">
-				<label for="searchDiv" class="col-auto col-form-label">검색조건</label>
-				<div class="col-auto">
-					<select class="form-select pcwk_select" id="searchDiv"
-						name="searchDiv">
-						<option value="">전체</option>
-						<c:forEach var="vo" items="${boardSearch }">
-							<option value="<c:out value='${vo.detCode}'/>"
-								<c:if test="${vo.detCode == paramVO.searchDiv }">selected</c:if>><c:out
-									value="${vo.detName}" /></option>
-						</c:forEach>
-					</select>
-				</div>
-				<div class="col-auto">
-					<input type="text" class="form-control" id="searchWord"
-						name="searchWord" maxlength="100" placeholder="검색어를 입력 하세요"
-						value="${paramVO.searchWord}">
-				</div>
-				<div class="col-auto">
-					<select class="form-select" id="pageSize" name="pageSize">
-						<c:forEach var="vo" items="${pageSize }">
-							<option value="<c:out value='${vo.detCode }' />"
-								<c:if test="${vo.detCode == paramVO.pageSize }">selected</c:if>><c:out
-									value='${vo.detName}' /></option>
-						</c:forEach>
-					</select>
-				</div>
-				<div class="col-auto ">
-					<!-- 열의 너비를 내용에 따라 자동으로 설정 -->
-					<input type="button" value="검색" class="button" id="doRetrieve">
-				</div>
-			</div>
-
-		</form>
-		<br> <br>
-		<!--// 검색 ----------------------------------------------------------------->
-
+		
 	</div>
 	<br>
+	
 	<jsp:include page="/WEB-INF/cmn/footer.jsp"></jsp:include>
 
 </body>
