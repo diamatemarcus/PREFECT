@@ -479,16 +479,15 @@ public class UserController implements PcwkLogger {
 		LOG.debug("└───────────────────────────────────────────┘");
 
 		// SHA-256 + salt를 사용한 비밀번호 암호화 (2024-02-13)
-		String salt = ShaUtil.generateSalt();
-		inVO.setSalt(salt);
-		String raw = inVO.getPassword();
-		String rawAndSalt = raw + salt;
-		String hex = ShaUtil.hash(rawAndSalt);
-		inVO.setPassword(hex);
-		LOG.debug("아오 제발" + inVO);
-		//
+		String salt = ShaUtil.generateSalt();     // salt 생성
+		inVO.setSalt(salt);  					  // 새로운 계정에 대한 salt 설정
+		String raw = inVO.getPassword(); 		  // 계정의 비밀번호를 raw 문자열에 저장
+		String rawAndSalt = raw + salt;           // 계정 비밀번호와 salt 를 합쳐 rawAndSalt 라는 새로운 문자열에 저장
+		String hex = ShaUtil.hash(rawAndSalt);    // rawAndSalt를 해시
+		inVO.setPassword(hex);  				  // 해시된 비밀번호를 저장
+		LOG.debug("inVO :" + inVO);
 
-		int flag = userService.doSave(inVO);
+		int flag = userService.doSave(inVO); 
 		String message = "";
 
 		if (1 == flag) {
