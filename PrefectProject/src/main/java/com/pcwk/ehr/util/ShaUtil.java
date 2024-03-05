@@ -33,6 +33,7 @@ public class ShaUtil {
         }
     }
 
+ //밑은 JUnitTest용 코드
     public void saltGeneration() {  //salt 생성
         String salt = ShaUtil.generateSalt();
     }
