@@ -23,6 +23,7 @@
         <mvc:exclude-mapping path="/user/**"/>
         <mvc:exclude-mapping path="/search/searchEmailView.do"/>
         <mvc:exclude-mapping path="/search/searchPasswordView.do"/>
+        <mvc:exclude-mapping path="/board/doRetrieve.do"/>
         <beans:ref bean="loginInterceptor"/>
     </mvc:interceptor> 
 </mvc:interceptors> 
