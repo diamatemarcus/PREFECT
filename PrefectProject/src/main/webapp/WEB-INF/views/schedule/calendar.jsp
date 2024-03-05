@@ -260,24 +260,6 @@
 											//동적 테이블 body		                
 											let tableBody = ' <tbody>';
 
-											/* for (let i = 0; i < data.length; i++) {
-												tableBody += '<tr>\
-													<td class="text-center">'
-														+ data[i].calID
-														+ '</td>\
-											        <td class="text-left">'
-														+ data[i].scheduleID
-														+ '</td>\
-											        <td class="text-left">'
-														+ data[i].title
-														+ '</td>\
-											        <td class="text-left">'
-														+ data[i].explanation
-														+ '</td>\
-											      </tr>\
-											     ';
-											} */
-
 											for (let i = 0; i < data.length; i++) {
 												tableBody += '<tr>\
 											                        <td class="text-center"><input type="checkbox" name="scheduleID" value="' + data[i].scheduleID + '"></td>\
