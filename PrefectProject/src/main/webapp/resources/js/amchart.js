@@ -46,6 +46,7 @@ function generateDatas(count) {
                   break;
                 case '20':
                   data2.category = 'Spring';
+                  break;
                 case '21':
                   data2.category = 'Flask';
                   break;

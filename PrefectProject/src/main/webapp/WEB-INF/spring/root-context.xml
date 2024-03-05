@@ -14,7 +14,7 @@
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
    
    <!-- 파일업로드:  
-   multipartResolver" : 이름 변경하면 않됨!
+   multipartResolver" : 이름 변경하면 안됨!
    maxUploadSize: 최대 업로드 가능한 크기 (default=-1 제한없음), 단위는 byte
     maxInMemorySize: 디스크에 임시 파일을 생성하기 전에 메모리에 보관할수 있는 최대 바이트 크기. default 10240바이트
    -->
@@ -96,6 +96,7 @@
 	<!-- database.properties -->
 	<context:property-placeholder
 		location="classpath:/resource/config/database.properties" />
+		
 	<!-- Connection Pool -->
 	<bean id="dataSource"
 		class="org.apache.commons.dbcp.BasicDataSource">
